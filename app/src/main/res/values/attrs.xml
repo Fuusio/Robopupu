@@ -1,0 +1,42 @@
+<resources>
+
+      
+    <declare-styleable name="FormTextField">
+        <attr name="label" format="reference" />
+        <attr name="android:inputType" />
+        <attr name="android:textSize" />            
+    </declare-styleable>
+                
+    <declare-styleable name="TextField">
+        <attr name="invalidStateDrawable" format="reference" />
+        <attr name="validStateDrawable" format="reference" />   
+        <attr name="invalidStateTextColor" format="color" />
+        <attr name="validStateTextColor" format="color" />          
+    </declare-styleable>
+    
+    <declare-styleable name="ExpandablePanel">
+        <attr name="handle" format="reference" />
+        <attr name="content" format="reference" />
+        <attr name="collapsedHeight" format="dimension"/>
+        <attr name="animationDuration" format="integer"/>
+    </declare-styleable>
+
+    <declare-styleable name="CodeSceneScroller">
+    </declare-styleable>
+
+    <declare-styleable name="ScrollableView">
+    </declare-styleable>
+    
+    <declare-styleable name="SegmentedRadioButton">
+        <attr name="android:button" />
+    </declare-styleable>
+
+    <!-- Declare custom theme attributes that allow changing which styles are
+         used for button bars depending on the API level.
+         ?android:attr/buttonBarStyle is new as of API 11 so this is
+         necessary to support previous API levels. -->
+    <declare-styleable name="ButtonBarContainerTheme">
+        <attr name="metaButtonBarStyle" format="reference" />
+        <attr name="metaButtonBarButtonStyle" format="reference" />
+    </declare-styleable>      
+</resources>

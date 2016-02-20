@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    // Common error messages
+
+    <string name="error_unknown_error">Unknown application error</string>
+
+</resources>
