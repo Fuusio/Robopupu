@@ -1,7 +1,6 @@
-package org.fuusio.robopupu.feature.main.view;
+package com.robopupu.feature.main.view;
 
 import org.fuusio.api.plugin.PlugInterface;
-import org.fuusio.robopupu.feature.main.presenter.MainPresenter;
 
 import org.fuusio.api.mvp.View;
 

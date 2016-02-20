@@ -22,7 +22,7 @@ import org.fuusio.api.mvp.Presenter;
 import org.fuusio.api.mvp.ViewFragment;
 
 public abstract class FeatureFragment<T_Presenter extends Presenter> extends ViewFragment<T_Presenter>
-    implements FeatureView<T_Presenter>, Scopeable {
+    implements FeatureView, Scopeable {
 
     private Feature mFeature;
     private DependencyScope mScope;

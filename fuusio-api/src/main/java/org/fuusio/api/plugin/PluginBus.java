@@ -15,8 +15,6 @@
  */
 package org.fuusio.api.plugin;
 
-import android.os.Handler;
-
 import org.fuusio.api.dependency.D;
 import org.fuusio.api.dependency.DependencyScope;
 
@@ -169,8 +167,8 @@ public class PluginBus {
      * @param pluginInterface A {@link Class} specifying the plugin interface type.
      * @param plugInvoker A {@link PlugInvoker} instance. May be {@code null} if an instance of needed
      *                    type of {@link PlugInvoker} is already cached in this {@link PluginBus}.
-     * @param handlerInvoker A {@link HandlerInvoker} instance. May be {@code null} if a {@link Handler}
-     *                       is not needed for synchronising invocations with the main thread.
+     * @param handlerInvoker A {@link HandlerInvoker} instance. May be {@code null} if there
+     *                       is no needed for synchronising invocations with the main thread.
      */
     public void plug(final Object plugin, final Class<?> pluginInterface, final PlugInvoker<?> plugInvoker, final HandlerInvoker<?> handlerInvoker) {
 

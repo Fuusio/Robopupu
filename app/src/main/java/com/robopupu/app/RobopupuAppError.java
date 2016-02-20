@@ -1,8 +1,8 @@
-package org.fuusio.robopupu.app;
+package com.robopupu.app;
 
 import android.content.Context;
 
-import org.fuusio.robopupu.R;
+import com.robopupu.R;
 
 import org.fuusio.api.app.AppError;
 

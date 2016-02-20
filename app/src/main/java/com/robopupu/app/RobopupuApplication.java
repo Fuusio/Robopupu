@@ -1,11 +1,14 @@
-package org.fuusio.robopupu.app;
+package com.robopupu.app;
 
-import org.fuusio.robopupu.app.dependency.RobopupuAppScope;
+import com.robopupu.api.feature.PluginFeatureManager;
+import com.robopupu.app.dependency.RobopupuAppScope;
 
+import org.fuusio.api.app.FuusioApplication;
 import org.fuusio.api.dependency.AppDependencyScope;
-import org.fuusio.api.feature.FeatureApplication;
+import org.fuusio.api.dependency.D;
+import org.fuusio.api.plugin.PluginBus;
 
-public class RobopupuApplication extends FeatureApplication {
+public class RobopupuApplication extends FuusioApplication {
 
     // Google Analytics Property ID
     public final static int PROPERTY_ID = 0; // TODO
@@ -36,5 +39,8 @@ public class RobopupuApplication extends FeatureApplication {
     @Override
     protected void configureApplication() {
         super.configureApplication();
+
+        final PluginFeatureManager featureManager = D.get(PluginFeatureManager.class);
+        PluginBus.plug(featureManager);
     }
 }

@@ -9,9 +9,8 @@ import org.fuusio.api.mvp.Presenter;
  * {@link AbstractFeaturePresenter} extends {@link AbstractPresenter} to provide an abstract base class
  * for implementing {@link FeaturePresenter}s that are controlled by {@link Feature}s.
  */
-public class AbstractFeaturePresenter<T_View extends FeatureView, T_Listener
-        extends Presenter.Listener> extends AbstractPresenter<T_View, T_Listener>
-        implements FeaturePresenter<T_View, T_Listener> {
+public abstract class AbstractFeaturePresenter<T_View extends FeatureView> extends AbstractPresenter<T_View>
+        implements FeaturePresenter {
 
     private Feature mFeature;
     private DependencyScope mScope;

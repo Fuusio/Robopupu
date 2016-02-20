@@ -1,4 +1,4 @@
-package org.fuusio.robopupu.feature.main;
+package com.robopupu.feature.main;
 
 
 import org.fuusio.api.dependency.Scope;

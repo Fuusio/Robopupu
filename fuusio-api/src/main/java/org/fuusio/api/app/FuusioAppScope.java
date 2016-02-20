@@ -18,7 +18,7 @@ package org.fuusio.api.app;
 import org.fuusio.api.dependency.AppDependencyScope;
 import org.fuusio.api.dependency.DependenciesCache;
 import org.fuusio.api.feature.FeatureManager;
-import org.fuusio.api.feature.FeatureManagerImpl;
+import org.fuusio.api.feature.AbstractFeatureManager;
 import org.fuusio.api.graphics.BitmapManager;
 import org.fuusio.api.graphics.BitmapManagerImpl;
 import org.fuusio.api.network.RequestManager;
@@ -40,8 +40,6 @@ public abstract class FuusioAppScope extends AppDependencyScope<FuusioApplicatio
             return dependency(new BitmapManagerImpl());
         } else if (type(DependenciesCache.class)) {
             return dependency(getApplication().getDependenciesCache());
-        } else if (type(FeatureManager.class)) {
-            return dependency(new FeatureManagerImpl());
         } else if (type(RequestManager.class)) {
             return dependency(new VolleyRequestManager());
         } else if (type(PermissionRequestManager.class)) {

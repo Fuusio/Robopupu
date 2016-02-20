@@ -1,13 +1,12 @@
-package org.fuusio.robopupu.feature.main.presenter;
+package com.robopupu.feature.main.presenter;
 
 import org.fuusio.api.plugin.Plug;
 import org.fuusio.api.plugin.Plugin;
-import org.fuusio.robopupu.feature.main.view.MainView;
+import com.robopupu.feature.main.view.MainView;
 
 import org.fuusio.api.dependency.Provides;
 import org.fuusio.api.feature.FeatureManager;
 import org.fuusio.api.mvp.AbstractPresenter;
-import org.fuusio.api.mvp.Presenter;
 
 @Plugin
 public class MainPresenterImpl extends AbstractPresenter<MainView>

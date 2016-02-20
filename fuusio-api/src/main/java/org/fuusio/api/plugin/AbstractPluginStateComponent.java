@@ -15,8 +15,6 @@
  */
 package org.fuusio.api.plugin;
 
-import android.support.annotation.NonNull;
-
 import org.fuusio.api.util.Params;
 
 /**
@@ -88,7 +86,6 @@ public class AbstractPluginStateComponent extends AbstractPluginComponent
         onDestroy();
     }
 
-    @NonNull
     @Override
     public PluginState getState() {
         return mState;

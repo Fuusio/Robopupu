@@ -3,7 +3,7 @@ package org.fuusio.api.feature;
 import org.fuusio.api.mvp.Presenter;
 import org.fuusio.api.mvp.View;
 
-public interface FeatureView<T_Presenter extends Presenter> extends View<T_Presenter> {
+public interface FeatureView extends View {
 
     /**
      * Gets the {@link Feature} that controls this {@link FeatureView}.

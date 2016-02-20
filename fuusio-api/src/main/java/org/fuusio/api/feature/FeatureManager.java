@@ -39,7 +39,6 @@ import java.util.List;
  * {@link FeatureManager} defines an interface for {@link Manager} object that provides an API
  * for managing {@link Feature}s.
  */
-@PlugInterface
 public interface FeatureManager extends Manager  {
 
     /**
@@ -59,6 +58,12 @@ public interface FeatureManager extends Manager  {
      * @return An {@link Activity}. May return {@code null}.
      */
     Activity getLastPausedActivity();
+
+    /**
+     * Gets the {@link Activity} that is the last stopped {@link Activity}.
+     * @return An {@link Activity}. May return {@code null}.
+     */
+    Activity getLastStoppedActivity();
 
     /**
      * Sets a {@link DependencyScopeOwner} that is used to provide a {@link DependencyScope}
@@ -83,50 +88,56 @@ public interface FeatureManager extends Manager  {
      * {@link DependencyScope}s.
      *
      * @param featureClass A {@link Feature}
-     * @param container A {@link FeatureContainer}.
-     * @param params    A {@link Params} containing parameters for the started {@link Feature}.
-     * @param <T>       The type extended from {@link Feature}.
      * @return A {@link Feature}.
      */
-    @SuppressWarnings("unchecked")
-    <T extends Feature> T createFeature(final Class<T> featureClass, final FeatureContainer container, final Params params);
+    Feature createFeature(final Class<? extends Feature> featureClass);
+
+    /**
+     * Creates the specified {@link Feature}, but does not start it. If the feature is
+     * a {@link DependencyScopeOwner} its {@link FeatureScope} is added to cache of
+     * {@link DependencyScope}s.
+     *
+     * @param featureClass A {@link Feature}
+     * @param params A {@link Params} containing parameters for the started {@link Feature}.
+     * @return A {@link Feature}.
+     */
+    Feature createFeature(final Class<? extends Feature> featureClass, final Params params);
 
     /**
      * Creates and starts the specified {@link Feature} whose {@link android.app.Fragment}s are hosted by
      * the given {@link FeatureContainer}.
      *
      * @param featureClass A {@link Class} specifying the {@link Feature} to be created and started.
-     * @param featureContainer A {@link FeatureContainer}.
-     * @param params    A {@link Params} containing parameters for the created and started {@link Feature}.
-     * @param <T>       The type extended from {@link Feature}.
      * @return A {@link Feature}.
      */
-    @SuppressWarnings("unchecked")
-    <T extends Feature> T startFeature(final Class<T> featureClass, final FeatureContainer featureContainer, final Params params);
+    Feature startFeature(final Class<? extends Feature> featureClass);
 
     /**
      * Creates and starts the specified {@link Feature} whose {@link android.app.Fragment}s are hosted by
      * the given {@link FeatureContainer}.
      *
      * @param featureClass A {@link Class} specifying the {@link Feature} to be created and started.
-     * @param featureContainer A {@link FeatureContainer}.
-     * @param featureOwnerView A {@link View} that owns the started {@link Feature}.
      * @param params    A {@link Params} containing parameters for the created and started {@link Feature}.
-     * @param <T>       The type extended from {@link Feature}.
      * @return A {@link Feature}.
      */
-    @SuppressWarnings("unchecked")
-    <T extends Feature> T startFeature(final Class<T> featureClass, final FeatureContainer featureContainer, final View featureOwnerView, final Params params);
+    Feature startFeature(final Class<? extends Feature> featureClass, final Params params);
+
+    /**
+     * Starts the given {@link Feature}.
+     *
+     * @param feature   {The {@link Feature} to be started.
+     * @return A {@link Feature}.
+     */
+    Feature startFeature(final Feature feature);
 
     /**
      * Starts the given {@link Feature}.
      *
      * @param feature   {The {@link Feature} to be started.
      * @param params A {@link Params} containing parameters for the started {@link Feature}.
-     * @param <T>    The type extended from {@link Feature}.
      * @return A {@link Feature}.
      */
-    <T extends Feature> T startFeature(final T feature, final Params params);
+    Feature startFeature(final Feature feature, final Params params);
 
     /**
      * Invoked to handle Back Pressed event received by the {@link FeatureContainer}.
@@ -148,14 +159,12 @@ public interface FeatureManager extends Manager  {
      */
     void onFeaturePaused(final Feature feature);
 
-
     /**
      * Invoked by a {@link Feature#stop()} when the {@link Feature}} has been stopped.
      *
      * @param feature A {@link Feature}. May not be {@code null}.
      */
     void onFeatureStopped(final Feature feature);
-
 
     /**
      * Invoked by a {@link Feature#destroy()} when the {@link Feature}} has been destroyed.

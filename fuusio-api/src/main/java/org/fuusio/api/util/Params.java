@@ -10,11 +10,15 @@ import java.util.HashMap;
 public class Params extends HashMap<String, Object> {
 
     public Params() {
+        this(null);
     }
 
-    private Params(final Bundle bundle) {
-        for (final String key : bundle.keySet()) {
-            put(key, bundle.get(key));
+    public Params(final Bundle bundle) {
+
+        if (bundle != null) {
+            for (final String key : bundle.keySet()) {
+                put(key, bundle.get(key));
+            }
         }
     }
 
@@ -25,9 +29,7 @@ public class Params extends HashMap<String, Object> {
      * {@code null}.
      */
     public static Params from(final Bundle bundle) {
-        if (bundle != null) {
-            return new Params(bundle);
-        }
-        return null;
+        return new Params(bundle);
     }
+
 }

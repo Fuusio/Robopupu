@@ -42,13 +42,12 @@ import org.fuusio.api.dependency.Scopeable;
  * @param <T_Presenter> The type of the {@link Presenter}.
  */
 public abstract class ViewDialogFragment<T_Presenter extends Presenter> extends DialogFragment
-        implements View<T_Presenter>, Scopeable {
+        implements View, Scopeable {
 
     private final ViewBinder mBinder;
     private final ViewState mState;
 
     protected android.view.View mDialogView;
-    protected T_Presenter mPresenter;
 
     private DependencyScope mScope;
 
@@ -75,26 +74,31 @@ public abstract class ViewDialogFragment<T_Presenter extends Presenter> extends 
     }
 
     /**
-     * Gets the {@link Presenter} assigned for this {@link ViewDialogFragment}.
+     * Gets the {@link Presenter} assigned for this {@link ViewActivity}.
      *
      * @return A {@link Presenter}.
      */
-    @Override
-    public T_Presenter getPresenter() {
-        if (mPresenter == null) {
+    protected abstract T_Presenter getPresenter();
+
+    /**
+     * Resolves the {@link Presenter} assigned for this {@link ViewActivity}.
+     *
+     * @return A {@link Presenter}.
+     */
+    @SuppressWarnings("unchecked")
+    protected T_Presenter resolvePresenter() {
+        T_Presenter presenter = getPresenter();
+
+        if (presenter == null) {
 
             final DependenciesCache cache = D.get(DependenciesCache.class);
             final DependencyMap dependencies = cache.getDependencies(this);
 
             if (dependencies != null) {
-                mPresenter = dependencies.getDependency(KEY_DEPENDENCY_PRESENTER);
-            }
-
-            if (mPresenter == null) {
-                mPresenter = getPresenterDependency();
+                presenter = dependencies.getDependency(KEY_DEPENDENCY_PRESENTER);
             }
         }
-        return mPresenter;
+        return presenter;
     }
 
     @NonNull
@@ -167,7 +171,9 @@ public abstract class ViewDialogFragment<T_Presenter extends Presenter> extends 
 
             if (dependencies != null) {
 
-                mPresenter = dependencies.getDependency(KEY_DEPENDENCY_PRESENTER);
+                final T_Presenter presenter = dependencies.getDependency(KEY_DEPENDENCY_PRESENTER);
+
+                // TODO
 
                 final DependencyScope scope = dependencies.getDependency(KEY_DEPENDENCY_SCOPE);
 
@@ -193,7 +199,10 @@ public abstract class ViewDialogFragment<T_Presenter extends Presenter> extends 
             setupWindowParams(window);
         }
 
-        mPresenter.onViewStart(this);
+        final T_Presenter presenter = resolvePresenter();
+        if (presenter != null) {
+            presenter.onViewStart(this);
+        }
     }
 
     protected void setupWindowLayout(final Window window) {
@@ -217,7 +226,10 @@ public abstract class ViewDialogFragment<T_Presenter extends Presenter> extends 
         super.onResume();
         mState.onResume();
 
-        mPresenter.onViewResume(this);
+        final T_Presenter presenter = resolvePresenter();
+        if (presenter != null) {
+            presenter.onViewResume(this);
+        }
     }
 
 
@@ -227,7 +239,10 @@ public abstract class ViewDialogFragment<T_Presenter extends Presenter> extends 
         super.onStop();
         mState.onStop();
 
-        mPresenter.onViewStop(this);
+        final T_Presenter presenter = resolvePresenter();
+        if (presenter != null) {
+            presenter.onViewStop(this);
+        }
     }
 
     @Override
@@ -235,7 +250,10 @@ public abstract class ViewDialogFragment<T_Presenter extends Presenter> extends 
         super.onPause();
         mState.onPause();
 
-        mPresenter.onViewPause(this);
+        final T_Presenter presenter = resolvePresenter();
+        if (presenter != null) {
+            presenter.onViewPause(this);
+        }
     }
 
     @Override
@@ -256,7 +274,10 @@ public abstract class ViewDialogFragment<T_Presenter extends Presenter> extends 
             cache.removeDependencyScope(owner);
         }
 
-        mPresenter.onViewDestroy(this);
+        final T_Presenter presenter = resolvePresenter();
+        if (presenter != null) {
+            presenter.onViewDestroy(this);
+        }
     }
 
     @Override
@@ -269,7 +290,7 @@ public abstract class ViewDialogFragment<T_Presenter extends Presenter> extends 
         // Save a reference to the Presenter
 
         final DependencyMap dependencies = cache.getDependencies(this, true);
-        dependencies.addDependency(KEY_DEPENDENCY_PRESENTER, mPresenter);
+        dependencies.addDependency(KEY_DEPENDENCY_PRESENTER, getPresenter());
         dependencies.addDependency(KEY_DEPENDENCY_SCOPE, mScope);
 
         onSaveDependencies(dependencies);

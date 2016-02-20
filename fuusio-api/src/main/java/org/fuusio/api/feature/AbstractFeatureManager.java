@@ -18,6 +18,7 @@ package org.fuusio.api.feature;
 import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
+import android.util.Log;
 
 import org.fuusio.api.component.AbstractManager;
 import org.fuusio.api.dependency.D;
@@ -25,8 +26,8 @@ import org.fuusio.api.dependency.DependenciesCache;
 import org.fuusio.api.dependency.Dependency;
 import org.fuusio.api.dependency.DependencyScope;
 import org.fuusio.api.dependency.DependencyScopeOwner;
-import org.fuusio.api.dependency.Scopeable;
 import org.fuusio.api.mvp.View;
+import org.fuusio.api.plugin.Plugin;
 import org.fuusio.api.util.Params;
 
 import java.lang.reflect.Constructor;
@@ -34,14 +35,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * {@link FeatureManagerImpl} implements a manager object for {@link Feature}a.
+ * {@link AbstractFeatureManager} provides a default implementation of {@link FeatureManager}.
  */
-public class FeatureManagerImpl extends AbstractManager
+public abstract class AbstractFeatureManager extends AbstractManager
         implements FeatureManager, Application.ActivityLifecycleCallbacks {
 
+    private static final String TAG = AbstractFeatureManager.class.getSimpleName();
     private static final String SUFFIX_IMPL = "Impl";
 
-    private static FeatureManagerImpl sInstance = null;
     private static DependencyScopeOwner sMockScopeOwner = null;
 
     private final ArrayList<Feature> mActiveFeatures;
@@ -51,7 +52,7 @@ public class FeatureManagerImpl extends AbstractManager
     private Activity mLastPausedActivity;
     private Activity mLastStoppedActivity;
 
-    public FeatureManagerImpl() {
+    public AbstractFeatureManager() {
         mActiveFeatures = new ArrayList<>();
         mDependenciesCache = D.get(DependenciesCache.class);
     }
@@ -61,40 +62,22 @@ public class FeatureManagerImpl extends AbstractManager
         return this;
     }
 
-    /**
-     * Gets the {@link Activity} that is currently in foreground.
-     * @return An {@link Activity}. May return {@code null}.
-     */
+    @Override
     public Activity getForegroundActivity() {
         return mForegroundActivity;
     }
 
-    /**
-     * Gets the {@link Activity} that is the last paused {@link Activity}.
-     * @return An {@link Activity}. May return {@code null}.
-     */
+    @Override
     public Activity getLastPausedActivity() {
         return mLastPausedActivity;
     }
 
-    /**
-     * Gets the {@link Activity} that is the last stopped {@link Activity}.
-     * @return An {@link Activity}. May return {@code null}.
-     */
+    @Override
     public Activity getLastStoppedActivity() {
         return mLastStoppedActivity;
     }
 
-    public static void setInstance(final FeatureManagerImpl instance) {
-        sInstance = instance;
-    }
-
-    /**
-     * Sets a {@link DependencyScopeOwner} that is used to provide a {@link DependencyScope}
-     * containing mock dependencies for testing purposes.
-     *
-     * @param owner A {@link DependencyScopeOwner}.
-     */
+    @Override
     public void setMockScopeOwner(final DependencyScopeOwner owner) {
         sMockScopeOwner = owner;
     }
@@ -108,9 +91,8 @@ public class FeatureManagerImpl extends AbstractManager
      *                  postfix {@code Impl}.
      * @return A {@link Feature}. May return {@code null}
      */
-    @SuppressWarnings("unchecked")
-    private <T extends Feature> T getMockFeature(final Class<T> featureClass) {
-        T feature = null;
+    private Feature getMockFeature(final Class<? extends Feature> featureClass) {
+        Feature feature = null;
 
         if (sMockScopeOwner != null) {
             final DependencyScope savedScope = D.getActiveScope();
@@ -119,9 +101,9 @@ public class FeatureManagerImpl extends AbstractManager
             feature = D.get(featureClass);
 
             if (feature == null && featureClass.isInterface()) {
-                final Class<T> implClass;
+                final Class<? extends Feature> implClass;
                 try {
-                    implClass = (Class<T>) Class.forName(featureClass.getName() + SUFFIX_IMPL);
+                    implClass = (Class<? extends Feature>) Class.forName(featureClass.getName() + SUFFIX_IMPL);
                     feature = D.get(implClass);
                 } catch (ClassNotFoundException e) {
                     throw new RuntimeException(e);
@@ -137,15 +119,12 @@ public class FeatureManagerImpl extends AbstractManager
         return feature;
     }
 
-    /**
-     * Gets the currently active {@link Feature}s.
-     *
-     * @return A {@link List} of {@link Feature}s.
-     */
+    @Override
     public List<Feature> getActiveFeatures() {
         return mActiveFeatures;
     }
 
+    @Override
     public List<Feature> getForegroundFeatures() {
         final List<Feature> foregroundFeatures = new ArrayList<>();
 
@@ -159,33 +138,39 @@ public class FeatureManagerImpl extends AbstractManager
         return foregroundFeatures;
     }
 
-    /**
-     * Creates the specified {@link Feature}, but does not start it. If the feature is
-     * a {@link DependencyScopeOwner} its {@link FeatureScope} is added to cache of
-     * {@link DependencyScope}s.
-     *
-     * @param featureClass A {@link Feature}
-     * @param container A {@link FeatureContainer}.
-     * @param params    A {@link Params} containing parameters for the started {@link Feature}.
-     * @param <T>       The type extended from {@link Feature}.
-     * @return A {@link Feature}.
-     */
-    @SuppressWarnings("unchecked")
-    public <T extends Feature> T createFeature(final Class<T> featureClass, final FeatureContainer container, final Params params) {
+    @Override
+    public Feature createFeature(final Class<? extends Feature> featureClass) {
+        return createFeature(featureClass, null);
+    }
 
-        T feature = getMockFeature(featureClass);
+    @SuppressWarnings("unchecked")
+    @Override
+    public Feature createFeature(final Class<? extends Feature> featureClass, final Params params) {
+
+        Feature feature = getMockFeature(featureClass);
 
         if (feature == null) {
-            Class<T> implClass = featureClass;
+            Class<? extends Feature> implClass = featureClass;
 
             try {
                 if (featureClass.isInterface()) {
-                    implClass = (Class<T>) Class.forName(featureClass.getName() + SUFFIX_IMPL);
+                    implClass = (Class<? extends Feature>) Class.forName(featureClass.getName() + SUFFIX_IMPL);
                 }
 
-                final Class[] paramTypes = {FeatureContainer.class, Params.class};
-                final Object[] paramValues = {container, params};
-                final Constructor<T> constructor = implClass.getConstructor(paramTypes);
+                feature = implClass.newInstance();
+                Dependency.addScope(feature);
+            } catch (Exception e) {
+                Log.d(TAG, "createFeature(Class, Params) : " + e.getMessage());
+            }
+
+            try {
+                if (featureClass.isInterface()) {
+                    implClass = (Class<? extends Feature>) Class.forName(featureClass.getName() + SUFFIX_IMPL);
+                }
+
+                final Class[] paramTypes = {Params.class};
+                final Object[] paramValues = {params};
+                final Constructor<? extends Feature> constructor = implClass.getConstructor(paramTypes);
                 feature = constructor.newInstance(paramValues);
                 Dependency.addScope(feature);
             } catch (Exception e) {
@@ -195,67 +180,37 @@ public class FeatureManagerImpl extends AbstractManager
         return feature;
     }
 
-    /**
-     * Creates and starts the specified {@link Feature} whose {@link android.app.Fragment}s are hosted by
-     * the given {@link FeatureContainer}.
-     *
-     * @param featureClass A {@link Class} specifying the {@link Feature} to be created and started.
-     * @param featureContainer A {@link FeatureContainer}.
-     * @param params    A {@link Params} containing parameters for the created and started {@link Feature}.
-     * @param <T>       The type extended from {@link Feature}.
-     * @return A {@link Feature}.
-     */
+
     @SuppressWarnings("unchecked")
-    public <T extends Feature> T startFeature(final Class<T> featureClass, final FeatureContainer featureContainer, final Params params) {
-        return startFeature(featureClass, featureContainer, null, params);
+    @Override
+    public Feature startFeature(final Class<? extends Feature> featureClass) {
+        return startFeature(featureClass, null);
     }
 
-    /**
-     * Creates and starts the specified {@link Feature} whose {@link android.app.Fragment}s are hosted by
-     * the given {@link FeatureContainer}.
-     *
-     * @param featureClass A {@link Class} specifying the {@link Feature} to be created and started.
-     * @param featureContainer A {@link FeatureContainer}.
-     * @param featureOwnerView A {@link View} that owns the started {@link Feature}.
-     * @param params    A {@link Params} containing parameters for the created and started {@link Feature}.
-     * @param <T>       The type extended from {@link Feature}.
-     * @return A {@link Feature}.
-     */
     @SuppressWarnings("unchecked")
-    public <T extends Feature> T startFeature(final Class<T> featureClass, final FeatureContainer featureContainer, final View featureOwnerView, final Params params) {
-        T feature = getMockFeature(featureClass);
+    @Override
+    public Feature startFeature(final Class<? extends Feature> featureClass, final Params params) {
+        Feature feature = getMockFeature(featureClass);
 
         if (feature == null) {
-            feature = createFeature(featureClass, featureContainer, params);
-        }
-
-        final DependencyScope scope = feature.getScope();
-
-        if (featureContainer instanceof Scopeable) {
-            ((Scopeable)featureContainer).setScope(scope);
-        }
-
-        if (featureOwnerView instanceof Scopeable) {
-            ((Scopeable)featureOwnerView).setScope(scope);
+            feature = createFeature(featureClass, params);
         }
 
         return startFeature(feature, params);
     }
 
-    /**
-     * Starts the given {@link Feature}.
-     *
-     * @param feature   {The {@link Feature} to be started.
-     * @param params A {@link Params} containing parameters for the started {@link Feature}.
-     * @param <T>    The type extended from {@link Feature}.
-     * @return A {@link Feature}.
-     */
-    public <T extends Feature> T startFeature(final T feature, final Params params) {
-        feature.setFeatureManager(sInstance);
+    @Override
+    public Feature startFeature(final Feature feature) {
+        return startFeature(feature, null);
+    }
+
+    @Override
+    public Feature startFeature(final Feature feature, final Params params) {
+        feature.setFeatureManager(this);
         Dependency.activateScope(feature);
 
         feature.start(params);
-        sInstance.mActiveFeatures.add(feature);
+        mActiveFeatures.add(feature);
 
         return feature;
     }

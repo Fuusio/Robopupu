@@ -15,9 +15,6 @@
  */
 package org.fuusio.api.plugin;
 
-import org.fuusio.api.dependency.D;
-import org.fuusio.api.dependency.DependencyScope;
-
 import java.util.ArrayList;
 
 /**
@@ -51,22 +48,22 @@ public abstract class PlugInvoker<T> {
 
     @SuppressWarnings("unchecked")
     public void addPlugin(final Object plugin) {
-        if (!mPluginsList.contains(plugin)) {
+        if (!mPluginsList.contains((T)plugin)) {
             mPluginsList.add((T)plugin);
         }
     }
 
     @SuppressWarnings("unchecked")
     public void removePlugin(final Object plugin) {
-        if (mPluginsList.contains(plugin)) {
-            mPluginsList.remove(plugin);
+        if (mPluginsList.contains((T)plugin)) {
+            mPluginsList.remove((T)plugin);
         } else {
 
-            HandlerInvoker invokerToBeRemoved = null;
+            HandlerInvoker<?> invokerToBeRemoved = null;
 
             for (final Object pluggedPlugin : mPluginsList) {
                 if (pluggedPlugin instanceof HandlerInvoker) {
-                    final HandlerInvoker invoker = (HandlerInvoker)pluggedPlugin;
+                    final HandlerInvoker<?> invoker = (HandlerInvoker<?>)pluggedPlugin;
 
                     if (plugin == invoker.mPlugin) {
                         invokerToBeRemoved = invoker;
@@ -77,7 +74,7 @@ public abstract class PlugInvoker<T> {
 
             if (invokerToBeRemoved != null) {
                 invokerToBeRemoved.mPlugin = null;
-                mPluginsList.remove(invokerToBeRemoved);
+                mPluginsList.remove((T)invokerToBeRemoved);
             }
         }
     }

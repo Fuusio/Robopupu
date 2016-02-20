@@ -15,8 +15,6 @@
  */
 package org.fuusio.api.dependency;
 
-import android.support.annotation.NonNull;
-
 import java.util.HashMap;
 
 /**
@@ -25,6 +23,8 @@ import java.util.HashMap;
  * {@link DependencyScope} instances.
  */
 public class Dependency {
+
+    private static DependencyScope sAppScope;
 
     /**
      * A {@link HashMap} containing the activated {@link DependencyScope}s using method
@@ -84,7 +84,6 @@ public class Dependency {
      * @return The requested {@link DependencyScope}. If {@code null} is returned, it indicates an
      * error in an {@link DependencyScope} implementation.
      */
-    @NonNull
     @SuppressWarnings("unchecked")
     public static <T extends DependencyScope> T getScope(final Class<? extends DependencyScope> scopeType) {
         DependencyScope selectedScope = null;
@@ -107,6 +106,14 @@ public class Dependency {
     }
 
     /**
+     * Gets the application level {@link DependencyScope}.
+     * @return A {@link DependencyScope}.
+     */
+    public static DependencyScope getAppScope() {
+        return sAppScope;
+    }
+
+    /**
      * Gets the {@link DependencyScope} that is set to be currently the active one. Note that only
      * one {@link DependencyScope} can be active at any given.
      *
@@ -117,7 +124,15 @@ public class Dependency {
         if (sActiveScope != null) {
             return sActiveScope;
         }
-        return AppDependencyScope.getInstance();
+        return sAppScope;
+    }
+
+    /**
+     * Sets the application level {@link DependencyScope}.
+     * @param appScope A {@link DependencyScope}.
+     */
+    public static void setAppScope(final DependencyScope appScope) {
+        sAppScope = appScope;
     }
 
     /**
@@ -143,13 +158,9 @@ public class Dependency {
                 deactivateScope(sActiveScope.getOwner());
             }
 
-            if (scope != null) {
-                sActiveScope = scope;
-                sActiveScope.initialize();
-                sActiveScope.onActivated(owner);
-            } else {
-                sActiveScope = null;
-            }
+            sActiveScope = scope;
+            sActiveScope.initialize();
+            sActiveScope.onActivated(owner);
         }
     }
 
@@ -215,7 +226,6 @@ public class Dependency {
      * @return The requested dependency. If {@code null} is returned, it indicates an error in
      * an {@link DependencyScope} implementation.
      */
-    @NonNull
     public static <T> T get(final Class<T> dependencyType) {
         return getActiveScope().getDependency(dependencyType, null, false);
     }
@@ -230,7 +240,6 @@ public class Dependency {
      * @return The requested dependency. If {@code null} is returned, it indicates an error in
      * an {@link DependencyScope} implementation.
      */
-    @NonNull
     public static <T> T get(final Class<? extends DependencyScope> scopeType, final Class<T> dependencyType) {
         return get(scopeType, dependencyType, null);
     }
@@ -242,7 +251,6 @@ public class Dependency {
      * @return The requested {@link DependencyScope}. If {@code null} is returned, it indicates an
      * error in an {@link DependencyScope} implementation.
      */
-    @NonNull
     public static DependencyScope getDependencyScope(final Class<? extends DependencyScope> scopeType) {
         DependencyScope selectedScope = null;
 
@@ -275,7 +283,6 @@ public class Dependency {
      * @return The requested dependency. If {@code null} is returned, it indicates an error in
      * an {@link DependencyScope} implementation.
      */
-    @NonNull
     public static <T> T get(final Class<? extends DependencyScope> scopeType, final Class<T> dependencyType, final Object dependant) {
         DependencyScope selectedScope = null;
 
@@ -311,7 +318,6 @@ public class Dependency {
      * @return The requested dependency. If {@code null} is returned, it indicates an error in
      * an {@link DependencyScope} implementation.
      */
-    @NonNull
     public static <T> T get(final DependencyScope scope, final Class<T> dependencyType) {
         return scope.getDependency(dependencyType, null, false);
     }
@@ -327,7 +333,6 @@ public class Dependency {
      * @return The requested dependency. If {@code null} is returned, it indicates an error in
      * an {@link DependencyScope} implementation.
      */
-    @NonNull
     public static <T> T get(final Class<T> dependencyType, final Object dependant) {
         return getActiveScope().getDependency(dependencyType, dependant, false);
     }
@@ -344,7 +349,6 @@ public class Dependency {
      * @return The requested dependency. If {@code null} is returned, it indicates an error in
      * an {@link DependencyScope} implementation.
      */
-    @NonNull
     public static <T> T get(final DependencyScope scope, final Class<T> dependencyType, final Object dependant) {
         return scope.getDependency(dependencyType, dependant, false);
     }
@@ -359,7 +363,6 @@ public class Dependency {
      * @return The requested dependency. If {@code null} is returned, it indicates an error in
      * an {@link DependencyScope} implementation.
      */
-    @NonNull
     public static <T> T getOrCreate(final Class<T> dependencyType) {
         return getActiveScope().getDependency(dependencyType, null, true);
     }
@@ -375,7 +378,6 @@ public class Dependency {
      * @return The requested dependency. If {@code null} is returned, it indicates an error in
      * an {@link DependencyScope} implementation.
      */
-    @NonNull
     public static <T> T getOrCreate(final DependencyScope scope, final Class<T> dependencyType) {
         return scope.getDependency(dependencyType, null, true);
     }
@@ -392,7 +394,6 @@ public class Dependency {
      * @return The requested dependency. If {@code null} is returned, it indicates an error in
      * an {@link DependencyScope} implementation.
      */
-    @NonNull
     public static <T> T getOrCreate(final Class<T> dependencyType, final Object dependant) {
         return getActiveScope().getDependency(dependencyType, dependant, true);
     }
@@ -406,7 +407,6 @@ public class Dependency {
      * @return The requested dependency. If {@code null} is returned, it indicates an error in
      * an {@link DependencyScope} implementation.
      */
-    @NonNull
     public static <T> T create(final Class<T> dependencyType) {
         return getActiveScope().createDependency(dependencyType, null);
     }
@@ -422,7 +422,6 @@ public class Dependency {
      * @return The requested dependency. If {@code null} is returned, it indicates an error in
      * an {@link DependencyScope} implementation.
      */
-    @NonNull
     public static <T> T create(final Class<T> dependencyType, final Object dependant) {
         return getActiveScope().createDependency(dependencyType, dependant);
     }

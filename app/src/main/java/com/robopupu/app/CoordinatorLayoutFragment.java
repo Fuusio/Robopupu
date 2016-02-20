@@ -1,4 +1,4 @@
-package org.fuusio.robopupu.app;
+package com.robopupu.app;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -9,7 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.ImageView;
 
-import org.fuusio.robopupu.R;
+import com.robopupu.R;
 import com.squareup.picasso.Picasso;
 
 import org.fuusio.api.feature.FeatureFragment;

@@ -220,7 +220,7 @@ public abstract class DependencyScope {
      * Gets an dependency instance of the specified type. The requested dependency is first searched
      * from the currently active {@link DependencyScope}. If a requested instance is not found the search
      * is delegated to parent {@link DependencyScope}. As a last attempt,
-     * the {@link AppDependencyScope} is searched.
+     * the {@code AppDependencyScope} is searched.
      *
      * @param dependencyType A {@link Class} specifying the type of the requested instance.
      * @param dependant      The requesting object. This parameter is required when the requesting dependant
@@ -275,7 +275,7 @@ public abstract class DependencyScope {
                     }
 
                     if (dependency == null && !isAppScope()) {
-                        dependency = AppDependencyScope.getInstance().getDependency(dependencyType, dependant, createNew);
+                        dependency = Dependency.getAppScope().getDependency(dependencyType, dependant, createNew);
                     }
 
                     if (dependency == null && createNew) {
@@ -305,7 +305,7 @@ public abstract class DependencyScope {
      * Creates a new instance of the specified dependency type. The currently active
      * {@link DependencyScope} is first requested to create the new instance. If it does not create
      * instance, the requested is delegated to parent {@link DependencyScope}. As a last attempt,
-     * the {@link AppDependencyScope} is requested to create a new instance.
+     * the application scoped {@link DependencyScope} is requested to create a new instance.
      *
      * @param dependencyType A {@link Class} specifying the type of the requested instance.
      * @param dependant      The requesting object. This parameter is required when the requesting dependant
@@ -334,7 +334,7 @@ public abstract class DependencyScope {
             }
 
             if (dependency == null && !isAppScope()) {
-                dependency = AppDependencyScope.getInstance().createDependency(dependencyType, null);
+                dependency = Dependency.getAppScope().createDependency(dependencyType, null);
             }
         }
 
@@ -390,7 +390,7 @@ public abstract class DependencyScope {
     }
 
     /**
-     * Test if this {@link DependencyScope} is an {@link AppDependencyScope}.
+     * Tests if this {@link DependencyScope} is a application scoped {@link DependencyScope}.
      * @return A {@code boolean},
      */
     public boolean isAppScope() {

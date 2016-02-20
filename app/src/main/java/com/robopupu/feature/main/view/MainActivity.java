@@ -1,4 +1,4 @@
-package org.fuusio.robopupu.feature.main.view;
+package com.robopupu.feature.main.view;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -13,20 +13,20 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import org.fuusio.api.plugin.Plug;
-import org.fuusio.api.plugin.Plugin;
-import org.fuusio.robopupu.R;
-import org.fuusio.robopupu.app.DrawerLayoutContainer;
-import org.fuusio.robopupu.feature.main.MainFeature;
-import org.fuusio.robopupu.feature.main.presenter.MainPresenter;
-
-import org.fuusio.api.dependency.D;
 import org.fuusio.api.feature.Feature;
 import org.fuusio.api.feature.FeatureContainer;
 import org.fuusio.api.feature.FeatureFragment;
-import org.fuusio.api.feature.FeatureManager;
 import org.fuusio.api.mvp.View;
 import org.fuusio.api.mvp.ViewActivity;
+import org.fuusio.api.plugin.Plug;
+import org.fuusio.api.plugin.Plugin;
+
+import com.robopupu.R;
+import com.robopupu.api.feature.PluginFeatureManager;
+import com.robopupu.app.DrawerLayoutContainer;
+import com.robopupu.feature.main.MainFeature;
+import com.robopupu.feature.main.MainFeatureScope;
+import com.robopupu.feature.main.presenter.MainPresenter;
 
 @Plugin
 public class MainActivity extends ViewActivity<MainPresenter>
@@ -34,8 +34,10 @@ public class MainActivity extends ViewActivity<MainPresenter>
         FeatureContainer, DrawerLayoutContainer {
 
     private DrawerLayout mDrawerLayout;
-    private NavigationView mNavigationView;
 
+    @Plug(MainFeatureScope.class) MainFeature mFeature;
+    @Plug
+    PluginFeatureManager mFeatureManager;
     @Plug MainPresenter mPresenter;
 
     @Override
@@ -50,14 +52,15 @@ public class MainActivity extends ViewActivity<MainPresenter>
         setContentView(R.layout.activity_main);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout_navigation);
-        mNavigationView = (NavigationView) findViewById(R.id.nav_view);
-        mNavigationView.setNavigationItemSelectedListener(this);
+
+        final NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
     }
 
     @Override
     protected void onStart() {
-        FeatureManager.startFeature(MainFeature.class, this, this, null); // XXX
         super.onStart();
+        mFeatureManager.startFeature(mFeature);
     }
 
     @Override
