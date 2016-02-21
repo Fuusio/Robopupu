@@ -117,12 +117,13 @@ public abstract class ViewActivity<T_Presenter extends Presenter> extends AppCom
 
             final DependencyScopeOwner owner = (DependencyScopeOwner) this;
 
+            /* XXX
             if (cache.containsDependencyScope(owner)) {
                 final DependencyScope scope = cache.removeDependencyScope(owner);
                 D.activateScope(owner, scope);
             } else {
                 D.activateScope(owner);
-            }
+            }*/
         }
 
         if (!mState.isRestarted()) {

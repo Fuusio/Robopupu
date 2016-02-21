@@ -19,8 +19,8 @@ public abstract class PluginActivity<T_Presenter extends Presenter>
 
     @Override
     protected void onStart() {
-        super.onStart();
         PluginBus.plug(this);
+        super.onStart();
     }
 
     @Override

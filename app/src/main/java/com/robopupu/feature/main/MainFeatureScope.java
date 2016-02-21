@@ -1,15 +1,15 @@
 package com.robopupu.feature.main;
 
 
+import org.fuusio.api.dependency.DependencyScope;
 import org.fuusio.api.dependency.Scope;
-import org.fuusio.api.feature.FeatureScope;
 import org.fuusio.api.plugin.Plugin;
 
 @Plugin
 @Scope
-public class MainFeatureScope extends FeatureScope<MainFeature> {
+public class MainFeatureScope extends DependencyScope {
 
-    public MainFeatureScope(final MainFeature feature) {
-        super(feature);
+    public MainFeatureScope() {
+        System.out.println();
     }
 }

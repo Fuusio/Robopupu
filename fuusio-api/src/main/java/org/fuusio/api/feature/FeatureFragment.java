@@ -71,18 +71,6 @@ public abstract class FeatureFragment<T_Presenter extends Presenter> extends Vie
         return (T) D.get(mScope, dependencyType, dependant);
     }
 
-    /**
-     * Gets the {@link FeatureScope} owned by the {@link Feature} that controls this
-     * {@link FeatureFragment}.
-     *
-     * @param <T> The generic return type of {@link FeatureScope}.
-     * @return A {@link FeatureScope}.
-     */
-    @SuppressWarnings("unchecked")
-    public final <T extends Feature> FeatureScope<T> getDependencyScope() {
-        return (FeatureScope<T>)mFeature.getScope();
-    }
-
     @Override
     public void onResume() {
         super.onResume();

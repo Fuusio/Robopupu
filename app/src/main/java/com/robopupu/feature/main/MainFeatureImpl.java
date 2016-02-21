@@ -1,8 +1,12 @@
 package com.robopupu.feature.main;
 
+import com.robopupu.feature.main.presenter.MainPresenter;
+
+import org.fuusio.api.dependency.Provides;
 import org.fuusio.api.feature.AbstractFeature;
 import org.fuusio.api.feature.FeatureContainer;
 import org.fuusio.api.feature.FeatureScope;
+import org.fuusio.api.plugin.Plug;
 import org.fuusio.api.plugin.Plugin;
 import org.fuusio.api.plugin.PluginBus;
 import org.fuusio.api.util.Params;
@@ -10,17 +14,10 @@ import org.fuusio.api.util.Params;
 @Plugin
 public class MainFeatureImpl extends AbstractFeature implements MainFeature {
 
-    public MainFeatureImpl(final FeatureContainer container, final Params params) {
-        super(container, params);
-    }
+    @Plug MainPresenter mMainPresenter;
 
-    @Override
-    protected FeatureScope createDependencyScope() {
-        return new MainFeatureScope(this);
-    }
-
-    @Override
-    public void onPlugged(final PluginBus bus) {
-        System.out.println();
+    @Provides(MainFeature.class)
+    public MainFeatureImpl() {
+        super(MainFeatureScope.class);
     }
 }

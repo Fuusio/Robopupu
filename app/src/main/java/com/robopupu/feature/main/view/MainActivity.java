@@ -16,8 +16,8 @@ import android.view.MenuItem;
 import org.fuusio.api.feature.Feature;
 import org.fuusio.api.feature.FeatureContainer;
 import org.fuusio.api.feature.FeatureFragment;
+import org.fuusio.api.mvp.PluginActivity;
 import org.fuusio.api.mvp.View;
-import org.fuusio.api.mvp.ViewActivity;
 import org.fuusio.api.plugin.Plug;
 import org.fuusio.api.plugin.Plugin;
 
@@ -29,16 +29,15 @@ import com.robopupu.feature.main.MainFeatureScope;
 import com.robopupu.feature.main.presenter.MainPresenter;
 
 @Plugin
-public class MainActivity extends ViewActivity<MainPresenter>
+public class MainActivity extends PluginActivity<MainPresenter>
         implements MainView, NavigationView.OnNavigationItemSelectedListener,
         FeatureContainer, DrawerLayoutContainer {
 
     private DrawerLayout mDrawerLayout;
 
     @Plug(MainFeatureScope.class) MainFeature mFeature;
-    @Plug
-    PluginFeatureManager mFeatureManager;
-    @Plug MainPresenter mPresenter;
+    @Plug(MainFeatureScope.class) MainPresenter mPresenter;
+    @Plug PluginFeatureManager mFeatureManager;
 
     @Override
     protected MainPresenter getPresenter() {
@@ -61,11 +60,6 @@ public class MainActivity extends ViewActivity<MainPresenter>
     protected void onStart() {
         super.onStart();
         mFeatureManager.startFeature(mFeature);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
     }
 
     @Override

@@ -31,7 +31,7 @@ import java.util.List;
  * a {@link FeatureScope} for prociding dependencies. Concrete implementations of {@link Feature}
  * has to be annotated with {@link AppFeature} to enable annotation processor based code generation.
  */
-public interface Feature extends DependencyScopeOwner, PresenterListener, PluginStateComponent {
+public interface Feature extends PresenterListener, PluginStateComponent {
 
     /**
      * Gets the currently active Views.

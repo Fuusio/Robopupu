@@ -122,12 +122,13 @@ public abstract class ViewFragment<T_Presenter extends Presenter> extends Fragme
 
             // DependencyScope is automatically restored and activated
 
+            /* XXX
             if (cache.containsDependencyScope(owner)) {
                 final DependencyScope scope = cache.removeDependencyScope(owner);
                 D.activateScope(owner, scope);
             } else {
                 D.activateScope(owner);
-            }
+            }*/
         }
 
         mBinder.setActivity(getActivity());

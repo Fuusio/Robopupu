@@ -15,6 +15,8 @@
  */
 package org.fuusio.api.dependency;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -26,6 +28,8 @@ import java.util.HashMap;
  * {@link D}) that provides a static methods for using the currently active {@link DependencyScope}.
  */
 public abstract class DependencyScope {
+
+    private static final String TAG = DependencyScope.class.getSimpleName();
 
     /**
      * A cache of dependants that have request dependencies. These dependants are cached because
@@ -59,6 +63,11 @@ public abstract class DependencyScope {
     protected DependencyProvider mDependencyProvider;
 
     /**
+     * A {@code boolean} flag indicating whether this {@link DependencyScope} has been implemented.
+     */
+    protected boolean mInitialized;
+
+    /**
      * A helper field for storing the currently requested type of dependency.
      */
     private Class mDependencyType;
@@ -66,6 +75,20 @@ public abstract class DependencyScope {
     protected DependencyScope() {
         mDependencies = new HashMap<>();
         mDependants = new ArrayList<>();
+        mInitialized = false;
+    }
+
+    /**
+     * Gets the {@link DependencyProvider}.
+     * @return A {@link DependencyProvider}. Should not return {@code null}.
+     */
+    protected DependencyProvider getDependencyProvider() {
+        if (mDependencyProvider == null) {
+            if (!mInitialized) {
+                initialize();
+            }
+        }
+        return mDependencyProvider;
     }
 
     /**
@@ -253,23 +276,28 @@ public abstract class DependencyScope {
                     dependency = mMockScope.getDependency(dependencyType, dependant, createNew);
                 } else {
 
-                    if (mDependencyProvider != null) {
-                        dependency = mDependencyProvider.getDependency(dependencyType);
-                    }
+                    dependency = getDependency();
 
                     if (dependency == null) {
-                        dependency = getDependency();
-                    } else {
+                        if (getDependencyProvider() != null) {
+                            dependency = mDependencyProvider.getDependency(dependencyType);
+                        }
+                    }
+
+                    if (dependency != null) {
                         cache(dependencyType, dependency);
 
                         if (dependency instanceof Scopeable) {
                             ((Scopeable)dependency).setScope(this);
                         }
+
+                        if (dependency instanceof DependencyScopeOwner && mOwner == null) {
+                            setOwner((DependencyScopeOwner) dependency);
+                        }
                     }
                 }
 
                 if (dependency == null) {
-
                     if (mParentScope != null) {
                         dependency = mParentScope.getDependency(dependencyType, null, createNew);
                     }
@@ -292,6 +320,14 @@ public abstract class DependencyScope {
 
                         if (dependency != null) {
                             cache(dependencyType, dependency);
+
+                            if (dependency instanceof Scopeable) {
+                                ((Scopeable)dependency).setScope(this);
+                            }
+
+                            if (dependency instanceof DependencyScopeOwner && mOwner == null) {
+                                setOwner((DependencyScopeOwner)dependency);
+                            }
                         }
                     }
                 }
@@ -418,13 +454,12 @@ public abstract class DependencyScope {
     }
 
     /**
-     * Invoked by {@link Dependency#activateScope(DependencyScopeOwner)} or
-     * {@link Dependency#activateScope(DependencyScopeOwner, DependencyScope)} to initialize this
-     * {@link DependencyScope}.
+     * Invoked to initialize this {@link DependencyScope}.
      */
     @SuppressWarnings("unchecked")
     public void initialize() {
         if (mDependencyProvider == null) {
+            mInitialized = true;
 
             mDependencyProvider = createDependencyProvider();
 
@@ -436,6 +471,7 @@ public abstract class DependencyScope {
                     mDependencyProvider = dependencyProviderClass.newInstance();
                     mDependencyProvider.setScope(this);
                 } catch (Exception e) {
+                    Log.d(TAG, "initialize() " + e.getMessage());
                 }
             }
         }

@@ -179,12 +179,13 @@ public abstract class ViewRelativeLayout<T_Presenter extends Presenter> extends 
 
             // DependencyScope is automatically restored and activated
 
+            /* XXX
             if (cache.containsDependencyScope(owner)) {
                 final DependencyScope scope = cache.removeDependencyScope(owner);
                 D.activateScope(owner, scope);
             } else {
                 D.activateScope(owner);
-            }
+            }*/
         }
 
         createBindings();

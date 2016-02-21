@@ -51,7 +51,7 @@ public abstract class FeatureActivity<T_Feature extends Feature, T_Presenter ext
         super.onCreate(inState);
         mParams = inState;
         mFeature = createFeature(Params.from(mParams));
-        D.activateScope(mFeature);
+        // XXX D.activateScope(mFeature);
     }
 
     /**

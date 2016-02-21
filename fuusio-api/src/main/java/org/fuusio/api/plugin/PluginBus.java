@@ -16,7 +16,9 @@
 package org.fuusio.api.plugin;
 
 import org.fuusio.api.dependency.D;
+import org.fuusio.api.dependency.Dependency;
 import org.fuusio.api.dependency.DependencyScope;
+import org.fuusio.api.dependency.DependencyScopeOwner;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -116,6 +118,10 @@ public class PluginBus {
         return (T) plugin;
     }
 
+    /**
+     * Plugs the the given plugin {@link Object} to this {@link PluginBus}.
+     * @param plugin A plugin {@link Object}.
+     */
     public static void plug(final Object plugin) {
         plug(plugin, false);
     }
@@ -146,7 +152,6 @@ public class PluginBus {
             component.onPlugged(this);
 
             for (final PluginComponent pluggedComponent : mPluginComponents) {
-                //pluggedComponent.onComponentPlugged(pluggedComponent);
                 pluggedComponent.onPluginPlugged(plugin);
             }
 
@@ -203,8 +208,6 @@ public class PluginBus {
 
         plugger.unplug(plugin, this);
 
-// TODO
-
         mPlugins.remove(plugin);
 
         if (plugin instanceof PluginComponent) {
@@ -212,7 +215,6 @@ public class PluginBus {
             component.onUnplugged(this);
 
             for (final PluginComponent pluggedComponent : mPluginComponents) {
-                //pluggedComponent.onComponentUnplugged(pluggedComponent);
                 pluggedComponent.onPluginUnplugged(plugin);
             }
 
@@ -222,6 +224,11 @@ public class PluginBus {
                 final PluginStateComponent stateComponent = (PluginStateComponent)component;
                 stateComponent.destroy();
             }
+        }
+
+        if (plugin instanceof DependencyScopeOwner) {
+            final DependencyScopeOwner owner = (DependencyScopeOwner)plugin;
+            Dependency.disposeScope(owner);
         }
     }
 }

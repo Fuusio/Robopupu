@@ -23,17 +23,16 @@ package org.fuusio.api.dependency;
 public interface DependencyScopeOwner {
 
     /**
-     * Return an identified for the {@link DependencyScope} provided by this
-     * {@link DependencyScopeOwner}.
-     *
-     * @return The identifier as a {@link String}.
-     */
-    String getScopeId();
-
-    /**
-     * Return the {@link DependencyScope} provided by this {@link DependencyScopeOwner}.
+     * Gets the {@link DependencyScope} owned by this {@link DependencyScopeOwner}.
      *
      * @return A {@link DependencyScope}.
      */
     DependencyScope getScope();
+
+    /**
+     * Gets the {@link Class} of {@link DependencyScope} owned by this {@link DependencyScopeOwner}.
+     *
+     * @return A {@link Class}.
+     */
+    Class<? extends DependencyScope> getScopeClass();
 }

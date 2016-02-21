@@ -12,7 +12,7 @@ import org.fuusio.api.mvp.AbstractPresenter;
 public class MainPresenterImpl extends AbstractPresenter<MainView>
         implements MainPresenter {
 
-    @Plug  MainView mView;
+    @Plug MainView mView;
 
     @Provides(MainPresenter.class)
     public MainPresenterImpl() {

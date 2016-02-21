@@ -96,7 +96,7 @@ public abstract class AbstractFeatureManager extends AbstractManager
 
         if (sMockScopeOwner != null) {
             final DependencyScope savedScope = D.getActiveScope();
-            D.activateScope(sMockScopeOwner);
+            // XXX D.activateScope(sMockScopeOwner);
 
             feature = D.get(featureClass);
 
@@ -110,10 +110,10 @@ public abstract class AbstractFeatureManager extends AbstractManager
                 }
             }
 
-            D.deactivateScope(sMockScopeOwner);
+            // XXX D.deactivateScope(sMockScopeOwner);
 
             if (savedScope != null) {
-                D.activateScope(savedScope.getOwner());
+                // XXX D.activateScope(savedScope.getOwner());
             }
         }
         return feature;
@@ -158,7 +158,7 @@ public abstract class AbstractFeatureManager extends AbstractManager
                 }
 
                 feature = implClass.newInstance();
-                Dependency.addScope(feature);
+                // XXX Dependency.addScope(feature);
             } catch (Exception e) {
                 Log.d(TAG, "createFeature(Class, Params) : " + e.getMessage());
             }
@@ -172,7 +172,7 @@ public abstract class AbstractFeatureManager extends AbstractManager
                 final Object[] paramValues = {params};
                 final Constructor<? extends Feature> constructor = implClass.getConstructor(paramTypes);
                 feature = constructor.newInstance(paramValues);
-                Dependency.addScope(feature);
+                // XXX Dependency.addScope(feature);
             } catch (Exception e) {
                 throw new RuntimeException("Failed to instantiate Feature: " + featureClass.getName() + ". Reason: " + e.getMessage());
             }
@@ -207,7 +207,7 @@ public abstract class AbstractFeatureManager extends AbstractManager
     @Override
     public Feature startFeature(final Feature feature, final Params params) {
         feature.setFeatureManager(this);
-        Dependency.activateScope(feature);
+        // XXX Dependency.activateScope(feature);
 
         feature.start(params);
         mActiveFeatures.add(feature);
@@ -275,7 +275,7 @@ public abstract class AbstractFeatureManager extends AbstractManager
      */
     public void onFeatureDestroyed(final Feature feature) {
         mActiveFeatures.remove(feature);
-        mDependenciesCache.removeDependencyScope(feature);
+        // XXX mDependenciesCache.removeDependencyScope(feature);
     }
 
     @Override

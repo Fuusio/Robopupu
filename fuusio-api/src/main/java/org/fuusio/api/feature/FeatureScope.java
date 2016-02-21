@@ -28,7 +28,7 @@ public abstract class FeatureScope<T_Feature extends Feature> extends Dependency
 
     protected FeatureScope(final T_Feature feature) {
         mFeature = feature;
-        setOwner(feature);
+        // XXX setOwner(feature);
     }
 
     public T_Feature getFeature() {
