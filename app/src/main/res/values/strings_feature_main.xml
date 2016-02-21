@@ -4,4 +4,6 @@
     <string name="feature_main_dialog_title_exit_confirmation">Exit Confirmation</string>
     <string name="feature_main_dialog_prompt_exit_app">Are you sure to exit Floxp application?</string>
 
+    <string name="feature_main_title_robopupu">ROBOPUPU</string>
+
 </resources>

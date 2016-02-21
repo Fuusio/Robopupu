@@ -66,19 +66,19 @@ public class DependenciesCache {
     }
 
     public void saveDependencyScope(final DependencyScopeOwner owner, final DependencyScope scope) {
-        mSavedScopes.put(owner.getScopeId(), scope);
+        mSavedScopes.put(owner.getScopeClass().getName(), scope);
     }
 
     public DependencyScope getDependencyScope(final DependencyScopeOwner owner) {
-        return mSavedScopes.get(owner.getScopeId());
+        return mSavedScopes.get(owner.getScopeClass().getName());
     }
 
     public DependencyScope removeDependencyScope(final DependencyScopeOwner owner) {
-        return mSavedScopes.remove(owner.getScopeId());
+        return mSavedScopes.remove(owner.getScopeClass().getName());
     }
 
     public boolean containsDependencyScope(final DependencyScopeOwner owner) {
-        return mSavedScopes.containsKey(owner.getScopeId());
+        return mSavedScopes.containsKey(owner.getScopeClass().getName());
     }
 
     public void onDependencyScopeOwnerDestroyed(final DependencyScopeOwner owner) {

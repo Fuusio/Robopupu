@@ -28,13 +28,4 @@ public interface Presenter extends View.Listener {
      * Invoked to finish this {@link Presenter}.
      */
     void finish();
-
-    /**
-     * {@link org.fuusio.api.mvp.Presenter.Listener} a listener interface for receiving lifecycle events
-     * from a {@link Presenter}.
-     */
-    interface Listener {
-
-
-    }
 }

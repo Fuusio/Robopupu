@@ -47,7 +47,7 @@ public abstract class AbstractPresenter<T_View extends View> extends AbstractPlu
      *
      * @return A {@link View}.
      */
-    public abstract T_View getView();
+    protected abstract T_View getView();
 
     /**
      * Gets the {@link PresenterListener}.
