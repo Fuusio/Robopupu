@@ -8,8 +8,4 @@ import org.fuusio.api.plugin.Plugin;
 @Plugin
 @Scope
 public class MainFeatureScope extends DependencyScope {
-
-    public MainFeatureScope() {
-        System.out.println();
-    }
 }

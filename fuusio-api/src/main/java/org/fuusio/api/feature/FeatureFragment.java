@@ -19,25 +19,16 @@ import org.fuusio.api.dependency.D;
 import org.fuusio.api.dependency.DependencyScope;
 import org.fuusio.api.dependency.Scopeable;
 import org.fuusio.api.mvp.Presenter;
+import org.fuusio.api.mvp.View;
 import org.fuusio.api.mvp.ViewFragment;
 
 public abstract class FeatureFragment<T_Presenter extends Presenter> extends ViewFragment<T_Presenter>
-    implements FeatureView, Scopeable {
+    implements View, Scopeable {
 
     private Feature mFeature;
     private DependencyScope mScope;
 
     protected FeatureFragment() {
-    }
-
-    @Override
-    public Feature getFeature() {
-        return mFeature;
-    }
-
-    @Override
-    public void setFeature(final Feature feature) {
-        mFeature = feature;
     }
 
     /**
@@ -57,18 +48,6 @@ public abstract class FeatureFragment<T_Presenter extends Presenter> extends Vie
     @Override
     public void setScope(final DependencyScope scope) {
         mScope = scope;
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> T get(final Class<?> dependencyType) {
-        return (T) D.get(mScope, dependencyType);
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> T get(final Class<?> dependencyType, final Object dependant) {
-        return (T) D.get(mScope, dependencyType, dependant);
     }
 
     @Override

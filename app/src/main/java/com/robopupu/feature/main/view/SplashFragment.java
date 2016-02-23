@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import com.robopupu.R;
 import com.robopupu.feature.main.presenter.SplashPresenter;
 
+import org.fuusio.api.dependency.Provides;
 import org.fuusio.api.feature.FeatureFragment;
 import org.fuusio.api.plugin.Plug;
 import org.fuusio.api.plugin.Plugin;
@@ -20,9 +21,9 @@ import org.fuusio.api.plugin.Plugin;
 @Plugin
 public class SplashFragment extends FeatureFragment<SplashPresenter> implements SplashView {
 
-    @Plug
-    SplashPresenter mPresenter;
+    @Plug SplashPresenter mPresenter;
 
+    @Provides(SplashView.class)
     public SplashFragment() {
     }
 

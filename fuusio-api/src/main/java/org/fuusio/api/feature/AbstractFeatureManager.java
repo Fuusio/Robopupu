@@ -146,7 +146,6 @@ public abstract class AbstractFeatureManager extends AbstractManager
     @SuppressWarnings("unchecked")
     @Override
     public Feature createFeature(final Class<? extends Feature> featureClass, final Params params) {
-
         Feature feature = getMockFeature(featureClass);
 
         if (feature == null) {

@@ -1,4 +1,4 @@
-package com.robopupu.app;
+package com.robopupu.app.error;
 
 import org.fuusio.api.app.AppExceptionHandler;
 

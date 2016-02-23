@@ -32,14 +32,12 @@ public interface FeatureTransitionManager {
     boolean canShowView(View view);
 
     /**
-     * Shows the given {@link FeatureFragment} which is managed by the given {@link Feature}. Each shown
-     * {@link FeatureFragment} instance has to be supplied with a tag that can be used to retrieve
-     * the instance later on.
+     * Shows the given {@link FeatureFragment}. Each shown {@link FeatureFragment} instance has to
+     * be supplied with a tag that can be used to retrieve the instance later on.
      *
-     * @param feature        A {@link Feature}. May not be {@code null}.
      * @param fragment    A {@link FeatureFragment}. May not be {@code null}.
      * @param fragmentTag A {@link String} used as a tag to identify the {@link FeatureFragment}.
      *                    In most cases tag can be simply the class name of the  {@link FeatureFragment}.
      */
-    void showFeatureFragment(Feature feature, FeatureFragment fragment, String fragmentTag);
+    void showFeatureFragment(FeatureFragment fragment, String fragmentTag);
 }

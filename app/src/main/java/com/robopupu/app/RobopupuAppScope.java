@@ -1,4 +1,4 @@
-package com.robopupu.app.dependency;
+package com.robopupu.app;
 
 import com.robopupu.api.feature.PluginFeatureManager;
 import com.robopupu.api.feature.PluginFeatureManagerImpl;

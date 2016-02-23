@@ -29,7 +29,7 @@ public abstract class FeatureTransitionManagerAdapter implements FeatureTransiti
     }
 
     @Override
-    public void showFeatureFragment(Feature feature, FeatureFragment fragment, String fragmentTag) {
+    public void showFeatureFragment(FeatureFragment fragment, String fragmentTag) {
         // Do nothing
     }
 }

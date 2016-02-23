@@ -82,10 +82,12 @@ public class DependenciesCache {
     }
 
     public void onDependencyScopeOwnerDestroyed(final DependencyScopeOwner owner) {
-        final DependencyScope scope = owner.getScope();
+        final DependencyScope scope = owner.getOwnedScope();
 
         if (scope != null && scope.isDisposable()) {
             removeDependencyScope(owner);
         }
+
+        D.disposeScope(owner);
     }
 }

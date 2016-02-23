@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="feature_about_title_robopupu">ROBOPUPU</string>
+
+    <string name="feature_about_label_version">Version:</string>
+    <string name="feature_about_label_license">License:</string>
+    <string name="feature_about_text_copyright">Copyright (c) Marko Salmela, 2016</string>
+
+</resources>

@@ -23,9 +23,13 @@ import org.fuusio.api.dependency.D;
 import org.fuusio.api.dependency.DependencyScope;
 import org.fuusio.api.dependency.Scopeable;
 import org.fuusio.api.plugin.AbstractPluginComponent;
-import org.fuusio.api.plugin.PluginComponent;
+import org.fuusio.api.plugin.PlugInvoker;
+import org.fuusio.api.plugin.PluginBus;
 import org.fuusio.api.util.AbstractListenable;
 import org.fuusio.api.util.LifecycleState;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * {@link AbstractPresenter} extends {@link AbstractListenable} to provide an abstract base class
@@ -34,11 +38,13 @@ import org.fuusio.api.util.LifecycleState;
 public abstract class AbstractPresenter<T_View extends View> extends AbstractPluginComponent
         implements Presenter, Scopeable {
 
+    protected final List<PresenterListener> mListneners;
     protected LifecycleState mState;
 
     private DependencyScope mScope; // TODO
 
     protected AbstractPresenter() {
+        mListneners = new ArrayList<>();
         mState = LifecycleState.CREATED;
     }
 
@@ -47,15 +53,28 @@ public abstract class AbstractPresenter<T_View extends View> extends AbstractPlu
      *
      * @return A {@link View}.
      */
-    protected abstract T_View getView();
+    protected T_View getAttachedView() {
+        final T_View viewPlug = getViewPlug();
+
+        if (viewPlug instanceof PlugInvoker) {
+            return ((PlugInvoker<T_View>)viewPlug).get(0);
+        } else {
+            return viewPlug;
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public View getView() {
+        return getAttachedView();
+    }
 
     /**
-     * Gets the {@link PresenterListener}.
-     * @return A {@link PresenterListener}. May be {@link null}.
+     * Gets the {@link PlugInvoker} for the {@link View}attached to this {@link Presenter}.
+     *
+     * @return The {@link PlugInvoker} as a {@link View}.
      */
-    protected PresenterListener getListener() {
-        return null; // TODO
-    }
+    protected abstract T_View getViewPlug();
 
     /**
      * Gets the {@link ViewState} of the attached {@link View}.
@@ -63,7 +82,7 @@ public abstract class AbstractPresenter<T_View extends View> extends AbstractPlu
      */
     @NonNull
     protected ViewState getViewState() {
-        return getView().getState();
+        return getAttachedView().getState();
     }
 
     /**
@@ -72,8 +91,7 @@ public abstract class AbstractPresenter<T_View extends View> extends AbstractPlu
     private void pause() {
         mState = LifecycleState.PAUSED;
 
-        final PresenterListener listener = getListener();
-        if (listener != null) {
+        for (final PresenterListener listener : mListneners) {
             listener.onPresenterPaused(this);
         }
     }
@@ -84,8 +102,7 @@ public abstract class AbstractPresenter<T_View extends View> extends AbstractPlu
     private void resume() {
         mState = LifecycleState.RESUMED;
 
-        final PresenterListener listener = getListener();
-        if (listener != null) {
+        for (final PresenterListener listener : mListneners) {
             listener.onPresenterResumed(this);
         }
     }
@@ -96,8 +113,7 @@ public abstract class AbstractPresenter<T_View extends View> extends AbstractPlu
      private void start() {
         mState = LifecycleState.STARTED;
 
-         final PresenterListener listener = getListener();
-         if (listener != null) {
+         for (final PresenterListener listener : mListneners) {
             listener.onPresenterStarted(this);
         }
     }
@@ -109,8 +125,7 @@ public abstract class AbstractPresenter<T_View extends View> extends AbstractPlu
         if (!mState.isStopped() && !mState.isDestroyed()) {
             mState = LifecycleState.STOPPED;
 
-            final PresenterListener listener = getListener();
-            if (listener != null) {
+            for (final PresenterListener listener : mListneners) {
                 listener.onPresenterStopped(this);
             }
         }
@@ -125,8 +140,7 @@ public abstract class AbstractPresenter<T_View extends View> extends AbstractPlu
 
             mState = LifecycleState.DESTROYED;
 
-            final PresenterListener listener = getListener();
-            if (listener != null) {
+            for (final PresenterListener listener : mListneners) {
                 listener.onPresenterDestroyed(this);
             }
         }
@@ -136,10 +150,63 @@ public abstract class AbstractPresenter<T_View extends View> extends AbstractPlu
     public void finish() {
         stop();
 
-        final PresenterListener listener = getListener();
-        if (listener != null) {
+        for (final PresenterListener listener : mListneners) {
             listener.onPresenterFinished(this);
         }
+    }
+
+    /**
+     * Plugs an instance of specific {@link Class} to {@link PluginBus}.
+     * @param pluginClass A  {@link Class}
+     * @return The plugged instance as an {@link Object}
+     */
+    @SuppressWarnings("unchecked")
+    public <T> T plug(final Class<?> pluginClass) {
+        T plugin = (T) D.get(getScope(), pluginClass);
+        PluginBus.plug(plugin);
+        return plugin;
+    }
+
+    /**
+     * Plugs the the given plugin {@link Object} to this {@link PluginBus}.
+     * @param plugin A plugin {@link Object}.
+     */
+    @SuppressWarnings("unchecked")
+    public <T> T  plug(final Object plugin) {
+        PluginBus.plug(plugin);
+        return (T)plugin;
+    }
+
+    /**
+     * Unplugs the the given plugin {@link Object} to this {@link PluginBus}.
+     * @param plugin A plugin {@link Object}.
+     */
+    @SuppressWarnings("unchecked")
+    public void unplug(final Object plugin) {
+        PluginBus.unplug(plugin);
+    }
+
+    @Override
+    public void onPlugged(final PluginBus bus) {
+        updateListeners(bus);
+    }
+
+    @Override
+    public void onUnplugged(final PluginBus bus) {
+        mListneners.clear();
+    }
+
+    @Override
+    public void onPluginPlugged(final Object plugin) {
+        if (plugin instanceof PresenterListener) {
+            updateListeners(PluginBus.getInstance());
+        }
+    }
+
+    protected void updateListeners(final PluginBus bus) {
+        final List<PresenterListener> plugins = bus.getPlugs(PresenterListener.class, true);
+        mListneners.clear();
+        mListneners.addAll(plugins);
     }
 
     @SuppressWarnings("unchecked")
@@ -189,17 +256,5 @@ public abstract class AbstractPresenter<T_View extends View> extends AbstractPlu
     @Override
     public void setScope(final DependencyScope scope) {
         mScope = scope;
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> T get(final Class<?> dependencyType) {
-        return (T) D.get(mScope, dependencyType);
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> T get(final Class<?> dependencyType, final Object dependant) {
-        return (T)D.get(mScope, dependencyType, dependant);
     }
 }

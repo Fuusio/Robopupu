@@ -15,6 +15,7 @@
  */
 package org.fuusio.api.network;
 
+import org.fuusio.api.dependency.D;
 import org.fuusio.api.dependency.ScopedObject;
 import org.fuusio.api.network.volley.VolleyRequestManager;
 
@@ -27,7 +28,7 @@ public class AbstractRestService extends ScopedObject implements RestService {
 
     public VolleyRequestManager getRequestManager() {
         if (mRequestManager == null) {
-            mRequestManager = get(VolleyRequestManager.class);
+            mRequestManager = D.get(VolleyRequestManager.class, getScope());
         }
         return mRequestManager;
     }

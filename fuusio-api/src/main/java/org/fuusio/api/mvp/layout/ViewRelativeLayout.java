@@ -166,7 +166,7 @@ public abstract class ViewRelativeLayout<T_Presenter extends Presenter> extends 
             // and if the View resumes
 
             final DependencyScopeOwner owner = (DependencyScopeOwner) this;
-            cache.saveDependencyScope(owner, owner.getScope());
+            cache.saveDependencyScope(owner, owner.getOwnedScope());
         }
     }
 
@@ -311,17 +311,4 @@ public abstract class ViewRelativeLayout<T_Presenter extends Presenter> extends 
     public void setScope(final DependencyScope scope) {
         mScope = scope;
     }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> T get(final Class<?> dependencyType) {
-        return (T)D.get(mScope, dependencyType);
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> T get(final Class<?> dependencyType, final Object dependant) {
-        return (T)D.get(mScope, dependencyType, dependant);
-    }
-
 }

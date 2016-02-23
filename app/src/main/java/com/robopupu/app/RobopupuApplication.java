@@ -1,7 +1,7 @@
 package com.robopupu.app;
 
 import com.robopupu.api.feature.PluginFeatureManager;
-import com.robopupu.app.dependency.RobopupuAppScope;
+import com.robopupu.app.error.RobopupuAppError;
 
 import org.fuusio.api.app.FuusioApplication;
 import org.fuusio.api.dependency.AppDependencyScope;

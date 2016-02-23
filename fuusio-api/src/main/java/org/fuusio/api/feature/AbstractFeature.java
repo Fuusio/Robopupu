@@ -19,9 +19,11 @@ import android.support.annotation.CallSuper;
 import android.support.v4.app.FragmentManager;
 
 import org.fuusio.api.dependency.D;
+import org.fuusio.api.dependency.Dependency;
 import org.fuusio.api.dependency.DependencyScope;
 import org.fuusio.api.dependency.DependencyScopeOwner;
 import org.fuusio.api.mvp.Presenter;
+import org.fuusio.api.mvp.PresenterListener;
 import org.fuusio.api.mvp.View;
 import org.fuusio.api.plugin.AbstractPluginStateComponent;
 import org.fuusio.api.plugin.PluginBus;
@@ -39,7 +41,9 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
     protected final ArrayList<View> mActiveViews;
 
     protected int mBackStackSize;
+    protected FeatureContainer mFeatureContainer;
     protected FeatureManager mFeatureManager;
+    protected DependencyScope mFeatureScope;
     protected Class<? extends DependencyScope> mScopeClass;
 
     /**
@@ -67,6 +71,18 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
     @Override
     public Class<? extends DependencyScope> getScopeClass() {
         return mScopeClass;
+    }
+
+    @Override
+    public DependencyScope getOwnedScope() {
+        return getFeatureScope();
+    }
+
+    protected DependencyScope getFeatureScope() {
+        if (mFeatureScope == null) {
+            mFeatureScope = Dependency.getScope(mScopeClass);
+        }
+        return mFeatureScope;
     }
 
     @Override
@@ -128,6 +144,20 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
         mFeatureManager = manager;
     }
 
+    /**
+     * TODO
+     * @param presenterClass
+     */
+    @SuppressWarnings("unchecked")
+    protected void showView(final Class<? extends Presenter> presenterClass) {
+        final Presenter presenter = plug(presenterClass);
+        final View view = presenter.getView();
+
+        if (view instanceof FeatureFragment) {
+            final FeatureFragment fragment = (FeatureFragment) view;
+            mFeatureContainer.showFeatureFragment(fragment, null);
+        }
+    }
 
     @Override
     public boolean activateView(final View view) {
@@ -136,8 +166,8 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
         getScope().cache(viewClass, view);
 
         if (view instanceof FeatureFragment) {
-            final FeatureFragment fragment = (FeatureFragment) view;
-            fragment.setFeature(this);
+            // XXX final FeatureFragment fragment = (FeatureFragment) view;
+            // XXX fragment.setFeature(this);
             // XXX transitionManager.showFeatureFragment(this, fragment, fragment.getTag());
         } else {
             throw new IllegalStateException("Fragment has to be derived from org.fuusio.api.flow.FlowFragment class");
@@ -158,7 +188,7 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
      */
     @SuppressWarnings("unchecked")
     protected <T extends View> T activateView(final Class<? extends View> viewClass) {
-        final View view = get(viewClass);
+        final View view = D.get(viewClass, getScope());
         if (activateView(view)) {
             return (T)view;
         } else {
@@ -245,7 +275,7 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
      */
     @SuppressWarnings("unchecked")
     public <T> T plug(final Class<?> pluginClass) {
-        T plugin = (T)D.get(getScope(), pluginClass);
+        T plugin = (T)D.get(getFeatureScope(), pluginClass);
         PluginBus.plug(plugin);
         return plugin;
     }
@@ -266,7 +296,14 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
      */
     @SuppressWarnings("unchecked")
     public void unplug(final Object plugin) {
-        PluginBus.plug(plugin);
+        PluginBus.unplug(plugin);
+    }
+
+    @Override
+    public void onUnplugged(final PluginBus bus) {
+        if (mFeatureScope != null) {
+            D.disposeScope(this);
+        }
     }
 
     @Override
@@ -302,6 +339,26 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
         // TODO  XXX Dependency.deactivateScope(this);
         mFeatureManager.onFeatureDestroyed(this);
         clearBackStack();
+    }
+
+    @Override
+    public void onPlugged(final PluginBus bus) {
+        updateFeatureContainer(bus);
+    }
+
+    @Override
+    public void onPluginPlugged(final Object plugin) {
+        if (plugin instanceof FeatureContainer) {
+            updateFeatureContainer(PluginBus.getInstance());
+        }
+    }
+
+    protected void updateFeatureContainer(final PluginBus bus) {
+        final List<FeatureContainer> featureContainers = bus.getPlugs(FeatureContainer.class, true);
+
+        if (!featureContainers.isEmpty()) {
+            mFeatureContainer = featureContainers.get(0);
+        }
     }
 
     @Override

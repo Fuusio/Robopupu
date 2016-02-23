@@ -27,7 +27,7 @@ public interface DependencyScopeOwner {
      *
      * @return A {@link DependencyScope}.
      */
-    DependencyScope getScope();
+    DependencyScope getOwnedScope();
 
     /**
      * Gets the {@link Class} of {@link DependencyScope} owned by this {@link DependencyScopeOwner}.

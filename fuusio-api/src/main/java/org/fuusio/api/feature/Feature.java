@@ -90,7 +90,7 @@ public interface Feature extends PresenterListener, PluginStateComponent {
     void setFeatureManager(FeatureManager manager);
 
     /**
-     * Tests if any of the {@link FeatureView}s of this {@link Feature} is in foreground and has a focus.
+     * Tests if any of the {@link View}s of this {@link Feature} is in foreground and has a focus.
      * @return A {@code boolean}.
      */
     boolean hasFocusedView();

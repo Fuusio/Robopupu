@@ -42,9 +42,14 @@ public class PluginBus {
         mPlugins = new ArrayList<>();
     }
 
+    /**
+     * Gets the plugins having exactly the specified plug interface.
+     * @param plugInterface A {@link Class} specifying the plug interface.
+     * @return A {@link List} containing the plugins.
+     */
     @SuppressWarnings({"unused", "unchecked"})
-    public List<Object> getPlugins(final Class<?> pluginInterface) {
-        final PlugInvoker plug = mInvocationPlugs.get(pluginInterface);
+    public <T> List<T> getPlugins(final Class<T> plugInterface) {
+        final PlugInvoker plug = mInvocationPlugs.get(plugInterface);
 
         if (plug != null) {
             return plug.getPlugins();
@@ -53,14 +58,41 @@ public class PluginBus {
         }
     }
 
+    /**
+     * Gets the plugs (i.e. {@link PlugInvoker}s) having exactly the specified plug interface.
+     * @param plugInterface A {@link Class} specifying the plug interface.
+     * @param includeExtendedInterfaces A {@link boolean} flag specifying if the extended interfaces
+     *                                  are included.
+     * @return A {@link List} containing the plugs (i.e. {@link PlugInvoker}s) .
+     */
+    @SuppressWarnings("unchecked")
+    public <T> List<T> getPlugs(final Class<T> plugInterface, final boolean includeExtendedInterfaces) {
+        final ArrayList<T> plugs = new ArrayList<>();
+
+        if (includeExtendedInterfaces) {
+            for (final Class key : mInvocationPlugs.keySet()) {
+                if (plugInterface.isAssignableFrom(key)) {
+                    plugs.add((T)mInvocationPlugs.get(key));
+                }
+            }
+        } else {
+            final PlugInvoker plug = mInvocationPlugs.get(plugInterface);
+
+            if (plug != null) {
+                plugs.add((T) plug);
+            }
+        }
+        return plugs;
+    }
+    
     @SuppressWarnings({"unused", "unchecked"})
-    public <T> T getPlug(final Class<?> pluginInterface) {
-        return (T) mInvocationPlugs.get(pluginInterface);
+    public <T> T getPlug(final Class<?> plugInterface) {
+        return (T) mInvocationPlugs.get(plugInterface);
     }
 
     @SuppressWarnings("unused")
-    public boolean hasPlug(final Class<?> pluginInterface) {
-        return mInvocationPlugs.containsKey(pluginInterface);
+    public boolean hasPlug(final Class<?> plugInterface) {
+        return mInvocationPlugs.containsKey(plugInterface);
     }
 
     @SuppressWarnings("unused")
@@ -75,17 +107,17 @@ public class PluginBus {
         return sInstance;
     }
 
-    public void addPlugInvoker(final Class<?> pluginInterface, PlugInvoker<?> plugInvoker) {
-        mInvocationPlugs.put(pluginInterface, plugInvoker);
+    public void addPlugInvoker(final Class<?> plugInterface, PlugInvoker<?> plugInvoker) {
+        mInvocationPlugs.put(plugInterface, plugInvoker);
     }
 
-    public boolean hasPlugInvoker(final Class<?> pluginInterface) {
-        return mInvocationPlugs.containsKey(pluginInterface);
+    public boolean hasPlugInvoker(final Class<?> plugInterface) {
+        return mInvocationPlugs.containsKey(plugInterface);
     }
 
     @SuppressWarnings("unchecked")
-    public <T extends PlugInvoker<?>> T getPlugInvoker(final Class<?> pluginInterface) {
-        return (T)mInvocationPlugs.get(pluginInterface);
+    public <T extends PlugInvoker<?>> T getPlugInvoker(final Class<?> plugInterface) {
+        return (T)mInvocationPlugs.get(plugInterface);
     }
 
     /**
@@ -132,36 +164,41 @@ public class PluginBus {
 
     @SuppressWarnings("unchecked")
     private void doPlug(final Object plugin, final boolean useHandler) {
-        final String pluggerClassName = plugin.getClass().getName() + SUFFIX_PLUGGER;
-        Plugger plugger = mPluggers.get(pluggerClassName);
+        if (!mPlugins.contains(plugin)) {
 
-        if (plugger == null) {
-            try {
-                final Class<? extends Plugger> pluggerClass = (Class<? extends Plugger>) Class.forName(pluggerClassName);
-                plugger = pluggerClass.newInstance();
-                mPluggers.put(pluggerClassName, plugger);
-            } catch (Exception e) {
-                throw new IllegalStateException(e);
-            }
-        }
-        plugger.plug(plugin, this, useHandler);
-        mPlugins.add(plugin);
+            final String pluggerClassName = plugin.getClass().getName() + SUFFIX_PLUGGER;
+            Plugger plugger = mPluggers.get(pluggerClassName);
 
-        if (plugin instanceof PluginComponent) {
-            final PluginComponent component = (PluginComponent)plugin;
-            component.onPlugged(this);
-
-            for (final PluginComponent pluggedComponent : mPluginComponents) {
-                pluggedComponent.onPluginPlugged(plugin);
+            if (plugger == null) {
+                try {
+                    final Class<? extends Plugger> pluggerClass = (Class<? extends Plugger>) Class.forName(pluggerClassName);
+                    plugger = pluggerClass.newInstance();
+                    mPluggers.put(pluggerClassName, plugger);
+                } catch (Exception e) {
+                    throw new IllegalStateException(e);
+                }
             }
 
-            if (!mPluginComponents.contains(component)) {
-                mPluginComponents.add(component);
-            }
+            plugger.plug(plugin, this, useHandler);
 
-            if (plugin instanceof PluginStateComponent) {
-                final PluginStateComponent stateComponent = (PluginStateComponent)component;
-                stateComponent.start();
+            mPlugins.add(plugin);
+
+            if (plugin instanceof PluginComponent) {
+                final PluginComponent component = (PluginComponent) plugin;
+                component.onPlugged(this);
+
+                for (final PluginComponent pluggedComponent : mPluginComponents) {
+                    pluggedComponent.onPluginPlugged(plugin);
+                }
+
+                if (!mPluginComponents.contains(component)) {
+                    mPluginComponents.add(component);
+                }
+
+                if (plugin instanceof PluginStateComponent) {
+                    final PluginStateComponent stateComponent = (PluginStateComponent) component;
+                    stateComponent.start();
+                }
             }
         }
     }
@@ -169,20 +206,20 @@ public class PluginBus {
     /**
      * This framework method should not be used by developers directly.
      * @param plugin The plugin to be plugged as an {@link Object}.
-     * @param pluginInterface A {@link Class} specifying the plugin interface type.
+     * @param plugInterface A {@link Class} specifying the plugin interface type.
      * @param plugInvoker A {@link PlugInvoker} instance. May be {@code null} if an instance of needed
      *                    type of {@link PlugInvoker} is already cached in this {@link PluginBus}.
      * @param handlerInvoker A {@link HandlerInvoker} instance. May be {@code null} if there
      *                       is no needed for synchronising invocations with the main thread.
      */
-    public void plug(final Object plugin, final Class<?> pluginInterface, final PlugInvoker<?> plugInvoker, final HandlerInvoker<?> handlerInvoker) {
+    public void plug(final Object plugin, final Class<?> plugInterface, final PlugInvoker<?> plugInvoker, final HandlerInvoker<?> handlerInvoker) {
 
         PlugInvoker plug = plugInvoker;
 
         if (plugInvoker != null) {
-            mInvocationPlugs.put(pluginInterface, plugInvoker);
+            mInvocationPlugs.put(plugInterface, plugInvoker);
         } else {
-            plug = mInvocationPlugs.get(pluginInterface);
+            plug = mInvocationPlugs.get(plugInterface);
         }
 
         if (handlerInvoker != null) {

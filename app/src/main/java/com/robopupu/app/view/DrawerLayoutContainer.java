@@ -1,4 +1,4 @@
-package com.robopupu.app;
+package com.robopupu.app.view;
 
 import android.support.v7.widget.Toolbar;
 

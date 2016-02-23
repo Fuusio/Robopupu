@@ -6,4 +6,7 @@
 
     <string name="feature_main_title_robopupu">ROBOPUPU</string>
 
+
+    <string name="feature_main_navigation_item_about">About</string>
+
 </resources>

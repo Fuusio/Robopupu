@@ -3,13 +3,13 @@ package org.fuusio.api.feature;
 import org.fuusio.api.dependency.D;
 import org.fuusio.api.dependency.DependencyScope;
 import org.fuusio.api.mvp.AbstractPresenter;
-import org.fuusio.api.mvp.Presenter;
+import org.fuusio.api.mvp.View;
 
 /**
  * {@link AbstractFeaturePresenter} extends {@link AbstractPresenter} to provide an abstract base class
  * for implementing {@link FeaturePresenter}s that are controlled by {@link Feature}s.
  */
-public abstract class AbstractFeaturePresenter<T_View extends FeatureView> extends AbstractPresenter<T_View>
+public abstract class AbstractFeaturePresenter<T_View extends View> extends AbstractPresenter<T_View>
         implements FeaturePresenter {
 
     private Feature mFeature;
@@ -17,13 +17,13 @@ public abstract class AbstractFeaturePresenter<T_View extends FeatureView> exten
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T extends Feature> T getFeature() {
-        return (T) mFeature;
+    public Feature getFeature() {
+        return mFeature;
     }
 
     @Override
-    public void setFeature(final Feature flow) {
-        mFeature = flow;
+    public void setFeature(final Feature feature) {
+        mFeature = feature;
     }
 
     @Override
@@ -34,17 +34,5 @@ public abstract class AbstractFeaturePresenter<T_View extends FeatureView> exten
     @Override
     public void setScope(final DependencyScope scope) {
         mScope = scope;
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> T get(final Class<?> dependencyType) {
-        return (T) D.get(mScope, dependencyType);
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> T get(final Class<?> dependencyType, final Object dependant) {
-        return (T) D.get(mScope, dependencyType, dependant);
     }
 }

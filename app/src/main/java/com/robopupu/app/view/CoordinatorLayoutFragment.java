@@ -1,4 +1,4 @@
-package com.robopupu.app;
+package com.robopupu.app.view;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;

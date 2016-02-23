@@ -44,7 +44,7 @@ public class Dependency {
      * @return A {@link DependencyScope}.
      */
     public static DependencyScope addScope(final DependencyScopeOwner owner) {
-        final DependencyScope scope = owner.getScope();
+        final DependencyScope scope = owner.getOwnedScope();
         sDependencyScopes.put(scope.getClass().getName(), scope);
         scope.addDependant(owner);
         return scope;
@@ -77,21 +77,26 @@ public class Dependency {
     /**
      * Gets a specified {@link DependencyScope}.
      *
-     * @param scopeType A {@link Class} specifying {@link DependencyScope}.
+     * @param scopeClass A {@link Class} specifying {@link DependencyScope}.
      * @return The requested {@link DependencyScope}. If {@code null} is returned, it indicates an
      * error in an {@link DependencyScope} implementation.
      */
     @SuppressWarnings("unchecked")
-    public static <T extends DependencyScope> T getScope(final Class<? extends DependencyScope> scopeType) {
-        final String key = scopeType.getName();
+    public static <T extends DependencyScope> T getScope(final Class<? extends DependencyScope> scopeClass) {
+
+        if (sAppScope.getClass().isAssignableFrom(scopeClass)) {
+            return (T) sAppScope;
+        }
+
+        final String key = scopeClass.getName();
         DependencyScope scope  = sDependencyScopes.get(key);
 
         if (scope == null) {
             try {
-                scope = scopeType.newInstance();
+                scope = scopeClass.newInstance();
                 sDependencyScopes.put(key, scope);
             } catch (Exception e) {
-                throw new IllegalStateException("Failed to instantiate scope: " + scopeType.getName());
+                throw new IllegalStateException("Failed to instantiate scope: " + scopeClass.getName());
             }
         }
         return (T)scope;
@@ -215,7 +220,7 @@ public class Dependency {
      * @param owner A {@link DependencyScopeOwner}.
      */
     public static void disposeScope(final DependencyScopeOwner owner) {
-        final DependencyScope scope = owner.getScope();
+        final DependencyScope scope = owner.getOwnedScope();
 
         if (scope.isDisposable()) {
             sDependencyScopes.remove(scope.getClass().getName());

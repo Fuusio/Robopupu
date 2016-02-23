@@ -13,8 +13,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import org.fuusio.api.feature.Feature;
-import org.fuusio.api.feature.FeatureContainer;
 import org.fuusio.api.feature.FeatureFragment;
 import org.fuusio.api.mvp.PluginActivity;
 import org.fuusio.api.mvp.View;
@@ -23,7 +21,9 @@ import org.fuusio.api.plugin.Plugin;
 
 import com.robopupu.R;
 import com.robopupu.api.feature.PluginFeatureManager;
-import com.robopupu.app.DrawerLayoutContainer;
+import com.robopupu.api.feature.PluginViewContainer;
+import com.robopupu.app.RobopupuAppScope;
+import com.robopupu.app.view.DrawerLayoutContainer;
 import com.robopupu.feature.main.MainFeature;
 import com.robopupu.feature.main.MainFeatureScope;
 import com.robopupu.feature.main.presenter.MainPresenter;
@@ -31,11 +31,11 @@ import com.robopupu.feature.main.presenter.MainPresenter;
 @Plugin
 public class MainActivity extends PluginActivity<MainPresenter>
         implements MainView, NavigationView.OnNavigationItemSelectedListener,
-        FeatureContainer, DrawerLayoutContainer {
+        DrawerLayoutContainer, PluginViewContainer {
 
     private DrawerLayout mDrawerLayout;
 
-    @Plug(MainFeatureScope.class) MainFeature mFeature;
+    @Plug(RobopupuAppScope.class) MainFeature mFeature;
     @Plug(MainFeatureScope.class) MainPresenter mPresenter;
     @Plug PluginFeatureManager mFeatureManager;
 
@@ -98,26 +98,11 @@ public class MainActivity extends PluginActivity<MainPresenter>
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(final MenuItem item) {
-        // Handle navigation view item clicks here.
         final int id = item.getItemId();
-
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
-        }
-
-        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_navigation);
+        final boolean wasHandled = mPresenter.onNavigationItemSelected(id);
+        final DrawerLayout drawer = getView(R.id.drawer_layout_navigation);
         drawer.closeDrawer(GravityCompat.START);
-        return true;
+        return wasHandled;
     }
 
     @Override
@@ -131,7 +116,7 @@ public class MainActivity extends PluginActivity<MainPresenter>
     }
 
     @Override
-    public void showFeatureFragment(final Feature feature, final FeatureFragment fragment, final String fragmentTag) {
+    public void showFeatureFragment(final FeatureFragment fragment, final String fragmentTag) {
         final String tag = (fragmentTag != null) ? fragmentTag : fragment.getFeatureTag();
         final FragmentManager manager = getSupportFragmentManager();
         manager.beginTransaction()

@@ -73,18 +73,6 @@ public abstract class FeatureActivity<T_Feature extends Feature, T_Presenter ext
         mScope = scope;
     }
 
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> T get(final Class<?> dependencyType) {
-        return (T) D.get(mScope, dependencyType);
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> T get(final Class<?> dependencyType, final Object dependant) {
-        return (T) D.get(mScope, dependencyType, dependant);
-    }
-
     @Override
     protected void onStart() {
         super.onStart();

@@ -25,6 +25,13 @@ import org.fuusio.api.util.Listenable;
 public interface Presenter extends View.Listener {
 
     /**
+     * Gets the {@link View} attached to this {@link Presenter}.
+     *
+     * @return A {@link View}.
+     */
+    View getView();
+
+    /**
      * Invoked to finish this {@link Presenter}.
      */
     void finish();

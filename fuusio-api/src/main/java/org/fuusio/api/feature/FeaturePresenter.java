@@ -13,7 +13,7 @@ public interface FeaturePresenter extends Presenter, Scopeable {
      *
      * @return A {@link Feature}.
      */
-    <T extends Feature> T getFeature();
+    Feature getFeature();
 
     /**
      * Sets the {@link Feature} that controls this {@link FeaturePresenter}.
