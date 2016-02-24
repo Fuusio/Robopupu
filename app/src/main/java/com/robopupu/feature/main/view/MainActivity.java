@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -16,6 +17,7 @@ import android.view.MenuItem;
 import org.fuusio.api.feature.FeatureFragment;
 import org.fuusio.api.mvp.PluginActivity;
 import org.fuusio.api.mvp.View;
+import org.fuusio.api.mvp.ViewDialogFragment;
 import org.fuusio.api.plugin.Plug;
 import org.fuusio.api.plugin.Plugin;
 
@@ -117,12 +119,21 @@ public class MainActivity extends PluginActivity<MainPresenter>
 
     @Override
     public void showFeatureFragment(final FeatureFragment fragment, final String fragmentTag) {
-        final String tag = (fragmentTag != null) ? fragmentTag : fragment.getFeatureTag();
+        final String tag = (fragmentTag != null) ? fragmentTag : fragment.getFragmentTag();
         final FragmentManager manager = getSupportFragmentManager();
         manager.beginTransaction()
                 .replace(R.id.frame_layout_fragment_container, fragment, tag)
                 .addToBackStack(tag)
                 .commit();
+    }
+
+    @Override
+    public void showDialogFragment(final ViewDialogFragment fragment, final String fragmentTag) {
+        final String tag = (fragmentTag != null) ? fragmentTag : fragment.getFragmentTag();
+        final FragmentManager manager = getSupportFragmentManager();
+        FragmentTransaction transaction = manager.beginTransaction();
+        transaction.add(fragment, tag);
+        transaction.commitAllowingStateLoss();
     }
 
     @Override

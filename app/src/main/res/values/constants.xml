@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="oss_licenses_info_file">"file:///android_asset/html/oss_licenses.html"</string>
+
+</resources>

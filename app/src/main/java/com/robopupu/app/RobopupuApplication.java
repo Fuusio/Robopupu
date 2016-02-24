@@ -2,10 +2,10 @@ package com.robopupu.app;
 
 import com.robopupu.api.feature.PluginFeatureManager;
 import com.robopupu.app.error.RobopupuAppError;
+import com.robopupu.component.AppManager;
 
 import org.fuusio.api.app.FuusioApplication;
 import org.fuusio.api.dependency.AppDependencyScope;
-import org.fuusio.api.dependency.D;
 import org.fuusio.api.plugin.PluginBus;
 
 public class RobopupuApplication extends FuusioApplication {
@@ -40,7 +40,7 @@ public class RobopupuApplication extends FuusioApplication {
     protected void configureApplication() {
         super.configureApplication();
 
-        final PluginFeatureManager featureManager = D.get(PluginFeatureManager.class);
-        PluginBus.plug(featureManager);
+        PluginBus.plug(AppManager.class);
+        PluginBus.plug(PluginFeatureManager.class);
     }
 }

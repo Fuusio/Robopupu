@@ -29,6 +29,10 @@ public abstract class PlugInvoker<T> {
         mPlugins = new ArrayList<>();
     }
 
+    public final T object() {
+        return mPlugins.get(0);
+    }
+
     public final T get(final int index) {
         return mPlugins.get(index);
     }

@@ -2,37 +2,46 @@ package com.robopupu.component;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.support.annotation.StringRes;
 import android.util.Log;
+
+import com.robopupu.app.RobopupuAppScope;
+import com.robopupu.app.RobopupuApplication;
 
 import org.fuusio.api.component.AbstractManager;
 import org.fuusio.api.dependency.Provides;
+import org.fuusio.api.dependency.Scope;
+import org.fuusio.api.plugin.Plugin;
 
-/**
- * {@link AppManagerImpl} ...
- */
+@Plugin
 public class AppManagerImpl extends AbstractManager implements AppManager {
 
-    private final Context mAppContext;
+    private static final String TAG = AppManagerImpl.class.getSimpleName();
 
+    private final RobopupuApplication mApplication;
+
+    @Scope(RobopupuAppScope.class)
     @Provides(AppManager.class)
-    public AppManagerImpl(final Context appContext) {
-        mAppContext = appContext;
+    public AppManagerImpl(final RobopupuApplication application) {
+        mApplication = application;
+    }
+
+    @Override
+    public RobopupuApplication getApplication() {
+        return mApplication;
     }
 
     @Override
     public Context getAppContext() {
-        return mAppContext;
+        return mApplication.getApplicationContext();
     }
 
-    /**
-     * Gets the versoin code of the application.
-     *
-     * @return The  version code as an {@link int}.
-     */
+    @Override
     public int getAppVersionCode() {
-        final PackageManager manager = mApplicationContext.getPackageManager();
+        final Context context = mApplication.getApplicationContext();
+        final PackageManager manager = context.getPackageManager();
         try {
-            final String packageName = mApplicationContext.getPackageName();
+            final String packageName = context.getPackageName();
             return manager.getPackageInfo(packageName, 0).versionCode;
         } catch (PackageManager.NameNotFoundException e) {
             Log.d(TAG, e.getMessage());
@@ -46,13 +55,19 @@ public class AppManagerImpl extends AbstractManager implements AppManager {
      * @return The  version code as an {@link int}.
      */
     public String getAppVersionName() {
-        final PackageManager manager = mApplicationContext.getPackageManager();
+        final Context context = mApplication.getApplicationContext();
+        final PackageManager manager = context.getPackageManager();
         try {
-            final String packageName = mApplicationContext.getPackageName();
+            final String packageName = context.getPackageName();
             return manager.getPackageInfo(packageName, 0).versionName;
         } catch (PackageManager.NameNotFoundException e) {
             Log.d(TAG, e.getMessage());
         }
         return "n/a";
+    }
+
+    @Override
+    public String getString(final @StringRes int resId, final Object... formatArgs) {
+        return mApplication.getString(resId, formatArgs);
     }
 }

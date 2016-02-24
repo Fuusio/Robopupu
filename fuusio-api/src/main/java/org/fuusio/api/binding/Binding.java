@@ -18,6 +18,7 @@ package org.fuusio.api.binding;
 import android.view.View;
 import android.widget.TextView;
 
+import org.fuusio.api.mvp.ViewDialogFragment;
 import org.fuusio.api.mvp.ViewFragment;
 
 /**
@@ -26,8 +27,21 @@ import org.fuusio.api.mvp.ViewFragment;
  */
 public class Binding extends TextViewBinding {
 
+    public Binding() {
+        super(null);
+    }
+
+    public Binding(final TextView textView) {
+        super(textView);
+    }
+
     @SuppressWarnings("unchecked")
     public Binding(final ViewFragment fragment, final int viewId) {
+        super((TextView) fragment.getView(viewId));
+    }
+
+    @SuppressWarnings("unchecked")
+    public Binding(final ViewDialogFragment fragment, final int viewId) {
         super((TextView) fragment.getView(viewId));
     }
 }

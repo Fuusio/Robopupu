@@ -164,41 +164,47 @@ public class PluginBus {
 
     @SuppressWarnings("unchecked")
     private void doPlug(final Object plugin, final boolean useHandler) {
-        if (!mPlugins.contains(plugin)) {
 
-            final String pluggerClassName = plugin.getClass().getName() + SUFFIX_PLUGGER;
-            Plugger plugger = mPluggers.get(pluggerClassName);
+        if (plugin instanceof PlugInvoker) {
+            return;
+        }
 
-            if (plugger == null) {
-                try {
-                    final Class<? extends Plugger> pluggerClass = (Class<? extends Plugger>) Class.forName(pluggerClassName);
-                    plugger = pluggerClass.newInstance();
-                    mPluggers.put(pluggerClassName, plugger);
-                } catch (Exception e) {
-                    throw new IllegalStateException(e);
-                }
+        if (mPlugins.contains(plugin)) {
+            return;
+        }
+
+        final String pluggerClassName = plugin.getClass().getName() + SUFFIX_PLUGGER;
+        Plugger plugger = mPluggers.get(pluggerClassName);
+
+        if (plugger == null) {
+            try {
+                final Class<? extends Plugger> pluggerClass = (Class<? extends Plugger>) Class.forName(pluggerClassName);
+                plugger = pluggerClass.newInstance();
+                mPluggers.put(pluggerClassName, plugger);
+            } catch (Exception e) {
+                throw new IllegalStateException(e);
+            }
+        }
+
+        plugger.plug(plugin, this, useHandler);
+
+        mPlugins.add(plugin);
+
+        if (plugin instanceof PluginComponent) {
+            final PluginComponent component = (PluginComponent) plugin;
+            component.onPlugged(this);
+
+            for (final PluginComponent pluggedComponent : mPluginComponents) {
+                pluggedComponent.onPluginPlugged(plugin);
             }
 
-            plugger.plug(plugin, this, useHandler);
+            if (!mPluginComponents.contains(component)) {
+                mPluginComponents.add(component);
+            }
 
-            mPlugins.add(plugin);
-
-            if (plugin instanceof PluginComponent) {
-                final PluginComponent component = (PluginComponent) plugin;
-                component.onPlugged(this);
-
-                for (final PluginComponent pluggedComponent : mPluginComponents) {
-                    pluggedComponent.onPluginPlugged(plugin);
-                }
-
-                if (!mPluginComponents.contains(component)) {
-                    mPluginComponents.add(component);
-                }
-
-                if (plugin instanceof PluginStateComponent) {
-                    final PluginStateComponent stateComponent = (PluginStateComponent) component;
-                    stateComponent.start();
-                }
+            if (plugin instanceof PluginStateComponent) {
+                final PluginStateComponent stateComponent = (PluginStateComponent) component;
+                stateComponent.start();
             }
         }
     }

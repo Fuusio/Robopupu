@@ -1,8 +1,9 @@
 package com.robopupu.app.view;
 
 import android.os.Bundle;
+import android.support.annotation.StringRes;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -22,37 +23,55 @@ import org.fuusio.api.feature.FeaturePresenter;
 public abstract class CoordinatorLayoutFragment<T_Presenter extends FeaturePresenter>
         extends FeatureFragment<T_Presenter> {
 
+    protected final @StringRes int mTitleResId;
+
     protected ActionBar mActionBar;
+    protected AppBarLayout mAppBarLayout;
     protected FloatingActionButton mFab;
     protected Toolbar mToolbar;
 
-    public Toolbar getToolbar() {
-        if (mToolbar == null) {
-            mToolbar = getView(R.id.toolbar);
-            final AppCompatActivity activity = (AppCompatActivity) getActivity();
-            activity.setSupportActionBar(mToolbar);
-            mActionBar = activity.getSupportActionBar();
-        }
-        return mToolbar;
+    protected CoordinatorLayoutFragment(@StringRes final int titleResId) {
+        mTitleResId = titleResId;
     }
 
     @Override
     protected void createBindings() {
         super.createBindings();
 
-        getToolbar();
+        final AppCompatActivity activity = (AppCompatActivity) getActivity();
+        mAppBarLayout = getView(R.id.app_bar_layout);
+        mToolbar = getView(R.id.toolbar);
+
+        activity.setSupportActionBar(mToolbar);
+
+        mActionBar = activity.getSupportActionBar();
+
+        assert(mActionBar != null);
+
+        mActionBar.setTitle(mTitleResId);
+        mActionBar.setDisplayShowHomeEnabled(true);
 
         mFab = getView(R.id.fab);
-        mFab.setOnClickListener(new android.view.View.OnClickListener() {
-            @Override
-            public void onClick(final android.view.View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+
+        if (mFab != null) {
+            setupFabAction(mFab);
+        }
 
         final ImageView imageView = getView(R.id.image_view_backdrop);
         setupBackdrop(imageView);
+    }
+
+    protected void setupFabAction(final FloatingActionButton fab) {
+        // Do nothing by default
+
+        /*mFab.setOnClickListener(new android.view.View.OnClickListener() {
+                @Override
+                public void onClick(final android.view.View view) {
+                    Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                }
+            });
+            */
     }
 
     protected void setupBackdrop(final ImageView backdropImageView) {
@@ -67,7 +86,7 @@ public abstract class CoordinatorLayoutFragment<T_Presenter extends FeaturePrese
 
         if (activity instanceof DrawerLayoutContainer) {
             final DrawerLayoutContainer container = (DrawerLayoutContainer)activity;
-            container.updateForToolbar(getToolbar());
+            container.updateForToolbar(mToolbar);
         }
     }
 

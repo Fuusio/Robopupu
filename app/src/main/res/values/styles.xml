@@ -33,5 +33,13 @@
         <item name="android:paddingBottom">24dp</item>
     </style>
 
+    <style name="View_Fragment_Dialog" parent="AppTheme">
+        <item name="android:windowAnimationStyle">@style/Fade_In</item>
+    </style>
+
+    <style name="Fade_In">
+        <item name="android:windowEnterAnimation">@anim/fade_in</item>
+    </style>
+
 </resources>
 

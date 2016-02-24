@@ -47,7 +47,7 @@ public abstract class ViewDialogFragment<T_Presenter extends Presenter> extends 
     private final ViewBinder mBinder;
     private final ViewState mState;
 
-    protected android.view.View mDialogView;
+    protected ViewGroup mDialogView;
 
     private DependencyScope mScope;
 
@@ -62,9 +62,7 @@ public abstract class ViewDialogFragment<T_Presenter extends Presenter> extends 
         final Dialog dialog = createDialog(inState);
         final Window window = dialog.getWindow();
 
-        // Request a dialog window without the title since we are using fully custom layout
         window.requestFeature(Window.FEATURE_NO_TITLE);
-        //window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         return dialog;
     }
 
@@ -107,6 +105,10 @@ public abstract class ViewDialogFragment<T_Presenter extends Presenter> extends 
         return getClass().getName();
     }
 
+    public String getFragmentTag() {
+        return getClass().getSimpleName();
+    }
+
     /**
      * Test if this {@link View} has a focus.
      * @return A {@code boolean}.
@@ -123,18 +125,12 @@ public abstract class ViewDialogFragment<T_Presenter extends Presenter> extends 
         return false;
     }
 
-    /**
-     * This method has to implemented by concrete implementations of this class.
-     *
-     * @return A {@link Presenter}.
-     */
-    protected abstract T_Presenter getPresenterDependency();
-
+    @SuppressWarnings("unchecked")
     @Override
     public void onViewCreated(final android.view.View view, final Bundle inState) {
         super.onViewCreated(view, inState);
         mState.onCreate();
-        mDialogView = view;
+        mDialogView = (ViewGroup) view;
 
         // We used getPresenter() getter to access the Presenter to guarantee that a reference
         // for it is initialised or restored
@@ -162,7 +158,7 @@ public abstract class ViewDialogFragment<T_Presenter extends Presenter> extends 
             }*/
         }
 
-        mBinder.setActivity(getActivity());
+        mBinder.setContentView(mDialogView);
         createBindings();
 
         if (inState != null) {
@@ -358,7 +354,7 @@ public abstract class ViewDialogFragment<T_Presenter extends Presenter> extends 
      */
     @SuppressWarnings("unchecked")
     public <T extends android.view.View> T getView(final int viewId) {
-        return (T) getActivity().findViewById(viewId);
+        return (T) mDialogView.findViewById(viewId);
     }
 
     /**

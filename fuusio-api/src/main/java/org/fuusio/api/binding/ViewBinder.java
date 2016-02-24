@@ -18,6 +18,7 @@ package org.fuusio.api.binding;
 import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.TextView;
 
@@ -34,9 +35,10 @@ public class ViewBinder {
     private final HashMap<Integer, ViewBinding<?>> mBindingsCache;
 
     private Activity mActivity;
+    private ViewGroup mContentView;
 
     public ViewBinder() {
-        this(null);
+        this((Activity)null);
     }
 
     public ViewBinder(final Activity activity) {
@@ -44,9 +46,19 @@ public class ViewBinder {
         mActivity = activity;
     }
 
-    public void setActivity(@NonNull Activity mActivity) {
-        this.mActivity = mActivity;
+    public ViewBinder(final ViewGroup contentView) {
+        mBindingsCache = new HashMap<>();
+        mContentView = contentView;
     }
+
+    public void setActivity(@NonNull Activity activity) {
+        mActivity = activity;
+    }
+
+    public void setContentView(@NonNull ViewGroup contentView) {
+        mContentView = contentView;
+    }
+
 
     /**
      * Looks up and returns a {@link View} with the given layout id.
@@ -56,7 +68,12 @@ public class ViewBinder {
      */
     @SuppressWarnings("unchecked")
     public <T extends View> T getView(final int viewId) {
-        return (T) mActivity.findViewById(viewId);
+
+        if (mActivity != null) {
+            return (T) mActivity.findViewById(viewId);
+        } else {
+            return (T) mContentView.findViewById(viewId);
+        }
     }
 
     /**
@@ -104,7 +121,7 @@ public class ViewBinder {
         if (view instanceof AdapterView) {
             throw new IllegalStateException("For AdapterView derived classes use AdapterViewBinding.");
         } else {
-            binding = new TextViewBinding((TextView) view);
+            binding = new Binding((TextView) view);
         }
 
         mBindingsCache.put(viewId, binding);

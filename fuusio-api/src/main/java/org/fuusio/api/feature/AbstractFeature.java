@@ -25,6 +25,7 @@ import org.fuusio.api.dependency.DependencyScopeOwner;
 import org.fuusio.api.mvp.Presenter;
 import org.fuusio.api.mvp.PresenterListener;
 import org.fuusio.api.mvp.View;
+import org.fuusio.api.mvp.ViewDialogFragment;
 import org.fuusio.api.plugin.AbstractPluginStateComponent;
 import org.fuusio.api.plugin.PluginBus;
 import org.fuusio.api.util.Params;
@@ -156,6 +157,9 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
         if (view instanceof FeatureFragment) {
             final FeatureFragment fragment = (FeatureFragment) view;
             mFeatureContainer.showFeatureFragment(fragment, null);
+        } else if (view instanceof ViewDialogFragment) {
+            final ViewDialogFragment fragment = (ViewDialogFragment) view;
+            mFeatureContainer.showDialogFragment(fragment, null);
         }
     }
 
@@ -209,12 +213,12 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
     @Override
     @SuppressWarnings("uncheckked")
     public void goBack() {
-        goBack(null); // XXX
+        goBack(mFeatureContainer);
     }
 
     @Override
     public void goBack(final FeatureTransitionManager transitionManager) {
-        final FragmentManager fragmentManager = null;  // XXX getFeatureContainer().getSupportFragmentManager();
+        final FragmentManager fragmentManager = mFeatureContainer.getSupportFragmentManager();
         int index = fragmentManager.getBackStackEntryCount() - 1;
 
         while (index >= 0) {
@@ -223,7 +227,7 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
             final FeatureFragment fragment = (FeatureFragment) fragmentManager.findFragmentByTag(tag);
 
             if (isActiveView(fragment)) {
-                fragmentManager.popBackStackImmediate();
+                fragmentManager.popBackStack();
                 break;
             } else {
                 index--;

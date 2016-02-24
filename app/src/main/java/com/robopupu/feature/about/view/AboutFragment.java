@@ -2,29 +2,33 @@ package com.robopupu.feature.about.view;
 
 
 import android.os.Bundle;
+import android.support.annotation.StringRes;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.robopupu.R;
+import com.robopupu.app.view.CoordinatorLayoutFragment;
 import com.robopupu.feature.about.presenter.AboutPresenter;
 
+import org.fuusio.api.binding.Binding;
+import org.fuusio.api.binding.ViewBinding;
 import org.fuusio.api.dependency.Provides;
-import org.fuusio.api.feature.FeatureFragment;
 import org.fuusio.api.plugin.Plug;
 import org.fuusio.api.plugin.Plugin;
 
 @Plugin
-public class AboutFragment extends FeatureFragment<AboutPresenter> implements AboutView {
+public class AboutFragment extends CoordinatorLayoutFragment<AboutPresenter> implements AboutView {
 
     @Plug AboutPresenter mPresenter;
 
-    private TextView mLicenseTextView;
-    private TextView mVersionTextView;
+    private Binding mLicenseTextBinding;
+    private Binding mVersionTextBinding;
 
     @Provides(AboutView.class)
     public AboutFragment() {
+        super(R.string.feature_about_title_robopupu);
     }
 
     @Override
@@ -32,15 +36,14 @@ public class AboutFragment extends FeatureFragment<AboutPresenter> implements Ab
         return mPresenter;
     }
 
-
     @Override
     public void setLicenseText(final String text) {
-        // mLicenseTextView.setText(text);
+        mLicenseTextBinding.setText(text);
     }
 
     @Override
     public void setVersionText(final String text) {
-        mVersionTextView.setText(text);
+        mVersionTextBinding.setText(text);
     }
 
     @Override
@@ -50,6 +53,16 @@ public class AboutFragment extends FeatureFragment<AboutPresenter> implements Ab
 
     @Override
     protected void createBindings() {
-        mVersionTextView = getView(R.id.text_view_label_license);
+        super.createBindings();
+
+        mLicenseTextBinding = new Binding(this, R.id.text_view_license) {
+            @Override
+            protected void clicked() {
+                mPresenter.onLicenseTextClicked();
+            }
+        };
+
+        mVersionTextBinding = bind(R.id.text_view_version);
     }
+
 }

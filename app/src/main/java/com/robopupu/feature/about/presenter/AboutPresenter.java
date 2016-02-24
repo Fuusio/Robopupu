@@ -5,4 +5,6 @@ import org.fuusio.api.plugin.PlugInterface;
 
 @PlugInterface
 public interface AboutPresenter extends FeaturePresenter {
+
+    void onLicenseTextClicked();
 }

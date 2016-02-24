@@ -1,5 +1,11 @@
 package com.robopupu.feature.about.presenter;
 
+import android.support.v4.app.Fragment;
+import android.widget.Toast;
+
+import com.robopupu.R;
+import com.robopupu.component.AppManager;
+import com.robopupu.feature.about.AboutFeature;
 import com.robopupu.feature.about.view.AboutView;
 
 import org.fuusio.api.dependency.Provides;
@@ -9,13 +15,12 @@ import org.fuusio.api.plugin.Plug;
 import org.fuusio.api.plugin.Plugin;
 import org.fuusio.api.plugin.PluginBus;
 
-/**
- * {@link AboutPresenterImpl} ...
- */
 @Plugin
 public class AboutPresenterImpl extends AbstractFeaturePresenter<AboutView>
         implements AboutPresenter {
 
+    @Plug AboutFeature mFeature;
+    @Plug AppManager mAppManager;
     @Plug AboutView mView;
 
     @Provides(AboutPresenter.class)
@@ -35,6 +40,13 @@ public class AboutPresenterImpl extends AbstractFeaturePresenter<AboutView>
     @Override
     public void onViewStart(final View view) {
         super.onViewStart(view);
-        mView.setVersionText("0.1");
+
+        mView.setLicenseText(mAppManager.getString(R.string.feature_about_text_license));
+        mView.setVersionText(mAppManager.getAppVersionName());
+    }
+
+    @Override
+    public void onLicenseTextClicked() {
+        mFeature.showLicensesInfo();
     }
 }

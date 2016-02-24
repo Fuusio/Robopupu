@@ -5,22 +5,18 @@ import com.robopupu.api.feature.PluginFeatureManagerImpl;
 import com.robopupu.app.RobopupuApplication;
 
 import org.fuusio.api.app.FuusioAppScope;
+import org.fuusio.api.dependency.Provides;
 import org.fuusio.api.dependency.Scope;
 
 @Scope
-public class RobopupuAppScope extends FuusioAppScope {
+public class RobopupuAppScope extends FuusioAppScope<RobopupuApplication> {
 
     public RobopupuAppScope(final RobopupuApplication app) {
         super(app);
     }
 
-    @Override
-    protected <T> T getDependency() {
-
-        if (type(PluginFeatureManager.class)) {
-            return dependency(new PluginFeatureManagerImpl());
-        } else {
-            return super.getDependency();
-        }
+    @Provides
+    public RobopupuApplication getRobopupuApplication() {
+        return getApplication();
     }
 }

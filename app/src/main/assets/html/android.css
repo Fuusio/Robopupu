@@ -1,0 +1,50 @@
+div.section
+{
+	color: #727272;
+	padding:0px;
+	text-align:left;
+	font-size: 1.0em;
+}
+
+div.section>:first-child
+{
+	margin-top: 0em;
+} 
+
+div.section-title
+{
+	font-weight:bold;
+	font-size: 120%;
+	color:#212121;
+	margin-top: 0.6em;
+	margin-bottom: 0.6em;
+}
+
+div.section-subtitle
+{
+	font-style:bold;
+	margin-top: 0.6em;
+	margin-bottom: 0.3em;
+}
+
+div.section-subtitle-2
+{
+	font-weight:bold;
+	margin-top: 0.6em;
+	margin-bottom: 0.3em;
+}
+
+div.section-body
+{
+	text-align: left;
+	margin-top: 0.6em;
+}
+
+div.section-body>:first-child
+{
+	margin-top: 0em;
+} 
+
+p {
+    padding-bottom: 1em;
+}

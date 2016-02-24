@@ -36,7 +36,7 @@ public abstract class FeatureFragment<T_Presenter extends Presenter> extends Vie
      *
      * @return A tag as a {@link String}.
      */
-    public String getFeatureTag() {
+    public String getFragmentTag() {
         return getClass().getSimpleName();
     }
 

@@ -26,9 +26,9 @@ import org.fuusio.api.network.volley.VolleyRequestManager;
 import org.fuusio.api.plugin.PluginBus;
 import org.fuusio.api.util.PermissionRequestManager;
 
-public abstract class FuusioAppScope extends AppDependencyScope<FuusioApplication> {
+public abstract class FuusioAppScope<T_Application extends FuusioApplication> extends AppDependencyScope<T_Application> {
 
-    protected FuusioAppScope(final FuusioApplication application) {
+    protected FuusioAppScope(final T_Application application) {
         super(application);
     }
 
