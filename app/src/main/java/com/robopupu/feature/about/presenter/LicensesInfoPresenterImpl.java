@@ -33,6 +33,7 @@ public class LicensesInfoPresenterImpl extends AbstractFeaturePresenter<Licenses
 
     @Override
     public void onPlugged(final PluginBus bus) {
+        super.onPlugged(bus); // TODO : Force call super
         plug(LicensesInfoView.class);
     }
 

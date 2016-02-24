@@ -226,7 +226,7 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
             final String tag = entry.getName();
             final FeatureFragment fragment = (FeatureFragment) fragmentManager.findFragmentByTag(tag);
 
-            if (isActiveView(fragment)) {
+            if (isActiveView(fragment) || true) { // TODO
                 fragmentManager.popBackStack();
                 break;
             } else {
