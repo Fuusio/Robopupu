@@ -23,15 +23,14 @@ import android.util.Log;
 import org.fuusio.api.component.AbstractManager;
 import org.fuusio.api.dependency.D;
 import org.fuusio.api.dependency.DependenciesCache;
-import org.fuusio.api.dependency.Dependency;
 import org.fuusio.api.dependency.DependencyScope;
 import org.fuusio.api.dependency.DependencyScopeOwner;
 import org.fuusio.api.mvp.View;
-import org.fuusio.api.plugin.Plugin;
 import org.fuusio.api.util.Params;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -47,6 +46,7 @@ public abstract class AbstractFeatureManager extends AbstractManager
 
     private final ArrayList<Feature> mActiveFeatures;
     private final DependenciesCache mDependenciesCache;
+    private final HashMap<Class<? extends FeatureContainer>, Feature> mFeatureContainers;
 
     private Activity mForegroundActivity;
     private Activity mLastPausedActivity;
@@ -55,6 +55,7 @@ public abstract class AbstractFeatureManager extends AbstractManager
     public AbstractFeatureManager() {
         mActiveFeatures = new ArrayList<>();
         mDependenciesCache = D.get(DependenciesCache.class);
+        mFeatureContainers = new HashMap<>();
     }
 
     @Override
@@ -182,35 +183,45 @@ public abstract class AbstractFeatureManager extends AbstractManager
 
     @SuppressWarnings("unchecked")
     @Override
-    public Feature startFeature(final Class<? extends Feature> featureClass) {
-        return startFeature(featureClass, null);
+    public Feature startFeature(final FeatureContainer featureContainer, final Class<? extends Feature> featureClass) {
+        return startFeature(featureContainer, featureClass, null);
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public Feature startFeature(final Class<? extends Feature> featureClass, final Params params) {
+    public Feature startFeature(final FeatureContainer featureContainer, final Class<? extends Feature> featureClass, final Params params) {
         Feature feature = getMockFeature(featureClass);
 
         if (feature == null) {
             feature = createFeature(featureClass, params);
         }
-
-        return startFeature(feature, params);
+        return startFeature(featureContainer, feature, params);
     }
 
     @Override
-    public Feature startFeature(final Feature feature) {
-        return startFeature(feature, null);
+    public Feature startFeature(final FeatureContainer featureContainer, final Feature feature) {
+        return startFeature(featureContainer, feature, null);
     }
 
     @Override
-    public Feature startFeature(final Feature feature, final Params params) {
+    public Feature startFeature(final FeatureContainer featureContainer, final Feature feature, final Params params) {
         feature.setFeatureManager(this);
+        feature.setFeatureContainer(featureContainer);
         // XXX Dependency.activateScope(feature);
-
         feature.start(params);
         mActiveFeatures.add(feature);
 
+        if (featureContainer != null) {
+            final Class<? extends FeatureContainer> key = featureContainer.getClass();
+            final Feature previousFeature = mFeatureContainers.get(key);
+
+            mFeatureContainers.put(key, feature);
+
+            // Activity Features are finished by the Activities that own them.
+            if (previousFeature != null && !previousFeature.isActivityFeature() && previousFeature != feature) {
+                previousFeature.finish();
+            }
+        }
         return feature;
     }
 

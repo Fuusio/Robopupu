@@ -17,6 +17,8 @@ package org.fuusio.api.dependency;
 
 import android.util.Log;
 
+import org.fuusio.api.plugin.PluginBus;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -89,6 +91,15 @@ public abstract class DependencyScope {
             }
         }
         return mDependencyProvider;
+    }
+
+    /**
+     * Gets the identifier of this {@link DependencyScope}. The default identifier is the canonical
+     * class name of the {@link DependencyScope}.
+     * @return The identifier as a {@link String}.
+     */
+    public String getId() {
+        return getClass().getCanonicalName();
     }
 
     /**
@@ -413,6 +424,13 @@ public abstract class DependencyScope {
      * Disposes this {@link DependencyScope} to support effective GC and to avoid memory leaks.
      */
     protected void dispose() {
+
+        for (final Object dependency : mDependencies.values()) {
+            if (PluginBus.isPlugged(dependency)) {
+                PluginBus.unplug(dependency);
+            }
+        }
+
         mDependencies.clear();
         mDependants.clear();
         mParentScope = null;

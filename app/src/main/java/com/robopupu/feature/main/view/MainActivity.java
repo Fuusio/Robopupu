@@ -14,6 +14,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import org.fuusio.api.feature.FeatureContainer;
+import org.fuusio.api.feature.FeatureDialogFragment;
 import org.fuusio.api.feature.FeatureFragment;
 import org.fuusio.api.mvp.PluginActivity;
 import org.fuusio.api.mvp.View;
@@ -47,6 +49,11 @@ public class MainActivity extends PluginActivity<MainPresenter>
     }
 
     @Override
+    public FeatureContainer getMainFeatureContainer() {
+        return this;
+    }
+
+    @Override
     protected void onCreate(final Bundle inState) {
         super.onCreate(inState);
 
@@ -61,7 +68,7 @@ public class MainActivity extends PluginActivity<MainPresenter>
     @Override
     protected void onStart() {
         super.onStart();
-        mFeatureManager.startFeature(mFeature);
+        mFeatureManager.startFeature(this, mFeature);
     }
 
     @Override
@@ -77,19 +84,15 @@ public class MainActivity extends PluginActivity<MainPresenter>
 
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         final int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
+        // TODO : To Presenter
         if (id == R.id.action_settings) {
             return true;
         }
@@ -118,7 +121,7 @@ public class MainActivity extends PluginActivity<MainPresenter>
     }
 
     @Override
-    public void showFeatureFragment(final FeatureFragment fragment, final String fragmentTag) {
+    public void showFragment(final FeatureFragment fragment, final String fragmentTag) {
         final String tag = (fragmentTag != null) ? fragmentTag : fragment.getFragmentTag();
         final FragmentManager manager = getSupportFragmentManager();
         manager.beginTransaction()
@@ -128,12 +131,11 @@ public class MainActivity extends PluginActivity<MainPresenter>
     }
 
     @Override
-    public void showDialogFragment(final ViewDialogFragment fragment, final String fragmentTag) {
+    public void showDialogFragment(final FeatureDialogFragment fragment, final String fragmentTag) {
         final String tag = (fragmentTag != null) ? fragmentTag : fragment.getFragmentTag();
         final FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
-        transaction.add(fragment, tag);
-        transaction.commitAllowingStateLoss();
+        transaction.add(fragment, tag).addToBackStack(tag).commitAllowingStateLoss();
     }
 
     @Override

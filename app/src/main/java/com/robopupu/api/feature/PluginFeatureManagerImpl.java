@@ -8,6 +8,7 @@ import org.fuusio.api.dependency.Provides;
 import org.fuusio.api.dependency.Scope;
 import org.fuusio.api.feature.AbstractFeatureManager;
 import org.fuusio.api.feature.Feature;
+import org.fuusio.api.feature.FeatureContainer;
 import org.fuusio.api.plugin.PlugInvoker;
 import org.fuusio.api.plugin.Plugin;
 import org.fuusio.api.plugin.PluginBus;
@@ -39,8 +40,8 @@ public class PluginFeatureManagerImpl extends AbstractFeatureManager
 
 
     @Override
-    public Feature startFeature(final Feature feature, final Params params) {
+    public Feature startFeature(final FeatureContainer container, final Feature feature, final Params params) {
         PluginBus.plug(feature);
-        return super.startFeature(feature, params);
+        return super.startFeature(container, feature, params);
     }
 }

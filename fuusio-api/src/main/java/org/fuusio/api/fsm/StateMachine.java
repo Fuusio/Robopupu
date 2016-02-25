@@ -89,7 +89,6 @@ public abstract class StateMachine implements StateEngineObserver {
                 final Class<? extends StateEngine> stateEngineClass = (Class<? extends StateEngine>) Class.forName(stateEngineClassName);
                 final Method method = stateEngineClass.getMethod("create", initialStateClass.getClass());
                 mStateEngine = (StateEngine)method.invoke(null, initialStateClass);
-
             } catch (Exception e) {
                 throw new RuntimeException("Failed to instantiate StateEngine class: " + stateEngineClassName);
             }

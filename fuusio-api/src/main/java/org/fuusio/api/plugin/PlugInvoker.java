@@ -23,7 +23,7 @@ import java.util.ArrayList;
  */
 public abstract class PlugInvoker<T> {
 
-    private final ArrayList<T> mPlugins;
+    protected final ArrayList<T> mPlugins;
 
     protected PlugInvoker() {
         mPlugins = new ArrayList<>();

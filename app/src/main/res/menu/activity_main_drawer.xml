@@ -3,17 +3,13 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="Import" />
+            android:id="@+id/navigation_fsm_demo"
+            android:icon="@drawable/ic_slideshow_black_36dp"
+            android:title="@string/feature_main_navigation_item_fsm_demo" />
         <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Gallery" />
-        <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Slideshow" />
+            android:id="@+id/navigation_settings"
+            android:icon="@drawable/ic_settings_black_36dp"
+            android:title="@string/feature_main_navigation_item_settings" />
         <item
             android:id="@+id/navigation_about"
             android:icon="@drawable/ic_info_outline_black_36dp"
@@ -23,13 +19,9 @@
     <item android:title="Communicate">
         <menu>
             <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
+                android:id="@+id/navigation_share"
+                android:icon="@drawable/ic_share_black_36dp"
                 android:title="Share" />
-            <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
         </menu>
     </item>
 

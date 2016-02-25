@@ -104,40 +104,46 @@ public interface FeatureManager extends Manager  {
     Feature createFeature(final Class<? extends Feature> featureClass, final Params params);
 
     /**
-     * Creates and starts the specified {@link Feature} whose {@link android.app.Fragment}s are hosted by
+     * Creates and starts the specified {@link Feature} whose {@link FeatureFragment}s are hosted by
      * the given {@link FeatureContainer}.
      *
+     * @param featureContainer A {@link FeatureContainer}.
      * @param featureClass A {@link Class} specifying the {@link Feature} to be created and started.
      * @return A {@link Feature}.
      */
-    Feature startFeature(final Class<? extends Feature> featureClass);
+    Feature startFeature(final FeatureContainer featureContainer, final Class<? extends Feature> featureClass);
 
     /**
-     * Creates and starts the specified {@link Feature} whose {@link android.app.Fragment}s are hosted by
+     * Creates and starts the specified {@link Feature} whose {@link FeatureFragment}s are hosted by
      * the given {@link FeatureContainer}.
      *
+     * @param featureContainer A {@link FeatureContainer}.
      * @param featureClass A {@link Class} specifying the {@link Feature} to be created and started.
      * @param params    A {@link Params} containing parameters for the created and started {@link Feature}.
      * @return A {@link Feature}.
      */
-    Feature startFeature(final Class<? extends Feature> featureClass, final Params params);
+    Feature startFeature(final FeatureContainer featureContainer, final Class<? extends Feature> featureClass, final Params params);
 
     /**
-     * Starts the given {@link Feature}.
+     * Starts the given {@link Feature} whose {@link FeatureFragment}s are hosted by
+     * the given {@link FeatureContainer}.
      *
+     * @param featureContainer A {@link FeatureContainer}.
      * @param feature   {The {@link Feature} to be started.
      * @return A {@link Feature}.
      */
-    Feature startFeature(final Feature feature);
+    Feature startFeature(final FeatureContainer featureContainer, final Feature feature);
 
     /**
-     * Starts the given {@link Feature}.
+     * Starts the given {@link Feature} whose {@link FeatureFragment}s are hosted by
+     * the given {@link FeatureContainer}.
      *
+     * @param featureContainer A {@link FeatureContainer}.
      * @param feature   {The {@link Feature} to be started.
      * @param params A {@link Params} containing parameters for the started {@link Feature}.
      * @return A {@link Feature}.
      */
-    Feature startFeature(final Feature feature, final Params params);
+    Feature startFeature(final FeatureContainer featureContainer, final Feature feature, final Params params);
 
     /**
      * Invoked to handle Back Pressed event received by the {@link FeatureContainer}.

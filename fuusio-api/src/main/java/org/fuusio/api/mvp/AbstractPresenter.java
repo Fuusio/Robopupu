@@ -38,13 +38,13 @@ import java.util.List;
 public abstract class AbstractPresenter<T_View extends View> extends AbstractPluginComponent
         implements Presenter, Scopeable {
 
-    protected final List<PresenterListener> mListneners;
+    protected final List<PresenterListener> mListeners;
     protected LifecycleState mState;
 
-    private DependencyScope mScope; // TODO
+    private DependencyScope mScope;
 
     protected AbstractPresenter() {
-        mListneners = new ArrayList<>();
+        mListeners = new ArrayList<>();
         mState = LifecycleState.CREATED;
     }
 
@@ -56,11 +56,17 @@ public abstract class AbstractPresenter<T_View extends View> extends AbstractPlu
     protected T_View getAttachedView() {
         final T_View viewPlug = getViewPlug();
 
-        if (viewPlug instanceof PlugInvoker) {
+        if (viewPlug instanceof PlugInvoker) { // TODO
             return ((PlugInvoker<T_View>)viewPlug).get(0);
         } else {
             return viewPlug;
         }
+    }
+
+    protected List<PresenterListener> getListeners() {
+        final ArrayList<PresenterListener> listeners = new ArrayList<>();
+        listeners.addAll(mListeners);
+        return listeners;
     }
 
     @SuppressWarnings("unchecked")
@@ -91,7 +97,7 @@ public abstract class AbstractPresenter<T_View extends View> extends AbstractPlu
     private void pause() {
         mState = LifecycleState.PAUSED;
 
-        for (final PresenterListener listener : mListneners) {
+        for (final PresenterListener listener : getListeners()) {
             listener.onPresenterPaused(this);
         }
     }
@@ -102,7 +108,7 @@ public abstract class AbstractPresenter<T_View extends View> extends AbstractPlu
     private void resume() {
         mState = LifecycleState.RESUMED;
 
-        for (final PresenterListener listener : mListneners) {
+        for (final PresenterListener listener : getListeners()) {
             listener.onPresenterResumed(this);
         }
     }
@@ -113,7 +119,7 @@ public abstract class AbstractPresenter<T_View extends View> extends AbstractPlu
      private void start() {
         mState = LifecycleState.STARTED;
 
-         for (final PresenterListener listener : mListneners) {
+         for (final PresenterListener listener : getListeners()) {
             listener.onPresenterStarted(this);
         }
     }
@@ -125,7 +131,7 @@ public abstract class AbstractPresenter<T_View extends View> extends AbstractPlu
         if (!mState.isStopped() && !mState.isDestroyed()) {
             mState = LifecycleState.STOPPED;
 
-            for (final PresenterListener listener : mListneners) {
+            for (final PresenterListener listener : getListeners()) {
                 listener.onPresenterStopped(this);
             }
         }
@@ -140,7 +146,7 @@ public abstract class AbstractPresenter<T_View extends View> extends AbstractPlu
 
             mState = LifecycleState.DESTROYED;
 
-            for (final PresenterListener listener : mListneners) {
+            for (final PresenterListener listener : getListeners()) {
                 listener.onPresenterDestroyed(this);
             }
         }
@@ -150,7 +156,7 @@ public abstract class AbstractPresenter<T_View extends View> extends AbstractPlu
     public void finish() {
         stop();
 
-        for (final PresenterListener listener : mListneners) {
+        for (final PresenterListener listener : getListeners()) {
             listener.onPresenterFinished(this);
         }
     }
@@ -193,7 +199,7 @@ public abstract class AbstractPresenter<T_View extends View> extends AbstractPlu
 
     @Override
     public void onUnplugged(final PluginBus bus) {
-        mListneners.clear();
+        mListeners.clear();
     }
 
     @Override
@@ -205,8 +211,8 @@ public abstract class AbstractPresenter<T_View extends View> extends AbstractPlu
 
     protected void updateListeners(final PluginBus bus) {
         final List<PresenterListener> plugins = bus.getPlugs(PresenterListener.class, true);
-        mListneners.clear();
-        mListneners.addAll(plugins);
+        mListeners.clear();
+        mListeners.addAll(plugins);
     }
 
     @SuppressWarnings("unchecked")

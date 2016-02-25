@@ -15,12 +15,12 @@ import com.robopupu.feature.about.presenter.LicensesInfoPresenter;
 
 import org.fuusio.api.binding.Binding;
 import org.fuusio.api.dependency.Provides;
-import org.fuusio.api.mvp.ViewDialogFragment;
+import org.fuusio.api.feature.FeatureDialogFragment;
 import org.fuusio.api.plugin.Plug;
 import org.fuusio.api.plugin.Plugin;
 
 @Plugin
-public class LicensesInfoFragment extends ViewDialogFragment<LicensesInfoPresenter>
+public class LicensesInfoFragment extends FeatureDialogFragment<LicensesInfoPresenter>
         implements LicensesInfoView {
 
     private WebView mWebView;

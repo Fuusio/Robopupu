@@ -35,9 +35,7 @@ public class AboutFeatureImpl extends AbstractFeature implements AboutFeature {
     public void onPresenterFinished(final Presenter presenter) {
 
         if (presenter instanceof LicensesInfoPresenter) {
-            unplug(presenter); // TODO How to unplug the View as well
             goBack();
         }
-
     }
 }

@@ -15,6 +15,7 @@
  */
 package org.fuusio.api.feature;
 
+import android.app.Activity;
 import android.support.v4.app.FragmentManager;
 
 import org.fuusio.api.dependency.DependencyScopeOwner;
@@ -90,6 +91,36 @@ public interface Feature extends PresenterListener, PluginStateComponent {
     void setFeatureManager(FeatureManager manager);
 
     /**
+     * Gets the {@link FeatureContainer} that hosts the {@linkn FeatureFragment}s of this
+     * {@link Feature}.
+     *
+     * @return A {@link FeatureContainer}.
+     */
+    FeatureContainer getFeatureContainer();
+
+    /**
+     * Sets the the {@link FeatureContainer} that hosts the {@linkn FeatureFragment}s of this
+     * {@link Feature}.
+     *
+     * @param container A {@link FeatureContainer}.
+     */
+    void setFeatureContainer(FeatureContainer container);
+
+    /**
+     * Sets this {@link Feature} to be an Activity Feature that is owned and controlled by
+     * an {@link Activity}.
+     * @param isActivityFeature A {@code boolean} value.
+     */
+    void setActivityFeature(boolean isActivityFeature);
+
+    /**
+     * Tests if this {@link Feature} is set to be an Activity Feature that is owned and controlled
+     * by an {@link Activity}.
+     * @return  A {@code boolean} value.
+     */
+    boolean isActivityFeature();
+
+    /**
      * Tests if any of the {@link View}s of this {@link Feature} is in foreground and has a focus.
      * @return A {@code boolean}.
      */
@@ -138,4 +169,9 @@ public interface Feature extends PresenterListener, PluginStateComponent {
      * @param transitionManager A {@link FeatureTransitionManager}.
      */
     void goBack(FeatureTransitionManager transitionManager);
+
+    /**
+     * Finishes this {@link Feature}.
+     */
+    void finish();
 }

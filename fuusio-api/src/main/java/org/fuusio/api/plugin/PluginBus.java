@@ -201,11 +201,6 @@ public class PluginBus {
             if (!mPluginComponents.contains(component)) {
                 mPluginComponents.add(component);
             }
-
-            if (plugin instanceof PluginStateComponent) {
-                final PluginStateComponent stateComponent = (PluginStateComponent) component;
-                stateComponent.start();
-            }
         }
     }
 
@@ -243,6 +238,7 @@ public class PluginBus {
     private void doUnplug(final Object plugin) {
 
         if (!mPlugins.contains(plugin)) {
+            // The plugin is not plugged - return
             return;
         }
 
@@ -255,16 +251,16 @@ public class PluginBus {
 
         if (plugin instanceof PluginComponent) {
             final PluginComponent component = (PluginComponent) plugin;
+            mPluginComponents.remove(component);
             component.onUnplugged(this);
 
             for (final PluginComponent pluggedComponent : mPluginComponents) {
                 pluggedComponent.onPluginUnplugged(plugin);
             }
 
-            mPluginComponents.remove(component);
-
             if (plugin instanceof PluginStateComponent) {
                 final PluginStateComponent stateComponent = (PluginStateComponent)component;
+                stateComponent.stop();
                 stateComponent.destroy();
             }
         }
@@ -273,5 +269,30 @@ public class PluginBus {
             final DependencyScopeOwner owner = (DependencyScopeOwner)plugin;
             Dependency.disposeScope(owner);
         }
+    }
+
+    /**
+     * Tests if the given {@link Object} is currently plugged as a plugin into this {@link PluginBus}.
+     * @param object An {@link Object}.
+     * @return A {@code boolean} value.
+     */
+    public static boolean isPlugged(final Object object) {
+        return getInstance().mPlugins.contains(object);
+    }
+
+    /**
+     * Test if a method can be invoked on the given target {@link Object}. The target may not be
+     * {@code null}, and in case of {@link PlugInvoker} it has to contain plugins.
+     * @param target An {@link Object}.
+     * @return A {@code boolean} value.
+     */
+    public static boolean canInvoke(final Object target) {
+        if (target != null) {
+            if (target instanceof PlugInvoker) {
+                return ((PlugInvoker)target).hasPlugins();
+            }
+            return true;
+        }
+        return false;
     }
 }

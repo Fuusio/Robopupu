@@ -15,6 +15,8 @@
  */
 package org.fuusio.api.dependency;
 
+import android.support.annotation.NonNull;
+
 import java.util.HashMap;
 
 /**
@@ -24,6 +26,9 @@ import java.util.HashMap;
  */
 public class Dependency {
 
+    /**
+     * A {@link DependencyScope} that has the same lifecycle as the application.
+     */
     private static DependencyScope sAppScope;
 
     /**
@@ -37,15 +42,15 @@ public class Dependency {
     private static DependencyScope sActiveScope = null;
 
     /**
-     * Adds the {@link DependencyScope} managed by the given {@link DependencyScopeOwner} to
-     * the map of current {@link DependencyScope}s.
+     * Adds the {@link DependencyScope} owner by the given {@link DependencyScopeOwner} to
+     * the {@link HashMap} of the current {@link DependencyScope}s.
      *
      * @param owner A {@link DependencyScopeOwner}
      * @return A {@link DependencyScope}.
      */
     public static DependencyScope addScope(final DependencyScopeOwner owner) {
         final DependencyScope scope = owner.getOwnedScope();
-        sDependencyScopes.put(scope.getClass().getName(), scope);
+        sDependencyScopes.put(scope.getId(), scope);
         scope.addDependant(owner);
         return scope;
     }
@@ -59,13 +64,13 @@ public class Dependency {
      */
     @SuppressWarnings("unchecked")
     public static <T extends DependencyScope> T getScope(final DependencyScopeOwner owner) {
-        return (T) sDependencyScopes.get(owner.getScopeClass().getName());
+        return (T) sDependencyScopes.get(owner.getScopeClass().getCanonicalName());
     }
 
     /**
-     * Gets a {@link DependencyScope} specified by the given class name.
+     * Gets a {@link DependencyScope} specified by the given canonical class name.
      *
-     * @param scopeClass The name of the {@link Class}.
+     * @param scopeClass The canonical name of the {@link DependencyScope}.
      * @param <T>     A type parameter for casting the requested dependency to expected type.
      * @return A {@link DependencyScope}. May return {@code null}.
      */
@@ -88,15 +93,15 @@ public class Dependency {
             return (T) sAppScope;
         }
 
-        final String key = scopeClass.getName();
-        DependencyScope scope  = sDependencyScopes.get(key);
+        final String id = scopeClass.getCanonicalName();
+        DependencyScope scope  = sDependencyScopes.get(id);
 
         if (scope == null) {
             try {
                 scope = scopeClass.newInstance();
-                sDependencyScopes.put(key, scope);
+                sDependencyScopes.put(id, scope);
             } catch (Exception e) {
-                throw new IllegalStateException("Failed to instantiate scope: " + scopeClass.getName());
+                throw new IllegalStateException("Failed to instantiate scope: " + id);
             }
         }
         return (T)scope;
@@ -112,11 +117,12 @@ public class Dependency {
 
     /**
      * Gets the {@link DependencyScope} that is set to be currently the active one. Note that only
-     * one {@link DependencyScope} can be active at any given.
+     * one {@link DependencyScope} can be active at any given. If no {@link DependencyScope} is
+     * set to be active, the application level {@link DependencyScope} is returned.
      *
-     * @return A {@link DependencyScope}. May return {@code null} if no {@link DependencyScope} is
-     * set to be active.
+     * @return A {@link DependencyScope}. May not return {@code null}.
      */
+    @NonNull
     public static DependencyScope getActiveScope() {
         if (sActiveScope != null) {
             return sActiveScope;
@@ -129,6 +135,9 @@ public class Dependency {
      * @param appScope A {@link DependencyScope}.
      */
     public static void setAppScope(final DependencyScope appScope) {
+        if (appScope ==null) {
+            throw new IllegalArgumentException("Parameter scope may not be null");
+        }
         sAppScope = appScope;
     }
 
@@ -139,10 +148,10 @@ public class Dependency {
      * only from the Main UI thread.
      *
      * @param owner A {@link DependencyScopeOwner}.
-     *
+     */
     public static void activateScope(final DependencyScopeOwner owner) {
-
-        DependencyScope scope = sDependencyScopes.get(owner.getScopeId());
+        final String id = owner.getScopeClass().getCanonicalName();
+        DependencyScope scope = sDependencyScopes.get(id);
 
         if (scope == null) {
             scope = addScope(owner);
@@ -154,12 +163,11 @@ public class Dependency {
             if (sActiveScope != null) {
                 deactivateScope(sActiveScope.getOwner());
             }
-
             sActiveScope = scope;
             sActiveScope.initialize();
             sActiveScope.onActivated(owner);
         }
-    }*/
+    }
 
 
     /**
@@ -170,12 +178,15 @@ public class Dependency {
      *
      * @param owner A {@link DependencyScopeOwner}.
      * @param scope A {@link DependencyScope}.
-     *
+     */
     public static void activateScope(final DependencyScopeOwner owner, final DependencyScope scope) {
 
-        assert (scope != null);
+        if (scope ==null) {
+            throw new IllegalArgumentException("Parameter scope may not be null");
+        }
 
-        sDependencyScopes.put(owner.getScopeId(), scope);
+        final String id = owner.getScopeClass().getCanonicalName();
+        sDependencyScopes.put(id, scope);
         scope.addDependant(owner);
         scope.setOwner(owner);
 
@@ -184,12 +195,11 @@ public class Dependency {
             if (sActiveScope != null) {
                 deactivateScope(sActiveScope.getOwner());
             }
-
             sActiveScope = scope;
             sActiveScope.initialize();
             sActiveScope.onActivated(owner);
         }
-    }*/
+    }
 
     /**
      * Deactivates a {@link DependencyScope} managed by the given {@link DependencyScopeOwner}.
@@ -197,13 +207,13 @@ public class Dependency {
      * for the deactivated {@link DependencyScope}.
      *
      * @param owner A {@link DependencyScopeOwner}.
-     *
+     */
     public static void deactivateScope(final DependencyScopeOwner owner) {
 
-        final DependencyScope scope = owner.getScope();
+        final DependencyScope scope = owner.getOwnedScope();
 
         if (scope.isDisposable()) {
-            sDependencyScopes.remove(owner.getScopeId());
+            sDependencyScopes.remove(scope.getId());
             scope.dispose();
         }
 
@@ -212,7 +222,7 @@ public class Dependency {
         if (scope == sActiveScope) {
             sActiveScope = null;
         }
-    }*/
+    }
 
     /**
      * Disposes the {@link DependencyScope} of the given {@link DependencyScopeOwner}.
@@ -223,7 +233,7 @@ public class Dependency {
         final DependencyScope scope = owner.getOwnedScope();
 
         if (scope.isDisposable()) {
-            sDependencyScopes.remove(scope.getClass().getName());
+            sDependencyScopes.remove(scope.getId());
             scope.dispose();
         }
 
@@ -264,35 +274,28 @@ public class Dependency {
     /**
      * Gets a specified {@link DependencyScope}.
      *
-     * @param scopeType A {@link Class} specifying {@link DependencyScope}.
+     * @param scopeClass A {@link Class} specifying {@link DependencyScope}.
      * @return The requested {@link DependencyScope}. If {@code null} is returned, it indicates an
      * error in an {@link DependencyScope} implementation.
      */
-    public static DependencyScope getDependencyScope(final Class<? extends DependencyScope> scopeType) {
-        DependencyScope selectedScope = null;
+    public static DependencyScope getDependencyScope(final Class<? extends DependencyScope> scopeClass) {
+        DependencyScope scope = sDependencyScopes.get(scopeClass.getCanonicalName());
 
-        for (final DependencyScope scope : sDependencyScopes.values()) {
-            if (scopeType == scope.getClass()) {
-                selectedScope = scope;
-                break;
-            }
-        }
-
-        if (selectedScope == null) {
+        if (scope == null) {
             try {
-                selectedScope = scopeType.newInstance();
+                scope = scopeClass.newInstance();
             } catch (Exception e) {
-                throw new IllegalStateException("Failed to instantiate scope: " + scopeType.getName());
+                throw new IllegalStateException("Failed to instantiate scope: " + scopeClass.getCanonicalName());
             }
         }
-        return selectedScope;
+        return scope;
     }
 
     /**
      * Gets a requested dependency of the specified type. The dependency is requested from
      * the specified {@link DependencyScope}.
      *
-     * @param scopeType A {@link Class} specifying {@link DependencyScope}.
+     * @param scopeClass A {@link Class} specifying {@link DependencyScope}.
      * @param dependencyType A {@link Class} specifying the type of the requested dependency.
      * @param dependant      The object requesting the requested. This parameter is required when the requesting object
      *                       is also a requested within the object graph represented by the active {@link Dependency}.
@@ -300,27 +303,11 @@ public class Dependency {
      * @return The requested dependency. If {@code null} is returned, it indicates an error in
      * an {@link DependencyScope} implementation.
      */
-    public static <T> T get(final Class<? extends DependencyScope> scopeType, final Class<T> dependencyType, final Object dependant) {
-        DependencyScope selectedScope = null;
+    public static <T> T get(final Class<? extends DependencyScope> scopeClass, final Class<T> dependencyType, final Object dependant) {
+        DependencyScope scope = getDependencyScope(scopeClass);
 
-        for (final DependencyScope scope : sDependencyScopes.values()) {
-            if (scopeType == scope.getClass()) {
-                selectedScope = scope;
-                break;
-            }
-        }
-
-        /* OPTION
-        if (selectedScope == null) {
-            try {
-                selectedScope = scopeType.newInstance();
-            } catch (Exception e) {
-                L.e(Dependency.class, "get", e);
-            }
-        }*/
-
-        if (selectedScope != null) {
-            return selectedScope.getDependency(dependencyType, dependant, false);
+        if (scope != null) {
+            return scope.getDependency(dependencyType, dependant, false);
         }
         return null;
     }

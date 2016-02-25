@@ -43,18 +43,18 @@ public interface FeatureTransitionManager {
      *                    In most cases tag can be simply the class name of the {@link FeatureFragment}.
      *                    May be {@code null}.
      */
-    void showFeatureFragment(FeatureFragment fragment, String fragmentTag);
+    void showFragment(FeatureFragment fragment, String fragmentTag);
 
     /**
-     * Shows the given {@link ViewDialogFragment}. Each shown {@link ViewDialogFragment} instance has to
-     * be supplied with a tag that can be used to retrieve the instance later on. If parameter
-     * {@code fragmentTag} is given {@code null} value, the tag is set to be the class name of
+     * Shows the given {@link FeatureDialogFragment}. Each shown {@link FeatureDialogFragment}
+     * instance has to be supplied with a tag that can be used to retrieve the instance later on.
+     * If parameter {@code fragmentTag} is given {@code null} value, the tag is set to be the class name of
      * the {@link FeatureFragment}.
      *
-     * @param fragment    A {@link ViewDialogFragment}. May not be {@code null}.
+     * @param dialogFragment    A {@link FeatureDialogFragment}. May not be {@code null}.
      * @param fragmentTag A {@link String} used as a tag to identify the {@link ViewDialogFragment}.
      *                    In most cases tag can be simply the class name of the {@link ViewDialogFragment}.
      *                     May be {@code null}.
      */
-    void showDialogFragment(ViewDialogFragment fragment, String fragmentTag);
+    void showDialogFragment(FeatureDialogFragment dialogFragment, String fragmentTag);
 }
