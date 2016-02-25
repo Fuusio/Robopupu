@@ -3,6 +3,7 @@ package com.robopupu.app.view;
 import android.os.Bundle;
 import android.support.annotation.StringRes;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -27,6 +28,7 @@ public abstract class CoordinatorLayoutFragment<T_Presenter extends FeaturePrese
 
     protected ActionBar mActionBar;
     protected AppBarLayout mAppBarLayout;
+    protected CoordinatorLayout mCoordinatorLayout;
     protected FloatingActionButton mFab;
     protected Toolbar mToolbar;
 
@@ -37,6 +39,8 @@ public abstract class CoordinatorLayoutFragment<T_Presenter extends FeaturePrese
     @Override
     protected void createBindings() {
         super.createBindings();
+
+        mCoordinatorLayout = getView(R.id.coordinator_layout);
 
         final AppCompatActivity activity = (AppCompatActivity) getActivity();
         mAppBarLayout = getView(R.id.app_bar_layout);

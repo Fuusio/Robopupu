@@ -425,7 +425,9 @@ public abstract class DependencyScope {
      */
     protected void dispose() {
 
-        for (final Object dependency : mDependencies.values()) {
+        final ArrayList<Object> dependencies = new ArrayList<>(mDependencies.values());
+
+        for (final Object dependency : dependencies) {
             if (PluginBus.isPlugged(dependency)) {
                 PluginBus.unplug(dependency);
             }
@@ -506,4 +508,23 @@ public abstract class DependencyScope {
         return null;
     }
 
+    /**
+     * Removes the given object from this {@link DependencyScope}.
+     * @param object The dependency to be removed as an {@link Object}.
+     */
+    public void removeDependency(Object object) {
+        final ArrayList<Class<?>> removedKeys = new ArrayList<>();
+
+        for (final Class<?> key : mDependencies.keySet()) {
+            if (object == mDependencies.get(key)) {
+                removedKeys.add(key);
+                break;
+            }
+        }
+
+        for (final Class<?> key : removedKeys) {
+            mDependencies.remove(key);
+        }
+        mDependants.remove(object);
+    }
 }

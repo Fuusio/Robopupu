@@ -1,6 +1,9 @@
 package com.robopupu.component;
 
 import android.content.Context;
+import android.support.annotation.ColorInt;
+import android.support.annotation.ColorRes;
+import android.support.annotation.IntegerRes;
 import android.support.annotation.StringRes;
 
 import com.robopupu.app.RobopupuApplication;
@@ -40,10 +43,24 @@ public interface AppManager extends Manager {
     String getAppVersionName();
 
     /**
+     * Gets the specified color value.
+     * @param colorResId A color resource id.
+     * @return The int value for the color.
+     */
+    @ColorInt int getColor(@ColorRes int colorResId);
+
+    /**
+     * Gets the specified integer ressource.
+     * @param intResId The resource id of the integer.
+     * @return An {@code int} value.
+     */
+    int getInteger(@IntegerRes int intResId);
+
+    /**
      * Gets the specified string resource formatted with the given optional arguments.
-     * @param resId The resource id of the string.
+     * @param stringResId The resource id of the string.
      * @param formatArgs Optional formatting arguments.
      * @return A {@link String}.
      */
-    String getString(@StringRes int resId, final Object... formatArgs);
+    String getString(@StringRes int stringResId, final Object... formatArgs);
 }

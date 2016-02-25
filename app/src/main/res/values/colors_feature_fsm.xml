@@ -1,6 +1,7 @@
 <resources>
 
-    <color name="color_trigger_normal">#30FF0000</color>
+    <color name="color_trigger_disabled">#50888888</color>
+    <color name="color_trigger_normal">#50FF0000</color>
     <color name="color_trigger_pressed">#A0FF0000</color>
 
 </resources>

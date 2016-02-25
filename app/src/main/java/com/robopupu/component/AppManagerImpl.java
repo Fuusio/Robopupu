@@ -2,7 +2,11 @@ package com.robopupu.component;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.support.annotation.ColorInt;
+import android.support.annotation.ColorRes;
+import android.support.annotation.IntegerRes;
 import android.support.annotation.StringRes;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import com.robopupu.app.RobopupuAppScope;
@@ -67,7 +71,17 @@ public class AppManagerImpl extends AbstractManager implements AppManager {
     }
 
     @Override
-    public String getString(final @StringRes int resId, final Object... formatArgs) {
-        return mApplication.getString(resId, formatArgs);
+    public @ColorInt int getColor(@ColorRes int colorResId) {
+        return ContextCompat.getColor(mApplication, colorResId);
+    }
+
+    @Override
+    public int getInteger(@IntegerRes int intResId) {
+        return mApplication.getResources().getInteger(intResId);
+    }
+
+    @Override
+    public String getString(final @StringRes int stringResId, final Object... formatArgs) {
+        return mApplication.getString(stringResId, formatArgs);
     }
 }

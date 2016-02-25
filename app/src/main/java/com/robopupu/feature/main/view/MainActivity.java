@@ -19,7 +19,6 @@ import org.fuusio.api.feature.FeatureDialogFragment;
 import org.fuusio.api.feature.FeatureFragment;
 import org.fuusio.api.mvp.PluginActivity;
 import org.fuusio.api.mvp.View;
-import org.fuusio.api.mvp.ViewDialogFragment;
 import org.fuusio.api.plugin.Plug;
 import org.fuusio.api.plugin.Plugin;
 
@@ -84,7 +83,7 @@ public class MainActivity extends PluginActivity<MainPresenter>
 
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 

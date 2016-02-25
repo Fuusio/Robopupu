@@ -39,6 +39,7 @@ public class AbstractPluginStateComponent extends AbstractPluginComponent
     private void init(final Params params) {
         mState.onCreate();
         onCreate(params);
+        mParams = params;
     }
 
     @Override
@@ -61,11 +62,15 @@ public class AbstractPluginStateComponent extends AbstractPluginComponent
 
     @Override
     public final void start() {
-        start(new Params());
+        start(null);
     }
 
     @Override
-    public void start(final Params params) {
+    public final void start(final Params params) {
+        if (isStopped() || isDestroyed()) {
+            throw new IllegalStateException("A stopped or destroyed feature cannot be resumed");
+        }
+
         if (mState.isDormant()) {
             init(params);
         }
@@ -75,15 +80,20 @@ public class AbstractPluginStateComponent extends AbstractPluginComponent
 
     @Override
     public void stop() {
-        mState.onStop();
-        PluginBus.unplug(this);
-        onStop();
+        if (!isStopped() && !isDestroyed()) {
+            mState.onStop();
+            PluginBus.unplug(this);
+            onStop();
+            destroy();
+        }
     }
 
     @Override
     public void destroy() {
-        mState.onDestroy();
-        onDestroy();
+        if (!isDestroyed()) {
+            mState.onDestroy();
+            onDestroy();
+        }
     }
 
     @Override

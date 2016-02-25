@@ -333,15 +333,11 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
     }
 
     @Override
-    public void onUnplugged(final PluginBus bus) {
-        if (mFeatureScope != null) {
-            D.disposeScope(this);
-        }
-    }
-
-    @Override
     @CallSuper
     public final void pause() {
+        if (isStopped() || isDestroyed()) {
+            throw new IllegalStateException("A stopped or destroyed feature cannot be paused");
+        }
         super.pause();
         mFeatureManager.onFeaturePaused(this);
     }
@@ -349,6 +345,9 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
     @Override
     @CallSuper
     public final void resume() {
+        if (isStopped() || isDestroyed()) {
+            throw new IllegalStateException("A stopped or destroyed feature cannot be resumed");
+        }
         super.resume();
         mFeatureManager.onFeatureResumed(this);
     }
@@ -366,7 +365,7 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
      * Finishes this {@link Feature}
      */
     @Override
-    public void finish() {
+    public final void finish() {
         stop();
     }
 

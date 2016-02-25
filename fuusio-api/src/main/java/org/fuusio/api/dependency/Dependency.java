@@ -209,19 +209,7 @@ public class Dependency {
      * @param owner A {@link DependencyScopeOwner}.
      */
     public static void deactivateScope(final DependencyScopeOwner owner) {
-
-        final DependencyScope scope = owner.getOwnedScope();
-
-        if (scope.isDisposable()) {
-            sDependencyScopes.remove(scope.getId());
-            scope.dispose();
-        }
-
-        scope.onDeactivated(owner);
-
-        if (scope == sActiveScope) {
-            sActiveScope = null;
-        }
+        disposeScope(owner);
     }
 
     /**
@@ -232,15 +220,17 @@ public class Dependency {
     public static void disposeScope(final DependencyScopeOwner owner) {
         final DependencyScope scope = owner.getOwnedScope();
 
-        if (scope.isDisposable()) {
-            sDependencyScopes.remove(scope.getId());
-            scope.dispose();
-        }
+        if (sDependencyScopes.containsKey(scope.getId())) {
+            if (scope.isDisposable()) {
+                sDependencyScopes.remove(scope.getId());
+                scope.dispose();
+            }
 
-        scope.onDeactivated(owner);
+            scope.onDeactivated(owner);
 
-        if (scope == sActiveScope) {
-            sActiveScope = null;
+            if (scope == sActiveScope) {
+                sActiveScope = null;
+            }
         }
     }
 

@@ -1,192 +1,248 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/coordinator_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".app.MainActivity"
+    tools:context="com.robopupu.feature.about.view.AboutFragment"
     android:background="@android:color/white">
 
-    <ImageView
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
-        android:layout_height="260dp"
-        android:id="@+id/image_view_state_machine"
-        android:src="@drawable/img_fsm_stopped"
-        android:foregroundGravity="top"
-        android:scaleType="fitStart"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_height="@dimen/app_bar_height"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        android:fitsSystemWindows="true">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="START Statemachine"
-        android:id="@+id/button_start"
-        android:layout_marginTop="8dp"
-        android:layout_below="@+id/image_view_state_machine"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="24dp"
-        android:layout_marginRight="24dp" />
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/collapsing_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            app:contentScrim="?attr/colorPrimary"
+            app:expandedTitleMarginEnd="64dp"
+            app:expandedTitleMarginStart="48dp"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="STOP STATEMACHINE"
-        android:id="@+id/button_stop"
-        android:layout_below="@+id/button_start"
-        android:layout_alignLeft="@+id/button_start"
-        android:layout_alignStart="@+id/button_start"
-        android:layout_marginTop="8dp"
-        android:layout_alignRight="@+id/button_start"
-        android:layout_alignEnd="@+id/button_start"
-        android:enabled="false" />
+            <ImageView
+                android:id="@+id/image_view_backdrop"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:fitsSystemWindows="true"
+                app:layout_collapseMode="parallax" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="RESET STATEMACHINE"
-        android:id="@+id/button_reset"
-        android:layout_below="@+id/button_stop"
-        android:layout_marginTop="8dp"
-        android:layout_alignLeft="@+id/button_stop"
-        android:layout_alignStart="@+id/button_stop"
-        android:layout_alignRight="@+id/button_stop"
-        android:layout_alignEnd="@+id/button_stop"
-        android:enabled="false" />
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                app:layout_collapseMode="pin" />
 
-    <ImageButton
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:id="@+id/image_button_to_b_from_a"
-        android:layout_marginLeft="88dp"
-        android:layout_marginStart="88dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/selector_trigger_button"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/image_button_to_self"
-        android:layout_toEndOf="@+id/image_button_to_self" />
+        </android.support.design.widget.CollapsingToolbarLayout>
+    </android.support.design.widget.AppBarLayout>
 
-    <ImageButton
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:id="@+id/image_button_to_self"
-        android:background="@drawable/selector_trigger_button"
-        android:layout_marginTop="5dp"
-        android:layout_below="@+id/image_button_to_b_from_a"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="20dp"
-        android:layout_marginStart="20dp" />
-
-    <ImageButton
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:id="@+id/image_button_to_b_from_c"
-        android:background="@drawable/selector_trigger_button"
-        android:layout_marginRight="24dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginTop="13dp"
-        android:layout_alignTop="@+id/image_button_to_self"
-        android:layout_alignRight="@+id/image_button_to_b_from_a"
-        android:layout_alignEnd="@+id/image_button_to_b_from_a" />
-
-    <ImageButton
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:id="@+id/image_button_to_c_or_d"
-        android:background="@drawable/selector_trigger_button"
-        android:layout_alignTop="@+id/image_button_to_b3"
-        android:layout_alignLeft="@+id/image_button_to_b_from_a"
-        android:layout_alignStart="@+id/image_button_to_b_from_a"
-        android:layout_marginTop="27dp" />
-
-    <ImageButton
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:id="@+id/image_button_to_b1"
-        android:background="@drawable/selector_trigger_button"
-        android:layout_marginLeft="38dp"
-        android:layout_marginStart="38dp"
-        android:layout_marginTop="7dp"
-        android:layout_alignTop="@+id/image_button_to_c_or_d"
-        android:layout_toRightOf="@+id/image_button_to_c_or_d"
-        android:layout_toEndOf="@+id/image_button_to_c_or_d" />
-
-    <ImageButton
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:id="@+id/image_button_b2_from_b1"
-        android:background="@drawable/selector_trigger_button"
-        android:layout_marginLeft="35dp"
-        android:layout_marginStart="35dp"
-        android:layout_marginBottom="8dp"
-        android:layout_alignBottom="@+id/image_button_to_self"
-        android:layout_toRightOf="@+id/image_button_to_b1"
-        android:layout_toEndOf="@+id/image_button_to_b1" />
-
-    <ImageButton
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:id="@+id/image_button_to_b3"
-        android:background="@drawable/selector_trigger_button"
-        android:layout_marginTop="6dp"
-        android:layout_below="@+id/image_button_to_b_from_c"
-        android:layout_alignLeft="@+id/image_button_b2_from_b1"
-        android:layout_alignStart="@+id/image_button_b2_from_b1" />
-
-    <ImageButton
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:id="@+id/image_button_to_b2_from_b3"
-        android:background="@drawable/selector_trigger_button"
-        android:layout_marginRight="5dp"
-        android:layout_marginEnd="5dp"
-        android:layout_below="@+id/image_button_to_c_or_d"
-        android:layout_alignRight="@+id/button_start"
-        android:layout_alignEnd="@+id/button_start" />
-
-    <ImageButton
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:id="@+id/image_button_to_b_from_d"
-        android:background="@drawable/selector_trigger_button"
-        android:layout_marginRight="11dp"
-        android:layout_marginEnd="11dp"
-        android:layout_below="@+id/image_button_to_b1"
-        android:layout_alignRight="@+id/image_button_to_c_or_d"
-        android:layout_alignEnd="@+id/image_button_to_c_or_d"
-        android:layout_marginTop="21dp" />
-
-
-
-    <RadioGroup
-        android:id="@+id/radio_group"
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/button_reset"
-        android:layout_marginTop="8dp"
-        android:layout_alignLeft="@+id/button_reset"
-        android:layout_alignStart="@+id/button_reset"
-        android:layout_marginRight="24dp">
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="SELECT C STATE"
-            android:id="@+id/radio_button_select_c"
-            android:checked="true" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/white">
 
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="SELECT D STATE"
-            android:id="@+id/radio_button_select_d"
-            android:layout_marginTop="8dp"
-            android:checked="false" />
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="260dp"
+                android:id="@+id/image_view_state_machine"
+                android:src="@drawable/img_fsm_stopped"
+                android:foregroundGravity="top"
+                android:scaleType="fitStart"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
 
-    </RadioGroup>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/feature_fsm_demo_action_start_statemachine"
+                android:id="@+id/button_start"
+                android:layout_marginTop="8dp"
+                android:layout_below="@+id/image_view_state_machine"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginLeft="24dp"
+                android:layout_marginRight="24dp" />
 
-</RelativeLayout>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/feature_fsm_demo_action_stop_statemachine"
+                android:id="@+id/button_stop"
+                android:layout_below="@+id/button_start"
+                android:layout_alignLeft="@+id/button_start"
+                android:layout_alignStart="@+id/button_start"
+                android:layout_marginTop="8dp"
+                android:layout_alignRight="@+id/button_start"
+                android:layout_alignEnd="@+id/button_start"
+                android:enabled="false" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/feature_fsm_demo_action_reset_statemachine"
+                android:id="@+id/button_reset"
+                android:layout_below="@+id/button_stop"
+                android:layout_marginTop="8dp"
+                android:layout_alignLeft="@+id/button_stop"
+                android:layout_alignStart="@+id/button_stop"
+                android:layout_alignRight="@+id/button_stop"
+                android:layout_alignEnd="@+id/button_stop"
+                android:enabled="false" />
+
+            <ImageButton
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:id="@+id/image_button_to_b_from_a"
+                android:layout_marginLeft="88dp"
+                android:layout_marginStart="88dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/selector_trigger_button"
+                android:layout_alignParentTop="true"
+                android:layout_toRightOf="@+id/image_button_to_self"
+                android:layout_toEndOf="@+id/image_button_to_self" />
+
+            <ImageButton
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:id="@+id/image_button_to_self"
+                android:background="@drawable/selector_trigger_button"
+                android:layout_marginTop="5dp"
+                android:layout_below="@+id/image_button_to_b_from_a"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginLeft="20dp"
+                android:layout_marginStart="20dp" />
+
+            <ImageButton
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:id="@+id/image_button_to_b_from_c"
+                android:background="@drawable/selector_trigger_button"
+                android:layout_marginRight="24dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginTop="13dp"
+                android:layout_alignTop="@+id/image_button_to_self"
+                android:layout_alignRight="@+id/image_button_to_b_from_a"
+                android:layout_alignEnd="@+id/image_button_to_b_from_a" />
+
+            <ImageButton
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:id="@+id/image_button_to_c_or_d"
+                android:background="@drawable/selector_trigger_button"
+                android:layout_alignTop="@+id/image_button_to_b3"
+                android:layout_alignLeft="@+id/image_button_to_b_from_a"
+                android:layout_alignStart="@+id/image_button_to_b_from_a"
+                android:layout_marginTop="27dp" />
+
+            <ImageButton
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:id="@+id/image_button_to_b1"
+                android:background="@drawable/selector_trigger_button"
+                android:layout_marginLeft="38dp"
+                android:layout_marginStart="38dp"
+                android:layout_marginTop="7dp"
+                android:layout_alignTop="@+id/image_button_to_c_or_d"
+                android:layout_toRightOf="@+id/image_button_to_c_or_d"
+                android:layout_toEndOf="@+id/image_button_to_c_or_d" />
+
+            <ImageButton
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:id="@+id/image_button_b2_from_b1"
+                android:background="@drawable/selector_trigger_button"
+                android:layout_marginLeft="35dp"
+                android:layout_marginStart="35dp"
+                android:layout_marginBottom="8dp"
+                android:layout_alignBottom="@+id/image_button_to_self"
+                android:layout_toRightOf="@+id/image_button_to_b1"
+                android:layout_toEndOf="@+id/image_button_to_b1" />
+
+            <ImageButton
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:id="@+id/image_button_to_b3"
+                android:background="@drawable/selector_trigger_button"
+                android:layout_marginTop="6dp"
+                android:layout_below="@+id/image_button_to_b_from_c"
+                android:layout_alignLeft="@+id/image_button_b2_from_b1"
+                android:layout_alignStart="@+id/image_button_b2_from_b1" />
+
+            <ImageButton
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:id="@+id/image_button_to_b2_from_b3"
+                android:background="@drawable/selector_trigger_button"
+                android:layout_marginRight="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_below="@+id/image_button_to_c_or_d"
+                android:layout_alignRight="@+id/button_start"
+                android:layout_alignEnd="@+id/button_start" />
+
+            <ImageButton
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:id="@+id/image_button_to_b_from_d"
+                android:background="@drawable/selector_trigger_button"
+                android:layout_marginRight="11dp"
+                android:layout_marginEnd="11dp"
+                android:layout_below="@+id/image_button_to_b1"
+                android:layout_alignRight="@+id/image_button_to_c_or_d"
+                android:layout_alignEnd="@+id/image_button_to_c_or_d"
+                android:layout_marginTop="21dp" />
+
+
+
+            <RadioGroup
+                android:id="@+id/radio_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/button_reset"
+                android:layout_marginTop="8dp"
+                android:layout_alignLeft="@+id/button_reset"
+                android:layout_alignStart="@+id/button_reset"
+                android:layout_marginRight="24dp">
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/feature_fsm_demo_choice_select_state_c"
+                    android:id="@+id/radio_button_select_c"
+                    android:checked="true" />
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/feature_fsm_demo_choice_select_state_d"
+                    android:id="@+id/radio_button_select_d"
+                    android:layout_marginTop="8dp"
+                    android:checked="false" />
+
+            </RadioGroup>
+
+        </RelativeLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
+</android.support.design.widget.CoordinatorLayout>
+
+
+
+

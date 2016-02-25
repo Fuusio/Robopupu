@@ -19,6 +19,7 @@ import org.fuusio.api.dependency.D;
 import org.fuusio.api.dependency.Dependency;
 import org.fuusio.api.dependency.DependencyScope;
 import org.fuusio.api.dependency.DependencyScopeOwner;
+import org.fuusio.api.dependency.Scopeable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -261,13 +262,21 @@ public class PluginBus {
             if (plugin instanceof PluginStateComponent) {
                 final PluginStateComponent stateComponent = (PluginStateComponent)component;
                 stateComponent.stop();
-                stateComponent.destroy();
             }
         }
 
         if (plugin instanceof DependencyScopeOwner) {
             final DependencyScopeOwner owner = (DependencyScopeOwner)plugin;
             Dependency.disposeScope(owner);
+        }
+
+        if (plugin instanceof Scopeable) {
+            final Scopeable scopeable = (Scopeable) plugin;
+            final DependencyScope scope = scopeable.getScope();
+
+            if (scope != null) {
+                scope.removeDependency(plugin);
+            }
         }
     }
 

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="feature_fsm_demo_title">FSM Demo</string>
+
+    <string name="feature_fsm_demo_action_start_statemachine">Start Statemachine</string>
+    <string name="feature_fsm_demo_action_stop_statemachine">Stop Statemachine</string>
+    <string name="feature_fsm_demo_action_reset_statemachine">Reset Statemachine</string>
+
+    <string name="feature_fsm_demo_choice_select_state_c">Select State C</string>
+    <string name="feature_fsm_demo_choice_select_state_d">Select State D</string>
+
+</resources>

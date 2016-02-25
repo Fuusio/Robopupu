@@ -1,6 +1,7 @@
 package com.robopupu.feature.fsm.presenter;
 
 import android.os.Handler;
+import android.os.Looper;
 
 import com.robopupu.R;
 import com.robopupu.feature.fsm.statemachine.Controller;
@@ -55,7 +56,6 @@ public class FsmDemoPresenterImpl extends AbstractFeaturePresenter<FsmDemoView>
         super.onViewStart(view);
 
         mSelector = 1;
-
         mController = new Controller(this);
         mStateMachine = new SimpleStateMachine(mController);
     }
@@ -163,8 +163,11 @@ public class FsmDemoPresenterImpl extends AbstractFeaturePresenter<FsmDemoView>
         final State currentState = mStateMachine.getCurrentState();
 
         if (currentState instanceof State_A) {
+            mView.setEnabledTriggers(TransitionId.TO_B_FROM_A);
             mView.setStateMachineImage(R.drawable.img_state_a);
         } else if (currentState instanceof State_B1) {
+            mView.setEnabledTriggers(TransitionId.TO_B2_FROM_B1, TransitionId.TO_C_OR_D);
+
             if (transitionId == TransitionId.TO_B_FROM_A) {
                 final int[] sequence = {R.drawable.img_state_b, R.drawable.img_initial_state_b, R.drawable.img_state_b1};
                 new Sequencer(sequence).start();
@@ -175,6 +178,8 @@ public class FsmDemoPresenterImpl extends AbstractFeaturePresenter<FsmDemoView>
                 mView.setStateMachineImage(R.drawable.img_state_b1);
             }
         } else if (currentState instanceof State_B2) {
+            mView.setEnabledTriggers(TransitionId.TO_B3, TransitionId.TO_C_OR_D);
+
             if (transitionId == TransitionId.TO_B_FROM_C) {
                 final int[] sequence = {R.drawable.img_state_b, R.drawable.img_history_point, R.drawable.img_state_b2};
                 new Sequencer(sequence).start();
@@ -182,6 +187,8 @@ public class FsmDemoPresenterImpl extends AbstractFeaturePresenter<FsmDemoView>
                 mView.setStateMachineImage(R.drawable.img_state_b2);
             }
         } else if (currentState instanceof State_B3) {
+            mView.setEnabledTriggers(TransitionId.TO_B1, TransitionId.TO_B2_FROM_B3, TransitionId.TO_C_OR_D);
+
             if (transitionId == TransitionId.TO_B_FROM_D) {
                 final int[] sequence = {R.drawable.img_state_b, R.drawable.img_entry_point, R.drawable.img_state_b3};
                 new Sequencer(sequence).start();
@@ -192,9 +199,13 @@ public class FsmDemoPresenterImpl extends AbstractFeaturePresenter<FsmDemoView>
                 mView.setStateMachineImage(R.drawable.img_state_b3);
             }
         } else if (currentState instanceof State_C) {
+            mView.setEnabledTriggers(TransitionId.TO_SELF, TransitionId.TO_B_FROM_C);
+
             final int[] sequence = {R.drawable.img_choice_point, R.drawable.img_state_c};
             new Sequencer(sequence).start();
         } else if (currentState instanceof State_D) {
+            mView.setEnabledTriggers(TransitionId.TO_B_FROM_D);
+
             final int[] sequence = {R.drawable.img_choice_point, R.drawable.img_state_d};
             new Sequencer(sequence).start();
         }
@@ -209,7 +220,7 @@ public class FsmDemoPresenterImpl extends AbstractFeaturePresenter<FsmDemoView>
 
         public Sequencer(final int[] imageSequence) {
             mImageSequence = imageSequence;
-            mHandler = new Handler();
+            mHandler = new Handler(Looper.getMainLooper());
         }
 
         public void start() {
@@ -233,5 +244,4 @@ public class FsmDemoPresenterImpl extends AbstractFeaturePresenter<FsmDemoView>
     public void showMessage(final String message) {
         mView.showMessage(message);
     }
-
 }

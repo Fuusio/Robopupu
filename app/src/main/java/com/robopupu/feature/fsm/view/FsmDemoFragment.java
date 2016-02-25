@@ -3,7 +3,8 @@ package com.robopupu.feature.fsm.view;
 
 import android.os.Bundle;
 import android.support.annotation.DrawableRes;
-import android.support.v4.app.Fragment;
+import android.support.annotation.IdRes;
+import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,33 +13,71 @@ import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.robopupu.R;
+import com.robopupu.app.view.CoordinatorLayoutFragment;
+import com.robopupu.component.AppManager;
 import com.robopupu.feature.fsm.presenter.FsmDemoPresenter;
 import com.robopupu.feature.fsm.presenter.FsmDemoPresenter.TransitionId;
 
 import org.fuusio.api.dependency.Provides;
-import org.fuusio.api.feature.FeatureFragment;
 import org.fuusio.api.plugin.Plug;
 import org.fuusio.api.plugin.Plugin;
 
 @Plugin
-public class FsmDemoFragment extends FeatureFragment<FsmDemoPresenter> implements FsmDemoView {
+public class FsmDemoFragment extends CoordinatorLayoutFragment<FsmDemoPresenter> implements FsmDemoView {
+
+    enum TriggerButtonInfo {
+        TO_B_FROM_A(R.id.image_button_to_b_from_a, 355, 63),
+        TO_B_FROM_C(R.id.image_button_to_b_from_c, 298,173),
+        TO_B_FROM_D(R.id.image_button_to_b_from_d, 326,468),
+        TO_C_OR_D(R.id.image_button_to_c_or_d, 352, 324),
+        TO_SELF(R.id.image_button_to_self, 85,149),
+        TO_B1(R.id.image_button_to_b1, 518, 344),
+        TO_B2_FROM_B1(R.id.image_button_b2_from_b1, 665, 121),
+        TO_B2_FROM_B3(R.id.image_button_to_b2_from_b3, 825, 404),
+        TO_B3(R.id.image_button_to_b3, 673, 258);
+
+        private final @IdRes int mId;
+        private final float mX;
+        private final float mY;
+
+        TriggerButtonInfo(@IdRes final int id, final float x, final float y) {
+            mId = id;
+            mX = x;
+            mY = y;
+        }
+
+        public @IdRes int getId() {
+            return mId;
+        }
+
+        public float getX() {
+            return mX;
+        }
+
+        public float getY() {
+            return mY;
+        }
+    }
+
+    private final ImageButton[] mImageButtons;
 
     private ImageView mStateMachineImageView;
-
     private Button mResetButton;
     private Button mStopButton;
     private Button mStartButton;
-
     private RadioButton mSelectCRadioButton;
     private RadioButton mSelectDRadioButton;
 
+    @Plug AppManager mAppManager;
     @Plug FsmDemoPresenter mPresenter;
 
     @Provides(FsmDemoView.class)
     public FsmDemoFragment() {
+        super(R.string.feature_fsm_demo_title);
+        mImageButtons = new ImageButton[TriggerButtonInfo.values().length];
     }
 
     @Override
@@ -103,78 +142,29 @@ public class FsmDemoFragment extends FeatureFragment<FsmDemoPresenter> implement
             }
         });
 
-        final ImageButton imageButton_To_B2_From_B1 = getView(R.id.image_button_b2_from_b1);
-        final ImageButton imageButton_To_B1 = getView(R.id.image_button_to_b1);
-        final ImageButton imageButton_To_B2_From_B3 = getView(R.id.image_button_to_b2_from_b3);
-        final ImageButton imageButton_To_B3 = getView(R.id.image_button_to_b3);
-        final ImageButton imageButton_To_B_From_A = getView(R.id.image_button_to_b_from_a);
-        final ImageButton imageButton_To_B_From_C = getView(R.id.image_button_to_b_from_c);
-        final ImageButton imageButton_To_B_From_D = getView(R.id.image_button_to_b_from_d);
-        final ImageButton imageButton_To_C_Or_D = getView(R.id.image_button_to_c_or_d);
-        final ImageButton imageButton_To_Self = getView(R.id.image_button_to_self);
+        final float left = mStateMachineImageView.getLeft();
+        final float top = mStateMachineImageView.getTop();
+        final float imageViewWidth = mStateMachineImageView.getWidth();
+        final float imageViewHeight = mStateMachineImageView.getHeight();
+        final float imageWidth = 939;
+        final float imageHeight = 524;
+        
+        for (final TriggerButtonInfo info : TriggerButtonInfo.values()) {
+            final ImageButton imageButton = getView(info.getId());
+            final int index = info.ordinal();
 
-        imageButton_To_B2_From_B1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mPresenter.onTransitionClicked(TransitionId.TO_B2_FROM_B1);
-            }
-        });
+            imageButton.setEnabled(false);
+            imageButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mPresenter.onTransitionClicked(TransitionId.values()[index]);
+                }
+            });
 
-        imageButton_To_B1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mPresenter.onTransitionClicked(TransitionId.TO_B1);
-            }
-        });
-
-        imageButton_To_B2_From_B3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mPresenter.onTransitionClicked(TransitionId.TO_B2_FROM_B3);
-            }
-        });
-
-        imageButton_To_B3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mPresenter.onTransitionClicked(TransitionId.TO_B3);
-            }
-        });
-
-        imageButton_To_B_From_A.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mPresenter.onTransitionClicked(TransitionId.TO_B_FROM_A);
-            }
-        });
-
-        imageButton_To_B_From_C.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mPresenter.onTransitionClicked(FsmDemoPresenter.TransitionId.TO_B_FROM_C);
-            }
-        });
-
-        imageButton_To_B_From_D.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mPresenter.onTransitionClicked(TransitionId.TO_B_FROM_D);
-            }
-        });
-
-        imageButton_To_C_Or_D.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mPresenter.onTransitionClicked(TransitionId.TO_C_OR_D);
-            }
-        });
-
-        imageButton_To_Self.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mPresenter.onTransitionClicked(TransitionId.TO_SELF);
-            }
-        });
+            mImageButtons[index] = imageButton;
+            imageButton.setTranslationX(left + imageViewWidth * info.getX() / imageWidth);
+            imageButton.setTranslationY(top + imageViewHeight * info.getY() / imageHeight);
+        }
     }
 
     @Override
@@ -184,6 +174,7 @@ public class FsmDemoFragment extends FeatureFragment<FsmDemoPresenter> implement
 
     @Override
     public void setStartButtonEnabled(final boolean enabled) {
+        enableTrigger(TransitionId.TO_B_FROM_A);
         mStartButton.setEnabled(enabled);
     }
 
@@ -199,11 +190,43 @@ public class FsmDemoFragment extends FeatureFragment<FsmDemoPresenter> implement
 
     @Override
     public void showMessage(final String message) {
-        // TODO Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        final Snackbar snackbar = Snackbar.make(mCoordinatorLayout, message, Snackbar.LENGTH_LONG);
+        final View snackbarView = snackbar.getView();
+        snackbarView.setBackgroundColor(mAppManager.getColor(R.color.primary));
+        final TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
+        textView.setTextColor(mAppManager.getColor(R.color.white_text));
+        snackbar.show();
     }
 
     @Override
     public void resetView() {
         mSelectCRadioButton.setSelected(true);
+
+        for (final TransitionId id : TransitionId.values()) {
+            disableTrigger(id);
+        }
+
+        enableTrigger(TransitionId.TO_B_FROM_A);
+    }
+
+    @Override
+    public void disableTrigger(final TransitionId id) {
+        mImageButtons[id.ordinal()].setEnabled(false);
+    }
+
+    @Override
+    public void enableTrigger(final TransitionId id) {
+        mImageButtons[id.ordinal()].setEnabled(true);
+    }
+
+    @Override
+    public void setEnabledTriggers(final TransitionId... ids) {
+        for (final TransitionId id : TransitionId.values()) {
+            disableTrigger(id);
+        }
+
+        for (final TransitionId id : ids) {
+            enableTrigger(id);
+        }
     }
 }
