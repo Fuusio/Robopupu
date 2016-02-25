@@ -24,7 +24,8 @@
             app:contentScrim="?attr/colorPrimary"
             app:expandedTitleMarginEnd="64dp"
             app:expandedTitleMarginStart="48dp"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            android:background="@color/accent">
 
             <ImageView
                 android:id="@+id/image_view_backdrop"
@@ -50,6 +51,7 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <RelativeLayout
+            android:id="@+id/relative_layout_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@android:color/white">
@@ -63,7 +65,8 @@
                 android:scaleType="fitStart"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true" />
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="24dp" />
 
             <Button
                 android:layout_width="wrap_content"
@@ -109,105 +112,73 @@
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:id="@+id/image_button_to_b_from_a"
-                android:layout_marginLeft="88dp"
-                android:layout_marginStart="88dp"
-                android:layout_marginTop="10dp"
                 android:background="@drawable/selector_trigger_button"
                 android:layout_alignParentTop="true"
-                android:layout_toRightOf="@+id/image_button_to_self"
-                android:layout_toEndOf="@+id/image_button_to_self" />
+                android:layout_alignParentLeft="true" />
 
             <ImageButton
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:id="@+id/image_button_to_self"
                 android:background="@drawable/selector_trigger_button"
-                android:layout_marginTop="5dp"
-                android:layout_below="@+id/image_button_to_b_from_a"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_marginLeft="20dp"
-                android:layout_marginStart="20dp" />
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"/>
 
             <ImageButton
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:id="@+id/image_button_to_b_from_c"
                 android:background="@drawable/selector_trigger_button"
-                android:layout_marginRight="24dp"
-                android:layout_marginEnd="24dp"
-                android:layout_marginTop="13dp"
-                android:layout_alignTop="@+id/image_button_to_self"
-                android:layout_alignRight="@+id/image_button_to_b_from_a"
-                android:layout_alignEnd="@+id/image_button_to_b_from_a" />
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"/>
 
             <ImageButton
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:id="@+id/image_button_to_c_or_d"
                 android:background="@drawable/selector_trigger_button"
-                android:layout_alignTop="@+id/image_button_to_b3"
-                android:layout_alignLeft="@+id/image_button_to_b_from_a"
-                android:layout_alignStart="@+id/image_button_to_b_from_a"
-                android:layout_marginTop="27dp" />
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"/>
 
             <ImageButton
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:id="@+id/image_button_to_b1"
                 android:background="@drawable/selector_trigger_button"
-                android:layout_marginLeft="38dp"
-                android:layout_marginStart="38dp"
-                android:layout_marginTop="7dp"
-                android:layout_alignTop="@+id/image_button_to_c_or_d"
-                android:layout_toRightOf="@+id/image_button_to_c_or_d"
-                android:layout_toEndOf="@+id/image_button_to_c_or_d" />
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"/>
 
             <ImageButton
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:id="@+id/image_button_b2_from_b1"
                 android:background="@drawable/selector_trigger_button"
-                android:layout_marginLeft="35dp"
-                android:layout_marginStart="35dp"
-                android:layout_marginBottom="8dp"
-                android:layout_alignBottom="@+id/image_button_to_self"
-                android:layout_toRightOf="@+id/image_button_to_b1"
-                android:layout_toEndOf="@+id/image_button_to_b1" />
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"/>
 
             <ImageButton
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:id="@+id/image_button_to_b3"
                 android:background="@drawable/selector_trigger_button"
-                android:layout_marginTop="6dp"
-                android:layout_below="@+id/image_button_to_b_from_c"
-                android:layout_alignLeft="@+id/image_button_b2_from_b1"
-                android:layout_alignStart="@+id/image_button_b2_from_b1" />
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"/>
 
             <ImageButton
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:id="@+id/image_button_to_b2_from_b3"
                 android:background="@drawable/selector_trigger_button"
-                android:layout_marginRight="5dp"
-                android:layout_marginEnd="5dp"
-                android:layout_below="@+id/image_button_to_c_or_d"
-                android:layout_alignRight="@+id/button_start"
-                android:layout_alignEnd="@+id/button_start" />
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"/>
 
             <ImageButton
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:id="@+id/image_button_to_b_from_d"
                 android:background="@drawable/selector_trigger_button"
-                android:layout_marginRight="11dp"
-                android:layout_marginEnd="11dp"
-                android:layout_below="@+id/image_button_to_b1"
-                android:layout_alignRight="@+id/image_button_to_c_or_d"
-                android:layout_alignEnd="@+id/image_button_to_c_or_d"
-                android:layout_marginTop="21dp" />
-
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"/>
 
 
             <RadioGroup

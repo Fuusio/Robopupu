@@ -8,7 +8,6 @@ import com.robopupu.feature.fsm.statemachine.Controller;
 import com.robopupu.feature.fsm.statemachine.SimpleStateMachine;
 import com.robopupu.feature.fsm.statemachine.State;
 import com.robopupu.feature.fsm.statemachine.State_A;
-import com.robopupu.feature.fsm.statemachine.State_B;
 import com.robopupu.feature.fsm.statemachine.State_B1;
 import com.robopupu.feature.fsm.statemachine.State_B2;
 import com.robopupu.feature.fsm.statemachine.State_B3;
@@ -30,6 +29,7 @@ public class FsmDemoPresenterImpl extends AbstractFeaturePresenter<FsmDemoView>
 
     private SimpleStateMachine mStateMachine;
     private Controller mController;
+    private String mPendingMessage;
     private State mStateEngine;
     private TriggerEvents mTriggerEvents;
     private int mSelector;
@@ -164,7 +164,8 @@ public class FsmDemoPresenterImpl extends AbstractFeaturePresenter<FsmDemoView>
 
         if (currentState instanceof State_A) {
             mView.setEnabledTriggers(TransitionId.TO_B_FROM_A);
-            mView.setStateMachineImage(R.drawable.img_state_a);
+            final int[] sequence = {R.drawable.img_state_a};
+            new Sequencer(sequence).start();
         } else if (currentState instanceof State_B1) {
             mView.setEnabledTriggers(TransitionId.TO_B2_FROM_B1, TransitionId.TO_C_OR_D);
 
@@ -175,7 +176,8 @@ public class FsmDemoPresenterImpl extends AbstractFeaturePresenter<FsmDemoView>
                 final int[] sequence = {R.drawable.img_state_b, R.drawable.img_history_point, R.drawable.img_state_b1};
                 new Sequencer(sequence).start();
             } else {
-                mView.setStateMachineImage(R.drawable.img_state_b1);
+                final int[] sequence = {R.drawable.img_state_b1};
+                new Sequencer(sequence).start();
             }
         } else if (currentState instanceof State_B2) {
             mView.setEnabledTriggers(TransitionId.TO_B3, TransitionId.TO_C_OR_D);
@@ -184,7 +186,8 @@ public class FsmDemoPresenterImpl extends AbstractFeaturePresenter<FsmDemoView>
                 final int[] sequence = {R.drawable.img_state_b, R.drawable.img_history_point, R.drawable.img_state_b2};
                 new Sequencer(sequence).start();
             } else {
-                mView.setStateMachineImage(R.drawable.img_state_b2);
+                final int[] sequence = {R.drawable.img_state_b2};
+                new Sequencer(sequence).start();
             }
         } else if (currentState instanceof State_B3) {
             mView.setEnabledTriggers(TransitionId.TO_B1, TransitionId.TO_B2_FROM_B3, TransitionId.TO_C_OR_D);
@@ -196,16 +199,15 @@ public class FsmDemoPresenterImpl extends AbstractFeaturePresenter<FsmDemoView>
                 final int[] sequence = {R.drawable.img_state_b, R.drawable.img_history_point, R.drawable.img_state_b3};
                 new Sequencer(sequence).start();
             } else {
-                mView.setStateMachineImage(R.drawable.img_state_b3);
+                final int[] sequence = {R.drawable.img_state_b3};
+                new Sequencer(sequence).start();
             }
         } else if (currentState instanceof State_C) {
             mView.setEnabledTriggers(TransitionId.TO_SELF, TransitionId.TO_B_FROM_C);
-
             final int[] sequence = {R.drawable.img_choice_point, R.drawable.img_state_c};
             new Sequencer(sequence).start();
         } else if (currentState instanceof State_D) {
             mView.setEnabledTriggers(TransitionId.TO_B_FROM_D);
-
             final int[] sequence = {R.drawable.img_choice_point, R.drawable.img_state_d};
             new Sequencer(sequence).start();
         }
@@ -237,11 +239,16 @@ public class FsmDemoPresenterImpl extends AbstractFeaturePresenter<FsmDemoView>
                         next();
                     }
                 }, 1000);
+            } else {
+                if (mPendingMessage != null) {
+                    mView.showMessage(mPendingMessage);
+                    mPendingMessage = null;
+                }
             }
         }
     }
 
     public void showMessage(final String message) {
-        mView.showMessage(message);
+        mPendingMessage = message;
     }
 }

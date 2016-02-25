@@ -283,7 +283,7 @@ public abstract class StateEngine<T_State extends StateEngine> {
                 currentState.exit(newState);
             }
 
-            newState.onEnter();
+            // newState.onEnter();
 
             return (T_State) newState.enter(entryPoint);
         } else {

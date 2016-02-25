@@ -64,6 +64,8 @@ public class FsmDemoFragment extends CoordinatorLayoutFragment<FsmDemoPresenter>
 
     private final ImageButton[] mImageButtons;
 
+    private ViewGroup mContentViewGroup;
+    private boolean mTriggerButtonPositionsInitialised;
     private ImageView mStateMachineImageView;
     private Button mResetButton;
     private Button mStopButton;
@@ -90,11 +92,22 @@ public class FsmDemoFragment extends CoordinatorLayoutFragment<FsmDemoPresenter>
         return inflater.inflate(R.layout.fragment_fsm_demo, container, false);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     protected void createBindings() {
         super.createBindings();
 
+        mContentViewGroup = getView(R.id.relative_layout_content);
         mStateMachineImageView = getView(R.id.image_view_state_machine);
+
+        mStateMachineImageView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(View view, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                if (right > 0 && !mTriggerButtonPositionsInitialised) {
+                    initialiseTriggerButtonsPositions();
+                }
+            }
+        });
 
         mResetButton = getView(R.id.button_reset);
         mStopButton = getView(R.id.button_stop);
@@ -142,13 +155,6 @@ public class FsmDemoFragment extends CoordinatorLayoutFragment<FsmDemoPresenter>
             }
         });
 
-        final float left = mStateMachineImageView.getLeft();
-        final float top = mStateMachineImageView.getTop();
-        final float imageViewWidth = mStateMachineImageView.getWidth();
-        final float imageViewHeight = mStateMachineImageView.getHeight();
-        final float imageWidth = 939;
-        final float imageHeight = 524;
-        
         for (final TriggerButtonInfo info : TriggerButtonInfo.values()) {
             final ImageButton imageButton = getView(info.getId());
             final int index = info.ordinal();
@@ -162,8 +168,29 @@ public class FsmDemoFragment extends CoordinatorLayoutFragment<FsmDemoPresenter>
             });
 
             mImageButtons[index] = imageButton;
-            imageButton.setTranslationX(left + imageViewWidth * info.getX() / imageWidth);
-            imageButton.setTranslationY(top + imageViewHeight * info.getY() / imageHeight);
+        }
+    }
+
+    private void initialiseTriggerButtonsPositions() {
+
+        mTriggerButtonPositionsInitialised = true;
+
+        final float left = mStateMachineImageView.getLeft();
+        final float top = mStateMachineImageView.getTop();
+        final float imageViewWidth = mStateMachineImageView.getWidth();
+        final float imageViewHeight = imageViewWidth * 524 / 939;
+        final float imageWidth = 939;
+        final float imageHeight = 524;
+        final float offset = -40 * imageViewWidth / imageWidth;
+
+        for (final TriggerButtonInfo info : TriggerButtonInfo.values()) {
+            final int index = info.ordinal();
+            final ImageButton imageButton =  mImageButtons[index];
+            final float x = left + offset + imageViewWidth * info.getX() / imageWidth;
+            final float y = top + offset + imageViewHeight * info.getY() / imageHeight;
+
+            imageButton.setTranslationX(x);
+            imageButton.setTranslationY(y);
         }
     }
 

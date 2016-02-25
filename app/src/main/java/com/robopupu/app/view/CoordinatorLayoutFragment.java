@@ -61,8 +61,8 @@ public abstract class CoordinatorLayoutFragment<T_Presenter extends FeaturePrese
             setupFabAction(mFab);
         }
 
-        final ImageView imageView = getView(R.id.image_view_backdrop);
-        setupBackdrop(imageView);
+        //final ImageView imageView = getView(R.id.image_view_backdrop);
+        //setupBackdrop(imageView);
     }
 
     protected void setupFabAction(final FloatingActionButton fab) {
