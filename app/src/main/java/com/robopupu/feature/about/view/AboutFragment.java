@@ -73,6 +73,12 @@ public class AboutFragment extends CoordinatorLayoutFragment<AboutPresenter> imp
             }
         };
 
+        new ClickBinding(this, R.id.text_view_label_sources, R.id.text_view_sources, R.id.image_view_arrow_sources) {
+            @Override protected void clicked() {
+                mPresenter.onSourcesClicked();
+            }
+        };
+
         mVersionTextBinding = bind(R.id.text_view_version);
     }
 
