@@ -71,7 +71,7 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/feature_fsm_demo_action_start_statemachine"
+                android:text="@string/ft_fsm_demo_action_start_statemachine"
                 android:id="@+id/button_start"
                 android:layout_marginTop="8dp"
                 android:layout_below="@+id/image_view_state_machine"
@@ -85,7 +85,7 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/feature_fsm_demo_action_stop_statemachine"
+                android:text="@string/ft_fsm_demo_action_stop_statemachine"
                 android:id="@+id/button_stop"
                 android:layout_below="@+id/button_start"
                 android:layout_alignLeft="@+id/button_start"
@@ -98,7 +98,7 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/feature_fsm_demo_action_reset_statemachine"
+                android:text="@string/ft_fsm_demo_action_reset_statemachine"
                 android:id="@+id/button_reset"
                 android:layout_below="@+id/button_stop"
                 android:layout_marginTop="8dp"
@@ -194,14 +194,14 @@
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/feature_fsm_demo_choice_select_state_c"
+                    android:text="@string/ft_fsm_demo_choice_select_state_c"
                     android:id="@+id/radio_button_select_c"
                     android:checked="true" />
 
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/feature_fsm_demo_choice_select_state_d"
+                    android:text="@string/ft_fsm_demo_choice_select_state_d"
                     android:id="@+id/radio_button_select_d"
                     android:layout_marginTop="8dp"
                     android:checked="false" />

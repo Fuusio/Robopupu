@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="feature_about_title_robopupu">About ROBOPUPU</string>
+    <string name="ft_about_title_robopupu">About</string>
 
-    <string name="feature_about_label_version">Version:</string>
-    <string name="feature_about_label_license">License:</string>
-    <string name="feature_about_label_copyright">Copyright:</string>
-    <string name="feature_about_text_copyright">Copyright (c) Marko Salmela, 2016</string>
-    <string name="feature_about_text_license">Apache License, Version 2.0</string>
-    <string name="feature_about_label_oss_licenses">OSS Licenses</string>
-    <string name="feature_about_text_oss_licenses">View open source licences</string>
+    <string name="ft_about_label_version">Version:</string>
+    <string name="ft_about_label_license">License:</string>
+    <string name="ft_about_label_copyright">Copyright:</string>
+    <string name="ft_about_text_copyright">\u00A9 Marko Salmela, 2016</string>
+    <string name="ft_about_text_license">Apache License, Version 2.0</string>
+    <string name="ft_about_label_oss_licenses">OSS Licenses:</string>
+    <string name="ft_about_text_oss_licenses">View open source licences</string>
 
 </resources>

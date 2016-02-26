@@ -27,6 +27,7 @@ import org.fuusio.api.mvp.View;
 import org.fuusio.api.plugin.AbstractPluginStateComponent;
 import org.fuusio.api.plugin.PlugInvoker;
 import org.fuusio.api.plugin.PluginBus;
+import org.fuusio.api.util.Params;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -168,11 +169,12 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
     /**
      * Shows the {@link View} attached to the specified {@link Presenter}.
      * @param presenterClass A {@link Class} specifying the {@link Presenter}.
+     * @param params Optional {@link Params}.
      * @return A reference to {@link View}. May be {@link PlugInvoker}.
      */
     @SuppressWarnings("unchecked")
-    protected View showView(final Class<? extends Presenter> presenterClass) {
-        return showView(mFeatureContainer, presenterClass);
+    protected View showView(final Class<? extends Presenter> presenterClass, final Params... params) {
+        return showView(mFeatureContainer, presenterClass, params);
     }
 
     /**
@@ -181,11 +183,18 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
      *
      * @param transitionManager A {@link FeatureTransitionManager}.
      * @param presenterClass A {@link Class} specifying the {@link Presenter}.
+     * @param params Optional {@link Params}.
      * @return A reference to {@link View}. May be {@link PlugInvoker}.
      */
     @SuppressWarnings("unchecked")
-    protected View showView(final FeatureTransitionManager transitionManager, final Class<? extends Presenter> presenterClass) {
+    protected View showView(final FeatureTransitionManager transitionManager, final Class<? extends Presenter> presenterClass, final Params... params) {
         final Presenter presenter = plug(presenterClass);
+
+        if (params != null && params.length > 0) {
+            final Params presenterParams = Params.merge(params);
+            presenter.setParams(presenterParams);
+        }
+
         final View view = presenter.getView();
 
         if (view instanceof FeatureFragment) {

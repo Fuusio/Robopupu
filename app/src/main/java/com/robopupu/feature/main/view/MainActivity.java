@@ -148,8 +148,8 @@ public class MainActivity extends PluginActivity<MainPresenter>
     @Override
     public void showExitConfirmDialog() {
         final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-        alertDialog.setTitle(R.string.feature_main_dialog_title_exit_confirmation);
-        alertDialog.setMessage(getString(R.string.feature_main_dialog_prompt_exit_app));
+        alertDialog.setTitle(R.string.ft_main_dialog_title_exit_confirmation);
+        alertDialog.setMessage(getString(R.string.ft_main_dialog_prompt_exit_app));
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.action_ok),
                 new DialogInterface.OnClickListener() {
                     public void onClick(final DialogInterface dialog, final int which) {

@@ -1,8 +1,5 @@
 package com.robopupu.feature.about.presenter;
 
-import android.support.v4.app.Fragment;
-import android.widget.Toast;
-
 import com.robopupu.R;
 import com.robopupu.component.AppManager;
 import com.robopupu.feature.about.AboutFeature;
@@ -41,12 +38,17 @@ public class AboutPresenterImpl extends AbstractFeaturePresenter<AboutView>
     public void onViewStart(final View view) {
         super.onViewStart(view);
 
-        mView.setLicenseText(mAppManager.getString(R.string.feature_about_text_license));
+        mView.setLicenseText(mAppManager.getString(R.string.ft_about_text_license));
         mView.setVersionText(mAppManager.getAppVersionName());
     }
 
     @Override
-    public void onLicenseTextClicked() {
-        mFeature.showLicensesInfo();
+    public void onViewLicenseTextClicked() {
+        mFeature.showLicenseInfo();
+    }
+
+    @Override
+    public void onViewOssLicensesTextClicked() {
+        mFeature.showOssLicensesInfo();
     }
 }

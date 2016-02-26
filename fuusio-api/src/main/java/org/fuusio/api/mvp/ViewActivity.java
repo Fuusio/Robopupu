@@ -17,6 +17,7 @@ package org.fuusio.api.mvp;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.AdapterView;
@@ -326,7 +327,7 @@ public abstract class ViewActivity<T_Presenter extends Presenter> extends AppCom
      * @return The found {@link android.view.View}.
      */
     @SuppressWarnings("unchecked")
-    public <T extends android.view.View> T getView(final int viewId) {
+    public <T extends android.view.View> T getView(@IdRes final int viewId) {
         return (T) findViewById(viewId);
     }
 
@@ -338,7 +339,7 @@ public abstract class ViewActivity<T_Presenter extends Presenter> extends AppCom
      * @return The created {@link ViewBinding}.
      */
     @SuppressWarnings("unchecked")
-    public <T extends ViewBinding<?>> T bind(final int viewId) {
+    public <T extends ViewBinding<?>> T bind(@IdRes final int viewId) {
         return mBinder.bind(viewId);
     }
 
@@ -350,7 +351,7 @@ public abstract class ViewActivity<T_Presenter extends Presenter> extends AppCom
      * @return The found and bound {@link android.view.View}.
      */
     @SuppressWarnings("unchecked")
-    public <T extends android.view.View> T bind(final int viewId, final ViewBinding<T> binding) {
+    public <T extends android.view.View> T bind(@IdRes final int viewId, final ViewBinding<T> binding) {
         return mBinder.bind(viewId, binding);
     }
 
@@ -363,7 +364,7 @@ public abstract class ViewActivity<T_Presenter extends Presenter> extends AppCom
      * @return The found and bound {@link AdapterView}.
      */
     @SuppressWarnings("unchecked")
-    public AdapterView bind(final int viewId, final AdapterViewBinding<?> binding, final AdapterViewBinding.Adapter<?> adapter) {
+    public AdapterView bind(@IdRes final int viewId, final AdapterViewBinding<?> binding, final AdapterViewBinding.Adapter<?> adapter) {
         return mBinder.bind(viewId, binding, adapter);
     }
 

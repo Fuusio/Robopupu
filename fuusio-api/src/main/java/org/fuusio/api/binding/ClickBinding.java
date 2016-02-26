@@ -15,29 +15,43 @@
  */
 package org.fuusio.api.binding;
 
+import android.support.annotation.IdRes;
 import android.view.View;
 
 import org.fuusio.api.mvp.Presenter;
-import org.fuusio.api.util.MessageContext;
+import org.fuusio.api.mvp.ViewDialogFragment;
+import org.fuusio.api.mvp.ViewFragment;
 
 /**
- * {@link ClickBinding} provides an abstract base class for objects that establish bindings from
+ * {@link ClickBinding} can be establishing bindings from
  * UI widgets ({@link View} instances) to other objects, such as {@link Presenter}s.
  */
-public abstract class ClickBinding<T_View extends View> implements View.OnClickListener {
+public class ClickBinding implements View.OnClickListener {
 
-    protected ClickListener mClickListener;
-    protected MessageContext mErrorMessage;
-    protected T_View mView;
+    private View[] mViews;
 
-    protected ClickBinding() {
+    private ClickListener mClickListener;
+
+    private ClickBinding() {
     }
 
-    protected ClickBinding(final T_View view) {
-        if (view != null) {
-            setView(view);
-        } else {
-            mView = null;
+    public ClickBinding(final ViewFragment fragment, @IdRes final int... viewIds) {
+        final int count = viewIds.length;
+        mViews = new  View[count];
+
+        for (int i = 0; i < count; i++) {
+            mViews[i] = fragment.getView(viewIds[i]);
+            attachListeners(mViews[i]);
+        }
+    }
+
+    public ClickBinding(final ViewDialogFragment dialogFragment, @IdRes final int... viewIds) {
+        final int count = viewIds.length;
+        mViews = new  View[count];
+
+        for (int i = 0; i < count; i++) {
+            mViews[i] = dialogFragment.getView(viewIds[i]);
+            attachListeners(mViews[i]);
         }
     }
 
@@ -49,35 +63,10 @@ public abstract class ClickBinding<T_View extends View> implements View.OnClickL
         mClickListener = listener;
     }
 
-    /**
-     * Tests if the attached {@link View} is enabled.
-     *
-     * @return A {@link boolean}.
-     */
-    public final boolean isViewEnabled() {
-        return mView.isEnabled();
-    }
-
-    public final void setViewEnabled(final boolean enabled) {
-        mView.setEnabled(enabled);
-    }
-
-    @SuppressWarnings("unchecked")
-    public final <T> T getViewTag() {
-        return (T) mView.getTag();
-    }
-
-    @SuppressWarnings("unchecked")
-    public final <T> T getViewTag(final int key) {
-        return (T) mView.getTag(key);
-    }
-
-    public void setViewTag(final Object tag) {
-        mView.setTag(tag);
-    }
-
-    public void setViewTag(final int key, final Object tag) {
-        mView.setTag(key, tag);
+    public final void setViewsEnabled(final boolean enabled) {
+        for (final View view : mViews) {
+            view.setEnabled(enabled);
+        }
     }
 
     /**
@@ -85,42 +74,15 @@ public abstract class ClickBinding<T_View extends View> implements View.OnClickL
      *
      * @return A {@link View}.
      */
-    public final T_View getView() {
-        return mView;
-    }
-
-    /**
-     * Sets the {@link View} bound to this {@link ClickBinding}.
-     *
-     * @param view A {@link View}.
-     */
-    public void setView(final T_View view) {
-
-        if (view != null) {
-            mView = view;
-            mErrorMessage = new MessageContext(view.getContext());
-            attachListeners(mView);
-        } else if (mView != null) {
-            detachListeners(mView);
-            mView = null;
-        }
-    }
-
-    public final int getViewVisibility() {
-        return mView.getVisibility();
+    public final View[] getViews() {
+        return mViews;
     }
 
     public final void setViewVisibility(final int visibility) {
-        mView.setVisibility(visibility);
+        for (final View view : mViews) {
+            view.setVisibility(visibility);
+        }
     }
-
-    /**
-     * Tests if the given {@link View} can be bound to this {@link ClickBinding}.
-     *
-     * @param view A  {@link View}.
-     * @return A {@code boolean} value.
-     */
-    public abstract boolean canBind(final View view);
 
     /**
      * Invoked to attach the listeners to the given {@link View}. Methods overriding this method
@@ -128,7 +90,7 @@ public abstract class ClickBinding<T_View extends View> implements View.OnClickL
      *
      * @param view A {@link View}.
      */
-    protected void attachListeners(final T_View view) {
+    protected void attachListeners(final View view) {
         view.setOnClickListener(this);
     }
 
@@ -138,7 +100,7 @@ public abstract class ClickBinding<T_View extends View> implements View.OnClickL
      *
      * @param view A {@link View}.
      */
-    protected void detachListeners(final T_View view) {
+    protected void detachListeners(final View view) {
         view.setOnClickListener(null);
     }
 
@@ -154,20 +116,6 @@ public abstract class ClickBinding<T_View extends View> implements View.OnClickL
      * This method should be overridden for dispatching {@link View.OnClickListener} events.
      */
     protected void clicked() {
-    }
-
-    public void setErrorMessage(final String message, final Object... args) {
-        mErrorMessage.setMessage(message);
-        mErrorMessage.setMessageArgs(args);
-    }
-
-    public void setErrorMessage(final int messageResId, final Object... args) {
-        mErrorMessage.setMessage(messageResId);
-        mErrorMessage.setMessageArgs(args);
-    }
-
-    public void clearErrorMessage() {
-        mErrorMessage.clear();
     }
 
     public interface ClickListener {

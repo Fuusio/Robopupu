@@ -19,7 +19,6 @@ public class LicensesInfoPresenterImpl extends AbstractFeaturePresenter<Licenses
 
     private String mLicensesFileUrl;
 
-    @Plug AppManager mAppManager;
     @Plug LicensesInfoView mView;
 
     @Provides(LicensesInfoPresenter.class)
@@ -41,7 +40,7 @@ public class LicensesInfoPresenterImpl extends AbstractFeaturePresenter<Licenses
     public void onViewStart(final View view) {
         super.onViewStart(view);
 
-        mLicensesFileUrl = mAppManager.getString(R.string.oss_licenses_info_file);
+        mLicensesFileUrl = getParams().getString(KEY_PARAM_LICENSE_URL);
         mView.loadUrl(mLicensesFileUrl);
     }
 

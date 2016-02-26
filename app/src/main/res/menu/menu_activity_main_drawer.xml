@@ -5,15 +5,15 @@
         <item
             android:id="@+id/navigation_fsm_demo"
             android:icon="@drawable/ic_slideshow_black_36dp"
-            android:title="@string/feature_main_navigation_item_fsm_demo" />
+            android:title="@string/ft_main_navigation_item_fsm_demo" />
         <item
             android:id="@+id/navigation_settings"
             android:icon="@drawable/ic_settings_black_36dp"
-            android:title="@string/feature_main_navigation_item_settings" />
+            android:title="@string/ft_main_navigation_item_settings" />
         <item
             android:id="@+id/navigation_about"
             android:icon="@drawable/ic_info_outline_black_36dp"
-            android:title="@string/feature_main_navigation_item_about" />
+            android:title="@string/ft_main_navigation_item_about" />
     </group>
 
     <item android:title="Communicate">

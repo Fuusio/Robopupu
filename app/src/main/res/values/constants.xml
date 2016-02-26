@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="oss_licenses_info_file">"file:///android_asset/html/oss_licenses.html"</string>
+    <string name="oss_licenses_file">file:///android_asset/html/oss_licenses.html</string>
+    <string name="robopupu_license_file">file:///android_asset/html/robopupu_license.html</string>
 
 </resources>

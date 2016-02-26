@@ -8,5 +8,7 @@ import org.fuusio.api.plugin.PlugInterface;
 @PlugInterface
 public interface LicensesInfoPresenter extends FeaturePresenter, DelegatedWebViewClient.Delegate {
 
+    String KEY_PARAM_LICENSE_URL = "Key.Param.License.URL";
+
     void onOkButtonClicked();
 }

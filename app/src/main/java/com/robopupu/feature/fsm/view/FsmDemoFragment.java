@@ -78,7 +78,7 @@ public class FsmDemoFragment extends CoordinatorLayoutFragment<FsmDemoPresenter>
 
     @Provides(FsmDemoView.class)
     public FsmDemoFragment() {
-        super(R.string.feature_fsm_demo_title);
+        super(R.string.ft_fsm_demo_title);
         mImageButtons = new ImageButton[TriggerButtonInfo.values().length];
     }
 

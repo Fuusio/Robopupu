@@ -27,6 +27,7 @@ import org.fuusio.api.plugin.PlugInvoker;
 import org.fuusio.api.plugin.PluginBus;
 import org.fuusio.api.util.AbstractListenable;
 import org.fuusio.api.util.LifecycleState;
+import org.fuusio.api.util.Params;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +40,8 @@ public abstract class AbstractPresenter<T_View extends View> extends AbstractPlu
         implements Presenter, Scopeable {
 
     protected final List<PresenterListener> mListeners;
+
+    protected Params mParams;
     protected LifecycleState mState;
 
     private DependencyScope mScope;
@@ -89,6 +92,19 @@ public abstract class AbstractPresenter<T_View extends View> extends AbstractPlu
     @NonNull
     protected ViewState getViewState() {
         return getAttachedView().getState();
+    }
+
+    /**
+     * Gets the {@link Params}.
+     * @return A {@link Params}. May return {@code null}.
+     */
+    protected Params getParams() {
+        return mParams;
+    }
+
+    @Override
+    public void setParams(final Params params) {
+        mParams = params;
     }
 
     /**

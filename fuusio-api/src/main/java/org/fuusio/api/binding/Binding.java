@@ -15,6 +15,7 @@
  */
 package org.fuusio.api.binding;
 
+import android.support.annotation.IdRes;
 import android.view.View;
 import android.widget.TextView;
 
@@ -36,12 +37,12 @@ public class Binding extends TextViewBinding {
     }
 
     @SuppressWarnings("unchecked")
-    public Binding(final ViewFragment fragment, final int viewId) {
+    public Binding(final ViewFragment fragment, @IdRes final int viewId) {
         super((TextView) fragment.getView(viewId));
     }
 
     @SuppressWarnings("unchecked")
-    public Binding(final ViewDialogFragment fragment, final int viewId) {
+    public Binding(final ViewDialogFragment fragment, @IdRes final int viewId) {
         super((TextView) fragment.getView(viewId));
     }
 }
