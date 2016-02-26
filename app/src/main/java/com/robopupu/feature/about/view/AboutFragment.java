@@ -1,5 +1,19 @@
+/*
+ * Copyright (C) 2016 Marko Salmela, http://fuusio.org
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.robopupu.feature.about.view;
-
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -21,7 +35,6 @@ public class AboutFragment extends CoordinatorLayoutFragment<AboutPresenter> imp
 
     @Plug AboutPresenter mPresenter;
 
-    private Binding mLicenseTextBinding;
     private Binding mVersionTextBinding;
 
     @Provides(AboutView.class)
@@ -32,11 +45,6 @@ public class AboutFragment extends CoordinatorLayoutFragment<AboutPresenter> imp
     @Override
     protected AboutPresenter getPresenter() {
         return mPresenter;
-    }
-
-    @Override
-    public void setLicenseText(final String text) {
-        mLicenseTextBinding.setText(text);
     }
 
     @Override
@@ -65,7 +73,6 @@ public class AboutFragment extends CoordinatorLayoutFragment<AboutPresenter> imp
             }
         };
 
-        mLicenseTextBinding = bind(R.id.text_view_license);
         mVersionTextBinding = bind(R.id.text_view_version);
     }
 

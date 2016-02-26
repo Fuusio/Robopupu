@@ -55,7 +55,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/image_view_logo"
-                android:layout_marginTop="25dp"
+                android:layout_marginTop="48dp"
                 android:src="@drawable/ic_robopupu"
                 android:layout_alignParentTop="true"
                 android:layout_alignLeft="@+id/text_view_label_version"
@@ -64,10 +64,24 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="@string/ft_about_title_robopupu"
+                android:id="@+id/textView"
+                android:layout_alignBottom="@+id/image_view_logo"
+                android:textSize="36sp"
+                android:textColor="@color/accent"
+                android:textStyle="bold"
+                android:layout_marginLeft="@dimen/ft_about_value_column_margin"
+                android:layout_alignParentLeft="true"
+                android:layout_alignTop="@+id/image_view_logo"
+                android:gravity="center_vertical" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:id="@+id/text_view_label_version"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="48dp"
                 android:text="@string/ft_about_label_version"
                 android:layout_marginLeft="@dimen/ft_about_left_margin"
                 android:layout_below="@+id/image_view_logo"
@@ -108,7 +122,18 @@
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
                 android:layout_marginRight="@dimen/ft_about_right_margin"
-                style="@style/TextView_About_Text"/>
+                style="@style/TextView_About_Text"
+                android:text="@string/ft_about_text_license" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/image_view_arrow_license"
+                android:src="@drawable/ic_keyboard_arrow_right_black_24dp"
+                android:layout_alignBottom="@+id/text_view_license"
+                android:layout_marginRight="@dimen/ft_about_right_margin"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -136,14 +161,61 @@
                 style="@style/TextView_About_Text"/>
 
 
+
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/image_view_arrow_oss_licenses"
+                android:src="@drawable/ic_keyboard_arrow_right_black_24dp"
+                android:layout_alignBottom="@+id/text_view_oss_licenses"
+                android:layout_marginRight="@dimen/ft_about_right_margin"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ft_about_label_sources"
+                android:id="@+id/text_view_label_sources"
+                android:layout_below="@+id/text_view_label_oss_licenses"
+                android:layout_alignLeft="@+id/text_view_label_oss_licenses"
+                android:layout_alignStart="@+id/text_view_label_oss_licenses"
+                android:layout_marginTop="16dp"
+                style="@style/TextView_About_Label" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/text_view_sources"
+                android:text="@string/ft_about_text_sources"
+                android:layout_alignTop="@+id/text_view_label_sources"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginLeft="@dimen/ft_about_value_column_margin"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginRight="@dimen/ft_about_right_margin"
+                style="@style/TextView_About_Text"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/image_view_arrow_sources"
+                android:src="@drawable/ic_keyboard_arrow_right_black_24dp"
+                android:layout_alignBottom="@+id/text_view_sources"
+                android:layout_marginRight="@dimen/ft_about_right_margin"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/ft_about_label_copyright"
                 android:id="@+id/text_view_label_copyright"
-                android:layout_below="@+id/text_view_label_oss_licenses"
-                android:layout_alignLeft="@+id/text_view_label_oss_licenses"
-                android:layout_alignStart="@+id/text_view_label_oss_licenses"
+                android:layout_below="@+id/text_view_label_sources"
+                android:layout_alignLeft="@+id/text_view_label_sources"
+                android:layout_alignStart="@+id/text_view_label_sources"
                 android:layout_marginTop="16dp"
                 style="@style/TextView_About_Label" />
 
@@ -160,39 +232,9 @@
                 android:layout_alignRight="@+id/text_view_oss_licenses"
                 android:layout_alignEnd="@+id/text_view_oss_licenses" />
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/image_view_arrow_license"
-                android:src="@drawable/ic_keyboard_arrow_right_black_24dp"
-                android:layout_alignBottom="@+id/text_view_license"
-                android:layout_marginRight="@dimen/ft_about_right_margin"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true" />
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/image_view_arrow_oss_licenses"
-                android:src="@drawable/ic_keyboard_arrow_right_black_24dp"
-                android:layout_alignBottom="@+id/text_view_oss_licenses"
-                android:layout_marginRight="@dimen/ft_about_right_margin"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/ft_about_title_robopupu"
-                android:id="@+id/textView"
-                android:layout_alignBottom="@+id/image_view_logo"
-                android:textSize="36sp"
-                android:textColor="@color/accent"
-                android:textStyle="bold"
-                android:layout_marginLeft="@dimen/ft_about_value_column_margin"
-                android:layout_alignParentLeft="true"
-                android:layout_alignTop="@+id/image_view_logo"
-                android:gravity="center_vertical" />
+
 
         </RelativeLayout>
     </android.support.v4.widget.NestedScrollView>

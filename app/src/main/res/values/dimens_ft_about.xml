@@ -1,7 +1,7 @@
 <resources>
 
     <dimen name="ft_about_value_column_margin">120dp</dimen>
-    <dimen name="ft_about_left_margin">8dp</dimen>
-    <dimen name="ft_about_right_margin">8dp</dimen>
+    <dimen name="ft_about_left_margin">16dp</dimen>
+    <dimen name="ft_about_right_margin">16dp</dimen>
 
 </resources>

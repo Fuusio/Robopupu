@@ -8,4 +8,5 @@ public interface AboutPresenter extends FeaturePresenter {
 
     void onViewLicenseTextClicked();
     void onViewOssLicensesTextClicked();
+    void onSourcesClicked();
 }
