@@ -3,11 +3,14 @@
 
     <string name="ft_fsm_demo_title">FSM Demo</string>
 
-    <string name="ft_fsm_demo_action_start_statemachine">Start Statemachine</string>
-    <string name="ft_fsm_demo_action_stop_statemachine">Stop Statemachine</string>
-    <string name="ft_fsm_demo_action_reset_statemachine">Reset Statemachine</string>
+    <string name="ft_fsm_demo_action_start_statemachine">Start State Machine</string>
+    <string name="ft_fsm_demo_action_stop_statemachine">Stop State Machine</string>
+    <string name="ft_fsm_demo_action_reset_statemachine">Reset State Machine</string>
 
-    <string name="ft_fsm_demo_choice_select_state_c">Select State C</string>
-    <string name="ft_fsm_demo_choice_select_state_d">Select State D</string>
+    <string name="ft_fsm_demo_choice_select_state_c">SELECT STATE C</string>
+    <string name="ft_fsm_demo_choice_select_state_d">SELECT STATE D</string>
 
+    <string name="ft_fsm_demo_text_statemachine_started">State machine started</string>
+    <string name="ft_fsm_demo_text_statemachine_stopped">State machine stopped</string>
+    <string name="ft_fsm_demo_text_statemachine_resetted">State machine resetted</string>
 </resources>

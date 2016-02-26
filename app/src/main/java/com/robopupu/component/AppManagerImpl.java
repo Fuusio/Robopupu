@@ -1,20 +1,26 @@
 package com.robopupu.component;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.support.annotation.IntegerRes;
 import android.support.annotation.StringRes;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 
+import com.robopupu.R;
+import com.robopupu.api.feature.PluginFeatureManager;
 import com.robopupu.app.RobopupuAppScope;
 import com.robopupu.app.RobopupuApplication;
 
 import org.fuusio.api.component.AbstractManager;
 import org.fuusio.api.dependency.Provides;
 import org.fuusio.api.dependency.Scope;
+import org.fuusio.api.plugin.Plug;
 import org.fuusio.api.plugin.Plugin;
 
 @Plugin
@@ -23,6 +29,9 @@ public class AppManagerImpl extends AbstractManager implements AppManager {
     private static final String TAG = AppManagerImpl.class.getSimpleName();
 
     private final RobopupuApplication mApplication;
+
+    @Plug PluginFeatureManager mFeatureManager;
+
 
     @Scope(RobopupuAppScope.class)
     @Provides(AppManager.class)
@@ -83,5 +92,28 @@ public class AppManagerImpl extends AbstractManager implements AppManager {
     @Override
     public String getString(final @StringRes int stringResId, final Object... formatArgs) {
         return mApplication.getString(stringResId, formatArgs);
+    }
+
+    @Override
+    public void exitApplication() {
+        final Activity activity = mFeatureManager.getForegroundActivity();
+        final AlertDialog alertDialog = new AlertDialog.Builder(activity).create();
+        alertDialog.setTitle(R.string.ft_main_dialog_title_exit_confirmation);
+        alertDialog.setMessage(getString(R.string.ft_main_dialog_prompt_exit_app));
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.action_ok),
+                new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, final int which) {
+                        dialog.dismiss();
+                        activity.finish();
+                    }
+                });
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.action_cancel),
+                new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, final int which) {
+                        // Just dismiss the dialog
+                        dialog.dismiss();
+                    }
+                });
+        alertDialog.show();
     }
 }

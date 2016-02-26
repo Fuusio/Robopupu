@@ -1,14 +1,19 @@
 package com.robopupu.feature.fsm.view;
 
 
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.IdRes;
+import android.support.annotation.StringRes;
 import android.support.design.widget.Snackbar;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -67,9 +72,9 @@ public class FsmDemoFragment extends CoordinatorLayoutFragment<FsmDemoPresenter>
     private ViewGroup mContentViewGroup;
     private boolean mTriggerButtonPositionsInitialised;
     private ImageView mStateMachineImageView;
-    private Button mResetButton;
-    private Button mStopButton;
-    private Button mStartButton;
+    private ImageButton mResetButton;
+    private ImageButton mStopButton;
+    private ImageButton mStartButton;
     private RadioButton mSelectCRadioButton;
     private RadioButton mSelectDRadioButton;
 
@@ -109,9 +114,13 @@ public class FsmDemoFragment extends CoordinatorLayoutFragment<FsmDemoPresenter>
             }
         });
 
-        mResetButton = getView(R.id.button_reset);
-        mStopButton = getView(R.id.button_stop);
-        mStartButton = getView(R.id.button_start);
+        mResetButton = getView(R.id.image_button_reset);
+        mStopButton = getView(R.id.image_button_stop);
+        mStartButton = getView(R.id.image_button_start);
+
+        setImageButtonEnabled(mResetButton, false);
+        setImageButtonEnabled(mStopButton, false);
+        setImageButtonEnabled(mStartButton, true);
 
         mStartButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -201,18 +210,53 @@ public class FsmDemoFragment extends CoordinatorLayoutFragment<FsmDemoPresenter>
 
     @Override
     public void setStartButtonEnabled(final boolean enabled) {
-        enableTrigger(TransitionId.TO_B_FROM_A);
-        mStartButton.setEnabled(enabled);
+        setImageButtonEnabled(mStartButton, enabled);
     }
 
     @Override
     public void setStopButtonEnabled(final boolean enabled) {
-        mStopButton.setEnabled(enabled);
+        setImageButtonEnabled(mStopButton, enabled);
     }
 
     @Override
     public void setResetButtonEnabled(final boolean enabled) {
-        mResetButton.setEnabled(enabled);
+        setImageButtonEnabled(mResetButton, enabled);
+    }
+
+    @Override
+    public void setStartButtonSelected() {
+        enableTrigger(TransitionId.TO_B_FROM_A);
+        setImageButtonSelected(mStartButton);
+    }
+
+    @Override
+    public void setStopButtonSelected() {
+        setImageButtonSelected(mStopButton);
+    }
+
+    @Override
+    public void setResetButtonSelected() {
+        setImageButtonSelected(mResetButton);
+    }
+
+    private void setImageButtonSelected(final ImageButton button) {
+        button.setEnabled(false);
+        button.setColorFilter(mAppManager.getColor(R.color.color_deep_orange_500));
+    }
+
+    private void setImageButtonEnabled(final ImageButton button, final boolean  enabled) {
+        button.setEnabled(enabled);
+
+        if (enabled) {
+            button.setColorFilter(mAppManager.getColor(R.color.color_blue_gray_400));
+        } else {
+            button.setColorFilter(mAppManager.getColor(R.color.color_blue_gray_100));
+        }
+    }
+
+    @Override
+    public void showMessage(@StringRes final int message) {
+        showMessage(mAppManager.getString(message));
     }
 
     @Override

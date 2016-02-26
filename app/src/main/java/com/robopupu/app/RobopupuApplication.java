@@ -41,6 +41,7 @@ public class RobopupuApplication extends FuusioApplication {
         super.configureApplication();
 
         PluginBus.plug(AppManager.class);
-        PluginBus.plug(PluginFeatureManager.class);
+        final PluginFeatureManager featureManager = PluginBus.plug(PluginFeatureManager.class);
+        registerActivityLifecycleCallbacks(featureManager.getActivityLifecycleCallback());
     }
 }

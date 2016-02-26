@@ -63,4 +63,9 @@ public interface AppManager extends Manager {
      * @return A {@link String}.
      */
     String getString(@StringRes int stringResId, final Object... formatArgs);
+
+    /**
+     * Exists the application.
+     */
+    void exitApplication();
 }

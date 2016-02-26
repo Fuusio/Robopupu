@@ -1,28 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:checkableBehavior="single">
+    <group android:id="@+id/group_features">
         <item
             android:id="@+id/navigation_fsm_demo"
             android:icon="@drawable/ic_slideshow_black_36dp"
             android:title="@string/ft_main_navigation_item_fsm_demo" />
+    </group>
+
+
+    <group android:id="@+id/group_social_media">
+        <item
+            android:id="@+id/navigation_share"
+            android:icon="@drawable/ic_share_black_36dp"
+            android:title="@string/ft_main_navigation_item_share" />
+        <item
+            android:id="@+id/navigation_feedback"
+            android:icon="@drawable/ic_feedback_black_36dp"
+            android:title="@string/ft_main_navigation_item_feedback" />
+    </group>
+
+    <group android:id="@+id/group_actions">
+        <item
+            android:id="@+id/navigation_about"
+            android:icon="@drawable/ic_info_outline_black_36dp"
+            android:title="@string/ft_main_navigation_item_about" />
         <item
             android:id="@+id/navigation_settings"
             android:icon="@drawable/ic_settings_black_36dp"
             android:title="@string/ft_main_navigation_item_settings" />
         <item
-            android:id="@+id/navigation_about"
-            android:icon="@drawable/ic_info_outline_black_36dp"
-            android:title="@string/ft_main_navigation_item_about" />
+            android:id="@+id/navigation_exit"
+            android:icon="@drawable/ic_exit_to_app_black_36dp"
+            android:title="@string/ft_main_navigation_item_exit" />
     </group>
-
-    <item android:title="Communicate">
-        <menu>
-            <item
-                android:id="@+id/navigation_share"
-                android:icon="@drawable/ic_share_black_36dp"
-                android:title="Share" />
-        </menu>
-    </item>
 
 </menu>

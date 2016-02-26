@@ -38,7 +38,6 @@ public class PluginFeatureManagerImpl extends AbstractFeatureManager
         return feature;
     }
 
-
     @Override
     public Feature startFeature(final FeatureContainer container, final Feature feature, final Params params) {
         PluginBus.plug(feature);

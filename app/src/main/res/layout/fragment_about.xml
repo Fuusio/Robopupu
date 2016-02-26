@@ -18,10 +18,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
-            app:contentScrim="@color/primary"
+            app:contentScrim="?attr/colorPrimary"
             app:expandedTitleMarginEnd="64dp"
             app:expandedTitleMarginStart="48dp"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            android:background="@color/primary_light">
 
             <ImageView
                 android:id="@+id/image_view_backdrop"
@@ -178,6 +179,20 @@
                 android:layout_marginRight="@dimen/ft_about_right_margin"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ft_about_title_robopupu"
+                android:id="@+id/textView"
+                android:layout_alignBottom="@+id/image_view_logo"
+                android:textSize="36sp"
+                android:textColor="@color/accent"
+                android:textStyle="bold"
+                android:layout_marginLeft="@dimen/ft_about_value_column_margin"
+                android:layout_alignParentLeft="true"
+                android:layout_alignTop="@+id/image_view_logo"
+                android:gravity="center_vertical" />
 
         </RelativeLayout>
     </android.support.v4.widget.NestedScrollView>

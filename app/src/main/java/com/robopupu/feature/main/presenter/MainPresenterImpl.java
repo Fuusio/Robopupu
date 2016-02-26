@@ -9,6 +9,7 @@ import org.fuusio.api.plugin.Plugin;
 
 import com.robopupu.R;
 import com.robopupu.api.feature.PluginFeatureManager;
+import com.robopupu.component.AppManager;
 import com.robopupu.feature.about.AboutFeature;
 import com.robopupu.feature.fsm.FsmDemoFeature;
 import com.robopupu.feature.main.view.MainView;
@@ -21,6 +22,7 @@ import org.fuusio.api.mvp.AbstractPresenter;
 public class MainPresenterImpl extends AbstractPresenter<MainView>
         implements MainPresenter {
 
+    @Plug AppManager mAppManager;
     @Plug PluginFeatureManager mFeatureManager;
     @Plug MainView mView;
 
@@ -63,7 +65,9 @@ public class MainPresenterImpl extends AbstractPresenter<MainView>
             //mFeatureManager.startFeature(container, SettingsFeature.class);
         } else if (itemId == R.id.navigation_share) {
             //mFeatureManager.startFeature(container, ShareFeature.class);
-        } else {
+        } else if (itemId == R.id.navigation_exit) {
+            mAppManager.exitApplication();
+        }else {
             selectionHandled = false;
         }
         return selectionHandled;

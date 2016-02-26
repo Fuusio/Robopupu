@@ -132,8 +132,10 @@ public class FsmDemoPresenterImpl extends AbstractFeaturePresenter<FsmDemoView>
             new Sequencer(sequence).start();
             mStateEngine = mStateMachine.getStateEngine();
             mTriggerEvents = mStateEngine;
-            mView.setStartButtonEnabled(false);
+            mView.setStartButtonSelected();
             mView.setStopButtonEnabled(true);
+            mView.setResetButtonEnabled(false);
+            mView.showMessage(R.string.ft_fsm_demo_text_statemachine_started);
         }
     }
 
@@ -141,8 +143,10 @@ public class FsmDemoPresenterImpl extends AbstractFeaturePresenter<FsmDemoView>
         if (mStateMachine.isStarted()) {
             mView.setStateMachineImage(R.drawable.img_fsm_stopped);
             mStateMachine.stop();
+            mView.setStartButtonEnabled(false);
+            mView.setStopButtonSelected();
             mView.setResetButtonEnabled(true);
-            mView.setStopButtonEnabled(false);
+            mView.showMessage(R.string.ft_fsm_demo_text_statemachine_stopped);
         }
     }
 
@@ -152,9 +156,9 @@ public class FsmDemoPresenterImpl extends AbstractFeaturePresenter<FsmDemoView>
             mView.resetView();
             mStateMachine.reset();
             mView.setStartButtonEnabled(true);
-            mView.setResetButtonEnabled(false);
-        } else {
-
+            mView.setStopButtonEnabled(false);
+            mView.setResetButtonSelected();
+            mView.showMessage(R.string.ft_fsm_demo_text_statemachine_resetted);
         }
     }
 

@@ -26,7 +26,7 @@ public class AboutFragment extends CoordinatorLayoutFragment<AboutPresenter> imp
 
     @Provides(AboutView.class)
     public AboutFragment() {
-        super(R.string.ft_about_title_robopupu);
+        super(R.string.ft_about_title);
     }
 
     @Override

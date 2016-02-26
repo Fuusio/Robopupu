@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Blue Gray Palette -->
+
+    <color name="color_blue_gray_50">#ECEFF1</color>
+    <color name="color_blue_gray_100">#CFD8DC</color>
+    <color name="color_blue_gray_200">#B0BEC5</color>
+    <color name="color_blue_gray_300">#90A4AE</color>
+    <color name="color_blue_gray_400">#78909C</color>
+    <color name="color_blue_gray_500">#607D8B</color>
+    <color name="color_blue_gray_600">#546E7A</color>
+    <color name="color_blue_gray_700">#455A64</color>
+    <color name="color_blue_gray_800">#37474F</color>
+    <color name="color_blue_gray_900">#263238</color>
+
+
+    <!-- Deep Orange Palette -->
+
+    <color name="color_deep_orange_50">#FBE9E7</color>
+    <color name="color_deep_orange_100">#FFCCBC</color>
+    <color name="color_deep_orange_200">#FFAB91</color>
+    <color name="color_deep_orange_300">#FF8A65</color>
+    <color name="color_deep_orange_400">#FF7043</color>
+    <color name="color_deep_orange_500">#FF5722</color>
+    <color name="color_deep_orange_600">#F4511E</color>
+    <color name="color_deep_orange_700">#E64A19</color>
+    <color name="color_deep_orange_800">#D84315</color>
+    <color name="color_deep_orange_900">#BF360C</color>
+    <color name="color_deep_orange_A100">#FF9E80</color>
+    <color name="color_deep_orange_A200">#FF6E40</color>
+    <color name="color_deep_orange_A400">#FF3D00</color>
+    <color name="color_deep_orange_A700">#DD2C00</color>
+
+</resources>
