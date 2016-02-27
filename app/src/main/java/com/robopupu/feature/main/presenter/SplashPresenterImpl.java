@@ -15,10 +15,14 @@
  */
 package com.robopupu.feature.main.presenter;
 
+import com.robopupu.component.TimerHandle;
+import com.robopupu.component.TimerManager;
+import com.robopupu.feature.main.MainFeature;
 import com.robopupu.feature.main.view.SplashView;
 
 import org.fuusio.api.dependency.Provides;
 import org.fuusio.api.feature.AbstractFeaturePresenter;
+import org.fuusio.api.mvp.View;
 import org.fuusio.api.plugin.Plug;
 import org.fuusio.api.plugin.Plugin;
 import org.fuusio.api.plugin.PluginBus;
@@ -30,6 +34,8 @@ import org.fuusio.api.plugin.PluginBus;
 public class SplashPresenterImpl extends AbstractFeaturePresenter<SplashView>
         implements SplashPresenter {
 
+    @Plug MainFeature mMainFeature;
+    @Plug TimerManager mTimerManager;
     @Plug SplashView mView;
 
     @Provides(SplashPresenter.class)
@@ -46,5 +52,14 @@ public class SplashPresenterImpl extends AbstractFeaturePresenter<SplashView>
         plug(SplashView.class);
     }
 
-
+    @Override
+    public void onViewStart(final View view) {
+        super.onViewStart(view);
+        mTimerManager.createTimer(new TimerManager.Callback() {
+            @Override
+            public void timeout(TimerHandle handle) {
+                mMainFeature.openNavigationDrawer();
+            }
+        }, 4000L);
+    }
 }

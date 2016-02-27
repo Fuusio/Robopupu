@@ -19,22 +19,18 @@
         android:layout_alignParentBottom="true"
         android:layout_marginTop="24dp" />
 
-    <TextView
-        android:layout_width="match_parent"
+    <ImageView
+        android:layout_width="180dp"
         android:layout_height="wrap_content"
-        android:text="@string/ft_main_title_robopupu"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:id="@+id/text_view_app_name"
-        android:textColor="@color/accent"
+        android:id="@+id/image_view_app_name"
         android:layout_gravity="bottom"
         android:layout_alignParentLeft="false"
         android:layout_marginLeft="24dp"
         android:layout_alignParentTop="false"
-        android:textSize="28sp"
-        android:textStyle="bold"
         android:layout_alignBottom="@+id/image_view_logo_robopupu"
         android:layout_alignTop="@+id/image_view_logo_robopupu"
         android:layout_toRightOf="@+id/image_view_logo_robopupu"
-        android:gravity="center_vertical" />
+        android:gravity="center_vertical"
+        android:src="@drawable/img_title_robopupupu" />
 
 </RelativeLayout>

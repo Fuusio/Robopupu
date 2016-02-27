@@ -22,6 +22,8 @@ import org.fuusio.api.plugin.PlugInterface;
 public interface AboutFeature extends Feature {
 
     void showLicenseInfo();
+
     void showOssLicensesInfo();
+
     void openSourcesWebPage();
 }

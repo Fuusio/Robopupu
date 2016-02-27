@@ -21,8 +21,12 @@ public interface FsmDemoPresenter extends FeaturePresenter {
     void showMessage(String message);
 
     void onSelectorChanged(int value);
+
     void onStartClicked();
+
     void onStopClicked();
+
     void onResetClicked();
+
     void onTransitionClicked(TransitionId id);
 }

@@ -18,6 +18,7 @@ package com.robopupu.app;
 import com.robopupu.api.feature.PluginFeatureManager;
 import com.robopupu.app.error.RobopupuAppError;
 import com.robopupu.component.AppManager;
+import com.robopupu.component.TimerManager;
 
 import org.fuusio.api.app.FuusioApplication;
 import org.fuusio.api.dependency.AppDependencyScope;
@@ -56,6 +57,8 @@ public class RobopupuApplication extends FuusioApplication {
         super.configureApplication();
 
         PluginBus.plug(AppManager.class);
+        PluginBus.plug(TimerManager.class);
+
         final PluginFeatureManager featureManager = PluginBus.plug(PluginFeatureManager.class);
         registerActivityLifecycleCallbacks(featureManager.getActivityLifecycleCallback());
     }

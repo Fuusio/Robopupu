@@ -20,4 +20,6 @@ import org.fuusio.api.plugin.PlugInterface;
 
 @PlugInterface
 public interface MainFeature extends Feature {
+
+    void openNavigationDrawer();
 }

@@ -59,11 +59,7 @@ public class MainPresenterImpl extends AbstractPresenter<MainView>
 
     @Override
     public void onExitAppSelected() {
-        doExitApp();
-    }
-
-    private void doExitApp() {
-        mView.finish();
+        mAppManager.exitApplication();
     }
 
     @Override

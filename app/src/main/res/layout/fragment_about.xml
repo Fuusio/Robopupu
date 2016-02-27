@@ -61,19 +61,16 @@
                 android:layout_alignLeft="@+id/text_view_label_version"
                 android:layout_alignStart="@+id/text_view_label_version" />
 
-            <TextView
-                android:layout_width="wrap_content"
+            <ImageView
+                android:layout_width="180dp"
                 android:layout_height="wrap_content"
-                android:text="@string/ft_about_title_robopupu"
-                android:id="@+id/textView"
+                android:id="@+id/image_view_app_name"
                 android:layout_alignBottom="@+id/image_view_logo"
-                android:textSize="36sp"
-                android:textColor="@color/accent"
-                android:textStyle="bold"
                 android:layout_marginLeft="@dimen/ft_about_value_column_margin"
                 android:layout_alignParentLeft="true"
                 android:layout_alignTop="@+id/image_view_logo"
-                android:gravity="center_vertical" />
+                android:gravity="center_vertical"
+                android:src="@drawable/img_title_robopupupu" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -231,8 +228,6 @@
                 android:layout_alignTop="@+id/text_view_label_copyright"
                 android:layout_alignRight="@+id/text_view_oss_licenses"
                 android:layout_alignEnd="@+id/text_view_oss_licenses" />
-
-
 
 
 

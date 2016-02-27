@@ -42,7 +42,12 @@ public class MainFeatureImpl extends AbstractFeature implements MainFeature {
     public void onPresenterStarted(final Presenter presenter) {
 
         if (presenter instanceof MainPresenter) {
-            showView(mMainView.getMainFeatureContainer(), SplashPresenter.class); // TODO
+            showView(mMainView.getMainFeatureContainer(), SplashPresenter.class);
         }
+    }
+
+    @Override
+    public void openNavigationDrawer() {
+        mMainView.openNavigationDrawer();
     }
 }

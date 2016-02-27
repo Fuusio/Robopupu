@@ -34,4 +34,9 @@ public interface MainView extends View {
      * Finish this {@link View}.
      */
     void finish();
+
+    /**
+     * Open the Navigation Draw
+     */
+    void openNavigationDrawer();
 }
