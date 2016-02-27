@@ -26,6 +26,7 @@ import com.robopupu.R;
 import com.robopupu.api.feature.PluginFeatureManager;
 import com.robopupu.component.AppManager;
 import com.robopupu.feature.about.AboutFeature;
+import com.robopupu.feature.feedback.FeedbackFeature;
 import com.robopupu.feature.fsm.FsmDemoFeature;
 import com.robopupu.feature.main.view.MainView;
 
@@ -70,6 +71,8 @@ public class MainPresenterImpl extends AbstractPresenter<MainView>
 
         if (itemId == R.id.navigation_about) {
             mFeatureManager.startFeature(container, AboutFeature.class);
+        } else if (itemId == R.id.navigation_feedback) {
+            mFeatureManager.startFeature(container, FeedbackFeature.class);
         } else if (itemId == R.id.navigation_fsm_demo) {
             mFeatureManager.startFeature(container, FsmDemoFeature.class);
         } else if (itemId == R.id.navigation_settings) {

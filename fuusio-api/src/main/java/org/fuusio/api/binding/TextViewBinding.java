@@ -34,6 +34,14 @@ public class TextViewBinding extends ViewBinding<TextView> implements TextWatche
     }
 
     /**
+     * Gets the text of the bound {@link TextView}.
+     * @return The text as a {@link String}.
+     */
+    public String getText() {
+        return mView.getText().toString();
+    }
+
+    /**
      * Set text of the bound {@link TextView}.
      *
      * @param text A {@link String} containing the text.

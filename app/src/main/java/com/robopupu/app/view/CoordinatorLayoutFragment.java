@@ -20,15 +20,20 @@ import android.support.annotation.StringRes;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.robopupu.R;
+import com.robopupu.component.AppManager;
 import com.squareup.picasso.Picasso;
 
+import org.fuusio.api.dependency.D;
 import org.fuusio.api.feature.FeatureFragment;
 import org.fuusio.api.feature.FeaturePresenter;
 
@@ -95,6 +100,18 @@ public abstract class CoordinatorLayoutFragment<T_Presenter extends FeaturePrese
 
     protected void setupBackdrop(final ImageView backdropImageView) {
         Picasso.with(getActivity()).load(R.drawable.img_backdrop).into(backdropImageView);
+    }
+
+    public void showMessage(final String message) {
+
+        final AppManager appManager = D.get(AppManager.class);
+
+        final Snackbar snackbar = Snackbar.make(mCoordinatorLayout, message, Snackbar.LENGTH_LONG);
+        final View snackbarView = snackbar.getView();
+        snackbarView.setBackgroundColor(appManager.getColor(R.color.primary));
+        final TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
+        textView.setTextColor(appManager.getColor(R.color.white_text));
+        snackbar.show();
     }
 
     @Override

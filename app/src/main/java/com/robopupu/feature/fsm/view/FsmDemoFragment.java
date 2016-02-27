@@ -269,16 +269,6 @@ public class FsmDemoFragment extends CoordinatorLayoutFragment<FsmDemoPresenter>
     }
 
     @Override
-    public void showMessage(final String message) {
-        final Snackbar snackbar = Snackbar.make(mCoordinatorLayout, message, Snackbar.LENGTH_LONG);
-        final View snackbarView = snackbar.getView();
-        snackbarView.setBackgroundColor(mAppManager.getColor(R.color.primary));
-        final TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
-        textView.setTextColor(mAppManager.getColor(R.color.white_text));
-        snackbar.show();
-    }
-
-    @Override
     public void resetView() {
         mSelectCRadioButton.setSelected(true);
 
