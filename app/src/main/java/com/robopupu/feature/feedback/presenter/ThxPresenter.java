@@ -13,15 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.robopupu.api.feature;
+package com.robopupu.feature.feedback.presenter;
 
-import org.fuusio.api.feature.FeatureContainer;
-import org.fuusio.api.mvp.View;
+import org.fuusio.api.feature.FeaturePresenter;
 import org.fuusio.api.plugin.PlugInterface;
 
-/**
- * {@link PluginViewContainer} ... TODO
- */
 @PlugInterface
-public interface PluginViewContainer extends FeatureContainer {
+public interface ThxPresenter extends FeaturePresenter {
+
+    void onSendClicked(String feedbackText);
 }
