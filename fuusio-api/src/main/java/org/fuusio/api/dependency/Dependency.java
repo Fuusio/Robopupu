@@ -155,20 +155,16 @@ public class Dependency {
 
         if (scope == null) {
             scope = addScope(owner);
-            scope.setOwner(owner);
         }
 
-        if (sActiveScope != scope) {
+        scope.setOwner(owner);
 
-            if (sActiveScope != null) {
-                deactivateScope(sActiveScope.getOwner());
-            }
+        if (sActiveScope != scope) {
             sActiveScope = scope;
             sActiveScope.initialize();
             sActiveScope.onActivated(owner);
         }
     }
-
 
     /**
      * Activates the given {@link DependencyScope} for the given {@link DependencyScopeOwner}.

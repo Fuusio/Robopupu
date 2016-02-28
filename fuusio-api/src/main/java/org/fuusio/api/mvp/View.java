@@ -35,6 +35,13 @@ public interface View {
     ViewState getState();
 
     /**
+     * Get a tag for this {@link View}.
+     *
+     * @return A tag as a {@link String}.
+     */
+    String getViewTag();
+
+    /**
      * Test if this {@link View} has currently focus.
      * @return A {@code boolean}.
      */

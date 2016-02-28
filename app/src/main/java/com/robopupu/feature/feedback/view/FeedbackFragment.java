@@ -68,7 +68,7 @@ public class FeedbackFragment extends CoordinatorLayoutFragment<FeedbackPresente
 
     @Override
     protected void setupFabAction(FloatingActionButton fab) {
-        new ClickBinding(this, R.id.fab_send) {
+        new ClickBinding(this, fab) {
             @Override
             protected void clicked() {
                 mPresenter.onSendClicked(mFeedbackTextBinding.getText());

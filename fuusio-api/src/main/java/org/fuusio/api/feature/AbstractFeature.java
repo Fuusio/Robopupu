@@ -169,18 +169,7 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
      */
     @SuppressWarnings("unchecked")
     protected View showView(final Class<? extends Presenter> presenterClass, final Params... params) {
-        final View view =  showView(mFeatureContainer, presenterClass, params);
-        View actualView = view;
-
-        if (view instanceof PlugInvoker) {
-            actualView = (View)((PlugInvoker)view).get(0);
-        }
-        if (actualView instanceof FeatureFragment) {
-            ((FeatureFragment)actualView).setFeature(this);
-        } else if (actualView instanceof FeatureDialogFragment) {
-            ((FeatureDialogFragment)actualView).setFeature(this);
-        }
-        return view;
+        return showView(mFeatureContainer, presenterClass, params);
     }
 
     /**
@@ -205,10 +194,12 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
 
         if (view instanceof FeatureFragment) {
             final FeatureFragment fragment = (FeatureFragment) view;
+            fragment.setFeature(this);
             transitionManager.showFragment(fragment, null);
         } else if (view instanceof FeatureDialogFragment) {
-            final FeatureDialogFragment fragment = (FeatureDialogFragment) view;
-            transitionManager.showDialogFragment(fragment, null);
+            final FeatureDialogFragment dialogFragment = (FeatureDialogFragment) view;
+            dialogFragment.setFeature(this);
+            transitionManager.showDialogFragment(dialogFragment, null);
         }
         return view;
     }
@@ -218,10 +209,7 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
     public void clearBackStack() {
         if (mFeatureContainer != null) {
             final FragmentManager manager = mFeatureContainer.getSupportFragmentManager();
-
-            if (manager.getBackStackEntryCount() > 0) {
-                manager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-            }
+            manager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         }
     }
 

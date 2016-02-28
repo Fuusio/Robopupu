@@ -23,6 +23,7 @@ import android.util.Log;
 import org.fuusio.api.component.AbstractManager;
 import org.fuusio.api.dependency.D;
 import org.fuusio.api.dependency.DependenciesCache;
+import org.fuusio.api.dependency.Dependency;
 import org.fuusio.api.dependency.DependencyScope;
 import org.fuusio.api.dependency.DependencyScopeOwner;
 import org.fuusio.api.mvp.View;
@@ -208,11 +209,6 @@ public abstract class AbstractFeatureManager extends AbstractManager
 
     @Override
     public Feature startFeature(final FeatureContainer featureContainer, final Feature feature, final Params params) {
-        feature.setFeatureManager(this);
-        feature.setFeatureContainer(featureContainer);
-        // XXX Dependency.activateScope(feature);
-        feature.start(params);
-        mActiveFeatures.add(feature);
 
         if (featureContainer != null) {
             final Class<? extends FeatureContainer> key = featureContainer.getClass();
@@ -224,6 +220,15 @@ public abstract class AbstractFeatureManager extends AbstractManager
             if (previousFeature != null && !previousFeature.isActivityFeature() && previousFeature != feature) {
                 previousFeature.finish();
             }
+        }
+
+        feature.setFeatureManager(this);
+        feature.setFeatureContainer(featureContainer);
+        feature.start(params);
+        mActiveFeatures.add(feature);
+
+        if (feature instanceof DependencyScopeOwner) {
+            Dependency.activateScope((DependencyScopeOwner)feature);
         }
         return feature;
     }

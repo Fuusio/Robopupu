@@ -46,6 +46,7 @@ public class ThxPresenterImpl extends AbstractFeaturePresenter<ThxView>
 
     @Override
     public void onPlugged(final PluginBus bus) {
+        super.onPlugged(bus);
         plug(ThxView.class);
     }
 

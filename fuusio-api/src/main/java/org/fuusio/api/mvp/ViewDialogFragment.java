@@ -95,7 +95,7 @@ public abstract class ViewDialogFragment<T_Presenter extends Presenter> extends 
         return getClass().getName();
     }
 
-    public String getFragmentTag() {
+    public String getViewTag() {
         return getClass().getSimpleName();
     }
 

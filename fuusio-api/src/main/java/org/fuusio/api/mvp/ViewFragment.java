@@ -58,6 +58,11 @@ public abstract class ViewFragment<T_Presenter extends Presenter> extends Fragme
      */
     protected abstract T_Presenter getPresenter();
 
+    @Override
+    public String getViewTag() {
+        return getClass().getSimpleName();
+    }
+
     /**
      * Resolves the {@link Presenter} assigned for this {@link ViewActivity}.
      *

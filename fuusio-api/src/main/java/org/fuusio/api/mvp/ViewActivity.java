@@ -60,6 +60,11 @@ public abstract class ViewActivity<T_Presenter extends Presenter> extends AppCom
      */
     protected abstract T_Presenter getPresenter();
 
+    @Override
+    public String getViewTag() {
+        return getClass().getSimpleName();
+    }
+
     /**
      * Resolves the {@link Presenter} assigned for this {@link ViewActivity}.
      *

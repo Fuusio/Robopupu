@@ -34,16 +34,7 @@ public abstract class FeatureFragment<T_Presenter extends Presenter> extends Vie
     public void setFeature(final AbstractFeature feature) {
         mFeature = feature;
     }
-
-    /**
-     * Get a tag for this {@link FeatureFragment}.
-     *
-     * @return A tag as a {@link String}.
-     */
-    public String getFragmentTag() {
-        return getClass().getSimpleName();
-    }
-
+    
     @Override
     public DependencyScope getScope() {
         return mScope;

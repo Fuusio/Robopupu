@@ -34,15 +34,6 @@ public abstract class FeatureDialogFragment<T_Presenter extends Presenter> exten
         mFeature = feature;
     }
 
-    /**
-     * Get a tag for this {@link FeatureDialogFragment}.
-     *
-     * @return A tag as a {@link String}.
-     */
-    public String getFragmentTag() {
-        return getClass().getSimpleName();
-    }
-
     @Override
     public DependencyScope getScope() {
         return mScope;

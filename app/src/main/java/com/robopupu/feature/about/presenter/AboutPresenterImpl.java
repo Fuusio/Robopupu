@@ -46,6 +46,7 @@ public class AboutPresenterImpl extends AbstractFeaturePresenter<AboutView>
 
     @Override
     public void onPlugged(final PluginBus bus) {
+        super.onPlugged(bus);
         plug(AboutView.class);
     }
 

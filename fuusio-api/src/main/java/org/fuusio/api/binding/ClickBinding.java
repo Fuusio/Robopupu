@@ -35,6 +35,26 @@ public class ClickBinding implements View.OnClickListener {
     private ClickBinding() {
     }
 
+    public ClickBinding(final ViewFragment fragment, final View... views) {
+        final int count = views.length;
+        mViews = new View[count];
+
+        for (int i = 0; i < count; i++) {
+            mViews[i] = views[i];
+            attachListeners(mViews[i]);
+        }
+    }
+
+    public ClickBinding(final ViewDialogFragment dialogFragment, final View... views) {
+        final int count = views.length;
+        mViews = new View[count];
+
+        for (int i = 0; i < count; i++) {
+            mViews[i] = views[i];
+            attachListeners(mViews[i]);
+        }
+    }
+
     public ClickBinding(final ViewFragment fragment, @IdRes final int... viewIds) {
         final int count = viewIds.length;
         mViews = new  View[count];

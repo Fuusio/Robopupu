@@ -52,6 +52,7 @@ public class FeedbackPresenterImpl extends AbstractFeaturePresenter<FeedbackView
 
     @Override
     public void onPlugged(final PluginBus bus) {
+        super.onPlugged(bus);
         plug(FeedbackView.class);
     }
 

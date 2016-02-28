@@ -27,9 +27,6 @@ import org.fuusio.api.plugin.Plug;
 import org.fuusio.api.plugin.Plugin;
 import org.fuusio.api.plugin.PluginBus;
 
-/**
- * {@link SplashPresenterImpl} ...
- */
 @Plugin
 public class SplashPresenterImpl extends AbstractFeaturePresenter<SplashView>
         implements SplashPresenter {
@@ -49,6 +46,7 @@ public class SplashPresenterImpl extends AbstractFeaturePresenter<SplashView>
 
     @Override
     public void onPlugged(final PluginBus bus) {
+        super.onPlugged(bus);
         plug(SplashView.class);
     }
 
