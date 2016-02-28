@@ -99,7 +99,7 @@ public abstract class AbstractFeatureManager extends AbstractManager
 
         if (sMockScopeOwner != null) {
             final DependencyScope savedScope = D.getActiveScope();
-            // XXX D.activateScope(sMockScopeOwner);
+            D.activateScope(sMockScopeOwner);
 
             feature = D.get(featureClass);
 
@@ -113,10 +113,10 @@ public abstract class AbstractFeatureManager extends AbstractManager
                 }
             }
 
-            // XXX D.deactivateScope(sMockScopeOwner);
+            D.deactivateScope(sMockScopeOwner);
 
             if (savedScope != null) {
-                // XXX D.activateScope(savedScope.getOwner());
+                D.activateScope(savedScope.getOwner());
             }
         }
         return feature;
@@ -293,7 +293,6 @@ public abstract class AbstractFeatureManager extends AbstractManager
      */
     public void onFeatureDestroyed(final Feature feature) {
         mActiveFeatures.remove(feature);
-        // XXX mDependenciesCache.removeDependencyScope(feature);
     }
 
     @Override

@@ -18,6 +18,7 @@ package org.fuusio.api.feature;
 import android.app.Activity;
 import android.support.v4.app.FragmentManager;
 
+import org.fuusio.api.dependency.DependencyScope;
 import org.fuusio.api.dependency.DependencyScopeOwner;
 import org.fuusio.api.mvp.PresenterListener;
 import org.fuusio.api.mvp.View;
@@ -29,7 +30,7 @@ import java.util.List;
  * {@link Feature} defines an interface for components that implement some application feature
  * as a component. A concrete {@link Feature} implementation may implement logic for UI navigation
  * and UI flow logic.<b></b> A {@link Feature}  is also a {@link DependencyScopeOwner} that provides
- * a {@link FeatureScope} for prociding dependencies. Concrete implementations of {@link Feature}
+ * a {@link DependencyScope} for prociding dependencies. Concrete implementations of {@link Feature}
  * has to be annotated with {@link AppFeature} to enable annotation processor based code generation.
  */
 public interface Feature extends PresenterListener, PluginStateComponent {

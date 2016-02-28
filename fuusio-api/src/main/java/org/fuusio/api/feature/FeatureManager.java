@@ -84,7 +84,7 @@ public interface FeatureManager extends Manager  {
 
     /**
      * Creates the specified {@link Feature}, but does not start it. If the feature is
-     * a {@link DependencyScopeOwner} its {@link FeatureScope} is added to cache of
+     * a {@link DependencyScopeOwner} its {@link DependencyScope} is added to cache of
      * {@link DependencyScope}s.
      *
      * @param featureClass A {@link Feature}
@@ -94,7 +94,7 @@ public interface FeatureManager extends Manager  {
 
     /**
      * Creates the specified {@link Feature}, but does not start it. If the feature is
-     * a {@link DependencyScopeOwner} its {@link FeatureScope} is added to cache of
+     * a {@link DependencyScopeOwner} its {@link DependencyScope} is added to cache of
      * {@link DependencyScope}s.
      *
      * @param featureClass A {@link Feature}
