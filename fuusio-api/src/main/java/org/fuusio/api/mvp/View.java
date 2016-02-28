@@ -25,7 +25,6 @@ import org.fuusio.api.dependency.DependencyMap;
  */
 public interface View {
 
-    String KEY_DEPENDENCY_PRESENTER = "Key.Dependency.Presenter";
     String KEY_DEPENDENCY_SCOPE = "Key.Dependency.Scope";
 
     /**

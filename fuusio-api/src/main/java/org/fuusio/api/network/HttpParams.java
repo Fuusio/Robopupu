@@ -64,7 +64,7 @@ public class HttpParams {
     public Map<String, String> getMap() {
         final Map<String, String> map = new HashMap<>();
 
-        for (final KeyValue<String, String> keyValue : mKeyValues) { // TODO Deal with multiple key occurrences
+        for (final KeyValue<String, String> keyValue : mKeyValues) {
             map.put(keyValue.getKey(), keyValue.getValue());
         }
 

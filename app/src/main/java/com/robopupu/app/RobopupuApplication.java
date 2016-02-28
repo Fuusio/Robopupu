@@ -27,7 +27,7 @@ import org.fuusio.api.plugin.PluginBus;
 public class RobopupuApplication extends FuusioApplication {
 
     // Google Analytics Property ID
-    public final static int PROPERTY_ID = 0; // TODO
+    public final static int PROPERTY_ID = 0;
 
     public RobopupuApplication() {
         super();

@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/image_view_about_logo"
         android:layout_alignParentTop="true"
-        android:src="@drawable/img_robopupu"
+        android:src="@drawable/img_robopupu_thx"
         android:layout_marginLeft="96dp"
         android:layout_marginRight="96dp"
         android:layout_centerInParent="true" />

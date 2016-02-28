@@ -1,21 +1,61 @@
 package org.fuusio.api.mvp;
 
 import android.content.Context;
-import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 
-import org.fuusio.api.dependency.D;
-import org.fuusio.api.dependency.DependencyScope;
 import org.fuusio.api.feature.FeatureContainer;
+import org.fuusio.api.feature.FeatureContainerActivity;
+import org.fuusio.api.feature.FeatureDialogFragment;
 import org.fuusio.api.plugin.PluginBus;
 import org.fuusio.api.plugin.PluginComponent;
-import org.fuusio.api.plugin.PluginInjector;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * {@link PluginActivity} extends {@link ViewActivity} to provide an abstract base class for
  * implementing {@code Activities} that utilise Fuusio Plugin library.
  */
 public abstract class PluginActivity<T_Presenter extends Presenter>
-        extends ViewActivity<T_Presenter> implements PluginComponent {
+        extends ViewActivity<T_Presenter> implements FeatureContainer, FeatureContainerActivity, PluginComponent {
+
+    private final List<FeatureContainer> mFeatureContainers;
+
+    protected PluginActivity() {
+        mFeatureContainers = new ArrayList<>();
+        mFeatureContainers.add(this);
+    }
+
+    @Override
+    public Context getContext() {
+        return this;
+    }
+
+    @Override
+    public List<FeatureContainer> getFeatureContainers() {
+        return mFeatureContainers;
+    }
+
+    /**
+     * Tests if the given {@link View} can be shown. The default implementation of this method just
+     * checks that this {@link ViewActivity} has not been moved to background.
+     *
+     * @param view A {@link View}.
+     * @return A {@code boolean}.
+     */
+    @Override
+    public boolean canShowView(final View view) {
+        return (view != null && !mState.isMovedToBackground());
+    }
+
+    @Override
+    public void showDialogFragment(final FeatureDialogFragment fragment, final String fragmentTag) {
+        final String tag = (fragmentTag != null) ? fragmentTag : fragment.getFragmentTag();
+        final FragmentManager manager = getSupportFragmentManager();
+        FragmentTransaction transaction = manager.beginTransaction();
+        transaction.add(fragment, tag).addToBackStack(tag).commitAllowingStateLoss();
+    }
 
     @Override
     protected void onStart() {

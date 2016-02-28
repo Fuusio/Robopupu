@@ -40,7 +40,6 @@ import org.fuusio.api.plugin.Plugin;
 
 import com.robopupu.R;
 import com.robopupu.api.feature.PluginFeatureManager;
-import com.robopupu.api.feature.PluginViewContainer;
 import com.robopupu.app.RobopupuAppScope;
 import com.robopupu.app.view.DrawerLayoutContainer;
 import com.robopupu.feature.main.MainFeature;
@@ -50,7 +49,7 @@ import com.robopupu.feature.main.presenter.MainPresenter;
 @Plugin
 public class MainActivity extends PluginActivity<MainPresenter>
         implements MainView, NavigationView.OnNavigationItemSelectedListener,
-        DrawerLayoutContainer, PluginViewContainer {
+        DrawerLayoutContainer {
 
     private DrawerLayout mDrawerLayout;
 
@@ -83,7 +82,10 @@ public class MainActivity extends PluginActivity<MainPresenter>
     @Override
     protected void onStart() {
         super.onStart();
-        mFeatureManager.startFeature(this, mFeature);
+
+        if (!mFeature.isStarted()) {
+            mFeatureManager.startFeature(this, mFeature);
+        }
     }
 
     @Override
@@ -103,18 +105,6 @@ public class MainActivity extends PluginActivity<MainPresenter>
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(final MenuItem item) {
-        final int id = item.getItemId();
-
-        // TODO : To Presenter
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(final MenuItem item) {
@@ -126,16 +116,6 @@ public class MainActivity extends PluginActivity<MainPresenter>
     }
 
     @Override
-    public Context getContext() {
-        return this;
-    }
-
-    @Override
-    public boolean canShowView(final View view) {
-        return true;
-    }
-
-    @Override
     public void showFragment(final FeatureFragment fragment, final String fragmentTag) {
         final String tag = (fragmentTag != null) ? fragmentTag : fragment.getFragmentTag();
         final FragmentManager manager = getSupportFragmentManager();
@@ -143,14 +123,6 @@ public class MainActivity extends PluginActivity<MainPresenter>
                 .replace(R.id.frame_layout_fragment_container, fragment, tag)
                 .addToBackStack(tag)
                 .commit();
-    }
-
-    @Override
-    public void showDialogFragment(final FeatureDialogFragment fragment, final String fragmentTag) {
-        final String tag = (fragmentTag != null) ? fragmentTag : fragment.getFragmentTag();
-        final FragmentManager manager = getSupportFragmentManager();
-        FragmentTransaction transaction = manager.beginTransaction();
-        transaction.add(fragment, tag).addToBackStack(tag).commitAllowingStateLoss();
     }
 
     @Override

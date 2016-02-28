@@ -87,15 +87,6 @@ public abstract class CoordinatorLayoutFragment<T_Presenter extends FeaturePrese
 
     protected void setupFabAction(final FloatingActionButton fab) {
         // Do nothing by default
-
-        /*mFab.setOnClickListener(new android.view.View.OnClickListener() {
-                @Override
-                public void onClick(final android.view.View view) {
-                    Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
-                }
-            });
-            */
     }
 
     protected void setupBackdrop(final ImageView backdropImageView) {

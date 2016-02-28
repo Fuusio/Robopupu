@@ -20,6 +20,7 @@ import android.content.Intent;
 
 import com.robopupu.R;
 import com.robopupu.component.AppManager;
+import com.robopupu.feature.feedback.FeedbackFeature;
 import com.robopupu.feature.feedback.view.FeedbackView;
 
 import org.fuusio.api.dependency.Provides;
@@ -33,11 +34,15 @@ import org.fuusio.api.plugin.PluginBus;
 public class FeedbackPresenterImpl extends AbstractFeaturePresenter<FeedbackView>
         implements FeedbackPresenter {
 
+    private boolean mFeedbackSend;
+
     @Plug AppManager mAppManager;
+    @Plug FeedbackFeature mFeature;
     @Plug FeedbackView mView;
 
     @Provides(FeedbackPresenter.class)
     public FeedbackPresenterImpl() {
+        mFeedbackSend = false;
     }
 
     @Override
@@ -56,6 +61,16 @@ public class FeedbackPresenterImpl extends AbstractFeaturePresenter<FeedbackView
     }
 
     @Override
+    public void onViewResume(final View view) {
+        super.onViewResume(view);
+
+        if (mFeedbackSend) {
+            mFeature.showThxView();
+            mFeedbackSend = false;
+        }
+    }
+
+    @Override
     public void onSendClicked(final String feedback) {
         final Intent intent = new Intent(android.content.Intent.ACTION_SEND);
         intent.setType("text/plain");
@@ -68,5 +83,6 @@ public class FeedbackPresenterImpl extends AbstractFeaturePresenter<FeedbackView
         } catch (ActivityNotFoundException e) {
             mView.showMessage(mAppManager.getString(R.string.ft_feedback_error_no_email_client));
         }
+        mFeedbackSend = true;
     }
 }

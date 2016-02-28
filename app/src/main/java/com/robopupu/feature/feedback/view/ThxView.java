@@ -20,7 +20,4 @@ import org.fuusio.api.plugin.PlugInterface;
 
 @PlugInterface
 public interface ThxView extends View {
-
-    void clearFeedbackText();
-    void showMessage(String message);
 }

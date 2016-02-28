@@ -26,6 +26,7 @@ import org.fuusio.api.dependency.DependenciesCache;
 import org.fuusio.api.dependency.DependencyScope;
 import org.fuusio.api.dependency.DependencyScopeOwner;
 import org.fuusio.api.mvp.View;
+import org.fuusio.api.plugin.PluginStateComponent;
 import org.fuusio.api.util.Params;
 
 import java.lang.reflect.Constructor;
@@ -158,23 +159,25 @@ public abstract class AbstractFeatureManager extends AbstractManager
                 }
 
                 feature = implClass.newInstance();
-                // XXX Dependency.addScope(feature);
             } catch (Exception e) {
                 Log.d(TAG, "createFeature(Class, Params) : " + e.getMessage());
             }
 
-            try {
-                if (featureClass.isInterface()) {
-                    implClass = (Class<? extends Feature>) Class.forName(featureClass.getName() + SUFFIX_IMPL);
-                }
+            if (feature == null) {
+                implClass = featureClass;
 
-                final Class[] paramTypes = {Params.class};
-                final Object[] paramValues = {params};
-                final Constructor<? extends Feature> constructor = implClass.getConstructor(paramTypes);
-                feature = constructor.newInstance(paramValues);
-                // XXX Dependency.addScope(feature);
-            } catch (Exception e) {
-                throw new RuntimeException("Failed to instantiate Feature: " + featureClass.getName() + ". Reason: " + e.getMessage());
+                try {
+                    if (featureClass.isInterface()) {
+                        implClass = (Class<? extends Feature>) Class.forName(featureClass.getName() + SUFFIX_IMPL);
+                    }
+
+                    final Class[] paramTypes = {Params.class};
+                    final Object[] paramValues = {params};
+                    final Constructor<? extends Feature> constructor = implClass.getConstructor(paramTypes);
+                    feature = constructor.newInstance(paramValues);
+                } catch (Exception e) {
+                    throw new RuntimeException("Failed to instantiate Feature: " + featureClass.getName() + ". Reason: " + e.getMessage());
+                }
             }
         }
         return feature;
@@ -295,7 +298,17 @@ public abstract class AbstractFeatureManager extends AbstractManager
 
     @Override
     public void onActivityStarted(final Activity activity) {
-        // Do nothing by default
+        if (activity instanceof FeatureContainerActivity) {
+            final List<FeatureContainer> containers = ((FeatureContainerActivity)activity).getFeatureContainers();
+
+            for (final FeatureContainer container : containers) {
+                final Feature feature = mFeatureContainers.get(container.getClass());
+
+                if (feature != null) {
+                    feature.onFeatureContainerStarted(container);
+                }
+            }
+        }
     }
 
     @Override
@@ -309,6 +322,18 @@ public abstract class AbstractFeatureManager extends AbstractManager
         if (activity == mLastStoppedActivity) {
             mLastStoppedActivity = null;
         }
+
+        if (activity instanceof FeatureContainerActivity) {
+            final List<FeatureContainer> containers = ((FeatureContainerActivity)activity).getFeatureContainers();
+
+            for (final FeatureContainer container : containers) {
+                final Feature feature = mFeatureContainers.get(container.getClass());
+
+                if (feature != null) {
+                    feature.onFeatureContainerResumed(container);
+                }
+            }
+        }
     }
 
     @Override
@@ -317,6 +342,18 @@ public abstract class AbstractFeatureManager extends AbstractManager
             mForegroundActivity = null;
         }
         mLastPausedActivity = activity;
+
+        if (activity instanceof FeatureContainerActivity) {
+            final List<FeatureContainer> containers = ((FeatureContainerActivity)activity).getFeatureContainers();
+
+            for (final FeatureContainer container : containers) {
+                final Feature feature = mFeatureContainers.get(container.getClass());
+
+                if (feature != null) {
+                    feature.onFeatureContainerPaused(container);
+                }
+            }
+        }
     }
 
     @Override
@@ -325,6 +362,18 @@ public abstract class AbstractFeatureManager extends AbstractManager
             mLastPausedActivity = null;
         }
         mLastStoppedActivity = activity;
+
+        if (activity instanceof FeatureContainerActivity) {
+            final List<FeatureContainer> containers = ((FeatureContainerActivity)activity).getFeatureContainers();
+
+            for (final FeatureContainer container : containers) {
+                final Feature feature = mFeatureContainers.get(container.getClass());
+
+                if (feature != null) {
+                    feature.onFeatureContainerStopped(container);
+                }
+            }
+        }
     }
 
     @Override

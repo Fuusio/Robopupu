@@ -24,10 +24,14 @@ import org.fuusio.api.mvp.ViewDialogFragment;
 public abstract class FeatureDialogFragment<T_Presenter extends Presenter> extends ViewDialogFragment<T_Presenter>
     implements View, Scopeable {
 
-    private Feature mFeature;
+    private AbstractFeature mFeature;
     private DependencyScope mScope;
 
     protected FeatureDialogFragment() {
+    }
+
+    public void setFeature(final AbstractFeature feature) {
+        mFeature = feature;
     }
 
     /**

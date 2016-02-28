@@ -20,6 +20,4 @@ import org.fuusio.api.plugin.PlugInterface;
 
 @PlugInterface
 public interface ThxPresenter extends FeaturePresenter {
-
-    void onSendClicked(String feedbackText);
 }

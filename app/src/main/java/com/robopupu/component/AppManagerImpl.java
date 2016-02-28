@@ -121,7 +121,7 @@ public class AppManagerImpl extends AbstractManager implements AppManager {
                 new DialogInterface.OnClickListener() {
                     public void onClick(final DialogInterface dialog, final int which) {
                         dialog.dismiss();
-                        mExitObserver.onExit();
+                        mExitObserver.onAppExit();
                         activity.finish();
                     }
                 });

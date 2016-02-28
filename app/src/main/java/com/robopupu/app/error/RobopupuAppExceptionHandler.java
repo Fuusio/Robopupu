@@ -20,7 +20,7 @@ import org.fuusio.api.app.AppExceptionHandler;
 public class RobopupuAppExceptionHandler extends AppExceptionHandler<RobopupuAppError> {
 
 	private RobopupuAppExceptionHandler() {
-        super(null); // TODO
+        super(null);
 	}
 
     @Override

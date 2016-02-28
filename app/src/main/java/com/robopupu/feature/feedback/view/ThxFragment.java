@@ -22,8 +22,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.robopupu.R;
-import com.robopupu.feature.main.presenter.SplashPresenter;
-import com.robopupu.feature.main.view.SplashView;
+import com.robopupu.feature.feedback.presenter.ThxPresenter;
+
 
 import org.fuusio.api.dependency.Provides;
 import org.fuusio.api.feature.FeatureFragment;
@@ -34,22 +34,23 @@ import org.fuusio.api.plugin.Plugin;
  * A simple {@link Fragment} subclass.
  */
 @Plugin
-public class ThxFragment extends FeatureFragment<SplashPresenter> implements SplashView {
+public class ThxFragment extends FeatureFragment<ThxPresenter> implements ThxView {
 
-    @Plug SplashPresenter mPresenter;
+    @Plug
+    ThxPresenter mPresenter;
 
-    @Provides(SplashView.class)
+    @Provides(ThxView.class)
     public ThxFragment() {
     }
 
     @Override
-    protected SplashPresenter getPresenter() {
+    protected ThxPresenter getPresenter() {
         return mPresenter;
     }
 
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle inState) {
-        return inflater.inflate(R.layout.fragment_splash, container, false);
+        return inflater.inflate(R.layout.fragment_thx, container, false);
     }
 
 }

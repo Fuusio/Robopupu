@@ -56,10 +56,11 @@ public abstract class AbstractPresenter<T_View extends View> extends AbstractPlu
      *
      * @return A {@link View}.
      */
+    @SuppressWarnings("unchecked")
     protected T_View getAttachedView() {
         final T_View viewPlug = getViewPlug();
 
-        if (viewPlug instanceof PlugInvoker) { // TODO
+        if (viewPlug instanceof PlugInvoker) {
             return ((PlugInvoker<T_View>)viewPlug).get(0);
         } else {
             return viewPlug;
@@ -209,16 +210,19 @@ public abstract class AbstractPresenter<T_View extends View> extends AbstractPlu
     }
 
     @Override
+    @CallSuper
     public void onPlugged(final PluginBus bus) {
         updateListeners(bus);
     }
 
     @Override
+    @CallSuper
     public void onUnplugged(final PluginBus bus) {
         mListeners.clear();
     }
 
     @Override
+    @CallSuper
     public void onPluginPlugged(final Object plugin) {
         if (plugin instanceof PresenterListener) {
             updateListeners(PluginBus.getInstance());

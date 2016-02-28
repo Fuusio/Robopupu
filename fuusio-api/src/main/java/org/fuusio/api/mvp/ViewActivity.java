@@ -67,20 +67,7 @@ public abstract class ViewActivity<T_Presenter extends Presenter> extends AppCom
      */
     @SuppressWarnings("unchecked")
     protected T_Presenter resolvePresenter() {
-
-        T_Presenter presenter = getPresenter();
-
-        if (presenter == null) {
-            final DependenciesCache cache = D.get(DependenciesCache.class);
-            final DependencyMap dependencies = cache.getDependencies(this);
-
-            if (dependencies != null) {
-                presenter = dependencies.getDependency(KEY_DEPENDENCY_PRESENTER);
-            }
-
-            // TODO
-        }
-        return presenter;
+        return getPresenter();
     }
 
     /**
@@ -110,27 +97,11 @@ public abstract class ViewActivity<T_Presenter extends Presenter> extends AppCom
         super.onStart();
         mState.onStart();
 
-        final DependenciesCache cache = D.get(DependenciesCache.class);
-
-        if (this instanceof DependencyScopeOwner) {
-
-            // DependencyScope is automatically restored and activated
-
-            final DependencyScopeOwner owner = (DependencyScopeOwner) this;
-
-            /* XXX
-            if (cache.containsDependencyScope(owner)) {
-                final DependencyScope scope = cache.removeDependencyScope(owner);
-                D.activateScope(owner, scope);
-            } else {
-                D.activateScope(owner);
-            }*/
-        }
-
         if (!mState.isRestarted()) {
             createBindings();
         }
 
+        final DependenciesCache cache = D.get(DependenciesCache.class);
         final DependencyMap dependencies = cache.getDependencies(this);
 
         if (dependencies != null) {
@@ -213,15 +184,10 @@ public abstract class ViewActivity<T_Presenter extends Presenter> extends AppCom
         onSaveState(outState);
 
         final DependenciesCache cache = D.get(DependenciesCache.class);
-
-        // Save a reference to the Presenter
-
         final DependencyMap dependencies = cache.getDependencies(this, true);
-        dependencies.addDependency(KEY_DEPENDENCY_PRESENTER, getPresenter());
         dependencies.addDependency(KEY_DEPENDENCY_SCOPE, mScope);
 
         onSaveDependencies(dependencies);
-
 
         if (this instanceof DependencyScopeOwner) {
 
@@ -253,10 +219,6 @@ public abstract class ViewActivity<T_Presenter extends Presenter> extends AppCom
         final DependencyMap dependencies = cache.getDependencies(this);
 
         if (dependencies != null) {
-
-            final T_Presenter presenter = dependencies.getDependency(KEY_DEPENDENCY_PRESENTER);
-
-            // TODO
 
             final DependencyScope scope = dependencies.getDependency(KEY_DEPENDENCY_SCOPE);
 

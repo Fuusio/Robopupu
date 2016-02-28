@@ -55,11 +55,12 @@ public class SplashPresenterImpl extends AbstractFeaturePresenter<SplashView>
     @Override
     public void onViewStart(final View view) {
         super.onViewStart(view);
+
         mTimerManager.createTimer(new TimerManager.Callback() {
             @Override
             public void timeout(TimerHandle handle) {
                 mMainFeature.openNavigationDrawer();
             }
-        }, 4000L);
+        }, 3000L);
     }
 }

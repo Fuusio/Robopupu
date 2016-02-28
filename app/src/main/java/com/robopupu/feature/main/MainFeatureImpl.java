@@ -30,19 +30,25 @@ import org.fuusio.api.plugin.Plugin;
 @Plugin
 public class MainFeatureImpl extends AbstractFeature implements MainFeature {
 
+    private boolean mSplashShown;
+
     @Plug MainView mMainView;
 
     @Scope(RobopupuAppScope.class)
     @Provides(MainFeature.class)
     public MainFeatureImpl() {
         super(MainFeatureScope.class, true);
+        mSplashShown = false;
     }
 
     @Override
     public void onPresenterStarted(final Presenter presenter) {
 
         if (presenter instanceof MainPresenter) {
-            showView(mMainView.getMainFeatureContainer(), SplashPresenter.class);
+            if (!mSplashShown) {
+                mSplashShown = true;
+                showView(mMainView.getMainFeatureContainer(), SplashPresenter.class);
+            }
         }
     }
 

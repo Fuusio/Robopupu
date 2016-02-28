@@ -144,10 +144,6 @@ public class PluginBus {
     public static <T> T plug(final Class<?> pluginClass, final DependencyScope scope) {
         final Object plugin = D.getOrCreate(scope, pluginClass);
         plug(plugin, false);
-
-        if (plugin instanceof PluginInjector) {
-            ((PluginInjector)plugin).setScope(scope);
-        }
         return (T) plugin;
     }
 

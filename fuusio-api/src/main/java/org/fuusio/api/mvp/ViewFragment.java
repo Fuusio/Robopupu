@@ -65,18 +65,7 @@ public abstract class ViewFragment<T_Presenter extends Presenter> extends Fragme
      */
     @SuppressWarnings("unchecked")
     protected T_Presenter resolvePresenter() {
-        T_Presenter presenter = getPresenter();
-
-        if (presenter == null) {
-
-            final DependenciesCache cache = D.get(DependenciesCache.class);
-            final DependencyMap dependencies = cache.getDependencies(this);
-
-            if (dependencies != null) {
-                presenter = dependencies.getDependency(KEY_DEPENDENCY_PRESENTER);
-            }
-        }
-        return presenter;
+        return getPresenter();
     }
 
     @NonNull
@@ -116,42 +105,22 @@ public abstract class ViewFragment<T_Presenter extends Presenter> extends Fragme
     public void onActivityCreated(final Bundle inState) {
         super.onActivityCreated(inState);
 
-        final DependenciesCache cache = D.get(DependenciesCache.class);
-
-        if (this instanceof DependencyScopeOwner) {
-            final DependencyScopeOwner owner = (DependencyScopeOwner) this;
-
-            // DependencyScope is automatically restored and activated
-
-            /* XXX
-            if (cache.containsDependencyScope(owner)) {
-                final DependencyScope scope = cache.removeDependencyScope(owner);
-                D.activateScope(owner, scope);
-            } else {
-                D.activateScope(owner);
-            }*/
-        }
-
         mBinder.setActivity(getActivity());
         createBindings();
 
         if (inState != null) {
             onRestoreState(inState);
 
+            final DependenciesCache cache = D.get(DependenciesCache.class);
             final DependencyMap dependencies = cache.getDependencies(this);
 
             if (dependencies != null) {
-
-                final T_Presenter presenter = dependencies.getDependency(KEY_DEPENDENCY_PRESENTER);
-
-                // TODO
 
                 final DependencyScope scope = dependencies.getDependency(KEY_DEPENDENCY_SCOPE);
 
                 if (scope != null) {
                     mScope = scope;
                 }
-
                 onRestoreDependencies(dependencies);
             }
         }
@@ -245,7 +214,6 @@ public abstract class ViewFragment<T_Presenter extends Presenter> extends Fragme
         // Save a reference to the Presenter
 
         final DependencyMap dependencies = cache.getDependencies(this, true);
-        dependencies.addDependency(KEY_DEPENDENCY_PRESENTER, getPresenter());
         dependencies.addDependency(KEY_DEPENDENCY_SCOPE, mScope);
 
         onSaveDependencies(dependencies);

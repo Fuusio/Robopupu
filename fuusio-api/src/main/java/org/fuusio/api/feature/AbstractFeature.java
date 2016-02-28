@@ -41,7 +41,6 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
     protected final ArrayList<View> mActiveViews;
 
     protected boolean mActivityFeature;
-    protected int mBackStackSize;
     protected FeatureContainer mFeatureContainer;
     protected FeatureManager mFeatureManager;
     protected DependencyScope mFeatureScope;
@@ -67,7 +66,6 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
         mScopeClass = scopeClass;
         mActivityFeature = isActivityFeature;
         mActiveViews = new ArrayList<>();
-        mBackStackSize = 0;
     }
 
     @Override
@@ -92,9 +90,7 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
         return mActiveViews;
     }
 
-
-    @Override
-    public final View addActiveView(final View view) {
+    protected final View addActiveView(final View view) {
         if (!mActiveViews.contains(view)) {
             mActiveViews.add(view);
             return view;
@@ -102,8 +98,7 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
         return null;
     }
 
-    @Override
-    public final View removeActiveView(final View view) {
+    protected final View removeActiveView(final View view) {
         if (mActiveViews.contains(view)) {
             mActiveViews.remove(view);
             return view;
@@ -174,7 +169,18 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
      */
     @SuppressWarnings("unchecked")
     protected View showView(final Class<? extends Presenter> presenterClass, final Params... params) {
-        return showView(mFeatureContainer, presenterClass, params);
+        final View view =  showView(mFeatureContainer, presenterClass, params);
+        View actualView = view;
+
+        if (view instanceof PlugInvoker) {
+            actualView = (View)((PlugInvoker)view).get(0);
+        }
+        if (actualView instanceof FeatureFragment) {
+            ((FeatureFragment)actualView).setFeature(this);
+        } else if (actualView instanceof FeatureDialogFragment) {
+            ((FeatureDialogFragment)actualView).setFeature(this);
+        }
+        return view;
     }
 
     /**
@@ -207,43 +213,6 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
         return view;
     }
 
-    @Override
-    public boolean activateView(final View view) {
-
-        final Class<? extends View> viewClass = getClass(view);
-        getScope().cache(viewClass, view);
-
-        if (view instanceof FeatureFragment) {
-            // XXX final FeatureFragment fragment = (FeatureFragment) view;
-            // XXX fragment.setFeature(this);
-            // XXX transitionManager.showFeatureFragment(this, fragment, fragment.getTag());
-        } else {
-            throw new IllegalStateException("Fragment has to be derived from org.fuusio.api.flow.FlowFragment class");
-        }
-
-        // TODO
-
-        //final Presenter presenter = view.getPresenter();
-        //presenter.addListener(this);
-
-        return true;
-    }
-
-    /**
-     * Activates the {@link View} specified by the given class.
-     * @param viewClass A {@link Class} specifying the {@link View} to be activated.
-     * @return The activated {@link View}.
-     */
-    @SuppressWarnings("unchecked")
-    protected <T extends View> T activateView(final Class<? extends View> viewClass) {
-        final View view = D.get(viewClass, getScope());
-
-        if (activateView(view)) {
-            return (T)view;
-        } else {
-            return null;
-        }
-    }
 
     @Override
     public void clearBackStack() {
@@ -253,7 +222,6 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
             if (manager.getBackStackEntryCount() > 0) {
                 manager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
             }
-            mBackStackSize = 0;
         }
     }
 
@@ -271,7 +239,6 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
         if (count > 0) {
             fragmentManager.popBackStack();
         }
-        // REMOVE mBackStackSize = fragmentManager.getBackStackEntryCount();
     }
 
     @SuppressWarnings("unchecked")
@@ -305,7 +272,7 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
 
     @Override
     public boolean canGoBack() {
-        final FragmentManager fragmentManager = null; // getFeatureContainer().getSupportFragmentManager();
+        final FragmentManager fragmentManager = getFeatureContainer().getSupportFragmentManager();
         final int count = fragmentManager.getBackStackEntryCount();
         return (count > 1);
     }
@@ -424,6 +391,26 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
 
     @Override
     public void onPresenterFinished(Presenter presenter) {
+        // By default do nothing
+    }
+
+    @Override
+    public void onFeatureContainerStarted(FeatureContainer container) {
+        // By default do nothing
+    }
+
+    @Override
+    public void onFeatureContainerPaused(FeatureContainer container) {
+        // By default do nothing
+    }
+
+    @Override
+    public void onFeatureContainerResumed(FeatureContainer container) {
+        // By default do nothing
+    }
+
+    @Override
+    public void onFeatureContainerStopped(FeatureContainer container) {
         // By default do nothing
     }
 }

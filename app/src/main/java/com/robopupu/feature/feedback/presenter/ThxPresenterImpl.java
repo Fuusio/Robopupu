@@ -15,12 +15,10 @@
  */
 package com.robopupu.feature.feedback.presenter;
 
-import android.content.ActivityNotFoundException;
-import android.content.Intent;
-
-import com.robopupu.R;
-import com.robopupu.component.AppManager;
-import com.robopupu.feature.feedback.view.FeedbackView;
+import com.robopupu.component.TimerHandle;
+import com.robopupu.component.TimerManager;
+import com.robopupu.feature.feedback.view.ThxView;
+import com.robopupu.feature.main.MainFeature;
 
 import org.fuusio.api.dependency.Provides;
 import org.fuusio.api.feature.AbstractFeaturePresenter;
@@ -30,43 +28,36 @@ import org.fuusio.api.plugin.Plugin;
 import org.fuusio.api.plugin.PluginBus;
 
 @Plugin
-public class ThxPresenterImpl extends AbstractFeaturePresenter<FeedbackView>
-        implements FeedbackPresenter {
+public class ThxPresenterImpl extends AbstractFeaturePresenter<ThxView>
+        implements ThxPresenter {
 
-    @Plug AppManager mAppManager;
-    @Plug FeedbackView mView;
+    @Plug MainFeature mMainFeature;
+    @Plug TimerManager mTimerManager;
+    @Plug ThxView mView;
 
-    @Provides(FeedbackPresenter.class)
+    @Provides(ThxPresenter.class)
     public ThxPresenterImpl() {
     }
 
     @Override
-    public FeedbackView getViewPlug() {
+    public ThxView getViewPlug() {
         return mView;
     }
 
     @Override
     public void onPlugged(final PluginBus bus) {
-        plug(FeedbackView.class);
+        plug(ThxView.class);
     }
 
     @Override
     public void onViewStart(final View view) {
         super.onViewStart(view);
-    }
 
-    @Override
-    public void onSendClicked(final String feedback) {
-        final Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.setType("text/plain");
-        intent.putExtra(Intent.EXTRA_EMAIL, new String[]{  "robopupu@gmail.com"});
-        intent.putExtra(Intent.EXTRA_SUBJECT, "ROBOPUPU feedback");
-        intent.putExtra(Intent.EXTRA_TEXT, feedback);
-
-        try {
-            mAppManager.startActivity(Intent.createChooser(intent, mAppManager.getString(R.string.ft_feedback_prompt_send_email_using)));
-        } catch (ActivityNotFoundException e) {
-            mView.showMessage(mAppManager.getString(R.string.ft_feedback_error_no_email_client));
-        }
+        mTimerManager.createTimer(new TimerManager.Callback() {
+            @Override
+            public void timeout(TimerHandle handle) {
+                mMainFeature.openNavigationDrawer();
+            }
+        }, 3000L);
     }
 }

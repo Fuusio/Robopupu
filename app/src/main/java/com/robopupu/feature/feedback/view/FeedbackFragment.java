@@ -1,7 +1,22 @@
+/*
+ * Copyright (C) 2016 Marko Salmela, http://fuusio.org
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.robopupu.feature.feedback.view;
 
-
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,9 +61,13 @@ public class FeedbackFragment extends CoordinatorLayoutFragment<FeedbackPresente
 
     @Override
     protected void createBindings() {
+        super.createBindings();
 
         mFeedbackTextBinding = new Binding(this, R.id.edit_text_feedback);
+    }
 
+    @Override
+    protected void setupFabAction(FloatingActionButton fab) {
         new ClickBinding(this, R.id.fab_send) {
             @Override
             protected void clicked() {

@@ -208,8 +208,14 @@ public class FsmDemoPresenterImpl extends AbstractFeaturePresenter<FsmDemoView>
             }
         } else if (currentState instanceof State_C) {
             mView.setEnabledTriggers(TransitionId.TO_SELF, TransitionId.TO_B_FROM_C);
-            final int[] sequence = {R.drawable.img_choice_point, R.drawable.img_state_c};
-            new Sequencer(sequence).start();
+
+            if (transitionId == TransitionId.TO_SELF) {
+                final int[] sequence = {R.drawable.img_initial_state_top, R.drawable.img_state_c};
+                new Sequencer(sequence).start();
+            } else {
+                final int[] sequence = {R.drawable.img_choice_point, R.drawable.img_state_c};
+                new Sequencer(sequence).start();
+            }
         } else if (currentState instanceof State_D) {
             mView.setEnabledTriggers(TransitionId.TO_B_FROM_D);
             final int[] sequence = {R.drawable.img_choice_point, R.drawable.img_state_d};

@@ -42,33 +42,6 @@ public interface Feature extends PresenterListener, PluginStateComponent {
     List<View> getActiveViews();
 
     /**
-     * Adds the given {@link View} to the set of active views. This method is intended to be invoked
-     * by the framework.
-     *
-     * @param view A {@link View} to be added.
-     * @return The given {@link View} if it was not already in the set of active views.
-     */
-    View addActiveView(View view);
-
-    /**
-     * Removes the given {@link View} from the set of active views. This method is intended to be invoked
-     * by the framework.
-     *
-     * @param view A {@link View} to be removed.
-     * @return The given {@link View} if it was included in the set of active views.
-     */
-    View removeActiveView(View view);
-
-    /**
-     * A {@link Feature} implementation can use this method to activate i.e. to make visible
-     * the given {@link View}.
-     *
-     * @param view A {@link View} to be activated. May not be {@link null}.
-     * @return A {@code boolean} for the activated {@link View} was actually activated.
-     */
-    boolean activateView(View view);
-
-    /**
      * Tests if the given {@link View} is currently active one.
      *
      * @param view A {@link View}.
@@ -174,4 +147,24 @@ public interface Feature extends PresenterListener, PluginStateComponent {
      * Finishes this {@link Feature}.
      */
     void finish();
+
+    /**
+     * Invoked when the {@link FeatureContainer} has been started.
+     */
+    void onFeatureContainerStarted(FeatureContainer container);
+
+    /**
+     * Invoked when the {@link FeatureContainer} has been paused.
+     */
+    void onFeatureContainerPaused(FeatureContainer container);
+
+    /**
+     * Invoked when the {@link FeatureContainer} has been resumed.
+     */
+    void onFeatureContainerResumed(FeatureContainer container);
+
+    /**
+     * Invoked when the {@link FeatureContainer} has been stopped.
+     */
+    void onFeatureContainerStopped(FeatureContainer container);
 }
