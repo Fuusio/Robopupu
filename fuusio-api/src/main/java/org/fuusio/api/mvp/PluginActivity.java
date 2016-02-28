@@ -53,8 +53,13 @@ public abstract class PluginActivity<T_Presenter extends Presenter>
     public void showDialogFragment(final FeatureDialogFragment fragment, final String fragmentTag) {
         final String tag = (fragmentTag != null) ? fragmentTag : fragment.getViewTag();
         final FragmentManager manager = getSupportFragmentManager();
-        FragmentTransaction transaction = manager.beginTransaction();
-        transaction.add(fragment, tag).addToBackStack(tag).commitAllowingStateLoss();
+        final FragmentTransaction transaction = manager.beginTransaction();
+        transaction.add(fragment, tag);
+
+        if (fragmentTag != null) {
+            transaction.addToBackStack(tag);
+        }
+        transaction.commitAllowingStateLoss();
     }
 
     @Override

@@ -39,9 +39,11 @@ public interface FeatureTransitionManager {
      * the {@link FeatureFragment}.
      *
      * @param fragment    A {@link FeatureFragment}. May not be {@code null}.
-     * @param fragmentTag A {@link String} used as a tag to identify the {@link FeatureFragment}.
-     *                    In most cases tag can be simply the class name of the {@link FeatureFragment}.
-     *                    May be {@code null}.
+     * @param fragmentTag If the {@link FeatureFragment} is to be added to back stack then
+     *                    a {@link String} used as a tag to identify the {@link FeatureFragment}
+     *                    has to be given. In most cases tag can be simply the class name of
+     *                    the {@link FeatureFragment}. If {@code null} then the {@link FeatureFragment}
+     *                    is not added to back stack
      */
     void showFragment(FeatureFragment fragment, String fragmentTag);
 
@@ -52,9 +54,11 @@ public interface FeatureTransitionManager {
      * the {@link FeatureFragment}.
      *
      * @param dialogFragment    A {@link FeatureDialogFragment}. May not be {@code null}.
-     * @param fragmentTag A {@link String} used as a tag to identify the {@link ViewDialogFragment}.
-     *                    In most cases tag can be simply the class name of the {@link ViewDialogFragment}.
-     *                     May be {@code null}.
+     * @param fragmentTag If the {@link FeatureDialogFragment} is to be added to back stack then
+     *                    a {@link String} used as a tag to identify the {@link FeatureDialogFragment}
+     *                    has to be given. In most cases tag can be simply the class name of
+     *                    the {@link FeatureDialogFragment}. If {@code null} then
+     *                    the {@link FeatureDialogFragment} is not added to back stack
      */
     void showDialogFragment(FeatureDialogFragment dialogFragment, String fragmentTag);
 }

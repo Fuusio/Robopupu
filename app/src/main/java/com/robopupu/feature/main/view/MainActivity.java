@@ -19,6 +19,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -115,10 +116,14 @@ public class MainActivity extends PluginActivity<MainPresenter>
     public void showFragment(final FeatureFragment fragment, final String fragmentTag) {
         final String tag = (fragmentTag != null) ? fragmentTag : fragment.getViewTag();
         final FragmentManager manager = getSupportFragmentManager();
-        manager.beginTransaction()
-                .replace(R.id.frame_layout_fragment_container, fragment, tag)
-                .addToBackStack(tag)
-                .commit();
+        final FragmentTransaction transaction = manager.beginTransaction();
+
+        transaction.replace(R.id.frame_layout_fragment_container, fragment, tag);
+
+        if (fragmentTag != null) {
+            transaction.addToBackStack(tag);
+        }
+        transaction.commit();
     }
 
     @Override
