@@ -20,6 +20,7 @@ import org.fuusio.api.dependency.Dependency;
 import org.fuusio.api.dependency.DependencyScope;
 import org.fuusio.api.dependency.DependencyScopeOwner;
 import org.fuusio.api.dependency.Scopeable;
+import org.fuusio.api.mvp.ViewFragment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -170,19 +171,7 @@ public class PluginBus {
             return;
         }
 
-        final String pluggerClassName = plugin.getClass().getName() + SUFFIX_PLUGGER;
-        Plugger plugger = mPluggers.get(pluggerClassName);
-
-        if (plugger == null) {
-            try {
-                final Class<? extends Plugger> pluggerClass = (Class<? extends Plugger>) Class.forName(pluggerClassName);
-                plugger = pluggerClass.newInstance();
-                mPluggers.put(pluggerClassName, plugger);
-            } catch (Exception e) {
-                throw new IllegalStateException(e);
-            }
-        }
-
+        final Plugger plugger = getPlugger(plugin.getClass());
         plugger.plug(plugin, this, useHandler);
 
         mPlugins.add(plugin);
@@ -199,6 +188,22 @@ public class PluginBus {
                 mPluginComponents.add(component);
             }
         }
+    }
+
+    private Plugger getPlugger(final Class<?> pluginClass) {
+        final String pluggerClassName = pluginClass.getName() + SUFFIX_PLUGGER;
+        Plugger plugger = mPluggers.get(pluggerClassName);
+
+        if (plugger == null) {
+            try {
+                final Class<? extends Plugger> pluggerClass = (Class<? extends Plugger>) Class.forName(pluggerClassName);
+                plugger = pluggerClass.newInstance();
+                mPluggers.put(pluggerClassName, plugger);
+            } catch (Exception e) {
+                throw new IllegalStateException(e);
+            }
+        }
+        return plugger;
     }
 
     /**
@@ -235,7 +240,7 @@ public class PluginBus {
     private void doUnplug(final Object plugin) {
 
         if (!mPlugins.contains(plugin)) {
-            // The plugin is not plugged - return
+            // The plugin is not plugged - just return
             return;
         }
 
@@ -299,5 +304,14 @@ public class PluginBus {
             return true;
         }
         return false;
+    }
+
+    /**
+     * Tests if the specified class represents a plugin object.
+     * @param pluginClass A {@link Class}.
+     * @return A {@code boolean} value.
+     */
+    public static boolean isPlugin(final Class<?> pluginClass) {
+        return (getInstance().getPlugger(pluginClass) != null);
     }
 }

@@ -424,7 +424,6 @@ public abstract class DependencyScope {
      * Disposes this {@link DependencyScope} to support effective GC and to avoid memory leaks.
      */
     protected void dispose() {
-
         final ArrayList<Object> dependencies = new ArrayList<>(mDependencies.values());
 
         for (final Object dependency : dependencies) {

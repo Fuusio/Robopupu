@@ -113,14 +113,14 @@ public class MainActivity extends PluginActivity<MainPresenter>
     }
 
     @Override
-    public void showFragment(final FeatureFragment fragment, final String fragmentTag) {
+    public void showFragment(final FeatureFragment fragment, final boolean addToBackStack, final String fragmentTag) {
         final String tag = (fragmentTag != null) ? fragmentTag : fragment.getViewTag();
         final FragmentManager manager = getSupportFragmentManager();
         final FragmentTransaction transaction = manager.beginTransaction();
 
         transaction.replace(R.id.frame_layout_fragment_container, fragment, tag);
 
-        if (fragmentTag != null) {
+        if (addToBackStack) {
             transaction.addToBackStack(tag);
         }
         transaction.commit();
@@ -132,28 +132,6 @@ public class MainActivity extends PluginActivity<MainPresenter>
                 this, mDrawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         mDrawerLayout.setDrawerListener(toggle);
         toggle.syncState();
-    }
-
-    @Override
-    public void showExitConfirmDialog() {
-        final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-        alertDialog.setTitle(R.string.ft_main_dialog_title_exit_confirmation);
-        alertDialog.setMessage(getString(R.string.ft_main_dialog_prompt_exit_app));
-        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.action_ok),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(final DialogInterface dialog, final int which) {
-                        dialog.dismiss();
-                        mPresenter.onExitAppSelected();
-                    }
-                });
-        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.action_cancel),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(final DialogInterface dialog, final int which) {
-                        // Just dismiss the dialog
-                        dialog.dismiss();
-                    }
-                });
-        alertDialog.show();
     }
 
     @Override

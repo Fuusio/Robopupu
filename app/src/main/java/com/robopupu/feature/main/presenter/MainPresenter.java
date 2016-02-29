@@ -10,6 +10,6 @@ import org.fuusio.api.mvp.Presenter;
 public interface MainPresenter extends Presenter {
 
     void onBackPressed();
-    void onExitAppSelected();
+
     boolean onNavigationItemSelected(@IdRes int itemId);
 }

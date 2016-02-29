@@ -26,11 +26,6 @@ public interface MainView extends View {
     FeatureContainer getMainFeatureContainer();
 
     /**
-     * Invoked to show an Exit Dialog.
-     */
-    void showExitConfirmDialog();
-
-    /**
      * Finish this {@link View}.
      */
     void finish();

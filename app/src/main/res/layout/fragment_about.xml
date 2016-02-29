@@ -193,7 +193,8 @@
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
                 android:layout_marginRight="@dimen/ft_about_right_margin"
-                style="@style/TextView_About_Text"/>
+                style="@style/TextView_About_Text"
+                android:layout_toLeftOf="@+id/image_view_arrow_sources" />
 
             <ImageView
                 android:layout_width="wrap_content"

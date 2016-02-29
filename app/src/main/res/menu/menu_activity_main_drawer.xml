@@ -11,10 +11,6 @@
 
     <group android:id="@+id/group_social_media">
         <item
-            android:id="@+id/navigation_share"
-            android:icon="@drawable/ic_share_black_36dp"
-            android:title="@string/ft_main_navigation_item_share" />
-        <item
             android:id="@+id/navigation_feedback"
             android:icon="@drawable/ic_feedback_black_36dp"
             android:title="@string/ft_main_navigation_item_feedback" />

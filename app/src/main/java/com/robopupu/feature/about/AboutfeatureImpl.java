@@ -47,21 +47,19 @@ public class AboutFeatureImpl extends AbstractFeature implements AboutFeature {
 
     @Override
     protected void onStart() {
-        showView(AboutPresenter.class);
+        showView(AboutPresenter.class, false);
     }
 
     @Override
     public void showLicenseInfo() {
-        final Params params = new Params();
-        params.put(LicensesInfoPresenter.KEY_PARAM_LICENSE_URL, mAppManager.getString(R.string.robopupu_license_file));
-        showView(LicensesInfoPresenter.class, params);
+        final Params params = new Params(LicensesInfoPresenter.KEY_PARAM_LICENSE_URL, mAppManager.getString(R.string.robopupu_license_file));
+        showView(LicensesInfoPresenter.class, true, params);
     }
 
     @Override
     public void showOssLicensesInfo() {
-        final Params params = new Params();
-        params.put(LicensesInfoPresenter.KEY_PARAM_LICENSE_URL, mAppManager.getString(R.string.oss_licenses_file));
-        showView(LicensesInfoPresenter.class, params);
+        final Params params = new Params(LicensesInfoPresenter.KEY_PARAM_LICENSE_URL, mAppManager.getString(R.string.oss_licenses_file));
+        showView(LicensesInfoPresenter.class, true, params);
     }
 
     @Override

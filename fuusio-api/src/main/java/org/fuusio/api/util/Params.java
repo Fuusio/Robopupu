@@ -10,16 +10,18 @@ import java.util.HashMap;
 public class Params extends HashMap<String, Object> {
 
     public Params() {
-        this(null);
     }
 
     public Params(final Bundle bundle) {
-
         if (bundle != null) {
             for (final String key : bundle.keySet()) {
                 put(key, bundle.get(key));
             }
         }
+    }
+
+    public Params(final String key, final Object value) {
+        put(key, value);
     }
 
     /**

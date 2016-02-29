@@ -21,6 +21,7 @@ import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -34,6 +35,7 @@ import org.fuusio.api.dependency.DependencyMap;
 import org.fuusio.api.dependency.DependencyScope;
 import org.fuusio.api.dependency.DependencyScopeOwner;
 import org.fuusio.api.dependency.Scopeable;
+import org.fuusio.api.plugin.PluginBus;
 
 /**
  * {@link ViewDialogFragment} provides an abstract base class for concrete {@link DialogFragment}
@@ -44,6 +46,8 @@ import org.fuusio.api.dependency.Scopeable;
  */
 public abstract class ViewDialogFragment<T_Presenter extends Presenter> extends DialogFragment
         implements View, Scopeable {
+
+    private static String TAG = ViewDialogFragment.class.getSimpleName();
 
     private final ViewBinder mBinder;
     private final ViewState mState;
@@ -84,9 +88,15 @@ public abstract class ViewDialogFragment<T_Presenter extends Presenter> extends 
      *
      * @return A {@link Presenter}.
      */
-    @SuppressWarnings("unchecked")
     protected T_Presenter resolvePresenter() {
-        return getPresenter();
+        T_Presenter presenter = getPresenter();
+
+        if (presenter == null) {
+            if (PluginBus.isPlugin(getClass())) {
+                PluginBus.plug(this);
+            }
+        }
+        return presenter;
     }
 
     @NonNull
@@ -122,10 +132,12 @@ public abstract class ViewDialogFragment<T_Presenter extends Presenter> extends 
         mState.onCreate();
         mDialogView = (ViewGroup) view;
 
-        // We used getPresenter() getter to access the Presenter to guarantee that a reference
-        // for it is initialised or restored
-
-        getPresenter().onViewCreated(this, inState);
+        final T_Presenter presenter = resolvePresenter();
+        if (presenter != null) {
+            presenter.onViewCreated(this, inState);
+        } else {
+            Log.d(TAG, "onViewCreated(...) : Presenter == null");
+        }
     }
 
     @Override
@@ -197,8 +209,10 @@ public abstract class ViewDialogFragment<T_Presenter extends Presenter> extends 
         if (presenter != null) {
             presenter.onViewResume(this);
         }
-    }
 
+        final DependenciesCache cache = D.get(DependenciesCache.class);
+        cache.removeDependencies(this);
+    }
 
 
     @Override
@@ -230,13 +244,11 @@ public abstract class ViewDialogFragment<T_Presenter extends Presenter> extends 
 
         mBinder.dispose();
 
-        final DependenciesCache cache = D.get(DependenciesCache.class);
-        cache.removeDependencies(this);
-
         if (this instanceof DependencyScopeOwner) {
 
             // Cached DependencyScope is automatically disposed to avoid memory leaks
 
+            final DependenciesCache cache = D.get(DependenciesCache.class);
             final DependencyScopeOwner owner = (DependencyScopeOwner) this;
             cache.removeDependencyScope(owner);
         }
@@ -244,6 +256,11 @@ public abstract class ViewDialogFragment<T_Presenter extends Presenter> extends 
         final T_Presenter presenter = resolvePresenter();
         if (presenter != null) {
             presenter.onViewDestroy(this);
+        }
+
+        if (PluginBus.isPlugged(this)) {
+            Log.d(TAG, "onDestroy() : Unplugged from PluginBus");
+            PluginBus.unplug(this);
         }
     }
 

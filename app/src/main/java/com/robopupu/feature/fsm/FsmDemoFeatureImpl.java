@@ -35,6 +35,6 @@ public class FsmDemoFeatureImpl extends AbstractFeature implements FsmDemoFeatur
 
     @Override
     protected void onStart() {
-        showView(FsmDemoPresenter.class);
+        showView(FsmDemoPresenter.class, false);
     }
 }

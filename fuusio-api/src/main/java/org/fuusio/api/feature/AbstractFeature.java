@@ -164,12 +164,15 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
     /**
      * Shows the {@link View} attached to the specified {@link Presenter}.
      * @param presenterClass A {@link Class} specifying the {@link Presenter}.
+     * @param addToBackStack A {@code boolean} value specifying if the {@link View} is added to back
+     *                   stack.
      * @param params Optional {@link Params}.
      * @return A reference to {@link View}. May be {@link PlugInvoker}.
      */
     @SuppressWarnings("unchecked")
-    protected View showView(final Class<? extends Presenter> presenterClass, final Params... params) {
-        return showView(mFeatureContainer, presenterClass, params);
+    protected View showView(final Class<? extends Presenter> presenterClass,
+                            final boolean addToBackStack, final Params... params) {
+        return showView(mFeatureContainer, presenterClass, addToBackStack, params);
     }
 
     /**
@@ -178,11 +181,15 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
      *
      * @param transitionManager A {@link FeatureTransitionManager}.
      * @param presenterClass A {@link Class} specifying the {@link Presenter}.
+     * @param addToBackStack A {@code boolean} value specifying if the {@link View} is added to back
+     *                   stack.
      * @param params Optional {@link Params}.
      * @return A reference to {@link View}. May be {@link PlugInvoker}.
      */
     @SuppressWarnings("unchecked")
-    protected View showView(final FeatureTransitionManager transitionManager, final Class<? extends Presenter> presenterClass, final Params... params) {
+    protected View showView(final FeatureTransitionManager transitionManager,
+                            final Class<? extends Presenter> presenterClass,
+                            final boolean addToBackStack, final Params... params) {
         final Presenter presenter = plug(presenterClass);
 
         if (params != null && params.length > 0) {
@@ -195,11 +202,11 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
         if (view instanceof FeatureFragment) {
             final FeatureFragment fragment = (FeatureFragment) view;
             fragment.setFeature(this);
-            transitionManager.showFragment(fragment, null);
+            transitionManager.showFragment(fragment, addToBackStack, null);
         } else if (view instanceof FeatureDialogFragment) {
             final FeatureDialogFragment dialogFragment = (FeatureDialogFragment) view;
             dialogFragment.setFeature(this);
-            transitionManager.showDialogFragment(dialogFragment, null);
+            transitionManager.showDialogFragment(dialogFragment, addToBackStack, null);
         }
         return view;
     }

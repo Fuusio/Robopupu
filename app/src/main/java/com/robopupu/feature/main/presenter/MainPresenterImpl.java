@@ -54,13 +54,8 @@ public class MainPresenterImpl extends AbstractPresenter<MainView>
     @Override
     public void onBackPressed() {
         if (!mFeatureManager.onBackPressed()) {
-            mView.showExitConfirmDialog();
+            mAppManager.exitApplication();
         }
-    }
-
-    @Override
-    public void onExitAppSelected() {
-        mAppManager.exitApplication();
     }
 
     @Override
@@ -77,8 +72,6 @@ public class MainPresenterImpl extends AbstractPresenter<MainView>
             mFeatureManager.startFeature(container, FsmDemoFeature.class);
         } else if (itemId == R.id.navigation_settings) {
             //mFeatureManager.startFeature(container, SettingsFeature.class);
-        } else if (itemId == R.id.navigation_share) {
-            //mFeatureManager.startFeature(container, ShareFeature.class);
         } else if (itemId == R.id.navigation_exit) {
             mAppManager.exitApplication();
         }else {

@@ -47,7 +47,7 @@ public class MainFeatureImpl extends AbstractFeature implements MainFeature {
         if (presenter instanceof MainPresenter) {
             if (!mSplashShown) {
                 mSplashShown = true;
-                showView(mMainView.getMainFeatureContainer(), SplashPresenter.class);
+                showView(mMainView.getMainFeatureContainer(), SplashPresenter.class, false);
             }
         }
     }

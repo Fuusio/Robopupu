@@ -94,6 +94,7 @@ public abstract class AbstractFeatureManager extends AbstractManager
      *                  postfix {@code Impl}.
      * @return A {@link Feature}. May return {@code null}
      */
+    @SuppressWarnings("unchecked")
     private Feature getMockFeature(final Class<? extends Feature> featureClass) {
         Feature feature = null;
 
@@ -114,10 +115,7 @@ public abstract class AbstractFeatureManager extends AbstractManager
             }
 
             D.deactivateScope(sMockScopeOwner);
-
-            if (savedScope != null) {
-                D.activateScope(savedScope.getOwner());
-            }
+            D.activateScope(savedScope.getOwner());
         }
         return feature;
     }

@@ -176,6 +176,8 @@ public abstract class AbstractPresenter<T_View extends View> extends AbstractPlu
         for (final PresenterListener listener : getListeners()) {
             listener.onPresenterFinished(this);
         }
+
+        PluginBus.unplug(this);
     }
 
     /**

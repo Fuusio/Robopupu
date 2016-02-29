@@ -20,6 +20,7 @@ import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.widget.AdapterView;
 
 import org.fuusio.api.binding.AdapterViewBinding;
@@ -31,6 +32,7 @@ import org.fuusio.api.dependency.DependencyMap;
 import org.fuusio.api.dependency.DependencyScope;
 import org.fuusio.api.dependency.DependencyScopeOwner;
 import org.fuusio.api.dependency.Scopeable;
+import org.fuusio.api.plugin.PluginBus;
 
 /**
  * {@link ViewFragment} provides an abstract base class for concrete {@link Fragment} implementations
@@ -40,6 +42,8 @@ import org.fuusio.api.dependency.Scopeable;
  */
 public abstract class ViewFragment<T_Presenter extends Presenter> extends Fragment
         implements View, Scopeable {
+
+    private static String TAG = ViewFragment.class.getSimpleName();
 
     private final ViewBinder mBinder;
     private final ViewState mState;
@@ -68,9 +72,16 @@ public abstract class ViewFragment<T_Presenter extends Presenter> extends Fragme
      *
      * @return A {@link Presenter}.
      */
-    @SuppressWarnings("unchecked")
     protected T_Presenter resolvePresenter() {
-        return getPresenter();
+        T_Presenter presenter = getPresenter();
+
+        if (presenter == null) {
+            if (PluginBus.isPlugin(getClass())) {
+                Log.d(TAG, "resolvePresenter() : Plugged to PluginBus");
+                PluginBus.plug(this);
+            }
+        }
+        return presenter;
     }
 
     @NonNull
@@ -100,10 +111,12 @@ public abstract class ViewFragment<T_Presenter extends Presenter> extends Fragme
         super.onViewCreated(view, inState);
         mState.onCreate();
 
-        // We used getPresenter() getter to access the Presenter to guarantee that a reference
-        // for it is initialised or restored
-
-        resolvePresenter().onViewCreated(this, inState);
+        final T_Presenter presenter = resolvePresenter();
+        if (presenter != null) {
+            presenter.onViewCreated(this, inState);
+        } else {
+            Log.d(TAG, "onViewCreated(...) : Presenter == null");
+        }
     }
 
     @Override
@@ -159,9 +172,10 @@ public abstract class ViewFragment<T_Presenter extends Presenter> extends Fragme
         if (presenter != null) {
             presenter.onViewResume(this);
         }
+
+        final DependenciesCache cache = D.get(DependenciesCache.class);
+        cache.removeDependencies(this);
     }
-
-
 
     @Override
     public void onStop() {
@@ -192,13 +206,11 @@ public abstract class ViewFragment<T_Presenter extends Presenter> extends Fragme
 
         mBinder.dispose();
 
-        final DependenciesCache cache = D.get(DependenciesCache.class);
-        cache.removeDependencies(this);
-
         if (this instanceof DependencyScopeOwner) {
 
             // Cached DependencyScope is automatically disposed to avoid memory leaks
 
+            final DependenciesCache cache = D.get(DependenciesCache.class);
             final DependencyScopeOwner owner = (DependencyScopeOwner) this;
             cache.removeDependencyScope(owner);
         }
@@ -206,6 +218,11 @@ public abstract class ViewFragment<T_Presenter extends Presenter> extends Fragme
         final T_Presenter presenter = resolvePresenter();
         if (presenter != null) {
             presenter.onViewDestroy(this);
+        }
+
+        if (PluginBus.isPlugged(this)) {
+            Log.d(TAG, "onDestroy() : Unplugged from PluginBus");
+            PluginBus.unplug(this);
         }
     }
 

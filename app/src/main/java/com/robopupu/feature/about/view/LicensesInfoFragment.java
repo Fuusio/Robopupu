@@ -28,6 +28,7 @@ import com.robopupu.app.view.DelegatedWebViewClient;
 import com.robopupu.feature.about.presenter.LicensesInfoPresenter;
 
 import org.fuusio.api.binding.Binding;
+import org.fuusio.api.binding.ClickBinding;
 import org.fuusio.api.dependency.Provides;
 import org.fuusio.api.feature.FeatureDialogFragment;
 import org.fuusio.api.plugin.Plug;
@@ -75,12 +76,12 @@ public class LicensesInfoFragment extends FeatureDialogFragment<LicensesInfoPres
         params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
         mWebViewRelativeLayout.addView(mWebView, params);
 
-        bind(R.id.button_ok, new Binding() {
+        new ClickBinding(this, R.id.button_ok) {
             @Override
             protected void clicked() {
                 mPresenter.onOkButtonClicked();
             }
-        });
+        };
     }
 
     @Override

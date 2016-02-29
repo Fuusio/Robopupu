@@ -17,22 +17,12 @@ package org.fuusio.api.feature;
 
 import android.app.Activity;
 import android.app.Application;
-import android.os.Bundle;
 
-import org.fuusio.api.component.AbstractManager;
 import org.fuusio.api.component.Manager;
-import org.fuusio.api.dependency.D;
-import org.fuusio.api.dependency.DependenciesCache;
-import org.fuusio.api.dependency.Dependency;
 import org.fuusio.api.dependency.DependencyScope;
 import org.fuusio.api.dependency.DependencyScopeOwner;
-import org.fuusio.api.dependency.Scopeable;
-import org.fuusio.api.mvp.View;
-import org.fuusio.api.plugin.PlugInterface;
 import org.fuusio.api.util.Params;
 
-import java.lang.reflect.Constructor;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -71,7 +61,7 @@ public interface FeatureManager extends Manager  {
      *
      * @param owner A {@link DependencyScopeOwner}.
      */
-    void setMockScopeOwner(final DependencyScopeOwner owner);
+    void setMockScopeOwner(DependencyScopeOwner owner);
 
     /**
      * Gets the currently active {@link Feature}s.
@@ -90,7 +80,7 @@ public interface FeatureManager extends Manager  {
      * @param featureClass A {@link Feature}
      * @return A {@link Feature}.
      */
-    Feature createFeature(final Class<? extends Feature> featureClass);
+    Feature createFeature(Class<? extends Feature> featureClass);
 
     /**
      * Creates the specified {@link Feature}, but does not start it. If the feature is
@@ -101,7 +91,7 @@ public interface FeatureManager extends Manager  {
      * @param params A {@link Params} containing parameters for the started {@link Feature}.
      * @return A {@link Feature}.
      */
-    Feature createFeature(final Class<? extends Feature> featureClass, final Params params);
+    Feature createFeature(Class<? extends Feature> featureClass, Params params);
 
     /**
      * Creates and starts the specified {@link Feature} whose {@link FeatureFragment}s are hosted by
@@ -111,7 +101,7 @@ public interface FeatureManager extends Manager  {
      * @param featureClass A {@link Class} specifying the {@link Feature} to be created and started.
      * @return A {@link Feature}.
      */
-    Feature startFeature(final FeatureContainer featureContainer, final Class<? extends Feature> featureClass);
+    Feature startFeature(FeatureContainer featureContainer, Class<? extends Feature> featureClass);
 
     /**
      * Creates and starts the specified {@link Feature} whose {@link FeatureFragment}s are hosted by
@@ -122,7 +112,7 @@ public interface FeatureManager extends Manager  {
      * @param params    A {@link Params} containing parameters for the created and started {@link Feature}.
      * @return A {@link Feature}.
      */
-    Feature startFeature(final FeatureContainer featureContainer, final Class<? extends Feature> featureClass, final Params params);
+    Feature startFeature(FeatureContainer featureContainer, Class<? extends Feature> featureClass, Params params);
 
     /**
      * Starts the given {@link Feature} whose {@link FeatureFragment}s are hosted by
@@ -132,7 +122,7 @@ public interface FeatureManager extends Manager  {
      * @param feature   {The {@link Feature} to be started.
      * @return A {@link Feature}.
      */
-    Feature startFeature(final FeatureContainer featureContainer, final Feature feature);
+    Feature startFeature(FeatureContainer featureContainer, Feature feature);
 
     /**
      * Starts the given {@link Feature} whose {@link FeatureFragment}s are hosted by
@@ -143,7 +133,7 @@ public interface FeatureManager extends Manager  {
      * @param params A {@link Params} containing parameters for the started {@link Feature}.
      * @return A {@link Feature}.
      */
-    Feature startFeature(final FeatureContainer featureContainer, final Feature feature, final Params params);
+    Feature startFeature(FeatureContainer featureContainer, Feature feature, Params params);
 
     /**
      * Invoked to handle Back Pressed event received by the {@link FeatureContainer}.
@@ -157,25 +147,25 @@ public interface FeatureManager extends Manager  {
      *
      * @param feature A {@link Feature}. May not be {@code null}.
      */
-    void onFeatureResumed(final Feature feature);
+    void onFeatureResumed(Feature feature);
     /**
      * Invoked by a {@link Feature#pause()} when the {@link Feature}} has been paused.
      *
      * @param feature A {@link Feature}. May not be {@code null}.
      */
-    void onFeaturePaused(final Feature feature);
+    void onFeaturePaused(Feature feature);
 
     /**
      * Invoked by a {@link Feature#stop()} when the {@link Feature}} has been stopped.
      *
      * @param feature A {@link Feature}. May not be {@code null}.
      */
-    void onFeatureStopped(final Feature feature);
+    void onFeatureStopped(Feature feature);
 
     /**
      * Invoked by a {@link Feature#destroy()} when the {@link Feature}} has been destroyed.
      *
      * @param feature A {@link Feature}. May not be {@code null}.
      */
-    void onFeatureDestroyed(final Feature feature);
+    void onFeatureDestroyed(Feature feature);
 }

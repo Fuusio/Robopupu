@@ -50,13 +50,13 @@ public abstract class PluginActivity<T_Presenter extends Presenter>
     }
 
     @Override
-    public void showDialogFragment(final FeatureDialogFragment fragment, final String fragmentTag) {
+    public void showDialogFragment(final FeatureDialogFragment fragment, final boolean addToBackStack, final String fragmentTag) {
         final String tag = (fragmentTag != null) ? fragmentTag : fragment.getViewTag();
         final FragmentManager manager = getSupportFragmentManager();
         final FragmentTransaction transaction = manager.beginTransaction();
         transaction.add(fragment, tag);
 
-        if (fragmentTag != null) {
+        if (addToBackStack) {
             transaction.addToBackStack(tag);
         }
         transaction.commitAllowingStateLoss();

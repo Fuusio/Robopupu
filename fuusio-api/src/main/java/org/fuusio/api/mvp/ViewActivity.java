@@ -31,6 +31,7 @@ import org.fuusio.api.dependency.DependencyMap;
 import org.fuusio.api.dependency.DependencyScope;
 import org.fuusio.api.dependency.DependencyScopeOwner;
 import org.fuusio.api.dependency.Scopeable;
+import org.fuusio.api.plugin.PluginBus;
 import org.fuusio.api.util.PermissionRequestManager;
 
 /**
@@ -129,6 +130,9 @@ public abstract class ViewActivity<T_Presenter extends Presenter> extends AppCom
         super.onResume();
         mState.onResume();
 
+        final DependenciesCache cache = D.get(DependenciesCache.class);
+        cache.removeDependencies(this);
+
         final T_Presenter presenter = resolvePresenter();
         if (presenter != null) {
             presenter.onViewResume(this);
@@ -163,15 +167,17 @@ public abstract class ViewActivity<T_Presenter extends Presenter> extends AppCom
         mState.onDestroy();
         mBinder.dispose();
 
-        final DependenciesCache cache = D.get(DependenciesCache.class);
-        cache.removeDependencies(this);
-
         if (this instanceof DependencyScopeOwner) {
 
             // Cached DependencyScope is automatically disposed to avoid memory leaks
 
+            final DependenciesCache cache = D.get(DependenciesCache.class);
             final DependencyScopeOwner owner = (DependencyScopeOwner) this;
             cache.removeDependencyScope(owner);
+        }
+
+        if (PluginBus.isPlugged(this)) {
+            PluginBus.unplug(this);
         }
     }
 

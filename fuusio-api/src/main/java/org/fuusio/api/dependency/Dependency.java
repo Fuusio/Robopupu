@@ -159,7 +159,7 @@ public class Dependency {
 
         scope.setOwner(owner);
 
-        if (sActiveScope != scope) {
+        if (sActiveScope != scope && !scope.isAppScope()) {
             sActiveScope = scope;
             sActiveScope.initialize();
             sActiveScope.onActivated(owner);

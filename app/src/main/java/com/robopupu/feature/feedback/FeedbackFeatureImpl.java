@@ -35,11 +35,11 @@ public class FeedbackFeatureImpl extends AbstractFeature implements FeedbackFeat
 
     @Override
     protected void onStart() {
-        showView(FeedbackPresenter.class);
+        showView(FeedbackPresenter.class, false);
     }
 
     @Override
     public void showThxView() {
-        showView(ThxPresenter.class);
+        showView(ThxPresenter.class, false);
     }
 }
