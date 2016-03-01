@@ -35,7 +35,6 @@ public class DependencyScopeTest {
     private TestPresenter mTestPresenter;
     private TestParentDependencyScope mParentScope;
 
-
     @Before
     public void beforeTests() {
         mParentScope = new TestParentDependencyScope();
@@ -80,9 +79,5 @@ public class DependencyScopeTest {
         }
 
         assertTrue(npeCatched);
-    }
-
-    @After
-    public void afterTests() {
     }
 }

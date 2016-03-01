@@ -29,7 +29,7 @@ dependencies {
     compile 'com.squareup.okhttp3:okhttp:3.1.2'
     compile 'com.squareup.okhttp:okhttp-urlconnection:2.7.0'
     compile 'com.google.collections:google-collections:1.0'
-    provided 'com.google.code.gson:gson:2.6.1'
+    compile 'com.google.code.gson:gson:2.6.1'
     testCompile 'junit:junit:4.12'
     androidTestCompile('com.android.support.test:runner:0.4.1') {
         exclude group: 'com.android.support', module: 'support-annotations'

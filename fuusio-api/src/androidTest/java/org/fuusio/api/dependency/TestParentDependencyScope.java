@@ -26,7 +26,6 @@ public class TestParentDependencyScope extends DependencyScope {
         if (type(Foo.class)) {
             return dependency(new Foo());
         }
-
         return null;
     }
 

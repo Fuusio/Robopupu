@@ -50,11 +50,6 @@ public class GsonObjectTest {
         assertTrue(foo2.stringValue.contentEquals(mFoo.stringValue));
     }
 
-    @After
-    public void afterTests() {
-    }
-
-
     public class Foo extends GsonObject {
 
         private boolean booleanValue;
@@ -68,7 +63,5 @@ public class GsonObjectTest {
             intValue = 123;
             stringValue = "abc";
         }
-
     }
-
 }
