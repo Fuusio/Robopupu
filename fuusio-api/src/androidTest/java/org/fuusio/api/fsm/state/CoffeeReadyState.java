@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Marko Salmela, http://fuusio.org
+ * Copyright (C) 2010 - 2015 Marko Salmela, http://fuusio.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,21 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.robopupu.app;
+package org.fuusio.api.fsm.state;
 
-import org.fuusio.api.app.FuusioAppScope;
-import org.fuusio.api.dependency.Provides;
-import org.fuusio.api.dependency.Scope;
+import org.fuusio.api.fsm.TestStateMachine;
 
-@Scope
-public class RobopupuAppScope extends FuusioAppScope<RobopupuApplication> {
+public class CoffeeReadyState extends TestStateMachine {
 
-    public RobopupuAppScope(final RobopupuApplication app) {
-        super(app);
+    public CoffeeReadyState() {
+        super(PowerOnState.class, null);
     }
 
-    @Provides
-    public RobopupuApplication getRobopupuApplication() {
-        return getApplication();
+
+    @Override
+    protected void onExit() {
+        getCoffeeMaker().addTrace("EXIT: " + getClass().getSimpleName());
+    }
+
+    @Override
+    protected void onEnter() {
+        getCoffeeMaker().addTrace("ENTER: " + getClass().getSimpleName());
     }
 }

@@ -1,7 +1,7 @@
 package org.fuusio.api.util;
 
 /**
- * {@link Keyword} is enum type defining the Java keywords.
+ * {@link Keyword} is enum type representing the Java keywords.
  */
 public enum Keyword {
 
@@ -31,6 +31,7 @@ public enum Keyword {
     THIS("this"),
     THROW("throw"),
     TRANSIENT("transient"),
+    VOLATILE("volatile"),
     WHILE("while");
 
     private final String mKeyword;
@@ -45,7 +46,7 @@ public enum Keyword {
 
     public JavaWriter write(final JavaWriter writer) {
         writer.append(mKeyword);
-        writer.append(" ");
+        writer.append(' ');
         return writer;
     }
 

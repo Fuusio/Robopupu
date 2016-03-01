@@ -22,7 +22,6 @@ public abstract class RecyclerViewAdapter<T_ViewHolder extends RecyclerView.View
 
     protected RecyclerViewAdapter(final Context context) {
         mContext = context;
-        // REMOVE mHolderViews = new HashMap<>();
         mUndoPosition = -1;
     }
 

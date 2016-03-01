@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Marko Salmela, http://fuusio.org
+ * Copyright (C) 2010 - 2015 Marko Salmela, http://fuusio.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,21 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.robopupu.app;
+package org.fuusio.api.fsm;
 
-import org.fuusio.api.app.FuusioAppScope;
-import org.fuusio.api.dependency.Provides;
-import org.fuusio.api.dependency.Scope;
+public interface PowerSwitchEvents {
 
-@Scope
-public class RobopupuAppScope extends FuusioAppScope<RobopupuApplication> {
+    void switchPowerOn();
 
-    public RobopupuAppScope(final RobopupuApplication app) {
-        super(app);
-    }
-
-    @Provides
-    public RobopupuApplication getRobopupuApplication() {
-        return getApplication();
-    }
+    void switchPowerOff();
 }

@@ -141,8 +141,7 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
         return mActiveViews.contains(view);
     }
 
-    @Override
-    public final FeatureManager getFeatureManager() {
+    protected final FeatureManager getFeatureManager() {
         return mFeatureManager;
     }
 

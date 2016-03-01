@@ -1,7 +1,7 @@
 package org.fuusio.api.mvp;
 
 /**
- * {@link org.fuusio.api.mvp.Presenter.Listener} a listener interface for receiving lifecycle events
+ * {@link org.fuusio.api.mvp.PresenterListener} a listener interface for receiving lifecycle events
  * from a {@link Presenter}.
  */
 public interface PresenterListener {

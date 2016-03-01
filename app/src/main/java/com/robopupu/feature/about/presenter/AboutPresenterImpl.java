@@ -20,6 +20,7 @@ import com.robopupu.component.AppManager;
 import com.robopupu.feature.about.AboutFeature;
 import com.robopupu.feature.about.view.AboutView;
 
+import org.fuusio.api.dependency.D;
 import org.fuusio.api.dependency.Provides;
 import org.fuusio.api.feature.AbstractFeaturePresenter;
 import org.fuusio.api.mvp.View;

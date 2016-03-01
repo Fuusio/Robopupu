@@ -26,8 +26,8 @@ public class URLBuilder {
         mFirstParameter = true;
     }
 
-    public URLBuilder(final String formattedUrl, final Object... pArgs) {
-        mBuilder = new StringBuilder(StringToolkit.formatString(formattedUrl, pArgs));
+    public URLBuilder(final String formattedUrl, final Object... args) {
+        mBuilder = new StringBuilder(StringToolkit.formatString(formattedUrl, args));
         mFirstParameter = true;
     }
 
@@ -56,18 +56,15 @@ public class URLBuilder {
     }
 
     public URLBuilder addParam(final String key, final String value) {
-
         if (mFirstParameter) {
             mBuilder.append('?');
             mFirstParameter = false;
         } else {
             mBuilder.append('&');
         }
-
         mBuilder.append(key);
         mBuilder.append('=');
         mBuilder.append(value);
-
         return this;
     }
 

@@ -27,16 +27,15 @@ import org.fuusio.api.plugin.PluginStateComponent;
 import java.util.List;
 
 /**
- * {@link Feature} defines an interface for components that implement some application feature
- * as a component. A concrete {@link Feature} implementation may implement logic for UI navigation
- * and UI flow logic.<b></b> A {@link Feature}  is also a {@link DependencyScopeOwner} that provides
- * a {@link DependencyScope} for prociding dependencies. Concrete implementations of {@link Feature}
- * has to be annotated with {@link AppFeature} to enable annotation processor based code generation.
+ * {@link Feature} defines an interface for {@link PluginStateComponent}s that implement of
+ * application feature as a component. A concrete {@link Feature} implementation may implement logic
+ * for UI navigation and UI flow logic.<b></b> A {@link Feature}  is also
+ * a {@link DependencyScopeOwner} that provides a {@link DependencyScope} for providing dependencies.
  */
 public interface Feature extends PresenterListener, PluginStateComponent {
 
     /**
-     * Gets the currently active Views.
+     * Gets the currently active {@link View}s.
      *
      * @return A {@link List} containing the currently active views as {@link View}s.
      */
@@ -51,13 +50,6 @@ public interface Feature extends PresenterListener, PluginStateComponent {
     boolean isActiveView(View view);
 
     /**
-     * Gets the {@link FeatureManager} that started this {@link Feature}.
-     *
-     * @return A {@link FeatureManager}.
-     */
-    FeatureManager getFeatureManager();
-
-    /**
      * Sets the {@link FeatureManager} that started this {@link Feature}.
      *
      * @param manager A {@link FeatureManager}.
@@ -65,7 +57,7 @@ public interface Feature extends PresenterListener, PluginStateComponent {
     void setFeatureManager(FeatureManager manager);
 
     /**
-     * Gets the {@link FeatureContainer} that hosts the {@linkn FeatureFragment}s of this
+     * Gets the {@link FeatureContainer} that hosts the {@link FeatureFragment}s of this
      * {@link Feature}.
      *
      * @return A {@link FeatureContainer}.
@@ -73,7 +65,7 @@ public interface Feature extends PresenterListener, PluginStateComponent {
     FeatureContainer getFeatureContainer();
 
     /**
-     * Sets the the {@link FeatureContainer} that hosts the {@linkn FeatureFragment}s of this
+     * Sets the the {@link FeatureContainer} that hosts the {@link FeatureFragment}s of this
      * {@link Feature}.
      *
      * @param container A {@link FeatureContainer}.

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Marko Salmela, http://fuusio.org
+ * Copyright (C) 2014 - 2015 Marko Salmela, http://fuusio.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,21 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.robopupu.app;
+package org.fuusio.api.feature;
 
-import org.fuusio.api.app.FuusioAppScope;
-import org.fuusio.api.dependency.Provides;
-import org.fuusio.api.dependency.Scope;
+import org.fuusio.api.util.Params;
 
-@Scope
-public class RobopupuAppScope extends FuusioAppScope<RobopupuApplication> {
+public class TestFeature extends AbstractFeature {
 
-    public RobopupuAppScope(final RobopupuApplication app) {
-        super(app);
+    public TestFeature(final FeatureContainer pHost, final Params params) {
+        super(pHost, params);
     }
 
-    @Provides
-    public RobopupuApplication getRobopupuApplication() {
-        return getApplication();
+    @Override
+    protected FeatureScope createDependencyScope() {
+        return new TestDependencyScope(this);
     }
 }

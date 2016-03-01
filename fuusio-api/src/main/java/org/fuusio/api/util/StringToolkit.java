@@ -27,8 +27,6 @@ import java.util.StringTokenizer;
 /**
  * {@link StringToolkit} provides a set of convenience methods and utilities for using and modifying
  * Strings.
- *
- * @author Marko Salmela
  */
 public class StringToolkit {
 
@@ -432,7 +430,7 @@ public class StringToolkit {
     }
 
     /**
-     * Reverse the given {@link String}.
+     * Reverses the given {@link String}.
      * @param string A {@link String} to be reversed.
      * @return The reversed {@link String}.
      */

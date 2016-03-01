@@ -20,7 +20,7 @@ import java.util.StringTokenizer;
 
 /**
  * {@link StringList} extends to {@link ArrayList} to implement a {@link java.util.List} that
- * contains {@link String} instances.
+ * contains {@link String} instances as elements.
  */
 public class StringList extends ArrayList<String> {
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Marko Salmela, http://fuusio.org
+ * Copyright (C) 2014 - 2015 Marko Salmela, http://fuusio.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,21 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.robopupu.app;
+package org.fuusio.api.dependency;
 
-import org.fuusio.api.app.FuusioAppScope;
-import org.fuusio.api.dependency.Provides;
-import org.fuusio.api.dependency.Scope;
+public class TestParentDependencyScope extends DependencyScope {
 
-@Scope
-public class RobopupuAppScope extends FuusioAppScope<RobopupuApplication> {
-
-    public RobopupuAppScope(final RobopupuApplication app) {
-        super(app);
+    protected TestParentDependencyScope() {
     }
 
-    @Provides
-    public RobopupuApplication getRobopupuApplication() {
-        return getApplication();
+    @Override
+    protected <T> T getDependency() {
+
+        if (type(Foo.class)) {
+            return dependency(new Foo());
+        }
+
+        return null;
+    }
+
+
+    @Override
+    public boolean isDisposable() {
+        return false;
+    }
+
+    public class Foo {
     }
 }
