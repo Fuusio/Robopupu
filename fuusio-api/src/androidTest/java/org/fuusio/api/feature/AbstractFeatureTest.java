@@ -72,25 +72,7 @@ public class AbstractFeatureTest {
 
         final DependencyScope scope = mTestFeature.getScope();
         assertNotNull(scope);
-
-        mTestFeature.start();
-
-        verify(mFragmentManager, atLeastOnce()).addOnBackStackChangedListener((FragmentManager.OnBackStackChangedListener) any());
-
         assertEquals(D.getActiveScope(), scope);
-
-
-        mTestView = Mockito.mock(TestView.class);
-
-        final TestPresenter presenter = D.get(TestPresenter.class, mTestView);
-
-        when(mTestView.getPresenter()).thenReturn(presenter);
-        mTestFeature.showView(TestPresenter.class);
-        assertNotNull(D.get(TestView.class));
-
-        mTestFeature.stop();
-
-        verify(mFragmentManager, atLeastOnce()).removeOnBackStackChangedListener((FragmentManager.OnBackStackChangedListener) any());
     }
 
     @After
@@ -98,6 +80,7 @@ public class AbstractFeatureTest {
     }
 
     private class TestFeatureManager extends AbstractFeatureManager {
+
 
     }
 }

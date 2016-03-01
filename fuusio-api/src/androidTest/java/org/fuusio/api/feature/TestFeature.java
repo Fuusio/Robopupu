@@ -15,16 +15,11 @@
  */
 package org.fuusio.api.feature;
 
-import org.fuusio.api.util.Params;
+import org.fuusio.api.dependency.TestFeatureScope;
 
 public class TestFeature extends AbstractFeature {
 
-    public TestFeature(final FeatureContainer pHost, final Params params) {
-        super(pHost, params);
-    }
-
-    @Override
-    protected FeatureScope createDependencyScope() {
-        return new TestDependencyScope(this);
+    public TestFeature() {
+        super(TestFeatureScope.class);
     }
 }

@@ -15,12 +15,9 @@
  */
 package org.fuusio.api.dependency;
 
-import android.content.Context;
-import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.SmallTest;
 
-import org.fuusio.api.feature.FeatureContainer;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,8 +31,6 @@ import static org.junit.Assert.assertTrue;
 @SmallTest
 public class DependencyScopeTest {
 
-    private Context mApplicationContext;
-    private FeatureContainer mFragmentHost;
     private TestView mTestView;
     private TestPresenter mTestPresenter;
     private TestParentDependencyScope mParentScope;
@@ -43,15 +38,13 @@ public class DependencyScopeTest {
 
     @Before
     public void beforeTests() {
-        mApplicationContext = InstrumentationRegistry.getContext();
-        mFragmentHost = Mockito.mock(FeatureContainer.class);
         mParentScope = new TestParentDependencyScope();
     }
 
     @Test
     public void test() {
 
-        final TestFeature testFeature = new TestFeature(mFragmentHost, null);
+        final TestFeature testFeature = new TestFeature();
         final TestFeatureScope scope = (TestFeatureScope) testFeature.getScope();
         scope.setParentScope(mParentScope);
 

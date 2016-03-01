@@ -20,6 +20,7 @@ import android.support.v4.app.FragmentManager;
 import android.test.suitebuilder.annotation.SmallTest;
 
 import org.fuusio.api.dependency.TestFeature;
+import org.fuusio.api.util.Params;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -43,7 +44,7 @@ public class FeatureManagerTest {
     @Before
     public void beforeTests() {
         mFragmentManager = Mockito.mock(FragmentManager.class);
-        mFeatureManager = new FeatureManager();
+        mFeatureManager = new TestFeatureManager();
     }
 
     @Test
@@ -53,12 +54,18 @@ public class FeatureManagerTest {
         when(mFragmentContainer.getSupportFragmentManager()).thenReturn(mFragmentManager);
         assertNotNull(mFeatureManager);
 
-        final TestFeature flow = mFeatureManager.startFeature(TestFeature.class, mFragmentContainer, null);
 
-        assertNotNull(flow);
+        final Params params = new Params("Foo", "Bar");
+        final TestFeature feature = (TestFeature)mFeatureManager.startFeature(mFragmentContainer, TestFeature.class, params);
+
+        assertNotNull(feature);
     }
 
     @After
     public void afterTests() {
+    }
+
+    private class TestFeatureManager extends AbstractFeatureManager {
+
     }
 }
