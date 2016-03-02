@@ -15,7 +15,35 @@
  */
 package org.fuusio.api.dependency;
 
-import org.fuusio.api.mvp.View;
+import org.mockito.Mockito;
 
-public interface TestView extends View {
+public class ZooScope extends DependencyScope {
+
+    private boolean mWasDisposed;
+
+    protected ZooScope() {
+    }
+
+    public final boolean wasDisposed() {
+        return mWasDisposed;
+    }
+
+    public void setWasDisposed(final boolean disposed) {
+        mWasDisposed = disposed;
+    }
+
+    @Override
+    protected void dispose() {
+        super.dispose();
+        mWasDisposed = true;
+    }
+
+    @Override
+    protected <T> T getDependency() {
+        return null;
+    }
+
+    public boolean isCleared() {
+        return mDependants.isEmpty() && mDependencies.isEmpty();
+    }
 }

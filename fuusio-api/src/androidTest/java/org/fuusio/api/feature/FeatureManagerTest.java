@@ -19,7 +19,6 @@ import android.support.test.runner.AndroidJUnit4;
 import android.support.v4.app.FragmentManager;
 import android.test.suitebuilder.annotation.SmallTest;
 
-import org.fuusio.api.dependency.TestFeature;
 import org.fuusio.api.util.Params;
 import org.junit.After;
 import org.junit.Before;

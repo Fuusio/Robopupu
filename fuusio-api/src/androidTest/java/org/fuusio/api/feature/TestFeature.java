@@ -15,11 +15,11 @@
  */
 package org.fuusio.api.feature;
 
-import org.fuusio.api.dependency.TestFeatureScope;
+import org.fuusio.api.dependency.ZooScope;
 
 public class TestFeature extends AbstractFeature {
 
     public TestFeature() {
-        super(TestFeatureScope.class);
+        super(ZooScope.class);
     }
 }

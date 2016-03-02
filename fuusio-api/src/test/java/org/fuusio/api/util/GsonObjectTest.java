@@ -15,7 +15,6 @@
  */
 package org.fuusio.api.util;
 
-import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.SmallTest;
 
 import com.google.gson.JsonObject;
@@ -27,7 +26,6 @@ import org.junit.runner.RunWith;
 
 import static org.junit.Assert.assertTrue;
 
-@RunWith(AndroidJUnit4.class)
 @SmallTest
 public class GsonObjectTest {
 
@@ -37,6 +35,9 @@ public class GsonObjectTest {
     public void beforeTests() {
         mFoo = new Foo();
     }
+
+    @After
+    public void afterTests() {}
 
     @Test
     public void test() {

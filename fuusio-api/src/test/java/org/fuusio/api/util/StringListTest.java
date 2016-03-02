@@ -15,7 +15,6 @@
  */
 package org.fuusio.api.util;
 
-import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.SmallTest;
 
 import org.junit.After;
@@ -25,7 +24,6 @@ import org.junit.runner.RunWith;
 
 import static org.junit.Assert.assertEquals;
 
-@RunWith(AndroidJUnit4.class)
 @SmallTest
 public class StringListTest {
 

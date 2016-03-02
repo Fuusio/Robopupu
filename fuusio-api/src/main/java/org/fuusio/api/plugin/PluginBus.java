@@ -129,7 +129,7 @@ public class PluginBus {
      */
     @SuppressWarnings("unchecked")
     public static <T> T plug(final Class<?> pluginClass) {
-        final Object plugin = D.getOrCreate(pluginClass);
+        final Object plugin = D.get(pluginClass);
         plug(plugin, false);
         return (T) plugin;
     }
@@ -143,7 +143,7 @@ public class PluginBus {
      */
     @SuppressWarnings("unchecked")
     public static <T> T plug(final Class<?> pluginClass, final DependencyScope scope) {
-        final Object plugin = D.getOrCreate(scope, pluginClass);
+        final Object plugin = D.get(scope, pluginClass);
         plug(plugin, false);
         return (T) plugin;
     }

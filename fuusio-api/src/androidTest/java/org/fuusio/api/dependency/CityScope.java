@@ -15,42 +15,17 @@
  */
 package org.fuusio.api.dependency;
 
-import org.mockito.Mockito;
+public class CityScope extends DependencyScope {
 
-public class TestFeatureScope extends DependencyScope {
-
-    private boolean mWasDisposed;
-
-    protected TestFeatureScope() {
-    }
-
-    public final boolean wasDisposed() {
-        return mWasDisposed;
-    }
-
-    public void setWasDisposed(final boolean pDisposed) {
-        mWasDisposed = pDisposed;
-    }
-
-    @Override
-    protected void dispose() {
-        super.dispose();
-        mWasDisposed = true;
+    protected CityScope() {
     }
 
     @Override
     protected <T> T getDependency() {
 
-        if (type(TestView.class)) {
-            return dependency(Mockito.mock(TestView.class));
-        } else if (type(TestPresenter.class)) {
-            return dependency(Mockito.mock(TestPresenter.class));
+        if (type(Funding.class)) {
+            return dependency(new Funding());
         }
-
         return null;
-    }
-
-    public boolean isCleared() {
-        return mDependants.isEmpty() && mDependencies.isEmpty();
     }
 }
