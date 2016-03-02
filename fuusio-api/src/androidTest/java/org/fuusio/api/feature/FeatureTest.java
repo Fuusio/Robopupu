@@ -39,8 +39,9 @@ import static org.mockito.Mockito.when;
 
 @RunWith(AndroidJUnit4.class)
 @SmallTest
-public class AbstractFeatureTest {
+public class FeatureTest {
 
+    private FooApp mFooApp;
     private Context mApplicationContext;
     private FeatureContainer mFeatureContainer;
     private FeatureManager mFeatureManager;
@@ -70,7 +71,7 @@ public class AbstractFeatureTest {
         mTestFeature = (TestFeature)mFeatureManager.startFeature(mFeatureContainer, TestFeature.class, params);
         assertNotNull(mTestFeature);
 
-        final DependencyScope scope = mTestFeature.getScope();
+        final DependencyScope scope = mTestFeature.getOwnedScope();
         assertNotNull(scope);
         assertEquals(D.getActiveScope(), scope);
     }

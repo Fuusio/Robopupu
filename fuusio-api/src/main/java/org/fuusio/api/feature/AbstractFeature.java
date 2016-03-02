@@ -80,7 +80,7 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
 
     protected DependencyScope getFeatureScope() {
         if (mFeatureScope == null) {
-            mFeatureScope = Dependency.getScope(mScopeClass, true);
+            mFeatureScope = D.getScope(mScopeClass, true);
         }
         return mFeatureScope;
     }

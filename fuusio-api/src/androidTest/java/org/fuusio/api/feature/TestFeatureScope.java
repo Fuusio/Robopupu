@@ -18,11 +18,11 @@ package org.fuusio.api.feature;
 import org.fuusio.api.dependency.DependencyScope;
 import org.mockito.Mockito;
 
-public class TestDependencyScope extends DependencyScope {
+public class TestFeatureScope extends DependencyScope {
 
     private boolean mWasDisposed;
 
-    public TestDependencyScope() {
+    public TestFeatureScope() {
     }
 
     public final boolean wasDisposed() {
