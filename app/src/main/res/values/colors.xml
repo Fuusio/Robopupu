@@ -1,5 +1,14 @@
 <resources>
 
+    <color name="primary">@color/color_blue_gray_500</color>
+    <color name="primary_dark">@color/color_blue_gray_800</color>
+    <color name="primary_light">@color/color_blue_gray_100</color>
+    <color name="accent">@color/color_deep_orange_500</color>
+    <color name="primary_text">@color/color_blue_gray_900</color>
+    <color name="secondary_text">@color/color_blue_gray_400</color>
+    <color name="icons">@color/color_blue_gray_50</color>
+    <color name="divider">@color/color_deep_orange_200</color>
+
     <color name="black_overlay">#66000000</color>
     <color name="light_gray">#eeeeee</color>
     <color name="medium_gray">#dddddd</color>
@@ -24,6 +33,5 @@
     <color name="form_title_text">#ff000000</color>
     <color name="toast_background">#cc000000</color>
     <color name="white_text">#ffffffff</color>
-
 
 </resources>

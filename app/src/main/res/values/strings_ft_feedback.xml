@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="ft_feedback_title">Feedback</string>
+    <string name="ft_feedback_text_prompt">Any comments, questions, or other feedback?</string>
+    <string name="ft_feedback_error_no_email_client">Sending feedback email failed. No email clients installed.</string>
+    <string name="ft_feedback_prompt_send_email_using">Send feedback email using …</string>
+
+</resources>

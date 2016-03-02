@@ -94,7 +94,6 @@ public class TouchManager {
             if (index < mMaxTouchPoints) {
                 mPreviousPoints[index] = null;
                 mPoints[index] = null;
-                // System.out.println("CLEARED: " + index);
             }
         } else {
 
@@ -108,7 +107,6 @@ public class TouchManager {
 
                     if (mPoints[index] == null) {
                         mPoints[index] = newPoint;
-                        // System.out.println("ADDED: " + index);
                     } else {
                         if (mPreviousPoints[index] != null) {
                             mPreviousPoints[index].set(mPoints[index]);
@@ -119,8 +117,6 @@ public class TouchManager {
                         if (Vector2D.subtract(mPoints[index], newPoint).getLength() < 64) {
                             mPoints[index].set(newPoint);
                         }
-
-                        // System.out.println("UPDATED: " + index);
                     }
                 } else {
                     mPreviousPoints[i] = null;

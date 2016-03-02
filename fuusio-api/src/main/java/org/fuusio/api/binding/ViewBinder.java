@@ -16,8 +16,10 @@
 package org.fuusio.api.binding;
 
 import android.app.Activity;
+import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.TextView;
 
@@ -34,9 +36,10 @@ public class ViewBinder {
     private final HashMap<Integer, ViewBinding<?>> mBindingsCache;
 
     private Activity mActivity;
+    private ViewGroup mContentView;
 
     public ViewBinder() {
-        this(null);
+        this((Activity)null);
     }
 
     public ViewBinder(final Activity activity) {
@@ -44,9 +47,19 @@ public class ViewBinder {
         mActivity = activity;
     }
 
-    public void setActivity(@NonNull Activity mActivity) {
-        this.mActivity = mActivity;
+    public ViewBinder(final ViewGroup contentView) {
+        mBindingsCache = new HashMap<>();
+        mContentView = contentView;
     }
+
+    public void setActivity(@NonNull Activity activity) {
+        mActivity = activity;
+    }
+
+    public void setContentView(@NonNull ViewGroup contentView) {
+        mContentView = contentView;
+    }
+
 
     /**
      * Looks up and returns a {@link View} with the given layout id.
@@ -55,8 +68,13 @@ public class ViewBinder {
      * @return The found {@link View}.
      */
     @SuppressWarnings("unchecked")
-    public <T extends View> T getView(final int viewId) {
-        return (T) mActivity.findViewById(viewId);
+    public <T extends View> T getView(@IdRes final int viewId) {
+
+        if (mActivity != null) {
+            return (T) mActivity.findViewById(viewId);
+        } else {
+            return (T) mContentView.findViewById(viewId);
+        }
     }
 
     /**
@@ -66,7 +84,7 @@ public class ViewBinder {
      * @return The found {@link View}.
      */
     @SuppressWarnings("unchecked")
-    public <T extends ViewBinding> T getBinding(final int viewId) {
+    public <T extends ViewBinding> T getBinding(@IdRes final int viewId) {
         T binding = (T) mBindingsCache.get(viewId);
 
         if (binding == null) {
@@ -97,14 +115,14 @@ public class ViewBinder {
      * @return The created {@link ViewBinding}.
      */
     @SuppressWarnings("unchecked")
-    public <T extends ViewBinding<?>> T bind(final int viewId) {
+    public <T extends ViewBinding<?>> T bind(@IdRes final int viewId) {
         final View view = getView(viewId);
         ViewBinding<?> binding;
 
         if (view instanceof AdapterView) {
             throw new IllegalStateException("For AdapterView derived classes use AdapterViewBinding.");
         } else {
-            binding = new TextViewBinding((TextView) view);
+            binding = new Binding((TextView) view);
         }
 
         mBindingsCache.put(viewId, binding);
@@ -119,7 +137,7 @@ public class ViewBinder {
      * @return The found and bound {@link View}.
      */
     @SuppressWarnings("unchecked")
-    public <T extends View> T bind(final int viewId, final ViewBinding<T> binding) {
+    public <T extends View> T bind(@IdRes final int viewId, final ViewBinding<T> binding) {
         final T view = getView(viewId);
 
         if (binding.canBind(view)) {
@@ -140,7 +158,7 @@ public class ViewBinder {
      * @return The found and bound {@link AdapterView}.
      */
     @SuppressWarnings("unchecked")
-    public <T extends AdapterView> T bind(final int viewId, final AdapterViewBinding<?> binding, final AdapterViewBinding.Adapter<?> adapter) {
+    public <T extends AdapterView> T bind(@IdRes final int viewId, final AdapterViewBinding<?> binding, final AdapterViewBinding.Adapter<?> adapter) {
         final T view = getView(viewId);
 
         if (binding.canBind(view)) {

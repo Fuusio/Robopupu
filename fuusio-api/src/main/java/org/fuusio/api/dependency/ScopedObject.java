@@ -31,16 +31,4 @@ public abstract class ScopedObject implements Scopeable {
     public void setScope(final DependencyScope scope) {
         mScope = scope;
     }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> T get(final Class<?> dependencyType) {
-        return (T)D.get(getScope(), dependencyType);
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> T get(final Class<?> dependencyType, final Object dependant) {
-        return (T)D.get(getScope(), dependencyType, dependant);
-    }
 }

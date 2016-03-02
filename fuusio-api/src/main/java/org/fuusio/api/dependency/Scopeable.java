@@ -22,10 +22,5 @@ package org.fuusio.api.dependency;
 public interface Scopeable {
 
     DependencyScope getScope();
-
     void setScope(DependencyScope scope);
-
-    <T> T get(Class<?> dependencyType);
-
-    <T> T get(Class<?> dependencyType, Object dependant);
 }

@@ -6,15 +6,14 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 
 /**
- * {@link RecyclerViewAdapter} .. TODO
+ * {@link RecyclerViewAdapter} provides and abstract base class for implementing
+ * .{@link RecyclerView.Adapter}
  */
 public abstract class RecyclerViewAdapter<T_ViewHolder extends RecyclerView.ViewHolder>
         extends RecyclerView.Adapter<T_ViewHolder>
         implements AbsListView.OnScrollListener, ViewHolderListener {
 
     public static final UndoItem UNDO_ITEM = new UndoItem();
-
-    // REMOVE private HashMap<Class<?>, T_ViewHolder> mHolderViews;
 
     private Context mContext;
     private ListModel mListModel;
@@ -23,7 +22,6 @@ public abstract class RecyclerViewAdapter<T_ViewHolder extends RecyclerView.View
 
     protected RecyclerViewAdapter(final Context context) {
         mContext = context;
-        // REMOVE mHolderViews = new HashMap<>();
         mUndoPosition = -1;
     }
 
@@ -37,8 +35,6 @@ public abstract class RecyclerViewAdapter<T_ViewHolder extends RecyclerView.View
         if (mListModel != null && mObserver != null) {
             mListModel.registerAdapterDataObserver(mObserver);
         }
-
-
     }
 
     @Override

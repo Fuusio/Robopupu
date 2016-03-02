@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="ft_about_title">About</string>
+    <string name="ft_about_title_robopupu">ROBOPUPU</string>
+
+    <string name="ft_about_label_version">Version:</string>
+    <string name="ft_about_label_license">License:</string>
+    <string name="ft_about_label_copyright">Copyright:</string>
+    <string name="ft_about_label_oss_licenses">OSS Licenses:</string>
+    <string name="ft_about_label_sources">Sources:</string>
+
+    <string name="ft_about_text_license">Apache License, Version 2.0</string>
+    <string name="ft_about_text_copyright">\u00A9 Marko Salmela, 2016</string>
+    <string name="ft_about_text_oss_licenses">View open source licences</string>
+    <string name="ft_about_text_sources">https://github.com/Fuusio/Robopupu</string>
+
+</resources>

@@ -16,6 +16,7 @@
 package org.fuusio.api.feature;
 
 import org.fuusio.api.mvp.View;
+import org.fuusio.api.mvp.ViewDialogFragment;
 
 /**
  * {@link FeatureTransitionManager} defines an interface for objects that can be used to show {@link FeatureFragment}s.
@@ -32,14 +33,36 @@ public interface FeatureTransitionManager {
     boolean canShowView(View view);
 
     /**
-     * Shows the given {@link FeatureFragment} which is managed by the given {@link Feature}. Each shown
-     * {@link FeatureFragment} instance has to be supplied with a tag that can be used to retrieve
-     * the instance later on.
+     * Shows the given {@link FeatureFragment}. Each shown {@link FeatureFragment} instance has to
+     * be supplied with a tag that can be used to retrieve the instance later on. If parameter
+     * {@code fragmentTag} is given {@code null} value, the tag is set to be the class name of
+     * the {@link FeatureFragment}.
      *
-     * @param feature        A {@link Feature}. May not be {@code null}.
      * @param fragment    A {@link FeatureFragment}. May not be {@code null}.
-     * @param fragmentTag A {@link String} used as a tag to identify the {@link FeatureFragment}.
-     *                    In most cases tag can be simply the class name of the  {@link FeatureFragment}.
+     * @param addToBackStack A {@code boolean} value specifying if the {@link View} is added to back
+     *                   stack.
+     * @param fragmentTag If the {@link FeatureFragment} is to be added to back stack then
+     *                    a {@link String} used as a tag to identify the {@link FeatureFragment}
+     *                    has to be given. In most cases tag can be simply the class name of
+     *                    the {@link FeatureFragment}. If {@code null} then the {@link FeatureFragment}
+     *                    is not added to back stack
      */
-    void showFeatureFragment(Feature feature, FeatureFragment fragment, String fragmentTag);
+    void showFragment(FeatureFragment fragment, boolean addToBackStack, String fragmentTag);
+
+    /**
+     * Shows the given {@link FeatureDialogFragment}. Each shown {@link FeatureDialogFragment}
+     * instance has to be supplied with a tag that can be used to retrieve the instance later on.
+     * If parameter {@code fragmentTag} is given {@code null} value, the tag is set to be the class name of
+     * the {@link FeatureFragment}.
+     *
+     * @param dialogFragment    A {@link FeatureDialogFragment}. May not be {@code null}.
+     * @param addToBackStack A {@code boolean} value specifying if the {@link View} is added to back
+     *                   stack.
+     * @param fragmentTag If the {@link FeatureDialogFragment} is to be added to back stack then
+     *                    a {@link String} used as a tag to identify the {@link FeatureDialogFragment}
+     *                    has to be given. In most cases tag can be simply the class name of
+     *                    the {@link FeatureDialogFragment}. If {@code null} then
+     *                    the {@link FeatureDialogFragment} is not added to back stack
+     */
+    void showDialogFragment(FeatureDialogFragment dialogFragment, boolean addToBackStack, String fragmentTag);
 }

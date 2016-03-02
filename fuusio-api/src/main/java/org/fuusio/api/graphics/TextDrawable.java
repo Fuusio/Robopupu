@@ -43,9 +43,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 
 /**
- * {@link TextDrawable} extends {@link Drawable} to implements TODO
- *
- * @author Marko Salmela
+ * {@link TextDrawable} extends {@link Drawable} for drawing text.
  */
 public class TextDrawable extends Drawable {
 
@@ -115,7 +113,7 @@ public class TextDrawable extends Drawable {
         mBackgroundPaint = createDefaultBackgroundPaint();
         mFillPaint = createDefaultFillPaint();
         mHorizontalAlignment = HorizontalAlignment.LEFT;
-        mOpacity = 0xff; // TODO
+        mOpacity = 0xff;
         mStroked = false;
         mStrokePaint = createDefaultStrokePaint();
         mText = new String();
@@ -157,7 +155,7 @@ public class TextDrawable extends Drawable {
      * @param paint A {@link Paint}.
      */
     public void setBackgroundPaint(final Paint paint) {
-        assert (paint != null); // TODO
+        assert (paint != null);
         mBackgroundPaint = paint;
         mBackgroundPaint.setStyle(Paint.Style.FILL);
     }
@@ -216,7 +214,7 @@ public class TextDrawable extends Drawable {
      * @param paint A {@link Paint}.
      */
     public void setFillPaint(final Paint paint) {
-        assert (paint != null); // TODO
+        assert (paint != null);
         mFillPaint = paint;
         mFillPaint.setStyle(Paint.Style.FILL);
     }
@@ -291,17 +289,11 @@ public class TextDrawable extends Drawable {
     }
 
     @Override
-    public void setAlpha(final int alpha) // TODo
-    {
-        // TODO Auto-generated method stub
-
+    public void setAlpha(final int alpha) {
     }
 
     @Override
-    public void setColorFilter(final ColorFilter colorFilter) // TODO
-    {
-        // TODO Auto-generated method stub
-
+    public void setColorFilter(final ColorFilter colorFilter) {
     }
 
     /**
@@ -338,7 +330,7 @@ public class TextDrawable extends Drawable {
      * @param paint A {@link Paint}.
      */
     public void setStrokePaint(final Paint paint) {
-        assert (paint != null); // TODO
+        assert (paint != null);
         mStrokePaint = paint;
         mStrokePaint.setStyle(Paint.Style.STROKE);
     }

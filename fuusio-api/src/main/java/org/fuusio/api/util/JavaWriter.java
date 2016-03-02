@@ -260,14 +260,14 @@ public class JavaWriter {
     }
 
     public JavaWriter writeImport(final String packageName) {
-        Keyword.KEYWORD_IMPORT.write(this);
+        Keyword.IMPORT.write(this);
         append(packageName);
         endStatement();
         return this;
     }
 
     public JavaWriter writePackage(final String packageName) {
-        Keyword.KEYWORD_PACKAGE.write(this);
+        Keyword.PACKAGE.write(this);
         append(packageName);
         endStatement();
         return this;
@@ -284,15 +284,15 @@ public class JavaWriter {
     public JavaWriter beginClass(final String name, final String superClass, final boolean isPublic) {
 
         if (isPublic) {
-            Keyword.KEYWORD_PUBLIC.write(this);
+            Keyword.PUBLIC.write(this);
         } else {
-            Keyword.KEYWORD_PRIVATE.write(this);
+            Keyword.PRIVATE.write(this);
         }
-        Keyword.KEYWORD_CLASS.write(this);
+        Keyword.CLASS.write(this);
         append(name);
 
         if (superClass != null) {
-            Keyword.KEYWORD_EXTENDS.write(this);
+            Keyword.EXTENDS.write(this);
             append(superClass);
         }
         space();

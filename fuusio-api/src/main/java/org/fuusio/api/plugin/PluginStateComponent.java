@@ -15,8 +15,6 @@
  */
 package org.fuusio.api.plugin;
 
-import android.support.annotation.NonNull;
-
 import org.fuusio.api.util.Params;
 
 /**
@@ -29,7 +27,6 @@ public interface PluginStateComponent extends PluginComponent {
      * Return the current state of this {@link PluginStateComponent}.
      * @return The state as a {@link PluginState}.
      */
-    @NonNull
     PluginState getState();
 
     /**

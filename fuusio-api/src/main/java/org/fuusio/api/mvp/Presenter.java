@@ -16,6 +16,7 @@
 package org.fuusio.api.mvp;
 
 import org.fuusio.api.util.Listenable;
+import org.fuusio.api.util.Params;
 
 /**
  * {@link Presenter} is the interface to be implemented by Presenter components of a MVP
@@ -25,16 +26,20 @@ import org.fuusio.api.util.Listenable;
 public interface Presenter extends View.Listener {
 
     /**
+     * Gets the {@link View} attached to this {@link Presenter}.
+     *
+     * @return A {@link View}.
+     */
+    View getView();
+
+    /**
+     * Sets {@link Params} for this {@link Presenter},
+     * @param params A {@link Params}.
+     */
+    void setParams(Params params);
+
+    /**
      * Invoked to finish this {@link Presenter}.
      */
     void finish();
-
-    /**
-     * {@link org.fuusio.api.mvp.Presenter.Listener} a listener interface for receiving lifecycle events
-     * from a {@link Presenter}.
-     */
-    interface Listener {
-
-
-    }
 }

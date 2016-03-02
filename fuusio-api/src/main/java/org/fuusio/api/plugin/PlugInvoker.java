@@ -15,9 +15,6 @@
  */
 package org.fuusio.api.plugin;
 
-import org.fuusio.api.dependency.D;
-import org.fuusio.api.dependency.DependencyScope;
-
 import java.util.ArrayList;
 
 /**
@@ -26,47 +23,54 @@ import java.util.ArrayList;
  */
 public abstract class PlugInvoker<T> {
 
-    private final ArrayList<T> mPluginsList;
+    protected final ArrayList<T> mPlugins;
 
-    @SuppressWarnings("unchecked")
     protected PlugInvoker() {
-        mPluginsList = new ArrayList<>();
+        mPlugins = new ArrayList<>();
+    }
+
+    public final T object() {
+        return mPlugins.get(0);
     }
 
     public final T get(final int index) {
-        return mPluginsList.get(index);
+        return mPlugins.get(index);
+    }
+
+    public boolean hasPlugins() {
+        return !mPlugins.isEmpty();
     }
 
     public ArrayList<T> getPlugins() {
-        return mPluginsList;
+        return mPlugins;
     }
 
     public final int last() {
-        return mPluginsList.size() - 1;
+        return mPlugins.size() - 1;
     }
 
     public int getPluginsCount() {
-        return mPluginsList.size();
+        return mPlugins.size();
     }
 
     @SuppressWarnings("unchecked")
     public void addPlugin(final Object plugin) {
-        if (!mPluginsList.contains(plugin)) {
-            mPluginsList.add((T)plugin);
+        if (!mPlugins.contains((T)plugin)) {
+            mPlugins.add((T)plugin);
         }
     }
 
     @SuppressWarnings("unchecked")
     public void removePlugin(final Object plugin) {
-        if (mPluginsList.contains(plugin)) {
-            mPluginsList.remove(plugin);
+        if (mPlugins.contains((T)plugin)) {
+            mPlugins.remove((T)plugin);
         } else {
 
-            HandlerInvoker invokerToBeRemoved = null;
+            HandlerInvoker<?> invokerToBeRemoved = null;
 
-            for (final Object pluggedPlugin : mPluginsList) {
+            for (final Object pluggedPlugin : mPlugins) {
                 if (pluggedPlugin instanceof HandlerInvoker) {
-                    final HandlerInvoker invoker = (HandlerInvoker)pluggedPlugin;
+                    final HandlerInvoker<?> invoker = (HandlerInvoker<?>)pluggedPlugin;
 
                     if (plugin == invoker.mPlugin) {
                         invokerToBeRemoved = invoker;
@@ -77,7 +81,7 @@ public abstract class PlugInvoker<T> {
 
             if (invokerToBeRemoved != null) {
                 invokerToBeRemoved.mPlugin = null;
-                mPluginsList.remove(invokerToBeRemoved);
+                mPlugins.remove((T)invokerToBeRemoved);
             }
         }
     }

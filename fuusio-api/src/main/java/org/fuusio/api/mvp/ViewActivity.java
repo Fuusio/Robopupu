@@ -17,6 +17,7 @@ package org.fuusio.api.mvp;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.AdapterView;
@@ -30,6 +31,7 @@ import org.fuusio.api.dependency.DependencyMap;
 import org.fuusio.api.dependency.DependencyScope;
 import org.fuusio.api.dependency.DependencyScopeOwner;
 import org.fuusio.api.dependency.Scopeable;
+import org.fuusio.api.plugin.PluginBus;
 import org.fuusio.api.util.PermissionRequestManager;
 
 /**
@@ -59,6 +61,11 @@ public abstract class ViewActivity<T_Presenter extends Presenter> extends AppCom
      */
     protected abstract T_Presenter getPresenter();
 
+    @Override
+    public String getViewTag() {
+        return getClass().getSimpleName();
+    }
+
     /**
      * Resolves the {@link Presenter} assigned for this {@link ViewActivity}.
      *
@@ -66,20 +73,7 @@ public abstract class ViewActivity<T_Presenter extends Presenter> extends AppCom
      */
     @SuppressWarnings("unchecked")
     protected T_Presenter resolvePresenter() {
-
-        T_Presenter presenter = getPresenter();
-
-        if (presenter == null) {
-            final DependenciesCache cache = D.get(DependenciesCache.class);
-            final DependencyMap dependencies = cache.getDependencies(this);
-
-            if (dependencies != null) {
-                presenter = dependencies.getDependency(KEY_DEPENDENCY_PRESENTER);
-            }
-
-            // TODO
-        }
-        return presenter;
+        return getPresenter();
     }
 
     /**
@@ -109,26 +103,11 @@ public abstract class ViewActivity<T_Presenter extends Presenter> extends AppCom
         super.onStart();
         mState.onStart();
 
-        final DependenciesCache cache = D.get(DependenciesCache.class);
-
-        if (this instanceof DependencyScopeOwner) {
-
-            // DependencyScope is automatically restored and activated
-
-            final DependencyScopeOwner owner = (DependencyScopeOwner) this;
-
-            if (cache.containsDependencyScope(owner)) {
-                final DependencyScope scope = cache.removeDependencyScope(owner);
-                D.activateScope(owner, scope);
-            } else {
-                D.activateScope(owner);
-            }
-        }
-
         if (!mState.isRestarted()) {
             createBindings();
         }
 
+        final DependenciesCache cache = D.get(DependenciesCache.class);
         final DependencyMap dependencies = cache.getDependencies(this);
 
         if (dependencies != null) {
@@ -150,6 +129,9 @@ public abstract class ViewActivity<T_Presenter extends Presenter> extends AppCom
     protected void onResume() {
         super.onResume();
         mState.onResume();
+
+        final DependenciesCache cache = D.get(DependenciesCache.class);
+        cache.removeDependencies(this);
 
         final T_Presenter presenter = resolvePresenter();
         if (presenter != null) {
@@ -185,15 +167,17 @@ public abstract class ViewActivity<T_Presenter extends Presenter> extends AppCom
         mState.onDestroy();
         mBinder.dispose();
 
-        final DependenciesCache cache = D.get(DependenciesCache.class);
-        cache.removeDependencies(this);
-
         if (this instanceof DependencyScopeOwner) {
 
             // Cached DependencyScope is automatically disposed to avoid memory leaks
 
+            final DependenciesCache cache = D.get(DependenciesCache.class);
             final DependencyScopeOwner owner = (DependencyScopeOwner) this;
             cache.removeDependencyScope(owner);
+        }
+
+        if (PluginBus.isPlugged(this)) {
+            PluginBus.unplug(this);
         }
     }
 
@@ -211,15 +195,10 @@ public abstract class ViewActivity<T_Presenter extends Presenter> extends AppCom
         onSaveState(outState);
 
         final DependenciesCache cache = D.get(DependenciesCache.class);
-
-        // Save a reference to the Presenter
-
         final DependencyMap dependencies = cache.getDependencies(this, true);
-        dependencies.addDependency(KEY_DEPENDENCY_PRESENTER, getPresenter());
         dependencies.addDependency(KEY_DEPENDENCY_SCOPE, mScope);
 
         onSaveDependencies(dependencies);
-
 
         if (this instanceof DependencyScopeOwner) {
 
@@ -227,7 +206,7 @@ public abstract class ViewActivity<T_Presenter extends Presenter> extends AppCom
             // and if the View resumes
 
             final DependencyScopeOwner owner = (DependencyScopeOwner) this;
-            cache.saveDependencyScope(owner, owner.getScope());
+            cache.saveDependencyScope(owner, owner.getOwnedScope());
         }
     }
 
@@ -251,10 +230,6 @@ public abstract class ViewActivity<T_Presenter extends Presenter> extends AppCom
         final DependencyMap dependencies = cache.getDependencies(this);
 
         if (dependencies != null) {
-
-            final T_Presenter presenter = dependencies.getDependency(KEY_DEPENDENCY_PRESENTER);
-
-            // TODO
 
             final DependencyScope scope = dependencies.getDependency(KEY_DEPENDENCY_SCOPE);
 
@@ -325,7 +300,7 @@ public abstract class ViewActivity<T_Presenter extends Presenter> extends AppCom
      * @return The found {@link android.view.View}.
      */
     @SuppressWarnings("unchecked")
-    public <T extends android.view.View> T getView(final int viewId) {
+    public <T extends android.view.View> T getView(@IdRes final int viewId) {
         return (T) findViewById(viewId);
     }
 
@@ -337,7 +312,7 @@ public abstract class ViewActivity<T_Presenter extends Presenter> extends AppCom
      * @return The created {@link ViewBinding}.
      */
     @SuppressWarnings("unchecked")
-    public <T extends ViewBinding<?>> T bind(final int viewId) {
+    public <T extends ViewBinding<?>> T bind(@IdRes final int viewId) {
         return mBinder.bind(viewId);
     }
 
@@ -349,7 +324,7 @@ public abstract class ViewActivity<T_Presenter extends Presenter> extends AppCom
      * @return The found and bound {@link android.view.View}.
      */
     @SuppressWarnings("unchecked")
-    public <T extends android.view.View> T bind(final int viewId, final ViewBinding<T> binding) {
+    public <T extends android.view.View> T bind(@IdRes final int viewId, final ViewBinding<T> binding) {
         return mBinder.bind(viewId, binding);
     }
 
@@ -362,7 +337,7 @@ public abstract class ViewActivity<T_Presenter extends Presenter> extends AppCom
      * @return The found and bound {@link AdapterView}.
      */
     @SuppressWarnings("unchecked")
-    public AdapterView bind(final int viewId, final AdapterViewBinding<?> binding, final AdapterViewBinding.Adapter<?> adapter) {
+    public AdapterView bind(@IdRes final int viewId, final AdapterViewBinding<?> binding, final AdapterViewBinding.Adapter<?> adapter) {
         return mBinder.bind(viewId, binding, adapter);
     }
 
@@ -374,17 +349,5 @@ public abstract class ViewActivity<T_Presenter extends Presenter> extends AppCom
     @Override
     public void setScope(final DependencyScope scope) {
         mScope = scope;
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> T get(final Class<?> dependencyType) {
-        return (T)D.get(mScope, dependencyType);
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> T get(final Class<?> dependencyType, final Object dependant) {
-        return (T)D.get(mScope, dependencyType, dependant);
     }
 }

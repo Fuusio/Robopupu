@@ -17,8 +17,10 @@ package org.fuusio.api.mvp;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.widget.AdapterView;
 
 import org.fuusio.api.binding.AdapterViewBinding;
@@ -30,6 +32,7 @@ import org.fuusio.api.dependency.DependencyMap;
 import org.fuusio.api.dependency.DependencyScope;
 import org.fuusio.api.dependency.DependencyScopeOwner;
 import org.fuusio.api.dependency.Scopeable;
+import org.fuusio.api.plugin.PluginBus;
 
 /**
  * {@link ViewFragment} provides an abstract base class for concrete {@link Fragment} implementations
@@ -39,6 +42,8 @@ import org.fuusio.api.dependency.Scopeable;
  */
 public abstract class ViewFragment<T_Presenter extends Presenter> extends Fragment
         implements View, Scopeable {
+
+    private static String TAG = ViewFragment.class.getSimpleName();
 
     private final ViewBinder mBinder;
     private final ViewState mState;
@@ -57,22 +62,23 @@ public abstract class ViewFragment<T_Presenter extends Presenter> extends Fragme
      */
     protected abstract T_Presenter getPresenter();
 
+    @Override
+    public String getViewTag() {
+        return getClass().getSimpleName();
+    }
+
     /**
      * Resolves the {@link Presenter} assigned for this {@link ViewActivity}.
      *
      * @return A {@link Presenter}.
      */
-    @SuppressWarnings("unchecked")
     protected T_Presenter resolvePresenter() {
         T_Presenter presenter = getPresenter();
 
         if (presenter == null) {
-
-            final DependenciesCache cache = D.get(DependenciesCache.class);
-            final DependencyMap dependencies = cache.getDependencies(this);
-
-            if (dependencies != null) {
-                presenter = dependencies.getDependency(KEY_DEPENDENCY_PRESENTER);
+            if (PluginBus.isPlugin(getClass())) {
+                Log.d(TAG, "resolvePresenter() : Plugged to PluginBus");
+                PluginBus.plug(this);
             }
         }
         return presenter;
@@ -105,30 +111,17 @@ public abstract class ViewFragment<T_Presenter extends Presenter> extends Fragme
         super.onViewCreated(view, inState);
         mState.onCreate();
 
-        // We used getPresenter() getter to access the Presenter to guarantee that a reference
-        // for it is initialised or restored
-
-        resolvePresenter().onViewCreated(this, inState);
+        final T_Presenter presenter = resolvePresenter();
+        if (presenter != null) {
+            presenter.onViewCreated(this, inState);
+        } else {
+            Log.d(TAG, "onViewCreated(...) : Presenter == null");
+        }
     }
 
     @Override
     public void onActivityCreated(final Bundle inState) {
         super.onActivityCreated(inState);
-
-        final DependenciesCache cache = D.get(DependenciesCache.class);
-
-        if (this instanceof DependencyScopeOwner) {
-            final DependencyScopeOwner owner = (DependencyScopeOwner) this;
-
-            // DependencyScope is automatically restored and activated
-
-            if (cache.containsDependencyScope(owner)) {
-                final DependencyScope scope = cache.removeDependencyScope(owner);
-                D.activateScope(owner, scope);
-            } else {
-                D.activateScope(owner);
-            }
-        }
 
         mBinder.setActivity(getActivity());
         createBindings();
@@ -136,20 +129,16 @@ public abstract class ViewFragment<T_Presenter extends Presenter> extends Fragme
         if (inState != null) {
             onRestoreState(inState);
 
+            final DependenciesCache cache = D.get(DependenciesCache.class);
             final DependencyMap dependencies = cache.getDependencies(this);
 
             if (dependencies != null) {
-
-                final T_Presenter presenter = dependencies.getDependency(KEY_DEPENDENCY_PRESENTER);
-
-                // TODO
 
                 final DependencyScope scope = dependencies.getDependency(KEY_DEPENDENCY_SCOPE);
 
                 if (scope != null) {
                     mScope = scope;
                 }
-
                 onRestoreDependencies(dependencies);
             }
         }
@@ -183,9 +172,10 @@ public abstract class ViewFragment<T_Presenter extends Presenter> extends Fragme
         if (presenter != null) {
             presenter.onViewResume(this);
         }
+
+        final DependenciesCache cache = D.get(DependenciesCache.class);
+        cache.removeDependencies(this);
     }
-
-
 
     @Override
     public void onStop() {
@@ -216,13 +206,11 @@ public abstract class ViewFragment<T_Presenter extends Presenter> extends Fragme
 
         mBinder.dispose();
 
-        final DependenciesCache cache = D.get(DependenciesCache.class);
-        cache.removeDependencies(this);
-
         if (this instanceof DependencyScopeOwner) {
 
             // Cached DependencyScope is automatically disposed to avoid memory leaks
 
+            final DependenciesCache cache = D.get(DependenciesCache.class);
             final DependencyScopeOwner owner = (DependencyScopeOwner) this;
             cache.removeDependencyScope(owner);
         }
@@ -230,6 +218,11 @@ public abstract class ViewFragment<T_Presenter extends Presenter> extends Fragme
         final T_Presenter presenter = resolvePresenter();
         if (presenter != null) {
             presenter.onViewDestroy(this);
+        }
+
+        if (PluginBus.isPlugged(this)) {
+            Log.d(TAG, "onDestroy() : Unplugged from PluginBus");
+            PluginBus.unplug(this);
         }
     }
 
@@ -243,7 +236,6 @@ public abstract class ViewFragment<T_Presenter extends Presenter> extends Fragme
         // Save a reference to the Presenter
 
         final DependencyMap dependencies = cache.getDependencies(this, true);
-        dependencies.addDependency(KEY_DEPENDENCY_PRESENTER, getPresenter());
         dependencies.addDependency(KEY_DEPENDENCY_SCOPE, mScope);
 
         onSaveDependencies(dependencies);
@@ -254,7 +246,7 @@ public abstract class ViewFragment<T_Presenter extends Presenter> extends Fragme
             // and if the View resumes
 
             final DependencyScopeOwner owner = (DependencyScopeOwner) this;
-            cache.saveDependencyScope(owner, owner.getScope());
+            cache.saveDependencyScope(owner, owner.getOwnedScope());
         }
     }
 
@@ -309,7 +301,7 @@ public abstract class ViewFragment<T_Presenter extends Presenter> extends Fragme
      * @return The found {@link android.view.View}.
      */
     @SuppressWarnings("unchecked")
-    public <T extends android.view.View> T getView(final int viewId) {
+    public <T extends android.view.View> T getView(@IdRes final int viewId) {
         return (T) getActivity().findViewById(viewId);
     }
 
@@ -321,7 +313,7 @@ public abstract class ViewFragment<T_Presenter extends Presenter> extends Fragme
      * @return The created {@link ViewBinding}.
      */
     @SuppressWarnings("unchecked")
-    public <T extends ViewBinding<?>> T bind(final int viewId) {
+    public <T extends ViewBinding<?>> T bind(@IdRes final int viewId) {
         return mBinder.bind(viewId);
     }
 
@@ -333,7 +325,7 @@ public abstract class ViewFragment<T_Presenter extends Presenter> extends Fragme
      * @return The found and bound {@link android.view.View}.
      */
     @SuppressWarnings("unchecked")
-    public <T extends android.view.View> T bind(final int viewId, final ViewBinding<T> binding) {
+    public <T extends android.view.View> T bind(@IdRes final int viewId, final ViewBinding<T> binding) {
         return mBinder.bind(viewId, binding);
     }
 
@@ -346,7 +338,7 @@ public abstract class ViewFragment<T_Presenter extends Presenter> extends Fragme
      * @return The found and bound {@link AdapterView}.
      */
     @SuppressWarnings("unchecked")
-    public AdapterView bind(final int viewId, final AdapterViewBinding<?> binding, final AdapterViewBinding.Adapter<?> adapter) {
+    public AdapterView bind(@IdRes final int viewId, final AdapterViewBinding<?> binding, final AdapterViewBinding.Adapter<?> adapter) {
         return mBinder.bind(viewId, binding, adapter);
     }
 
@@ -358,17 +350,5 @@ public abstract class ViewFragment<T_Presenter extends Presenter> extends Fragme
     @Override
     public void setScope(final DependencyScope scope) {
         mScope = scope;
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> T get(final Class<?> dependencyType) {
-        return (T)D.get(mScope, dependencyType);
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> T get(final Class<?> dependencyType, final Object dependant) {
-        return (T)D.get(mScope, dependencyType, dependant);
     }
 }

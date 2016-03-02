@@ -6,15 +6,14 @@ import org.fuusio.api.mvp.Presenter;
 /**
  * {@link FeaturePresenter} ...
  */
-public interface FeaturePresenter<T_View extends FeatureView, T_Listener extends Presenter.Listener>
-        extends Presenter<T_View, T_Listener>, Scopeable {
+public interface FeaturePresenter extends Presenter, Scopeable {
 
     /**
      * Gets the {@link Feature} that controls this {@link FeaturePresenter}.
      *
      * @return A {@link Feature}.
      */
-    <T extends Feature> T getFeature();
+    Feature getFeature();
 
     /**
      * Sets the {@link Feature} that controls this {@link FeaturePresenter}.

@@ -89,7 +89,6 @@ public abstract class StateMachine implements StateEngineObserver {
                 final Class<? extends StateEngine> stateEngineClass = (Class<? extends StateEngine>) Class.forName(stateEngineClassName);
                 final Method method = stateEngineClass.getMethod("create", initialStateClass.getClass());
                 mStateEngine = (StateEngine)method.invoke(null, initialStateClass);
-
             } catch (Exception e) {
                 throw new RuntimeException("Failed to instantiate StateEngine class: " + stateEngineClassName);
             }
@@ -127,7 +126,6 @@ public abstract class StateMachine implements StateEngineObserver {
         }
 
         if (mLifecycleState.isCreated() || mLifecycleState.isStopped() && mResetted) {
-            initialize(initialStateClass);
             mStateEngine.start();
             mResetted = false;
             mLifecycleState = LifecycleState.STARTED;

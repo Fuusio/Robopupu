@@ -18,6 +18,7 @@ package org.fuusio.api.util;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Environment;
+import android.util.Log;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -107,10 +108,9 @@ public class LogFile {
 
         if (!outputFile.exists()) {
             try {
-                outputFile.createNewFile();
-                //writer = new FileWriter(outputFile);
-            } catch (final IOException pException) {
-                System.out.println();
+                if (outputFile.createNewFile());
+            } catch (IOException ignore) {
+                // Do nothing
             }
         }
 
@@ -130,7 +130,8 @@ public class LogFile {
                 try {
                     sInstance.mWriter.flush();
                     sInstance.mWriter.close();
-                } catch (IOException e) {
+                } catch (IOException ignore) {
+                    // Do nothing
                 }
             }
 
@@ -138,7 +139,6 @@ public class LogFile {
             sInstance.mWriter = null;
             sInstance = null;
         }
-
         return false;
     }
 
@@ -179,8 +179,8 @@ public class LogFile {
                 mWriter.flush();
                 mWriter.close();
                 mWriter = null;
-            } catch (final IOException pException) {
-                System.out.println(); //  REMOVE
+            } catch (IOException ignore) {
+                // Do nothing
             }
         }
     }

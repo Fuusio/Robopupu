@@ -15,10 +15,12 @@
  */
 package org.fuusio.api.plugin;
 
-import android.os.Handler;
-
 import org.fuusio.api.dependency.D;
+import org.fuusio.api.dependency.Dependency;
 import org.fuusio.api.dependency.DependencyScope;
+import org.fuusio.api.dependency.DependencyScopeOwner;
+import org.fuusio.api.dependency.Scopeable;
+import org.fuusio.api.mvp.ViewFragment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,9 +44,14 @@ public class PluginBus {
         mPlugins = new ArrayList<>();
     }
 
+    /**
+     * Gets the plugins having exactly the specified plug interface.
+     * @param plugInterface A {@link Class} specifying the plug interface.
+     * @return A {@link List} containing the plugins.
+     */
     @SuppressWarnings({"unused", "unchecked"})
-    public List<Object> getPlugins(final Class<?> pluginInterface) {
-        final PlugInvoker plug = mInvocationPlugs.get(pluginInterface);
+    public <T> List<T> getPlugins(final Class<T> plugInterface) {
+        final PlugInvoker plug = mInvocationPlugs.get(plugInterface);
 
         if (plug != null) {
             return plug.getPlugins();
@@ -53,14 +60,41 @@ public class PluginBus {
         }
     }
 
+    /**
+     * Gets the plugs (i.e. {@link PlugInvoker}s) having exactly the specified plug interface.
+     * @param plugInterface A {@link Class} specifying the plug interface.
+     * @param includeExtendedInterfaces A {@link boolean} flag specifying if the extended interfaces
+     *                                  are included.
+     * @return A {@link List} containing the plugs (i.e. {@link PlugInvoker}s) .
+     */
+    @SuppressWarnings("unchecked")
+    public <T> List<T> getPlugs(final Class<T> plugInterface, final boolean includeExtendedInterfaces) {
+        final ArrayList<T> plugs = new ArrayList<>();
+
+        if (includeExtendedInterfaces) {
+            for (final Class key : mInvocationPlugs.keySet()) {
+                if (plugInterface.isAssignableFrom(key)) {
+                    plugs.add((T)mInvocationPlugs.get(key));
+                }
+            }
+        } else {
+            final PlugInvoker plug = mInvocationPlugs.get(plugInterface);
+
+            if (plug != null) {
+                plugs.add((T) plug);
+            }
+        }
+        return plugs;
+    }
+    
     @SuppressWarnings({"unused", "unchecked"})
-    public <T> T getPlug(final Class<?> pluginInterface) {
-        return (T) mInvocationPlugs.get(pluginInterface);
+    public <T> T getPlug(final Class<?> plugInterface) {
+        return (T) mInvocationPlugs.get(plugInterface);
     }
 
     @SuppressWarnings("unused")
-    public boolean hasPlug(final Class<?> pluginInterface) {
-        return mInvocationPlugs.containsKey(pluginInterface);
+    public boolean hasPlug(final Class<?> plugInterface) {
+        return mInvocationPlugs.containsKey(plugInterface);
     }
 
     @SuppressWarnings("unused")
@@ -75,17 +109,17 @@ public class PluginBus {
         return sInstance;
     }
 
-    public void addPlugInvoker(final Class<?> pluginInterface, PlugInvoker<?> plugInvoker) {
-        mInvocationPlugs.put(pluginInterface, plugInvoker);
+    public void addPlugInvoker(final Class<?> plugInterface, PlugInvoker<?> plugInvoker) {
+        mInvocationPlugs.put(plugInterface, plugInvoker);
     }
 
-    public boolean hasPlugInvoker(final Class<?> pluginInterface) {
-        return mInvocationPlugs.containsKey(pluginInterface);
+    public boolean hasPlugInvoker(final Class<?> plugInterface) {
+        return mInvocationPlugs.containsKey(plugInterface);
     }
 
     @SuppressWarnings("unchecked")
-    public <T extends PlugInvoker<?>> T getPlugInvoker(final Class<?> pluginInterface) {
-        return (T)mInvocationPlugs.get(pluginInterface);
+    public <T extends PlugInvoker<?>> T getPlugInvoker(final Class<?> plugInterface) {
+        return (T)mInvocationPlugs.get(plugInterface);
     }
 
     /**
@@ -95,7 +129,7 @@ public class PluginBus {
      */
     @SuppressWarnings("unchecked")
     public static <T> T plug(final Class<?> pluginClass) {
-        final Object plugin = D.getOrCreate(pluginClass);
+        final Object plugin = D.get(pluginClass);
         plug(plugin, false);
         return (T) plugin;
     }
@@ -109,15 +143,15 @@ public class PluginBus {
      */
     @SuppressWarnings("unchecked")
     public static <T> T plug(final Class<?> pluginClass, final DependencyScope scope) {
-        final Object plugin = D.getOrCreate(scope, pluginClass);
+        final Object plugin = D.get(scope, pluginClass);
         plug(plugin, false);
-
-        if (plugin instanceof PluginInjector) {
-            ((PluginInjector)plugin).setScope(scope);
-        }
         return (T) plugin;
     }
 
+    /**
+     * Plugs the the given plugin {@link Object} to this {@link PluginBus}.
+     * @param plugin A plugin {@link Object}.
+     */
     public static void plug(final Object plugin) {
         plug(plugin, false);
     }
@@ -128,7 +162,36 @@ public class PluginBus {
 
     @SuppressWarnings("unchecked")
     private void doPlug(final Object plugin, final boolean useHandler) {
-        final String pluggerClassName = plugin.getClass().getName() + SUFFIX_PLUGGER;
+
+        if (plugin instanceof PlugInvoker) {
+            return;
+        }
+
+        if (mPlugins.contains(plugin)) {
+            return;
+        }
+
+        final Plugger plugger = getPlugger(plugin.getClass());
+        plugger.plug(plugin, this, useHandler);
+
+        mPlugins.add(plugin);
+
+        if (plugin instanceof PluginComponent) {
+            final PluginComponent component = (PluginComponent) plugin;
+            component.onPlugged(this);
+
+            for (final PluginComponent pluggedComponent : mPluginComponents) {
+                pluggedComponent.onPluginPlugged(plugin);
+            }
+
+            if (!mPluginComponents.contains(component)) {
+                mPluginComponents.add(component);
+            }
+        }
+    }
+
+    private Plugger getPlugger(final Class<?> pluginClass) {
+        final String pluggerClassName = pluginClass.getName() + SUFFIX_PLUGGER;
         Plugger plugger = mPluggers.get(pluggerClassName);
 
         if (plugger == null) {
@@ -140,46 +203,26 @@ public class PluginBus {
                 throw new IllegalStateException(e);
             }
         }
-        plugger.plug(plugin, this, useHandler);
-        mPlugins.add(plugin);
-
-        if (plugin instanceof PluginComponent) {
-            final PluginComponent component = (PluginComponent)plugin;
-            component.onPlugged(this);
-
-            for (final PluginComponent pluggedComponent : mPluginComponents) {
-                //pluggedComponent.onComponentPlugged(pluggedComponent);
-                pluggedComponent.onPluginPlugged(plugin);
-            }
-
-            if (!mPluginComponents.contains(component)) {
-                mPluginComponents.add(component);
-            }
-
-            if (plugin instanceof PluginStateComponent) {
-                final PluginStateComponent stateComponent = (PluginStateComponent)component;
-                stateComponent.start();
-            }
-        }
+        return plugger;
     }
 
     /**
      * This framework method should not be used by developers directly.
      * @param plugin The plugin to be plugged as an {@link Object}.
-     * @param pluginInterface A {@link Class} specifying the plugin interface type.
+     * @param plugInterface A {@link Class} specifying the plugin interface type.
      * @param plugInvoker A {@link PlugInvoker} instance. May be {@code null} if an instance of needed
      *                    type of {@link PlugInvoker} is already cached in this {@link PluginBus}.
-     * @param handlerInvoker A {@link HandlerInvoker} instance. May be {@code null} if a {@link Handler}
-     *                       is not needed for synchronising invocations with the main thread.
+     * @param handlerInvoker A {@link HandlerInvoker} instance. May be {@code null} if there
+     *                       is no needed for synchronising invocations with the main thread.
      */
-    public void plug(final Object plugin, final Class<?> pluginInterface, final PlugInvoker<?> plugInvoker, final HandlerInvoker<?> handlerInvoker) {
+    public void plug(final Object plugin, final Class<?> plugInterface, final PlugInvoker<?> plugInvoker, final HandlerInvoker<?> handlerInvoker) {
 
         PlugInvoker plug = plugInvoker;
 
         if (plugInvoker != null) {
-            mInvocationPlugs.put(pluginInterface, plugInvoker);
+            mInvocationPlugs.put(plugInterface, plugInvoker);
         } else {
-            plug = mInvocationPlugs.get(pluginInterface);
+            plug = mInvocationPlugs.get(plugInterface);
         }
 
         if (handlerInvoker != null) {
@@ -197,6 +240,7 @@ public class PluginBus {
     private void doUnplug(final Object plugin) {
 
         if (!mPlugins.contains(plugin)) {
+            // The plugin is not plugged - just return
             return;
         }
 
@@ -205,25 +249,69 @@ public class PluginBus {
 
         plugger.unplug(plugin, this);
 
-// TODO
-
         mPlugins.remove(plugin);
 
         if (plugin instanceof PluginComponent) {
             final PluginComponent component = (PluginComponent) plugin;
+            mPluginComponents.remove(component);
             component.onUnplugged(this);
 
             for (final PluginComponent pluggedComponent : mPluginComponents) {
-                //pluggedComponent.onComponentUnplugged(pluggedComponent);
                 pluggedComponent.onPluginUnplugged(plugin);
             }
 
-            mPluginComponents.remove(component);
-
             if (plugin instanceof PluginStateComponent) {
                 final PluginStateComponent stateComponent = (PluginStateComponent)component;
-                stateComponent.destroy();
+                stateComponent.stop();
             }
         }
+
+        if (plugin instanceof DependencyScopeOwner) {
+            final DependencyScopeOwner owner = (DependencyScopeOwner)plugin;
+            Dependency.disposeScope(owner);
+        }
+
+        if (plugin instanceof Scopeable) {
+            final Scopeable scopeable = (Scopeable) plugin;
+            final DependencyScope scope = scopeable.getScope();
+
+            if (scope != null) {
+                scope.removeDependency(plugin);
+            }
+        }
+    }
+
+    /**
+     * Tests if the given {@link Object} is currently plugged as a plugin into this {@link PluginBus}.
+     * @param object An {@link Object}.
+     * @return A {@code boolean} value.
+     */
+    public static boolean isPlugged(final Object object) {
+        return getInstance().mPlugins.contains(object);
+    }
+
+    /**
+     * Test if a method can be invoked on the given target {@link Object}. The target may not be
+     * {@code null}, and in case of {@link PlugInvoker} it has to contain plugins.
+     * @param target An {@link Object}.
+     * @return A {@code boolean} value.
+     */
+    public static boolean canInvoke(final Object target) {
+        if (target != null) {
+            if (target instanceof PlugInvoker) {
+                return ((PlugInvoker)target).hasPlugins();
+            }
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Tests if the specified class represents a plugin object.
+     * @param pluginClass A {@link Class}.
+     * @return A {@code boolean} value.
+     */
+    public static boolean isPlugin(final Class<?> pluginClass) {
+        return (getInstance().getPlugger(pluginClass) != null);
     }
 }

@@ -156,6 +156,13 @@ public abstract class ViewBinding<T_View extends View> implements View.OnClickLi
     protected void clicked() {
     }
 
+    /**
+     * Requests focus for thw bound {@link View}.
+     */
+    public void requestFocus() {
+        mView.requestFocus();
+    }
+
     public void setErrorMessage(final String message, final Object... args) {
         mErrorMessage.setMessage(message);
         mErrorMessage.setMessageArgs(args);

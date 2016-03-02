@@ -25,7 +25,6 @@ import org.fuusio.api.dependency.DependencyMap;
  */
 public interface View {
 
-    String KEY_DEPENDENCY_PRESENTER = "Key.Dependency.Presenter";
     String KEY_DEPENDENCY_SCOPE = "Key.Dependency.Scope";
 
     /**
@@ -34,6 +33,13 @@ public interface View {
      * @return An {@link ViewState}.
      */
     ViewState getState();
+
+    /**
+     * Get a tag for this {@link View}.
+     *
+     * @return A tag as a {@link String}.
+     */
+    String getViewTag();
 
     /**
      * Test if this {@link View} has currently focus.

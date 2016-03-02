@@ -15,8 +15,10 @@
  */
 package org.fuusio.api.feature;
 
+import android.app.Activity;
 import android.support.v4.app.FragmentManager;
 
+import org.fuusio.api.dependency.DependencyScope;
 import org.fuusio.api.dependency.DependencyScopeOwner;
 import org.fuusio.api.mvp.PresenterListener;
 import org.fuusio.api.mvp.View;
@@ -25,47 +27,19 @@ import org.fuusio.api.plugin.PluginStateComponent;
 import java.util.List;
 
 /**
- * {@link Feature} defines an interface for components that implement some application feature
- * as a component. A concrete {@link Feature} implementation may implement logic for UI navigation
- * and UI flow logic.<b></b> A {@link Feature}  is also a {@link DependencyScopeOwner} that provides
- * a {@link FeatureScope} for prociding dependencies. Concrete implementations of {@link Feature}
- * has to be annotated with {@link AppFeature} to enable annotation processor based code generation.
+ * {@link Feature} defines an interface for {@link PluginStateComponent}s that implement of
+ * application feature as a component. A concrete {@link Feature} implementation may implement logic
+ * for UI navigation and UI flow logic.<b></b> A {@link Feature}  is also
+ * a {@link DependencyScopeOwner} that provides a {@link DependencyScope} for providing dependencies.
  */
-public interface Feature extends DependencyScopeOwner, PresenterListener, PluginStateComponent {
+public interface Feature extends PresenterListener, PluginStateComponent {
 
     /**
-     * Gets the currently active Views.
+     * Gets the currently active {@link View}s.
      *
      * @return A {@link List} containing the currently active views as {@link View}s.
      */
     List<View> getActiveViews();
-
-    /**
-     * Adds the given {@link View} to the set of active views. This method is intended to be invoked
-     * by the framework.
-     *
-     * @param view A {@link View} to be added.
-     * @return The given {@link View} if it was not already in the set of active views.
-     */
-    View addActiveView(View view);
-
-    /**
-     * Removes the given {@link View} from the set of active views. This method is intended to be invoked
-     * by the framework.
-     *
-     * @param view A {@link View} to be removed.
-     * @return The given {@link View} if it was included in the set of active views.
-     */
-    View removeActiveView(View view);
-
-    /**
-     * A {@link Feature} implementation can use this method to activate i.e. to make visible
-     * the given {@link View}.
-     *
-     * @param view A {@link View} to be activated. May not be {@link null}.
-     * @return A {@code boolean} for the activated {@link View} was actually activated.
-     */
-    boolean activateView(View view);
 
     /**
      * Tests if the given {@link View} is currently active one.
@@ -76,13 +50,6 @@ public interface Feature extends DependencyScopeOwner, PresenterListener, Plugin
     boolean isActiveView(View view);
 
     /**
-     * Gets the {@link FeatureManager} that started this {@link Feature}.
-     *
-     * @return A {@link FeatureManager}.
-     */
-    FeatureManager getFeatureManager();
-
-    /**
      * Sets the {@link FeatureManager} that started this {@link Feature}.
      *
      * @param manager A {@link FeatureManager}.
@@ -90,7 +57,37 @@ public interface Feature extends DependencyScopeOwner, PresenterListener, Plugin
     void setFeatureManager(FeatureManager manager);
 
     /**
-     * Tests if any of the {@link FeatureView}s of this {@link Feature} is in foreground and has a focus.
+     * Gets the {@link FeatureContainer} that hosts the {@link FeatureFragment}s of this
+     * {@link Feature}.
+     *
+     * @return A {@link FeatureContainer}.
+     */
+    FeatureContainer getFeatureContainer();
+
+    /**
+     * Sets the the {@link FeatureContainer} that hosts the {@link FeatureFragment}s of this
+     * {@link Feature}.
+     *
+     * @param container A {@link FeatureContainer}.
+     */
+    void setFeatureContainer(FeatureContainer container);
+
+    /**
+     * Sets this {@link Feature} to be an Activity Feature that is owned and controlled by
+     * an {@link Activity}.
+     * @param isActivityFeature A {@code boolean} value.
+     */
+    void setActivityFeature(boolean isActivityFeature);
+
+    /**
+     * Tests if this {@link Feature} is set to be an Activity Feature that is owned and controlled
+     * by an {@link Activity}.
+     * @return  A {@code boolean} value.
+     */
+    boolean isActivityFeature();
+
+    /**
+     * Tests if any of the {@link View}s of this {@link Feature} is in foreground and has a focus.
      * @return A {@code boolean}.
      */
     boolean hasFocusedView();
@@ -138,4 +135,29 @@ public interface Feature extends DependencyScopeOwner, PresenterListener, Plugin
      * @param transitionManager A {@link FeatureTransitionManager}.
      */
     void goBack(FeatureTransitionManager transitionManager);
+
+    /**
+     * Finishes this {@link Feature}.
+     */
+    void finish();
+
+    /**
+     * Invoked when the {@link FeatureContainer} has been started.
+     */
+    void onFeatureContainerStarted(FeatureContainer container);
+
+    /**
+     * Invoked when the {@link FeatureContainer} has been paused.
+     */
+    void onFeatureContainerPaused(FeatureContainer container);
+
+    /**
+     * Invoked when the {@link FeatureContainer} has been resumed.
+     */
+    void onFeatureContainerResumed(FeatureContainer container);
+
+    /**
+     * Invoked when the {@link FeatureContainer} has been stopped.
+     */
+    void onFeatureContainerStopped(FeatureContainer container);
 }

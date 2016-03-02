@@ -37,10 +37,8 @@ package org.fuusio.api.graphics;
 import android.graphics.Paint;
 
 /**
- * {@code HorizontalAlignment} defines a new enum type for representing horizontal alignment values,
- * for instance, for positioning text items.
- *
- * @author Marko Salmela
+ * {@code HorizontalAlignment} defines an enum type for representing horizontal alignment values,
+ * for instance, for positioning text items in {@link TextDrawable}s.
  */
 public enum HorizontalAlignment {
 

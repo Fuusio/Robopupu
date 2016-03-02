@@ -19,36 +19,22 @@ import org.fuusio.api.dependency.D;
 import org.fuusio.api.dependency.DependencyScope;
 import org.fuusio.api.dependency.Scopeable;
 import org.fuusio.api.mvp.Presenter;
+import org.fuusio.api.mvp.View;
 import org.fuusio.api.mvp.ViewFragment;
 
 public abstract class FeatureFragment<T_Presenter extends Presenter> extends ViewFragment<T_Presenter>
-    implements FeatureView<T_Presenter>, Scopeable {
+    implements View, Scopeable {
 
-    private Feature mFeature;
+    private AbstractFeature mFeature;
     private DependencyScope mScope;
 
     protected FeatureFragment() {
     }
 
-    @Override
-    public Feature getFeature() {
-        return mFeature;
-    }
-
-    @Override
-    public void setFeature(final Feature feature) {
+    public void setFeature(final AbstractFeature feature) {
         mFeature = feature;
     }
-
-    /**
-     * Get a tag for this {@link FeatureFragment}.
-     *
-     * @return A tag as a {@link String}.
-     */
-    public String getFeatureTag() {
-        return getClass().getSimpleName();
-    }
-
+    
     @Override
     public DependencyScope getScope() {
         return mScope;
@@ -57,30 +43,6 @@ public abstract class FeatureFragment<T_Presenter extends Presenter> extends Vie
     @Override
     public void setScope(final DependencyScope scope) {
         mScope = scope;
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> T get(final Class<?> dependencyType) {
-        return (T) D.get(mScope, dependencyType);
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> T get(final Class<?> dependencyType, final Object dependant) {
-        return (T) D.get(mScope, dependencyType, dependant);
-    }
-
-    /**
-     * Gets the {@link FeatureScope} owned by the {@link Feature} that controls this
-     * {@link FeatureFragment}.
-     *
-     * @param <T> The generic return type of {@link FeatureScope}.
-     * @return A {@link FeatureScope}.
-     */
-    @SuppressWarnings("unchecked")
-    public final <T extends Feature> FeatureScope<T> getDependencyScope() {
-        return (FeatureScope<T>)mFeature.getScope();
     }
 
     @Override

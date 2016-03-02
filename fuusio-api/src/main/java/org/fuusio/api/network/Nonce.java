@@ -42,10 +42,9 @@ public class Nonce {
             for (int i = 0; i < digestBytes.length; i++) {
                 String hex = Integer.toHexString(0xFF & digestBytes[i]);
 
-                if (hex.length() == 1) { // TODO
+                if (hex.length() == 1) {
                     hexString.append('0');
                 }
-
                 hexString.append(hex);
             }
 

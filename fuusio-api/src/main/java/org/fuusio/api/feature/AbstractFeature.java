@@ -16,7 +16,6 @@
 package org.fuusio.api.feature;
 
 import android.support.annotation.CallSuper;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 
 import org.fuusio.api.dependency.D;
@@ -26,7 +25,8 @@ import org.fuusio.api.dependency.DependencyScopeOwner;
 import org.fuusio.api.mvp.Presenter;
 import org.fuusio.api.mvp.View;
 import org.fuusio.api.plugin.AbstractPluginStateComponent;
-import org.fuusio.api.util.L;
+import org.fuusio.api.plugin.PlugInvoker;
+import org.fuusio.api.plugin.PluginBus;
 import org.fuusio.api.util.Params;
 
 import java.util.ArrayList;
@@ -36,55 +36,53 @@ import java.util.List;
  * {@link AbstractFeature} provides an abstract base class for implementing {@link Feature}s.
  */
 public abstract class AbstractFeature extends AbstractPluginStateComponent
-        implements Feature, Presenter.Listener, DependencyScopeOwner {
-
-    private static final String SUFFIX_DEPENDENCY_SCOPE = "_DependencyScope";
+        implements Feature, DependencyScopeOwner {
 
     protected final ArrayList<View> mActiveViews;
 
-    protected int mBackStackSize;
+    protected boolean mActivityFeature;
     protected FeatureContainer mFeatureContainer;
     protected FeatureManager mFeatureManager;
+    protected DependencyScope mFeatureScope;
+    protected Class<? extends DependencyScope> mScopeClass;
 
     /**
      * Construct a new instance of {@link AbstractFeature}.
+     *
+     * @param scopeClass The {@link Class} of the owned {@link DependencyScope}.
      */
-    protected AbstractFeature() {
-        this(null, null);
+    protected AbstractFeature(final Class<? extends DependencyScope> scopeClass) {
+        this(scopeClass, false);
     }
 
     /**
-     * Construct a new instance of {@link AbstractFeature} with the given {@link FeatureContainer}.
+     * Construct a new instance of {@link AbstractFeature}.
      *
-     * @param container A {@link FeatureContainer}.
-     * @param params    A {@link Params} containing parameters for starting the {@link Feature}.
+     * @param scopeClass The {@link Class} of the owned {@link DependencyScope}.
+     * @param isActivityFeature A {@code boolean} flag specifying if this {@link AbstractFeature}
+     *                          is an Activity Feature.
      */
-    protected AbstractFeature(final FeatureContainer container, final Params params) {
-        mFeatureContainer = container;
-        mParams = params;
+    protected AbstractFeature(final Class<? extends DependencyScope> scopeClass, final boolean isActivityFeature) {
+        mScopeClass = scopeClass;
+        mActivityFeature = isActivityFeature;
         mActiveViews = new ArrayList<>();
-        mBackStackSize = 0;
     }
 
     @Override
-    public DependencyScope getScope() {
-        DependencyScope scope = super.getScope();
+    public Class<? extends DependencyScope> getScopeClass() {
+        return mScopeClass;
+    }
 
-        if (scope == null) {
-            scope = Dependency.getScope(this);
+    @Override
+    public DependencyScope getOwnedScope() {
+        return getFeatureScope();
+    }
 
-            if (scope == null) {
-                scope = createDependencyScope();
-                scope.initialize();
-            }
-            setScope(scope);
+    protected DependencyScope getFeatureScope() {
+        if (mFeatureScope == null) {
+            mFeatureScope = D.getScope(mScopeClass, true);
         }
-        return scope;
-    }
-
-    @Override
-    public String getScopeId() {
-        return getClass().getSimpleName();
+        return mFeatureScope;
     }
 
     @Override
@@ -92,15 +90,7 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
         return mActiveViews;
     }
 
-
-    protected FeatureContainer getFeatureContainer() { // TODO
-        if (mFeatureContainer == null) {
-            mFeatureContainer = D.get(FeatureContainer.class);
-        }
-        return mFeatureContainer;
-    }
-    @Override
-    public final View addActiveView(final View view) {
+    protected final View addActiveView(final View view) {
         if (!mActiveViews.contains(view)) {
             mActiveViews.add(view);
             return view;
@@ -108,15 +98,13 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
         return null;
     }
 
-    @Override
-    public final View removeActiveView(final View view) {
+    protected final View removeActiveView(final View view) {
         if (mActiveViews.contains(view)) {
             mActiveViews.remove(view);
             return view;
         }
         return null;
     }
-
 
     @Override
     public boolean hasFocusedView() {
@@ -139,12 +127,21 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
     }
 
     @Override
+    public void setActivityFeature(boolean isActivityFeature) {
+        mActivityFeature = isActivityFeature;
+    }
+
+    @Override
+    public boolean isActivityFeature() {
+        return mActivityFeature;
+    }
+
+    @Override
     public boolean isActiveView(final View view) {
         return mActiveViews.contains(view);
     }
 
-    @Override
-    public final FeatureManager getFeatureManager() {
+    protected final FeatureManager getFeatureManager() {
         return mFeatureManager;
     }
 
@@ -153,135 +150,89 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
         mFeatureManager = manager;
     }
 
-    /**
-     * Return {@link FragmentManager}.
-     * @return A {@link FragmentManager}. Should not return {@code null}.
-     */
-    protected FragmentManager getFragmentManager() {
-        return getFeatureContainer().getSupportFragmentManager();
-    }
-
-
-    /**
-     * Creates the {@link FeatureScope} for this {@link DependencyScopeOwner}. The default
-     * implemention attempts to instantiate a concrete {@link FeatureScope} implementation generated
-     * by annotation processor. // TODO : REALLY ?
-     *
-     * @return A {@link FeatureScope}. May not be {@code null}.
-     */
-    @SuppressWarnings("unchecked")
-    protected FeatureScope createDependencyScope() {
-        final String scopeClassName = getClass().getName() + SUFFIX_DEPENDENCY_SCOPE;
-
-        try {
-            final Class<? extends FeatureScope> scopeClass = (Class<? extends FeatureScope>)Class.forName(scopeClassName);
-            FeatureScope scope = scopeClass.newInstance();
-            scope.setOwner(this);
-        } catch (Exception e) {
-            L.e(this, "createDependencyScope", "Failed to create an instance of: " + scopeClassName);
-        }
-        return null;
+    @Override
+    public FeatureContainer getFeatureContainer() {
+        return mFeatureContainer;
     }
 
     @Override
-    public boolean activateView(final View view) {
-        return activateView(view, getFeatureContainer());
+    public void setFeatureContainer(final FeatureContainer container) {
+        mFeatureContainer = container;
     }
 
     /**
-     * A {@link Feature} implementation can use this method to activate i.e. to make visible
-     * the given {@link View}.
-     *
-     * @param view A {@link View} to be activated. May not be {@link null}.
-     * @param transitionManager The {@link FeatureTransitionManager} to be used.
-     * @return A {@code boolean} for the activated {@link View} was actually activated.
+     * Shows the {@link View} attached to the specified {@link Presenter}.
+     * @param presenterClass A {@link Class} specifying the {@link Presenter}.
+     * @param addToBackStack A {@code boolean} value specifying if the {@link View} is added to back
+     *                   stack.
+     * @param params Optional {@link Params}.
+     * @return A reference to {@link View}. May be {@link PlugInvoker}.
      */
     @SuppressWarnings("unchecked")
-    protected boolean activateView(final View view, final FeatureTransitionManager transitionManager) {
+    protected View showView(final Class<? extends Presenter> presenterClass,
+                            final boolean addToBackStack, final Params... params) {
+        return showView(mFeatureContainer, presenterClass, addToBackStack, params);
+    }
 
-        if (!transitionManager.canShowView(view)) {
-            return false;
+    /**
+     * Shows the {@link View} attached to the specified {@link Presenter}. The {@link View} is
+     * shown using the given {@link FeatureTransitionManager}.
+     *
+     * @param transitionManager A {@link FeatureTransitionManager}.
+     * @param presenterClass A {@link Class} specifying the {@link Presenter}.
+     * @param addToBackStack A {@code boolean} value specifying if the {@link View} is added to back
+     *                   stack.
+     * @param params Optional {@link Params}.
+     * @return A reference to {@link View}. May be {@link PlugInvoker}.
+     */
+    @SuppressWarnings("unchecked")
+    protected View showView(final FeatureTransitionManager transitionManager,
+                            final Class<? extends Presenter> presenterClass,
+                            final boolean addToBackStack, final Params... params) {
+        final Presenter presenter = plug(presenterClass);
+
+        if (params != null && params.length > 0) {
+            final Params presenterParams = Params.merge(params);
+            presenter.setParams(presenterParams);
         }
 
-        final Class<? extends View> viewClass = getClass(view);
-        getScope().cache(viewClass, view);
+        final View view = presenter.getView();
 
         if (view instanceof FeatureFragment) {
             final FeatureFragment fragment = (FeatureFragment) view;
             fragment.setFeature(this);
-            transitionManager.showFeatureFragment(this, fragment, fragment.getTag());
-        } else {
-            throw new IllegalStateException("Fragment has to be derived from org.fuusio.api.flow.FlowFragment class");
+            transitionManager.showFragment(fragment, addToBackStack, null);
+        } else if (view instanceof FeatureDialogFragment) {
+            final FeatureDialogFragment dialogFragment = (FeatureDialogFragment) view;
+            dialogFragment.setFeature(this);
+            transitionManager.showDialogFragment(dialogFragment, addToBackStack, null);
         }
-
-        // TODO
-
-        //final Presenter presenter = view.getPresenter();
-        //presenter.addListener(this);
-
-        return true;
+        return view;
     }
 
-
-    /**
-     * Activates the {@link View} specified by the given class.
-     * @param viewClass A {@link Class} specifying the {@link View} to be activated.
-     * @return The activated {@link View}.
-     */
-    protected <T extends View> T activateView(final Class<? extends View> viewClass) {
-        return activateView(viewClass, getFeatureContainer());
-    }
-
-    /**
-     * Activates the {@link View} specified by the given class.
-     * @param viewClass A {@link Class} specifying the {@link View} to be activated.
-     * @param transitionManager The {@link FeatureTransitionManager} to be used.
-     * @return The activated {@link View}.
-     */
-    @SuppressWarnings("unchecked")
-    protected <T extends View> T activateView(final Class<? extends View> viewClass, final FeatureTransitionManager transitionManager) {
-        final View view = get(viewClass);
-        if (activateView(view, transitionManager)) {
-            return (T)view;
-        } else {
-            return null;
-        }
-    }
 
     @Override
     public void clearBackStack() {
-        final FragmentManager manager = getFeatureContainer().getSupportFragmentManager();
-
-        if (manager.getBackStackEntryCount() > 0) {
-            manager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        if (mFeatureContainer != null) {
+            final FragmentManager manager = mFeatureContainer.getSupportFragmentManager();
+            manager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         }
-        mBackStackSize = 0;
     }
 
     @Override
     @SuppressWarnings("uncheckked")
     public void goBack() {
-        goBack(getFeatureContainer());
+        goBack(mFeatureContainer);
     }
 
     @Override
     public void goBack(final FeatureTransitionManager transitionManager) {
-        final FragmentManager fragmentManager = getFeatureContainer().getSupportFragmentManager();
-        int index = fragmentManager.getBackStackEntryCount() - 1;
+        final FragmentManager fragmentManager = mFeatureContainer.getSupportFragmentManager();
+        final int count = fragmentManager.getBackStackEntryCount();
 
-        while (index >= 0) {
-            final FragmentManager.BackStackEntry entry = fragmentManager.getBackStackEntryAt(index);
-            final String tag = entry.getName();
-            final FeatureFragment fragment = (FeatureFragment) fragmentManager.findFragmentByTag(tag);
-
-            if (isActiveView(fragment)) {
-                fragmentManager.popBackStackImmediate();
-                break;
-            } else {
-                index--;
-            }
+        if (count > 0) {
+            fragmentManager.popBackStack();
         }
-        mBackStackSize = fragmentManager.getBackStackEntryCount();
     }
 
     @SuppressWarnings("unchecked")
@@ -320,21 +271,43 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
         return (count > 1);
     }
 
-    @Override
-    public final void restart() {
-        super.restart();
+    /**
+     * Plugs an instance of specific {@link Class} to {@link PluginBus}.
+     * @param pluginClass A  {@link Class}
+     * @return The plugged instance as an {@link Object}
+     */
+    @SuppressWarnings("unchecked")
+    public <T> T plug(final Class<?> pluginClass) {
+        T plugin = (T)D.get(getFeatureScope(), pluginClass);
+        PluginBus.plug(plugin);
+        return plugin;
     }
 
-    @Override
-    @CallSuper
-    public final void start(final Params params) {
-        super.start(params);
-        Dependency.activateScope(this);
+    /**
+     * Plugs the the given plugin {@link Object} to this {@link PluginBus}.
+     * @param plugin A plugin {@link Object}.
+     */
+    @SuppressWarnings("unchecked")
+    public <T> T  plug(final Object plugin) {
+        PluginBus.plug(plugin);
+        return (T)plugin;
+    }
+
+    /**
+     * Unplugs the the given plugin {@link Object} to this {@link PluginBus}.
+     * @param plugin A plugin {@link Object}.
+     */
+    @SuppressWarnings("unchecked")
+    public void unplug(final Object plugin) {
+        PluginBus.unplug(plugin);
     }
 
     @Override
     @CallSuper
     public final void pause() {
+        if (isStopped() || isDestroyed()) {
+            throw new IllegalStateException("A stopped or destroyed feature cannot be paused");
+        }
         super.pause();
         mFeatureManager.onFeaturePaused(this);
     }
@@ -342,6 +315,9 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
     @Override
     @CallSuper
     public final void resume() {
+        if (isStopped() || isDestroyed()) {
+            throw new IllegalStateException("A stopped or destroyed feature cannot be resumed");
+        }
         super.resume();
         mFeatureManager.onFeatureResumed(this);
     }
@@ -349,22 +325,37 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
     @Override
     @CallSuper
     public final void stop() {
-        super.stop();
-        mFeatureManager.onFeatureStopped(this);
-
-        if (hasViewsInBackStack()) {
-            clearBackStack();
+        if (!isStopped() && !isDestroyed()) {
+            mFeatureManager.onFeatureStopped(this);
+            super.stop();
         }
+    }
+
+    /**
+     * Finishes this {@link Feature}
+     */
+    @Override
+    public final void finish() {
+        stop();
     }
 
     @Override
     @CallSuper
     public final void destroy() {
-        super.destroy();
+        if (!isDestroyed()) {
+            super.destroy();
 
-        Dependency.deactivateScope(this);
-        mFeatureManager.onFeatureDestroyed(this);
-        clearBackStack();
+            Dependency.disposeScope(this);
+
+            if (hasViewsInBackStack()) {
+                clearBackStack();
+            }
+
+            mFeatureManager.onFeatureDestroyed(this);
+            mFeatureManager = null;
+            mFeatureContainer = null;
+            mActiveViews.clear();
+        }
     }
 
     @Override
@@ -394,6 +385,26 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
 
     @Override
     public void onPresenterFinished(Presenter presenter) {
+        // By default do nothing
+    }
+
+    @Override
+    public void onFeatureContainerStarted(FeatureContainer container) {
+        // By default do nothing
+    }
+
+    @Override
+    public void onFeatureContainerPaused(FeatureContainer container) {
+        // By default do nothing
+    }
+
+    @Override
+    public void onFeatureContainerResumed(FeatureContainer container) {
+        // By default do nothing
+    }
+
+    @Override
+    public void onFeatureContainerStopped(FeatureContainer container) {
         // By default do nothing
     }
 }

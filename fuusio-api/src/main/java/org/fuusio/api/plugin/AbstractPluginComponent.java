@@ -15,6 +15,8 @@
  */
 package org.fuusio.api.plugin;
 
+import android.support.annotation.CallSuper;
+
 import org.fuusio.api.dependency.ScopedObject;
 
 /**
@@ -24,25 +26,26 @@ import org.fuusio.api.dependency.ScopedObject;
 public class AbstractPluginComponent extends ScopedObject
         implements PluginComponent {
 
-    protected PluginBus mBus;
-
     protected AbstractPluginComponent() {
     }
 
     @Override
     public void onPlugged(final PluginBus bus) {
-        mBus = bus;
+        // By default do nothing
     }
 
     @Override
     public void onUnplugged(final PluginBus bus) {
+        // By default do nothing
     }
 
     @Override
     public void onPluginPlugged(final Object plugin) {
+        // By default do nothing
     }
 
     @Override
     public void onPluginUnplugged(final Object plugin) {
+        // By default do nothing
     }
 }
