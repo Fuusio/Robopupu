@@ -15,8 +15,6 @@
  */
 package org.fuusio.api.fsm;
 
-import android.support.test.runner.AndroidJUnit4;
-import android.test.AndroidTestCase;
 import android.test.suitebuilder.annotation.SmallTest;
 
 import org.fuusio.api.fsm.state.CoffeeReadyState;
@@ -29,13 +27,16 @@ import org.fuusio.api.fsm.state.PowerOnState;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import java.util.List;
 
-@RunWith(AndroidJUnit4.class)
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+
 @SmallTest
-public class StateEngineTest extends AndroidTestCase {
+public class StateMachineTest {
 
     private static final String[] EXPECTED_TRACE = {
             "ENTER: " + PowerOffState.class.getSimpleName(),
@@ -60,28 +61,28 @@ public class StateEngineTest extends AndroidTestCase {
 
     @Before
     public void beforeTests() {
+        final CoffeeMaker coffeeMaker = new CoffeeMaker();
+        mStateMachine = new TestStateMachine(coffeeMaker);
     }
 
     @Test
     public void test() {
 
-        final CoffeeMaker coffeeMaker = new CoffeeMaker();
-
-        mStateMachine = new TestStateMachine(coffeeMaker);
-
         // Start the state machine
 
         mStateMachine.start();
 
+        final State stateEngine = mStateMachine.getStateEngine();
+
         assertEquals(PowerOffState.class, mStateMachine.getCurrentState().getClass());
 
-        mStateMachine.switchPowerOn();
-        mStateMachine.makeButtonPressed();
-        mStateMachine.waterTankFull();
-        mStateMachine.waterTankEmpty();
-        mStateMachine.switchPowerOff();
+        stateEngine.switchPowerOn();
+        stateEngine.makeButtonPressed();
+        stateEngine.waterTankFull();
+        stateEngine.waterTankEmpty();
+        stateEngine.switchPowerOff();
 
-        final List<String> traces = coffeeMaker.getTraces();
+        final List<String> traces = stateEngine.getCoffeeMaker().getTraces();
 
         assertEquals(traces.size(), EXPECTED_TRACE.length);
 
@@ -89,14 +90,14 @@ public class StateEngineTest extends AndroidTestCase {
             assertEquals(traces.get(i), EXPECTED_TRACE[i]);
         }
 
-        final PowerOnState powerOnState = mStateMachine.getStateInstance(PowerOnState.class);
-        final MakingCoffeeState makingCoffeeState = mStateMachine.getStateInstance(MakingCoffeeState.class);
-        final FilteringCoffeeState filteringCoffeeState = mStateMachine.getStateInstance(FilteringCoffeeState.class);
+        final PowerOnState powerOnState = stateEngine.getStateInstance(PowerOnState.class);
+        final MakingCoffeeState makingCoffeeState = stateEngine.getStateInstance(MakingCoffeeState.class);
+        final FilteringCoffeeState filteringCoffeeState = stateEngine.getStateInstance(FilteringCoffeeState.class);
 
         assertTrue(powerOnState.notStateMachine());
         assertTrue(makingCoffeeState.notStateMachine());
         assertTrue(filteringCoffeeState.notStateMachine());
-        assertFalse(mStateMachine.notStateMachine());
+        assertFalse(stateEngine.notStateMachine());
 
         assertNotNull(powerOnState);
         assertNotNull(makingCoffeeState);
@@ -107,15 +108,14 @@ public class StateEngineTest extends AndroidTestCase {
         assertTrue(filteringCoffeeState.isSuperState(powerOnState));
         assertFalse(makingCoffeeState.isSuperState(filteringCoffeeState));
 
+        stateEngine.stop();
 
-        mStateMachine.stop();
-
-        assertFalse(mStateMachine.hasSubstates());
+        assertFalse(stateEngine.hasSubstates());
         assertFalse(powerOnState.hasSubstates());
         assertFalse(makingCoffeeState.hasSubstates());
         assertFalse(filteringCoffeeState.hasSubstates());
 
-        assertTrue(mStateMachine.isDisposed());
+        assertTrue(stateEngine.isDisposed());
         assertTrue(powerOnState.isDisposed());
         assertTrue(makingCoffeeState.isDisposed());
         assertTrue(filteringCoffeeState.isDisposed());

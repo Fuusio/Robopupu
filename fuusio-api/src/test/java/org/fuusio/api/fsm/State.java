@@ -15,26 +15,31 @@
  */
 package org.fuusio.api.fsm;
 
-import org.fuusio.api.fsm.state.PowerOffState;
-
-public class TestStateMachine extends StateEngine<TestStateMachine>
+public class State extends StateEngine<State>
         implements BrewCoffeeButtonEvents, PowerSwitchEvents, WaterTankSensorEvents {
 
     private CoffeeMaker mCoffeeMaker;
     private boolean mDisposed;
 
-    public TestStateMachine(final CoffeeMaker coffeeMaker) {
-        super(PowerOffState.class);
-        setCoffeeMaker(coffeeMaker);
+    private State(final Class<? extends State> initialStateClass) {
+        super(initialStateClass);
         mDisposed = false;
     }
 
-    protected TestStateMachine(final Class<? extends TestStateMachine> superStateClass, final Class<? extends TestStateMachine> initialStateClass) {
+    protected State(final Class<? extends State> superStateClass, final Class<? extends State> initialStateClass) {
         super(superStateClass, initialStateClass);
     }
 
+    public static State create(final Class<? extends State> initialStateClass) {
+        return new State(initialStateClass);
+    }
+
     public final CoffeeMaker getCoffeeMaker() {
-        return mCoffeeMaker;
+        if (isStateEngine()) {
+            return mCoffeeMaker;
+        } else {
+            return getStateEngine().getCoffeeMaker();
+        }
     }
 
     public final void setCoffeeMaker(CoffeeMaker coffeeMaker) {
@@ -103,7 +108,7 @@ public class TestStateMachine extends StateEngine<TestStateMachine>
     }
 
     @SuppressWarnings("unchecked")
-    public <T extends TestStateMachine> T getStateInstance(final Class<? extends TestStateMachine> stateClass) {
+    public <T extends State> T getStateInstance(final Class<? extends State> stateClass) {
         return (T) this.getState(stateClass);
     }
 
@@ -111,7 +116,13 @@ public class TestStateMachine extends StateEngine<TestStateMachine>
         return mDisposed;
     }
 
-    protected void onDisposeStateMachine() {
+    @Override
+    protected void onDisposeStateEngine() {
+        mDisposed = true;
+    }
+
+    @Override
+    protected void onDisposeState() {
         mDisposed = true;
     }
 

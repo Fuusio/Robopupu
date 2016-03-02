@@ -475,7 +475,7 @@ public abstract class StateEngine<T_State extends StateEngine> {
      * Invoked by {@link StateEngine#dispose()} for an instance of {@link StateEngine} that
      * represents a state machine.
      */
-    protected void onDisposeStateMachine() {
+    protected void onDisposeStateEngine() {
     }
 
     /**
@@ -494,7 +494,7 @@ public abstract class StateEngine<T_State extends StateEngine> {
 
         if (isStateEngine()) {
             getObserver().onDispose(this);
-            onDisposeStateMachine();
+            onDisposeStateEngine();
         } else {
             onDisposeState();
         }

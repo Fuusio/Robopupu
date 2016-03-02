@@ -15,11 +15,11 @@
  */
 package org.fuusio.api.fsm.state;
 
-import org.fuusio.api.fsm.TestStateMachine;
+import org.fuusio.api.fsm.State;
 
-public class FilteringCoffeeState extends TestStateMachine {
+public class FillingWaterTankState extends State {
 
-    public FilteringCoffeeState() {
+    public FillingWaterTankState() {
         super(MakingCoffeeState.class, null);
     }
 
@@ -35,7 +35,7 @@ public class FilteringCoffeeState extends TestStateMachine {
     }
 
     @Override
-    public void waterTankEmpty() {
-        toState(CoffeeReadyState.class);
+    public void waterTankFull() {
+        toState(FilteringCoffeeState.class);
     }
 }

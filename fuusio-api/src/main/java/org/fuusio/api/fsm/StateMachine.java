@@ -126,7 +126,6 @@ public abstract class StateMachine implements StateEngineObserver {
         }
 
         if (mLifecycleState.isCreated() || mLifecycleState.isStopped() && mResetted) {
-            initialize(initialStateClass);
             mStateEngine.start();
             mResetted = false;
             mLifecycleState = LifecycleState.STARTED;

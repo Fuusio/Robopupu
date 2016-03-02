@@ -15,12 +15,12 @@
  */
 package org.fuusio.api.fsm.state;
 
-import org.fuusio.api.fsm.TestStateMachine;
+import org.fuusio.api.fsm.State;
 
-public class PowerOnState extends TestStateMachine {
+public class CoffeeReadyState extends State {
 
-    public PowerOnState() {
-        super(TestStateMachine.class, IdleState.class);
+    public CoffeeReadyState() {
+        super(PowerOnState.class, null);
     }
 
 
@@ -32,11 +32,5 @@ public class PowerOnState extends TestStateMachine {
     @Override
     protected void onEnter() {
         getCoffeeMaker().addTrace("ENTER: " + getClass().getSimpleName());
-    }
-
-
-    @Override
-    public void switchPowerOff() {
-        toState(PowerOffState.class);
     }
 }

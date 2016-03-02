@@ -15,13 +15,14 @@
  */
 package org.fuusio.api.fsm.state;
 
-import org.fuusio.api.fsm.TestStateMachine;
+import org.fuusio.api.fsm.State;
 
-public class IdleState extends TestStateMachine {
+public class PowerOnState extends State {
 
-    public IdleState() {
-        super(PowerOnState.class, null);
+    public PowerOnState() {
+        super(State.class, IdleState.class);
     }
+
 
     @Override
     protected void onExit() {
@@ -33,8 +34,9 @@ public class IdleState extends TestStateMachine {
         getCoffeeMaker().addTrace("ENTER: " + getClass().getSimpleName());
     }
 
+
     @Override
-    public void makeButtonPressed() {
-        toState(MakingCoffeeState.class);
+    public void switchPowerOff() {
+        toState(PowerOffState.class);
     }
 }
