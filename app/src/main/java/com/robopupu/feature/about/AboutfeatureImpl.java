@@ -22,6 +22,7 @@ import com.robopupu.R;
 import com.robopupu.app.RobopupuAppScope;
 import com.robopupu.component.AppManager;
 import com.robopupu.feature.about.presenter.AboutPresenter;
+import com.robopupu.feature.about.presenter.AboutPresenterListener;
 import com.robopupu.feature.about.presenter.LicensesInfoPresenter;
 import com.robopupu.feature.about.view.LicensesInfoView;
 
@@ -35,7 +36,7 @@ import org.fuusio.api.plugin.PluginBus;
 import org.fuusio.api.util.Params;
 
 @Plugin
-public class AboutFeatureImpl extends AbstractFeature implements AboutFeature {
+public class AboutFeatureImpl extends AbstractFeature implements AboutFeature, AboutPresenterListener {
 
     @Plug AppManager mAppManager;
 
@@ -51,19 +52,22 @@ public class AboutFeatureImpl extends AbstractFeature implements AboutFeature {
     }
 
     @Override
-    public void showLicenseInfo() {
+    //public void showLicenseInfo() {
+    public void onShowLicenseInfo() {
         final Params params = new Params(LicensesInfoPresenter.KEY_PARAM_LICENSE_URL, mAppManager.getString(R.string.robopupu_license_file));
         showView(LicensesInfoPresenter.class, true, params);
     }
 
     @Override
-    public void showOssLicensesInfo() {
+    //public void showOssLicensesInfo() {
+    public void onShowOssLicensesInfo() {
         final Params params = new Params(LicensesInfoPresenter.KEY_PARAM_LICENSE_URL, mAppManager.getString(R.string.oss_licenses_file));
         showView(LicensesInfoPresenter.class, true, params);
     }
 
     @Override
-    public void openSourcesWebPage() {
+    //public void openSourcesWebPage() {
+    public void onOpenSourcesWebPage() {
         final String url = mAppManager.getString(R.string.ft_about_text_sources);
         final Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setData(Uri.parse(url));

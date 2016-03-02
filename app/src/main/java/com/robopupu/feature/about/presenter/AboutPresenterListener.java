@@ -1,7 +1,13 @@
 package com.robopupu.feature.about.presenter;
 
-/**
- * {@link AboutPresenterListener} ...
- */
+import org.fuusio.api.plugin.PlugInterface;
+
+@PlugInterface
 public interface AboutPresenterListener {
+
+    void onShowLicenseInfo();
+
+    void onShowOssLicensesInfo();
+
+    void onOpenSourcesWebPage();
 }

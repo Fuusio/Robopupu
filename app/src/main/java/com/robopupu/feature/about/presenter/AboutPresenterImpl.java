@@ -32,7 +32,8 @@ import org.fuusio.api.plugin.PluginBus;
 public class AboutPresenterImpl extends AbstractFeaturePresenter<AboutView>
         implements AboutPresenter {
 
-    @Plug AboutFeature mFeature;
+    //@Plug AboutFeature mFeature;
+    @Plug AboutPresenterListener mListener;
     @Plug AppManager mAppManager;
     @Plug AboutView mView;
 
@@ -60,16 +61,19 @@ public class AboutPresenterImpl extends AbstractFeaturePresenter<AboutView>
 
     @Override
     public void onViewLicenseTextClicked() {
-        mFeature.showLicenseInfo();
+        mListener.onShowLicenseInfo();
+        //mFeature.showLicenseInfo();
     }
 
     @Override
     public void onViewOssLicensesTextClicked() {
-        mFeature.showOssLicensesInfo();
+        mListener.onShowOssLicensesInfo();
+        //mFeature.showOssLicensesInfo();
     }
 
     @Override
     public void onSourcesClicked() {
-        mFeature.openSourcesWebPage();
+        mListener.onOpenSourcesWebPage();
+        //mFeature.openSourcesWebPage();
     }
 }
