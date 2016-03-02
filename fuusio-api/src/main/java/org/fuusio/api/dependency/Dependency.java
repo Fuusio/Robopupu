@@ -111,6 +111,18 @@ public class Dependency {
      * Gets a specified {@link DependencyScope}.
      *
      * @param scopeClass A {@link Class} specifying {@link DependencyScope}.
+     * @return The requested {@link DependencyScope}. If {@code null} is returned, it indicates an
+     * error in an {@link DependencyScope} implementation.
+     */
+    @SuppressWarnings("unchecked")
+    public static <T extends DependencyScope> T getScope(final Class<? extends DependencyScope> scopeClass) {
+        return getScope(scopeClass, true);
+    }
+
+    /**
+     * Gets a specified {@link DependencyScope}.
+     *
+     * @param scopeClass A {@link Class} specifying {@link DependencyScope}.
      * @param createInstance A {@code boolean} flag specifying if the requested {@link DependencyScope} is
      *               attempted to be created via reflection in case the requested {@link DependencyScope}
      *                       is not registered yet.
