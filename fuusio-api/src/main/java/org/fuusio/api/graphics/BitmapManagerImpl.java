@@ -19,7 +19,7 @@ import android.graphics.Bitmap;
 import android.support.v4.util.LruCache;
 import android.util.Log;
 
-import org.fuusio.api.util.AppToolkit;
+import org.fuusio.api.app.FuusioApplication;
 import org.fuusio.api.util.StringToolkit;
 
 import java.io.File;
@@ -136,7 +136,7 @@ public class BitmapManagerImpl implements BitmapManager {
         cache.put(key, bitmap);
 
         if (useFileCaching) {
-            final File applicationDirectory = AppToolkit.getApplicationDirectory();
+            final File applicationDirectory = FuusioApplication.getApplicationDirectory();
             final StringBuilder path = new StringBuilder(applicationDirectory.getAbsolutePath());
             path.append("/");
             path.append(StringToolkit.encodeFileName(cacheName));

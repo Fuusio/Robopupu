@@ -17,6 +17,7 @@ package org.fuusio.api.util;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.support.annotation.StringRes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,11 +59,11 @@ public class MessageContext {
         mMessage = message;
     }
 
-    public void setMessage(final int stringResId) {
+    public void setMessage(@StringRes final int stringResId) {
         mMessageId = stringResId;
     }
 
-    public void setMessage(final int stringResId, final Object... args) {
+    public void setMessage(@StringRes final int stringResId, final Object... args) {
         mMessageId = stringResId;
         setMessageArgs(args);
     }

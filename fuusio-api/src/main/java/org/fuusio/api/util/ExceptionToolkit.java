@@ -20,8 +20,6 @@ import java.text.MessageFormat;
 /**
  * {@code ExceptionToolkit} provides a set of convenience methods and utilities for throwing,
  * handling, and using {@link Exception}s.
- *
- * @author Marko Salmela
  */
 public class ExceptionToolkit {
 

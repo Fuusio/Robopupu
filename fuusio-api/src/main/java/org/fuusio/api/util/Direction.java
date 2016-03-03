@@ -16,11 +16,8 @@
 package org.fuusio.api.util;
 
 /**
- * {@code Direction} defines a new enum type for representing priority values at five levels.
- *
- * @author Marko Salmela
+ * {@code Direction} defines a new enum type for representing directions.
  */
-
 public enum Direction {
 
     NORTH("North", 0), //

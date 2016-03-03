@@ -15,7 +15,9 @@
  */
 package org.fuusio.api.util;
 
+import android.content.Context;
 import android.content.res.Resources;
+import android.support.annotation.StringRes;
 
 import java.nio.charset.Charset;
 import java.text.Normalizer;
@@ -287,8 +289,7 @@ public class StringToolkit {
         }
     }
 
-    public static String formatString(final int stringResId, final int... formatArgResIds) {
-        final Resources resources = AppToolkit.getResources();
+    public static String formatString(final Resources resources, @StringRes final int stringResId, @StringRes final int... formatArgResIds) {
         final int count = formatArgResIds.length;
         final Object[] formatArgs = new String[count];
 

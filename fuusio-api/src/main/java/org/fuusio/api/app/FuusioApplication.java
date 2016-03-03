@@ -18,17 +18,23 @@ package org.fuusio.api.app;
 import android.app.Activity;
 import android.app.Application;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import org.fuusio.api.dependency.AppDependencyScope;
 import org.fuusio.api.dependency.DependenciesCache;
 import org.fuusio.api.dependency.Dependency;
-import org.fuusio.api.util.AppToolkit;
 import org.fuusio.api.util.L;
 import org.fuusio.api.util.UIToolkit;
 
+import java.io.File;
+
 public abstract class FuusioApplication extends Application {
+
+    private static final String TAG = FuusioApplication.class.getSimpleName();
 
     private static FuusioApplication sInstance = null;
 
@@ -38,7 +44,6 @@ public abstract class FuusioApplication extends Application {
     protected FuusioApplication() {
         setInstance(this);
 
-        AppToolkit.setApplication(this);
         UIToolkit.setApplication(this);
 
         mDependenciesCache = createDependencyScopeCache();
@@ -149,7 +154,7 @@ public abstract class FuusioApplication extends Application {
         final boolean committed = editor.commit();
 
         if (!committed) {
-            L.e(this, "writePreferences", "Committing the preferences failed.");
+            Log.e(TAG, "writePreferences() :  Committing the preferences failed.");
         }
     }
 
@@ -166,5 +171,44 @@ public abstract class FuusioApplication extends Application {
     @SuppressWarnings("unchecked")
     public static <T extends FuusioApplication> T getApplication(final Activity activity) {
         return (T) activity.getApplicationContext();
+    }
+
+    /**
+     * Gets application directory.
+     * @return The directory as a {@link File}. If accessing the directory fails, {@code null} is
+     * returned.
+     */
+    public static File getApplicationDirectory() {
+        final String path = getApplicationDirectoryPath();
+        final File directory = new File(path);
+
+        assert (directory != null);
+
+        if (!directory.exists()) {
+            directory.mkdirs();
+        }
+
+        assert (directory.exists() && directory.canRead());
+
+        return directory;
+    }
+
+    /**
+     * Gets application directory path.
+     * @return The directory path as a {@link File}. If accessing the directory fails, {@code null}
+     * is returned.
+     */
+    public static String getApplicationDirectoryPath() {
+        final Application application = getInstance();
+        final PackageManager manager = application.getPackageManager();
+        final String packageName = application.getPackageName();
+
+        try {
+            final PackageInfo info = manager.getPackageInfo(packageName, 0);
+            return info.applicationInfo.dataDir;
+        } catch (final PackageManager.NameNotFoundException e) {
+            Log.d(TAG, "getApplicationDirectoryPath : Error Package name not found ");
+        }
+        return null;
     }
 }

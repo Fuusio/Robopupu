@@ -19,8 +19,15 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkInfo;
+import android.nfc.NfcAdapter;
+import android.nfc.NfcManager;
+import android.os.Build;
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.support.annotation.IntegerRes;
@@ -35,10 +42,16 @@ import com.robopupu.app.RobopupuAppScope;
 import com.robopupu.app.RobopupuApplication;
 
 import org.fuusio.api.component.AbstractManager;
+import org.fuusio.api.dependency.D;
 import org.fuusio.api.dependency.Provides;
 import org.fuusio.api.dependency.Scope;
 import org.fuusio.api.plugin.Plug;
 import org.fuusio.api.plugin.Plugin;
+import org.fuusio.api.util.L;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 @Plugin
 public class AppManagerImpl extends AbstractManager implements AppManager {
@@ -100,6 +113,83 @@ public class AppManagerImpl extends AbstractManager implements AppManager {
             Log.d(TAG, e.getMessage());
         }
         return null;
+    }
+
+    @Override
+    public boolean isPackageInstalled(final String packageName) {
+        final Context context = mApplication.getApplicationContext();
+        final PackageManager manager = context.getPackageManager();
+        final List<ApplicationInfo> infos = manager.getInstalledApplications(PackageManager.GET_META_DATA);
+
+        for (final ApplicationInfo info : infos) {
+            if (packageName.equalsIgnoreCase(info.packageName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean hasNfc() {
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1) {
+            final NfcManager manager = D.get(NfcManager.class);
+            final NfcAdapter adapter = manager.getDefaultAdapter();
+            return (adapter != null && adapter.isEnabled());
+        }
+        return false;
+    }
+
+    @Override
+    public boolean isNetworkAvailable() {
+        final ConnectivityManager manager = D.get(ConnectivityManager.class);
+
+        if (manager == null) {
+            Log.e(TAG, "isNetworkAvailable() : Network access not allowed");
+        } else {
+            final Network[] networks = manager.getAllNetworks();
+
+            if (networks != null) {
+                for (final Network network : networks) {
+                    final NetworkInfo info = manager.getNetworkInfo(network);
+                    if (info.getState() == NetworkInfo.State.CONNECTED) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public List<Network> getAvailableNetworks() {
+        final ArrayList<Network> availableNetworks = new ArrayList<>();
+        final ConnectivityManager manager = D.get(ConnectivityManager.class);
+
+        if (manager == null) {
+            Log.e(TAG, "isNetworkAvailable() : Network access not allowed");
+        } else {
+            final Network[] networks = manager.getAllNetworks();
+
+            if (networks != null) {
+                for (final Network network : networks) {
+                    final NetworkInfo info = manager.getNetworkInfo(network);
+                    if (info.getState() == NetworkInfo.State.CONNECTED) {
+                        availableNetworks.add(network);
+                    }
+                }
+            }
+        }
+        return availableNetworks;
+    }
+
+    @Override
+    public File getApplicationDirectory() {
+        return RobopupuApplication.getApplicationDirectory();
+    }
+
+    @Override
+    public String getApplicationDirectoryPath() {
+        return RobopupuApplication.getApplicationDirectoryPath();
     }
 
     @Override
