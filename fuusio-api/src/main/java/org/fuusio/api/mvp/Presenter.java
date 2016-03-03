@@ -15,7 +15,6 @@
  */
 package org.fuusio.api.mvp;
 
-import org.fuusio.api.util.Listenable;
 import org.fuusio.api.util.Params;
 
 /**

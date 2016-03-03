@@ -15,16 +15,6 @@
  */
 package com.robopupu.component;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.support.annotation.ColorInt;
-import android.support.annotation.ColorRes;
-import android.support.annotation.IntegerRes;
-import android.support.annotation.StringRes;
-
-import com.robopupu.app.RobopupuApplication;
-
 import org.fuusio.api.component.Manager;
 import org.fuusio.api.plugin.PlugInterface;
 

@@ -18,7 +18,6 @@ package org.fuusio.api.util;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Environment;
-import android.util.Log;
 
 import java.io.File;
 import java.io.FileWriter;

@@ -27,7 +27,6 @@ import org.fuusio.api.dependency.Dependency;
 import org.fuusio.api.dependency.DependencyScope;
 import org.fuusio.api.dependency.DependencyScopeOwner;
 import org.fuusio.api.mvp.View;
-import org.fuusio.api.plugin.PluginStateComponent;
 import org.fuusio.api.util.Params;
 
 import java.lang.reflect.Constructor;

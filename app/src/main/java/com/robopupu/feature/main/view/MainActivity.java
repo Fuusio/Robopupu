@@ -15,7 +15,6 @@
  */
 package com.robopupu.feature.main.view;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
@@ -23,17 +22,10 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
-
-import org.fuusio.api.feature.FeatureContainer;
-import org.fuusio.api.feature.FeatureFragment;
-import org.fuusio.api.mvp.PluginActivity;
-import org.fuusio.api.plugin.Plug;
-import org.fuusio.api.plugin.Plugin;
 
 import com.robopupu.R;
 import com.robopupu.api.feature.PluginFeatureManager;
@@ -42,6 +34,12 @@ import com.robopupu.app.view.DrawerLayoutContainer;
 import com.robopupu.feature.main.MainFeature;
 import com.robopupu.feature.main.MainFeatureScope;
 import com.robopupu.feature.main.presenter.MainPresenter;
+
+import org.fuusio.api.feature.FeatureContainer;
+import org.fuusio.api.feature.FeatureFragment;
+import org.fuusio.api.mvp.PluginActivity;
+import org.fuusio.api.plugin.Plug;
+import org.fuusio.api.plugin.Plugin;
 
 @Plugin
 public class MainActivity extends PluginActivity<MainPresenter>

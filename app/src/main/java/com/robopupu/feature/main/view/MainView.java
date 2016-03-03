@@ -16,9 +16,8 @@
 package com.robopupu.feature.main.view;
 
 import org.fuusio.api.feature.FeatureContainer;
-import org.fuusio.api.plugin.PlugInterface;
-
 import org.fuusio.api.mvp.View;
+import org.fuusio.api.plugin.PlugInterface;
 
 @PlugInterface
 public interface MainView extends View {

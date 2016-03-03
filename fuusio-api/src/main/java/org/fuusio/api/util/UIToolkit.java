@@ -24,7 +24,6 @@ import android.content.res.Resources.NotFoundException;
 import android.content.res.XmlResourceParser;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
-import android.os.Bundle;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;

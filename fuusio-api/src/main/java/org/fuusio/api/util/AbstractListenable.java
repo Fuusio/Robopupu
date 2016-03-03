@@ -15,8 +15,6 @@
  */
 package org.fuusio.api.util;
 
-import android.support.annotation.NonNull;
-
 import java.util.ArrayList;
 import java.util.List;
 

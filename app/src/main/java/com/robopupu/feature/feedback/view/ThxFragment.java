@@ -24,7 +24,6 @@ import android.view.ViewGroup;
 import com.robopupu.R;
 import com.robopupu.feature.feedback.presenter.ThxPresenter;
 
-
 import org.fuusio.api.dependency.Provides;
 import org.fuusio.api.feature.FeatureFragment;
 import org.fuusio.api.plugin.Plug;

@@ -15,8 +15,6 @@
  */
 package org.fuusio.api.plugin;
 
-import android.support.annotation.CallSuper;
-
 import org.fuusio.api.dependency.ScopedObject;
 
 /**

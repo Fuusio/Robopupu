@@ -15,7 +15,6 @@
  */
 package org.fuusio.api.feature;
 
-import org.fuusio.api.dependency.D;
 import org.fuusio.api.dependency.DependencyScope;
 import org.fuusio.api.dependency.Scopeable;
 import org.fuusio.api.mvp.Presenter;

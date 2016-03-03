@@ -20,7 +20,6 @@ import org.fuusio.api.dependency.Dependency;
 import org.fuusio.api.dependency.DependencyScope;
 import org.fuusio.api.dependency.DependencyScopeOwner;
 import org.fuusio.api.dependency.Scopeable;
-import org.fuusio.api.mvp.ViewFragment;
 
 import java.util.ArrayList;
 import java.util.HashMap;

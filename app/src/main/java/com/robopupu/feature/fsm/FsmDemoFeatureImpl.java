@@ -21,7 +21,6 @@ import com.robopupu.feature.fsm.presenter.FsmDemoPresenter;
 import org.fuusio.api.dependency.Provides;
 import org.fuusio.api.dependency.Scope;
 import org.fuusio.api.feature.AbstractFeature;
-import org.fuusio.api.mvp.Presenter;
 import org.fuusio.api.plugin.Plugin;
 
 @Plugin

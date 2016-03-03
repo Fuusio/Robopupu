@@ -15,8 +15,6 @@
  */
 package org.fuusio.api.dependency;
 
-import org.mockito.Mockito;
-
 public class ZooScope extends DependencyScope {
 
     private boolean mWasDisposed;

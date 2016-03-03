@@ -17,10 +17,7 @@ package org.fuusio.api.util;
 
 import android.test.suitebuilder.annotation.SmallTest;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import static org.junit.Assert.assertEquals;
 

@@ -16,7 +16,6 @@
 package com.robopupu.api.feature;
 
 import com.robopupu.app.RobopupuAppScope;
-import com.robopupu.app.RobopupuApplication;
 
 import org.fuusio.api.dependency.D;
 import org.fuusio.api.dependency.Provides;
@@ -24,7 +23,6 @@ import org.fuusio.api.dependency.Scope;
 import org.fuusio.api.feature.AbstractFeatureManager;
 import org.fuusio.api.feature.Feature;
 import org.fuusio.api.feature.FeatureContainer;
-import org.fuusio.api.plugin.PlugInvoker;
 import org.fuusio.api.plugin.Plugin;
 import org.fuusio.api.plugin.PluginBus;
 import org.fuusio.api.util.Params;

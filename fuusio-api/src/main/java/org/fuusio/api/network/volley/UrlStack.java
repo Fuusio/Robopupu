@@ -15,8 +15,6 @@
  */
 package org.fuusio.api.network.volley;
 
-import android.util.Base64;
-
 import com.android.volley.toolbox.HurlStack;
 import com.squareup.okhttp.CertificatePinner;
 import com.squareup.okhttp.OkHttpClient;
@@ -27,14 +25,6 @@ import org.fuusio.api.util.StringToolkit;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.security.cert.CertificateException;
-
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.SSLSocketFactory;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
 
 /**
  * {@link UrlStack} extends {@link HurlStack} for implementing certificate pinning and for

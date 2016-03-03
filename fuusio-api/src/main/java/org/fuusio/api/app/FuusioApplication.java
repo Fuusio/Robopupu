@@ -22,11 +22,8 @@ import android.content.res.Resources;
 import android.preference.PreferenceManager;
 
 import org.fuusio.api.dependency.AppDependencyScope;
-import org.fuusio.api.dependency.D;
 import org.fuusio.api.dependency.DependenciesCache;
 import org.fuusio.api.dependency.Dependency;
-import org.fuusio.api.feature.FeatureManager;
-import org.fuusio.api.plugin.PluginBus;
 import org.fuusio.api.util.AppToolkit;
 import org.fuusio.api.util.L;
 import org.fuusio.api.util.UIToolkit;

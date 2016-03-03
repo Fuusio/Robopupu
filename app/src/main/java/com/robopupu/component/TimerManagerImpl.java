@@ -15,28 +15,11 @@
  */
 package com.robopupu.component;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.support.annotation.ColorInt;
-import android.support.annotation.ColorRes;
-import android.support.annotation.IntegerRes;
-import android.support.annotation.StringRes;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
-import android.util.Log;
-
-import com.robopupu.R;
-import com.robopupu.api.feature.PluginFeatureManager;
 import com.robopupu.app.RobopupuAppScope;
-import com.robopupu.app.RobopupuApplication;
 
 import org.fuusio.api.component.AbstractManager;
 import org.fuusio.api.dependency.Provides;
 import org.fuusio.api.dependency.Scope;
-import org.fuusio.api.plugin.Plug;
 import org.fuusio.api.plugin.Plugin;
 import org.fuusio.api.plugin.PluginBus;
 

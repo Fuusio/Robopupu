@@ -27,8 +27,8 @@ import com.android.volley.toolbox.Volley;
 import org.fuusio.api.component.AbstractManager;
 import org.fuusio.api.dependency.D;
 import org.fuusio.api.graphics.BitmapManager;
-import org.fuusio.api.network.RequestManager;
 import org.fuusio.api.network.Request;
+import org.fuusio.api.network.RequestManager;
 import org.fuusio.api.plugin.PluginBus;
 
 /**

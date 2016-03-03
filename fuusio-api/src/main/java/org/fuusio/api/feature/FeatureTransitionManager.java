@@ -16,7 +16,6 @@
 package org.fuusio.api.feature;
 
 import org.fuusio.api.mvp.View;
-import org.fuusio.api.mvp.ViewDialogFragment;
 
 /**
  * {@link FeatureTransitionManager} defines an interface for objects that can be used to show {@link FeatureFragment}s.

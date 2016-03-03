@@ -24,7 +24,6 @@ import com.robopupu.component.AppManager;
 import com.robopupu.feature.about.presenter.AboutPresenter;
 import com.robopupu.feature.about.presenter.AboutPresenterListener;
 import com.robopupu.feature.about.presenter.LicensesInfoPresenter;
-import com.robopupu.feature.about.view.LicensesInfoView;
 
 import org.fuusio.api.dependency.Provides;
 import org.fuusio.api.dependency.Scope;
@@ -32,7 +31,6 @@ import org.fuusio.api.feature.AbstractFeature;
 import org.fuusio.api.mvp.Presenter;
 import org.fuusio.api.plugin.Plug;
 import org.fuusio.api.plugin.Plugin;
-import org.fuusio.api.plugin.PluginBus;
 import org.fuusio.api.util.Params;
 
 @Plugin

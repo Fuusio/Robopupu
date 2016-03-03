@@ -27,7 +27,6 @@ import com.robopupu.R;
 import com.robopupu.app.view.DelegatedWebViewClient;
 import com.robopupu.feature.about.presenter.LicensesInfoPresenter;
 
-import org.fuusio.api.binding.Binding;
 import org.fuusio.api.binding.ClickBinding;
 import org.fuusio.api.dependency.Provides;
 import org.fuusio.api.feature.FeatureDialogFragment;
