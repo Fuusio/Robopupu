@@ -16,7 +16,7 @@
 package org.fuusio.api.network;
 
 /**
- * {@link RestService} defines an interface for components that implement and provide a REST API.
+ * {@link RestService} defines an interface for components that implement and provide a REST APIs.
  */
 public interface RestService {
 }

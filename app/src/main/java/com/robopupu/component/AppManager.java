@@ -18,6 +18,7 @@ package com.robopupu.component;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.support.annotation.IntegerRes;
@@ -58,6 +59,13 @@ public interface AppManager extends Manager {
      * @return The  version name as an {@link int}.
      */
     String getAppVersionName();
+
+    /**
+     * Gets the {@linkn PackageInfo} of the application.
+     *
+     * @return A {@link PackageInfo}.
+     */
+    PackageInfo getPackageInfo();
 
     /**
      * Gets the specified color value.

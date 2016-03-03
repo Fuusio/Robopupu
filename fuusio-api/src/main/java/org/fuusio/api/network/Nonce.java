@@ -15,13 +15,17 @@
  */
 package org.fuusio.api.network;
 
-import org.fuusio.api.util.L;
+import android.util.Log;
+
+import org.fuusio.api.util.MersenneTwister;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Random;
 
-public class Nonce {
+public final class Nonce {
+
+    private static final String TAG = Nonce.class.getSimpleName();
 
     /**
      * Generates a nonce string using the given time stamp as a seed.
@@ -29,15 +33,15 @@ public class Nonce {
      * @param timeStamp A time stamp as a {@link String}.
      * @return A nonce {@link String}.
      */
-    public String generate(final String timeStamp) {
-        final Random random = new Random(System.currentTimeMillis());
+    private static String generate(final String timeStamp) {
+        final Random random = new MersenneTwister(System.currentTimeMillis());
         final String message = timeStamp + Integer.toString(random.nextInt());
 
         try {
             final MessageDigest digest = java.security.MessageDigest.getInstance("MD5");
             digest.update(message.getBytes());
             final byte[] digestBytes = digest.digest();
-            StringBuffer hexString = new StringBuffer();
+            final StringBuffer hexString = new StringBuffer();
 
             for (int i = 0; i < digestBytes.length; i++) {
                 String hex = Integer.toHexString(0xFF & digestBytes[i]);
@@ -50,7 +54,7 @@ public class Nonce {
 
             return hexString.toString();
         } catch (NoSuchAlgorithmException e) {
-            L.wtf(this, "generate", e.getMessage());
+            Log.e(TAG, "generate(String) : " + e.getMessage());
         }
 
         return null;
@@ -62,20 +66,18 @@ public class Nonce {
      * @param timeStamp A time stamp.
      * @return A nonce {@link String}.
      */
-    public String generate(final long timeStamp) {
+    private static String generate(final long timeStamp) {
         final String timeStampString = Long.toString(timeStamp);
         final int endIndex = timeStampString.length() - 3;
         return generate(timeStampString.substring(0, endIndex));
     }
 
     /**
-     * Gets a string representation of a nonce. It should be noted that {@link String} value is
-     * different for each invocation.
+     * Generates a nonce string.
      *
      * @return A {@link String}.
      */
-    @Override
-    public final String toString() {
+    public final String generate() {
         return generate(System.currentTimeMillis());
     }
 }

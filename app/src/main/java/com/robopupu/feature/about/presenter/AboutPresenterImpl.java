@@ -15,12 +15,9 @@
  */
 package com.robopupu.feature.about.presenter;
 
-import com.robopupu.R;
 import com.robopupu.component.AppManager;
-import com.robopupu.feature.about.AboutFeature;
 import com.robopupu.feature.about.view.AboutView;
 
-import org.fuusio.api.dependency.D;
 import org.fuusio.api.dependency.Provides;
 import org.fuusio.api.feature.AbstractFeaturePresenter;
 import org.fuusio.api.mvp.View;
@@ -32,9 +29,8 @@ import org.fuusio.api.plugin.PluginBus;
 public class AboutPresenterImpl extends AbstractFeaturePresenter<AboutView>
         implements AboutPresenter {
 
-    //@Plug AboutFeature mFeature;
-    @Plug AboutPresenterListener mListener;
     @Plug AppManager mAppManager;
+    @Plug AboutPresenterListener mListener;
     @Plug AboutView mView;
 
     @Provides(AboutPresenter.class)
@@ -53,27 +49,23 @@ public class AboutPresenterImpl extends AbstractFeaturePresenter<AboutView>
     }
 
     @Override
-    public void onViewStart(final View view) {
-        super.onViewStart(view);
-
+    public void onViewResume(final View view) {
+        super.onViewResume(view);
         mView.setVersionText(mAppManager.getAppVersionName());
     }
 
     @Override
     public void onViewLicenseTextClicked() {
         mListener.onShowLicenseInfo();
-        //mFeature.showLicenseInfo();
     }
 
     @Override
     public void onViewOssLicensesTextClicked() {
         mListener.onShowOssLicensesInfo();
-        //mFeature.showOssLicensesInfo();
     }
 
     @Override
     public void onSourcesClicked() {
         mListener.onOpenSourcesWebPage();
-        //mFeature.openSourcesWebPage();
     }
 }

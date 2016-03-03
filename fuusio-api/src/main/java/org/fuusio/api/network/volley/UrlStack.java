@@ -67,76 +67,23 @@ public class UrlStack extends HurlStack {
         return null;
     }
 
-    protected String[] getPublicKeys() {
+    protected String[] getPins() {
         return null;
     }
 
-    private static OkHttpClient getUnsafeOkHttpClient() {
-        try {
-            // Create a trust manager that does not validate certificate chains
-            final TrustManager[] trustAllCerts = new TrustManager[]{
-                    new X509TrustManager() {
-                        @Override
-                        public void checkClientTrusted(final java.security.cert.X509Certificate[] chain, final String authType) throws CertificateException {
-                        }
-
-                        @Override
-                        public void checkServerTrusted(final java.security.cert.X509Certificate[] chain, final String authType) throws CertificateException {
-                        }
-
-                        @Override
-                        public java.security.cert.X509Certificate[] getAcceptedIssuers() {
-                            return null;
-                        }
-                    }
-            };
-
-            // Install the all-trusting trust manager
-            final SSLContext sslContext = SSLContext.getInstance("SSL");
-            sslContext.init(null, trustAllCerts, new java.security.SecureRandom());
-            // Create an ssl socket factory with our all-trusting manager
-            final SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
-            final OkHttpClient httpClient = createHttpClient();
-
-            httpClient.setSslSocketFactory(sslSocketFactory);
-            httpClient.setHostnameVerifier(new HostnameVerifier() {
-                @Override
-                public boolean verify(String hostname, SSLSession session) {
-                    return true;
-                }
-            });
-
-            return httpClient;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     protected void setupCertificatePinning() {
-
         final String hostName = getHostName();
-        final String[] publicKeys = getPublicKeys();
+        final String[] pins = getPins();
 
-        if (!StringToolkit.isEmpty(hostName) && publicKeys != null && publicKeys.length > 0) {
+        if (StringToolkit.isNotEmpty(hostName) && pins != null && pins.length > 0) {
             final CertificatePinner.Builder builder = new CertificatePinner.Builder();
 
-            for (int i = 0; i < publicKeys.length; i++) {
-                final byte[] bytes = hexStringToBytes(publicKeys[i]);
-                builder.add(hostName, PREFIX_SHA1 + Base64.encodeToString(bytes, Base64.DEFAULT));
+            for (int i = 0; i < pins.length; i++) {
+                builder.add(hostName, pins[i]);
             }
-
             final CertificatePinner certificatePinner = builder.build();
             mUrlFactory.client().setCertificatePinner(certificatePinner);
         }
     }
 
-    private byte[] hexStringToBytes(final String hexString) {
-        final byte[] bytes = new byte[hexString.length() / 2];
-        int index = 0;
-
-        for (int i = 0; i < bytes.length; i++) {
-            bytes[i] = (byte) ((Character.digit(hexString.charAt(index++), 16) << 4) + Character.digit(hexString.charAt(index++), 16));
-        }
-        return bytes;
-    }
 }

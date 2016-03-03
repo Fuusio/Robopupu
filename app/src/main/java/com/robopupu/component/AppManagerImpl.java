@@ -19,6 +19,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
@@ -68,32 +69,37 @@ public class AppManagerImpl extends AbstractManager implements AppManager {
 
     @Override
     public int getAppVersionCode() {
-        final Context context = mApplication.getApplicationContext();
-        final PackageManager manager = context.getPackageManager();
-        try {
-            final String packageName = context.getPackageName();
-            return manager.getPackageInfo(packageName, 0).versionCode;
-        } catch (PackageManager.NameNotFoundException e) {
-            Log.d(TAG, e.getMessage());
+        final PackageInfo info = getPackageInfo();
+
+        if (info != null) {
+            return info.versionCode;
+        } else {
+            return -1;
         }
-        return -1;
     }
 
-    /**
-     * Gets the versoin code of the application.
-     *
-     * @return The  version code as an {@link int}.
-     */
+    @Override
     public String getAppVersionName() {
+        final PackageInfo info = getPackageInfo();
+
+        if (info != null) {
+            return info.versionName;
+        } else {
+            return "n/a";
+        }
+    }
+
+    @Override
+    public PackageInfo getPackageInfo() {
         final Context context = mApplication.getApplicationContext();
         final PackageManager manager = context.getPackageManager();
         try {
             final String packageName = context.getPackageName();
-            return manager.getPackageInfo(packageName, 0).versionName;
+            return manager.getPackageInfo(packageName, 0);
         } catch (PackageManager.NameNotFoundException e) {
             Log.d(TAG, e.getMessage());
         }
-        return "n/a";
+        return null;
     }
 
     @Override

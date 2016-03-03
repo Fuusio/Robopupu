@@ -18,23 +18,21 @@ package org.fuusio.api.network;
 import com.android.volley.RequestQueue;
 
 import org.fuusio.api.component.Manager;
-import org.fuusio.api.plugin.PlugInterface;
 
 /**
  * {@link RequestManager} defines plugin interface for a {@link Manager} that is used to execute
- * {@link RestRequest}s.
+ * {@link Request}s.
  */
-@PlugInterface
 public interface RequestManager extends Manager {
 
     /**
-     * Execute the given {@link RestRequest}.
-     * @param request A {@link RestRequest}.
+     * Execute the given {@link Request}.
+     * @param request A {@link Request}.
      */
-    void execute(RestRequest request);
+    void execute(Request request);
 
     /**
-     * Cancel all pending {@link RestRequest}s with the given tag.
+     * Cancel all pending {@link Request}s with the given tag.
      * @param tag The tag as an {@link Object}.
      */
     void cancelRequests(Object tag);
@@ -46,7 +44,7 @@ public interface RequestManager extends Manager {
     void cancelRequests(RequestQueue.RequestFilter filter);
 
     /**
-     * Cancel all pending {@link RestRequest}s.
+     * Cancel all pending {@link Request}s.
      */
     void cancelAllRequests();
 

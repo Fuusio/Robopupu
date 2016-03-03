@@ -137,4 +137,12 @@ public class HttpParams {
             throw runtimeException;
         }
     }
+
+    /**
+     * Tests if this {@link HttpParams} contains any key values.
+     * @return A {@code boolean} value.
+     */
+    public boolean hasValues() {
+        return mKeyValues.size() > 0;
+    }
 }

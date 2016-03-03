@@ -6,6 +6,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
 import org.fuusio.api.network.volley.VolleyRequest;
+import org.fuusio.api.network.volley.VolleyRequestError;
 import org.fuusio.api.util.KeyValue;
 
 import java.io.UnsupportedEncodingException;
@@ -13,27 +14,27 @@ import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.util.List;
 
-public abstract class RestRequest<T_Response> {
+public abstract class Request<T_Response> {
 
     protected static final String PATH_SEPARATOR = "/";
 
     protected final HttpHeaders mHeaders;
+    protected final HttpMethod mMethod;
     protected final HttpParams mParams;
     protected final HttpParams mPathParams;
+    protected final String mRelativeUrl;
     protected final Response.ErrorListener mErrorListener;
+    protected final RequestListener<T_Response> mRequestListener;
     protected final Response.Listener<T_Response> mResponseListener;
 
     protected Object mBody;
-    protected HttpMethod mMethod;
-    protected String mRelativeUrl;
-    protected RequestListener<T_Response> mRequestListener;
     protected VolleyRequest<T_Response> mVolleyRequest;
 
-    protected RestRequest(final String relativeUrl, final RequestListener<T_Response> requestListener) {
+    protected Request(final String relativeUrl, final RequestListener<T_Response> requestListener) {
         this(HttpMethod.GET, relativeUrl, requestListener);
     }
 
-    protected RestRequest(final HttpMethod method, final String relativeUrl, final RequestListener<T_Response> requestListener) {
+    protected Request(final HttpMethod method, final String relativeUrl, final RequestListener<T_Response> requestListener) {
         mMethod = method;
         mRelativeUrl = relativeUrl;
         mRequestListener = requestListener;
@@ -64,15 +65,15 @@ public abstract class RestRequest<T_Response> {
     }
 
     /**
-     * Construct the request url.
+     * Construct the request URL from base URL, relative URL, path parameters, and query parameters.
+     * This method is invoked by {@link Request#createVolleyRequest()}
      *
-     * @return The constructed url as a {@link String}.
+     * @param baseUrl The base URL as a {@link String}.
+     * @param relativeUrl The relative URL as a {@link String}.
+     * @return The constructed URL as a {@link String}.
      */
-    protected String constructUrl() {
-
-        final String baseUrl = getBaseUrl();
+    protected String constructUrl(final String baseUrl, final String relativeUrl) {
         final StringBuilder builder = new StringBuilder(baseUrl);
-        final String relativeUrl = getRelativeUrl();
 
         if (!baseUrl.endsWith(PATH_SEPARATOR)) {
             if (!relativeUrl.startsWith(PATH_SEPARATOR)) {
@@ -108,11 +109,13 @@ public abstract class RestRequest<T_Response> {
                 throw new RuntimeException("Failed to encode path parameter.", e);
             }
         }
-
         return url;
     }
 
-    public final void constructVolleyRequest() {
+    /**
+     * Prepares this {@link Request} for execution.
+     */
+    protected final void prepareForExecution() {
         mVolleyRequest = createVolleyRequest();
 
         mVolleyRequest.setTag(getClass().getSimpleName());
@@ -134,11 +137,26 @@ public abstract class RestRequest<T_Response> {
         // By default do nothing
     }
 
+    /**
+     * Creates an instance of a concrete implementation of {@link VolleyRequest}.
+     *
+     * @return An instance of a concrete implementation of {@link VolleyRequest}.
+     */
     protected final VolleyRequest<T_Response> createVolleyRequest() {
-        return createVolleyRequest(mResponseListener, mErrorListener);
+        final String url = constructUrl(getBaseUrl(), getRelativeUrl());
+        return createVolleyRequest(url, mResponseListener, mErrorListener);
     }
 
-    protected abstract VolleyRequest<T_Response> createVolleyRequest(Response.Listener<T_Response> responseListener, Response.ErrorListener errorListener);
+    /**
+     * Creates an instance of a concrete implementation of {@link VolleyRequest}. This method needs
+     * to overridden in a class that provides a concrete implemenation of {@link Request}.
+     *
+     * @param url The URL as a {@link String}.
+     * @param responseListener A {@link Response.Listener}.
+     * @param errorListener
+     * @return An instance of a concrete implementation of {@link VolleyRequest}.
+     */
+    protected abstract VolleyRequest<T_Response> createVolleyRequest(String url, Response.Listener<T_Response> responseListener, Response.ErrorListener errorListener);
 
     protected Response.Listener<T_Response> createResponseListener(final RequestListener<T_Response> requestListener) {
         return new Response.Listener<T_Response>() {
@@ -156,13 +174,13 @@ public abstract class RestRequest<T_Response> {
             @Override
             public void onErrorResponse(final VolleyError error) {
                 Log.d("VolleyRestRequest", "onError");
-                requestListener.onError(error);
+                requestListener.onError(new VolleyRequestError(error));
             }
         };
     }
 
     public boolean hasQueryParams() {
-        return (mParams != null && mParams.getSize() > 0);
+        return mParams != null && mParams.hasValues();
     }
 
     /**
@@ -181,27 +199,27 @@ public abstract class RestRequest<T_Response> {
      * @param key   The name of the parameter to be added as a {@link String}.
      * @param value The value of the parameter.
      */
-    public RestRequest addParam(final String key, final String value) {
+    public Request addParam(final String key, final String value) {
         mParams.add(key, value);
         return this;
     }
 
-    public RestRequest addParam(final String key, final boolean value) {
+    public Request addParam(final String key, final boolean value) {
         mParams.add(key, Boolean.toString(value));
         return this;
     }
 
-    public RestRequest addParam(final String key, final float value) {
+    public Request addParam(final String key, final float value) {
         mParams.add(key, Float.toString(value));
         return this;
     }
 
-    public RestRequest addParam(final String key, final int value) {
+    public Request addParam(final String key, final int value) {
         mParams.add(key, Integer.toString(value));
         return this;
     }
 
-    public RestRequest addParam(final String key, final long value) {
+    public Request addParam(final String key, final long value) {
         mParams.add(key, Long.toString(value));
         return this;
     }
@@ -212,33 +230,33 @@ public abstract class RestRequest<T_Response> {
      * @param key   The name of the parameter to be added as a {@link String}.
      * @param value The value of the parameter.
      */
-    public RestRequest addPathParam(final String key, final String value) {
+    public Request addPathParam(final String key, final String value) {
         mPathParams.add(key, value);
         return this;
     }
 
-    public RestRequest addPathParam(final String key, final boolean value) {
+    public Request addPathParam(final String key, final boolean value) {
         mPathParams.add(key, Boolean.toString(value));
         return this;
     }
 
-    public RestRequest addPathParam(final String key, final float value) {
+    public Request addPathParam(final String key, final float value) {
         mPathParams.add(key, Float.toString(value));
         return this;
     }
 
-    public RestRequest addPathParam(final String key, final int value) {
+    public Request addPathParam(final String key, final int value) {
         mPathParams.add(key, Integer.toString(value));
         return this;
     }
 
-    public RestRequest addPathParam(final String key, final long value) {
+    public Request addPathParam(final String key, final long value) {
         mPathParams.add(key, Long.toString(value));
         return this;
     }
 
 
-    public RestRequest addHeader(final String field, final String value) {
+    public Request addHeader(final String field, final String value) {
         mHeaders.add(field, value);
         return this;
     }
@@ -270,18 +288,27 @@ public abstract class RestRequest<T_Response> {
     }
 
     public boolean isDelete() {
-        return (mMethod == HttpMethod.DELETE);
+        return (mMethod.isDelete());
     }
 
     public boolean isGet() {
-        return (mMethod == HttpMethod.GET);
+        return (mMethod.isGet());
     }
 
     public boolean isPost() {
-        return (mMethod == HttpMethod.POST);
+        return (mMethod.isPost());
     }
 
     public boolean isPut() {
-        return (mMethod == HttpMethod.PUT);
+        return (mMethod.isPut());
+    }
+
+    /**
+     * Executes this {@link Request} using the given {@link RequestManager}.
+     * @param requestManager A {@link RequestManager}.
+     */
+    public void execute(final RequestManager requestManager) {
+        prepareForExecution();
+        requestManager.execute(this);
     }
 }

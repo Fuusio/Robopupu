@@ -46,6 +46,22 @@ public enum HttpMethod {
         return mName;
     }
 
+    public boolean isDelete() {
+        return (this == HttpMethod.DELETE);
+    }
+
+    public boolean isGet() {
+        return (this == HttpMethod.GET);
+    }
+
+    public boolean isPost() {
+        return (this == HttpMethod.POST);
+    }
+
+    public boolean isPut() {
+        return (this == HttpMethod.PUT);
+    }
+
     public final String toString() {
         return mName;
     }

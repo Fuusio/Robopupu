@@ -17,8 +17,6 @@ package com.robopupu.feature.about.presenter;
 
 import android.webkit.WebView;
 
-import com.robopupu.R;
-import com.robopupu.component.AppManager;
 import com.robopupu.feature.about.view.LicensesInfoView;
 
 import org.fuusio.api.dependency.Provides;
@@ -52,9 +50,8 @@ public class LicensesInfoPresenterImpl extends AbstractFeaturePresenter<Licenses
     }
 
     @Override
-    public void onViewStart(final View view) {
-        super.onViewStart(view);
-
+    public void onViewResume(final View view) {
+        super.onViewResume(view);
         mLicensesFileUrl = getParams().getString(KEY_PARAM_LICENSE_URL);
         mView.loadUrl(mLicensesFileUrl);
     }

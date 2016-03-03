@@ -19,7 +19,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 
 import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.RetryPolicy;
 import com.android.volley.toolbox.ImageLoader;
@@ -29,15 +28,15 @@ import org.fuusio.api.component.AbstractManager;
 import org.fuusio.api.dependency.D;
 import org.fuusio.api.graphics.BitmapManager;
 import org.fuusio.api.network.RequestManager;
-import org.fuusio.api.network.RestRequest;
-import org.fuusio.api.plugin.Plugin;
+import org.fuusio.api.network.Request;
+import org.fuusio.api.plugin.PluginBus;
 
 /**
  * {@link VolleyRequestManager} provides an abstract base class for implementing
- * a {@link RequestManager}.
+ * a {@link RequestManager} that utilises Google's Volley networking library.
  */
-@Plugin
-public class VolleyRequestManager extends AbstractManager implements RequestManager {
+public abstract class VolleyRequestManager extends AbstractManager
+        implements RequestManager {
 
     private static final int DEFAULT_REQUEST_TIMEOUT = 5000; // milliseconds
 
@@ -46,6 +45,12 @@ public class VolleyRequestManager extends AbstractManager implements RequestMana
     private RequestQueue mRequestQueue;
 
     public VolleyRequestManager() {
+    }
+
+    @Override
+    public void onPlugged(final PluginBus bus) {
+        super.onPlugged(bus);
+        mBitmapManager = D.get(BitmapManager.class);
         mImageLoader = createImageLoader();
         mRequestQueue = Volley.newRequestQueue(D.get(Context.class), createUrlStack());
     }
@@ -55,8 +60,6 @@ public class VolleyRequestManager extends AbstractManager implements RequestMana
     }
 
     protected ImageLoader.ImageCache createImageCache() {
-
-        mBitmapManager = D.get(BitmapManager.class);
 
         return new ImageLoader.ImageCache() {
             @Override
@@ -92,14 +95,12 @@ public class VolleyRequestManager extends AbstractManager implements RequestMana
     }
 
     /**
-     * Executes the given {@link RestRequest} by constructing it and by adding it to the request queue.
+     * Executes the given {@link Request} by adding it to the request queue.
      *
-     * @param request A {@link RestRequest}.
+     * @param request A {@link Request}.
      */
     @Override
-    public void execute(final RestRequest request) {
-        request.constructVolleyRequest();
-
+    public void execute(final Request request) {
         final VolleyRequest volleyRequest = request.getPeerRequest();
         volleyRequest.setRetryPolicy(createRetryPolicy());
         getRequestQueue().add(volleyRequest);
@@ -121,7 +122,7 @@ public class VolleyRequestManager extends AbstractManager implements RequestMana
     public void cancelAllRequests() {
         mRequestQueue.cancelAll(new RequestQueue.RequestFilter() {
             @Override
-            public boolean apply(final Request<?> request) {
+            public boolean apply(final com.android.volley.Request request) {
                 return true;
             }
         });
