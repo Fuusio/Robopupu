@@ -60,7 +60,7 @@ public class PluginState {
      * Tests if the {@link LifecycleState} is started or resumed. In started state the method
      * {@link PluginStateComponent#start()} and possibly {@link PluginStateComponent#resume()}
      * have been invoked. Method {@link PluginState#getLifecycleState()} can be used to determinate
-     * exact lifecycle state.
+     * the exact lifecycle state.
      * @return A {@code boolean} value.
      */
     public boolean isStarted() {

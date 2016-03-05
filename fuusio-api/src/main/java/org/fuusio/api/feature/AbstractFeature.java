@@ -301,7 +301,7 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
     @Override
     @CallSuper
     public final void pause() {
-        if (isStopped() || isDestroyed()) {
+        if (isStopped()) {
             throw new IllegalStateException("A stopped or destroyed feature cannot be paused");
         }
         super.pause();
@@ -311,7 +311,7 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
     @Override
     @CallSuper
     public final void resume() {
-        if (isStopped() || isDestroyed()) {
+        if (isStopped()) {
             throw new IllegalStateException("A stopped or destroyed feature cannot be resumed");
         }
         super.resume();
@@ -322,7 +322,7 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
     @Override
     @CallSuper
     public final void stop() {
-        if (!isStopped() && !isDestroyed()) {
+        if (!isStopped()) {
             mFeatureManager.onFeatureStopped(this);
             super.stop();
         }

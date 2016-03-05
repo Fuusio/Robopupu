@@ -16,6 +16,8 @@
 package org.fuusio.api.mvp;
 
 import android.app.Activity;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
 
 import org.fuusio.api.util.LifecycleState;
 
@@ -44,34 +46,86 @@ public class ViewState {
         mInstanceStateSaved = saved;
     }
 
-    public boolean isActivityState() {
-        return (mView instanceof Activity);
+    /**
+     * Gets the current {@link LifecycleState} of this {@link PluginStateComponent}.
+     * @return A
+     */
+    public LifecycleState getLifecycleState() {
+        return mLifecycleState;
     }
 
+    /**
+     * Tests if the {@link LifecycleState} is dormant. In dormant state the {@link View}
+     * is instantiated, but not created i.e. method {@link Fragment#onCreate(Bundle)}/{@link Activity#onCreate(Bundle)}
+     * has not been invoked yet.
+     * @return A {@code boolean} value.
+     */
+    public boolean isDormant() {
+        return mLifecycleState.isDormant();
+    }
+
+    /**
+     * Tests if the {@link LifecycleState} is created. In created state the {@link View}
+     * method {@link Fragment#onCreate(Bundle)}/{@link Activity#onCreate(Bundle)} has been invoked.
+     * @return A {@code boolean} value.
+     */
     public boolean isCreated() {
         return mLifecycleState.isCreated();
     }
 
-    public boolean isPaused() {
-        return mLifecycleState.isPaused();
+    /**
+     * Tests if the {@link LifecycleState} is started or resumed. In started state the method
+     * {@link Fragment#onStart()}/{@link Activity#onStart()} and possibly {@link Fragment#onResume()}/{@link Activity#onResume()}
+     * have been invoked. Method {@link ViewState#getLifecycleState()} can be used to determinate
+     * the exact lifecycle state.
+     * @return A {@code boolean} value.
+     */
+    public boolean isStarted() {
+        return mLifecycleState.isStarted() || mLifecycleState.isResumed();
     }
 
-    public boolean isRestarted() {
-        return mRestarted;
-    }
-
+    /**
+     * Tests if the {@link LifecycleState} is resumed. In resumed state both the methods
+     * {@link Fragment#onStart()}/{@link Activity#onStart()} and {@link Fragment#onResume()}/{@link Activity#onResume()}
+     * have been invoked.
+     * @return A {@code boolean} value.
+     */
     public boolean isResumed() {
         return mLifecycleState.isResumed();
     }
 
-    public boolean isStarted() {
-        return mLifecycleState.isStarted();
+    /**
+     * Tests if the {@link LifecycleState} is paused. In paused state the method
+     * {@link Fragment#onPause()}/{@link Activity#onPause()} has been invoked.
+     * @return A {@code boolean} value.
+     */
+    public boolean isPaused() {
+        return mLifecycleState.isPaused();
     }
 
+    /**
+     * Tests if the {@link LifecycleState} is restarted. In restarted state the method
+     * {@link Activity#onRestart()} has been invoked.
+     * @return A {@code boolean} value.
+     */
+    public boolean isRestarted() {
+        return isStarted() && mRestarted;
+    }
+
+    /**
+     * Tests if the {@link LifecycleState} is stopped. In stopped state the method
+     * {@link Fragment#onStop()}/{@link Activity#onStop()} has been invoked.
+     * @return A {@code boolean} value.
+     */
     public boolean isStopped() {
-        return mLifecycleState.isStopped();
+        return mLifecycleState.isStopped() || mLifecycleState.isDestroyed();
     }
 
+    /**
+     * Tests if the {@link LifecycleState} is destroyed. In destroyed state the method
+     * {@link Fragment#onDestroy()}/{@link Activity#onDestroy()} has been invoked.
+     * @return A {@code boolean} value.
+     */
     public boolean isDestroyed() {
         return mLifecycleState.isDestroyed();
     }
