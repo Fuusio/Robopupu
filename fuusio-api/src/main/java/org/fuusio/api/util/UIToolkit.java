@@ -47,6 +47,7 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class UIToolkit {
@@ -133,6 +134,21 @@ public class UIToolkit {
             return 3;
         } else {
             return 2;
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <T extends View> void collectTaggedViewsOfType(final Class<T> type, final ViewGroup viewGroup, final List<T> taggedViews) {
+        final ArrayList<T> collectedViews = new ArrayList<>();
+        collectViewsOfType(type, viewGroup, collectedViews);
+        final int count = collectedViews.size();
+
+        for (int i = count - 1; i >= 0; i--) {
+            final View view = collectedViews.get(i);
+
+            if (view.getTag() != null) {
+                taggedViews.add((T)view);
+            }
         }
     }
 

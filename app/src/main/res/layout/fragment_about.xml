@@ -190,9 +190,8 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_marginLeft="@dimen/ft_about_value_column_margin"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:layout_marginRight="@dimen/ft_about_right_margin"
+                android:layout_alignParentRight="false"
+                android:layout_alignParentEnd="false"
                 style="@style/TextView_About_Text"
                 android:layout_toLeftOf="@+id/image_view_arrow_sources" />
 

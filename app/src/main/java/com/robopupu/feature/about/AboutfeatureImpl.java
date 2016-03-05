@@ -15,12 +15,9 @@
  */
 package com.robopupu.feature.about;
 
-import android.content.Intent;
-import android.net.Uri;
-
 import com.robopupu.R;
 import com.robopupu.app.RobopupuAppScope;
-import com.robopupu.component.AppManager;
+import com.robopupu.component.PlatformManager;
 import com.robopupu.feature.about.presenter.AboutPresenter;
 import com.robopupu.feature.about.presenter.AboutPresenterListener;
 import com.robopupu.feature.about.presenter.LicensesInfoPresenter;
@@ -36,7 +33,7 @@ import org.fuusio.api.util.Params;
 @Plugin
 public class AboutFeatureImpl extends AbstractFeature implements AboutFeature, AboutPresenterListener {
 
-    @Plug AppManager mAppManager;
+    @Plug PlatformManager mPlatformManager;
 
     @Scope(RobopupuAppScope.class)
     @Provides(AboutFeature.class)
@@ -51,22 +48,20 @@ public class AboutFeatureImpl extends AbstractFeature implements AboutFeature, A
 
     @Override
     public void onShowLicenseInfo() {
-        final Params params = new Params(LicensesInfoPresenter.KEY_PARAM_LICENSE_URL, mAppManager.getString(R.string.robopupu_license_file));
+        final Params params = new Params(LicensesInfoPresenter.KEY_PARAM_LICENSE_URL, mPlatformManager.getString(R.string.robopupu_license_file));
         showView(LicensesInfoPresenter.class, true, params);
     }
 
     @Override
     public void onShowOssLicensesInfo() {
-        final Params params = new Params(LicensesInfoPresenter.KEY_PARAM_LICENSE_URL, mAppManager.getString(R.string.oss_licenses_file));
+        final Params params = new Params(LicensesInfoPresenter.KEY_PARAM_LICENSE_URL, mPlatformManager.getString(R.string.oss_licenses_file));
         showView(LicensesInfoPresenter.class, true, params);
     }
 
     @Override
     public void onOpenSourcesWebPage() {
-        final String url = mAppManager.getString(R.string.ft_about_text_sources);
-        final Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse(url));
-        mAppManager.startActivity(intent);
+        final String url = mPlatformManager.getString(R.string.ft_about_text_sources);
+        mPlatformManager.openWebPage(url);
     }
 
     @Override
