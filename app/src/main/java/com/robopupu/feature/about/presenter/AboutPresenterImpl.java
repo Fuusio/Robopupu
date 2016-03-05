@@ -26,16 +26,13 @@ import org.fuusio.api.plugin.Plugin;
 import org.fuusio.api.plugin.PluginBus;
 
 @Plugin
+@Provides(AboutPresenter.class)
 public class AboutPresenterImpl extends AbstractFeaturePresenter<AboutView>
         implements AboutPresenter {
 
     @Plug AppManager mAppManager;
     @Plug AboutPresenterListener mListener;
     @Plug AboutView mView;
-
-    @Provides(AboutPresenter.class)
-    public AboutPresenterImpl() {
-    }
 
     @Override
     public AboutView getViewPlug() {

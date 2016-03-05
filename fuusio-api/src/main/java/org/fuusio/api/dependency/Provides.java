@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
  * injection. {@link Provides} annotation can have one annotation parameter of type {@link Class}
  * that declares the type of the provided dependency.
  */
-@Target({ElementType.CONSTRUCTOR, ElementType.METHOD})
+@Target({ElementType.CONSTRUCTOR, ElementType.METHOD, ElementType.TYPE})
 public @interface Provides {
     Class<?> value() default Object.class;
 }
