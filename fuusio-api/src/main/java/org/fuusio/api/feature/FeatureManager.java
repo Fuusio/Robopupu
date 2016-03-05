@@ -74,6 +74,14 @@ public interface FeatureManager extends Manager  {
     List<Feature> getActiveFeatures();
 
     /**
+     * Gets the currently paused {@link Feature}s.
+     *
+     * @return A {@link List} of {@link Feature}s.
+     */
+    @NonNull
+    List<Feature> getPausedFeatures();
+
+    /**
      * Gets all the {@link Feature}s that have {@link View}s in the foreground.
      *
      * @return A {@link List} of {@link Feature}s.
@@ -90,17 +98,6 @@ public interface FeatureManager extends Manager  {
      * @return A {@link Feature}.
      */
     Feature createFeature(Class<? extends Feature> featureClass);
-
-    /**
-     * Creates the specified {@link Feature}, but does not start it. If the feature is
-     * a {@link DependencyScopeOwner} its {@link DependencyScope} is added to cache of
-     * {@link DependencyScope}s.
-     *
-     * @param featureClass A {@link Feature}
-     * @param params A {@link Params} containing parameters for the started {@link Feature}.
-     * @return A {@link Feature}.
-     */
-    Feature createFeature(Class<? extends Feature> featureClass, Params params);
 
     /**
      * Creates and starts the specified {@link Feature} whose {@link FeatureFragment}s are hosted by

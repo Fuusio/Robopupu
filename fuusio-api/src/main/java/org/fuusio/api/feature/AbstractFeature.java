@@ -340,6 +340,11 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
     @CallSuper
     public final void destroy() {
         if (!isDestroyed()) {
+
+            if (!isStopped()) {
+                stop();
+            }
+
             super.destroy();
 
             Dependency.disposeScope(this);

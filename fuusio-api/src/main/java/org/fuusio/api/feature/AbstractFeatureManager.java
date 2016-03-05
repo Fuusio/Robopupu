@@ -18,6 +18,8 @@ package org.fuusio.api.feature;
 import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
+import android.support.annotation.CallSuper;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import org.fuusio.api.component.AbstractManager;
@@ -29,7 +31,6 @@ import org.fuusio.api.dependency.DependencyScopeOwner;
 import org.fuusio.api.mvp.View;
 import org.fuusio.api.util.Params;
 
-import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -123,6 +124,7 @@ public abstract class AbstractFeatureManager extends AbstractManager
     }
 
     @Override
+    @NonNull
     public List<Feature> getActiveFeatures() {
         final ArrayList<Feature> activeFeatures = new ArrayList<>();
         activeFeatures.addAll(mResumedFeatures);
@@ -130,6 +132,15 @@ public abstract class AbstractFeatureManager extends AbstractManager
     }
 
     @Override
+    @NonNull
+    public List<Feature> getPausedFeatures() {
+        final ArrayList<Feature> pausedFeatures = new ArrayList<>();
+        pausedFeatures.addAll(mPausedFeatures);
+        return pausedFeatures;
+    }
+
+    @Override
+    @NonNull
     public List<Feature> getForegroundFeatures() {
         final List<Feature> foregroundFeatures = new ArrayList<>();
 
@@ -142,43 +153,38 @@ public abstract class AbstractFeatureManager extends AbstractManager
         return foregroundFeatures;
     }
 
-    @Override
-    public Feature createFeature(final Class<? extends Feature> featureClass) {
-        return createFeature(featureClass, null);
-    }
-
     @SuppressWarnings("unchecked")
     @Override
-    public Feature createFeature(final Class<? extends Feature> featureClass, final Params params) {
+    public Feature createFeature(final Class<? extends Feature> featureClass) {
         Feature feature = getMockFeature(featureClass);
 
         if (feature == null) {
-            Class<? extends Feature> implClass = featureClass;
 
-            try {
-                if (featureClass.isInterface()) {
-                    implClass = (Class<? extends Feature>) Class.forName(featureClass.getName() + SUFFIX_IMPL);
-                }
+            // Feature implementations should be provided in application level DependencyScope so
+            // that implementation for it can be found via Dependency#get(Class) method.
+            feature = D.get(featureClass);
 
-                feature = implClass.newInstance();
-            } catch (Exception e) {
-                Log.d(TAG, "createFeature(Class, Params) : " + e.getMessage());
-            }
-
+            // If the implemenation is not provided in a DependencyScope we attempt to instantiate
+            // directly via reflection.
             if (feature == null) {
-                implClass = featureClass;
+                Class<? extends Feature> implClass = featureClass;
 
                 try {
                     if (featureClass.isInterface()) {
                         implClass = (Class<? extends Feature>) Class.forName(featureClass.getName() + SUFFIX_IMPL);
                     }
 
-                    final Class[] paramTypes = {Params.class};
-                    final Object[] paramValues = {params};
-                    final Constructor<? extends Feature> constructor = implClass.getConstructor(paramTypes);
-                    feature = constructor.newInstance(paramValues);
+                    feature = implClass.newInstance();
                 } catch (Exception e) {
-                    throw new RuntimeException("Failed to instantiate Feature: " + featureClass.getName() + ". Reason: " + e.getMessage());
+                    Log.d(TAG, "Failed to instantiate Feature: " + featureClass.getName() + ". Reason: " + e.getMessage());
+                }
+
+                if (feature == null) {
+                    try {
+                        feature = featureClass.newInstance();
+                    } catch (Exception e) {
+                        throw new RuntimeException("Failed to instantiate Feature: " + featureClass.getName() + ". Reason: " + e.getMessage());
+                    }
                 }
             }
         }
@@ -198,7 +204,7 @@ public abstract class AbstractFeatureManager extends AbstractManager
         Feature feature = getMockFeature(featureClass);
 
         if (feature == null) {
-            feature = createFeature(featureClass, params);
+            feature = createFeature(featureClass);
         }
         return startFeature(featureContainer, feature, params);
     }
@@ -244,9 +250,7 @@ public abstract class AbstractFeatureManager extends AbstractManager
 
         final List<Feature> foregroundFeatures = getForegroundFeatures();
 
-        for (int i = foregroundFeatures.size() - 1; i >= 0; i--) {
-            final Feature feature = foregroundFeatures.get(i);
-
+        for (final Feature feature : foregroundFeatures) {
             if (feature.hasFocusedView()) {
                 if (feature.isBackPressedEventHandler()) {
                     if (feature.canGoBack()) {
@@ -264,6 +268,7 @@ public abstract class AbstractFeatureManager extends AbstractManager
      *
      * @param feature A {@link Feature}. May not be {@code null}.
      */
+    @CallSuper
     public void onFeatureResumed(final Feature feature) {
         mPausedFeatures.remove(feature);
         mResumedFeatures.add(feature);
@@ -274,6 +279,7 @@ public abstract class AbstractFeatureManager extends AbstractManager
      *
      * @param feature A {@link Feature}. May not be {@code null}.
      */
+    @CallSuper
     public void onFeaturePaused(final Feature feature) {
         mPausedFeatures.add(feature);
         mResumedFeatures.remove(feature);
@@ -285,6 +291,7 @@ public abstract class AbstractFeatureManager extends AbstractManager
      *
      * @param feature A {@link Feature}. May not be {@code null}.
      */
+    @CallSuper
     public void onFeatureStopped(final Feature feature) {
         mPausedFeatures.remove(feature);
         mResumedFeatures.remove(feature);
@@ -296,9 +303,8 @@ public abstract class AbstractFeatureManager extends AbstractManager
      *
      * @param feature A {@link Feature}. May not be {@code null}.
      */
+    @CallSuper
     public void onFeatureDestroyed(final Feature feature) {
-        mPausedFeatures.remove(feature);
-        mResumedFeatures.remove(feature);
     }
 
     @Override

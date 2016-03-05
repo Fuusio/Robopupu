@@ -19,7 +19,9 @@ import android.support.test.runner.AndroidJUnit4;
 import android.support.v4.app.FragmentManager;
 import android.test.suitebuilder.annotation.SmallTest;
 
+import org.fuusio.api.dependency.D;
 import org.fuusio.api.dependency.Dependency;
+import org.fuusio.api.dependency.DependencyScope;
 import org.fuusio.api.util.Params;
 import org.junit.After;
 import org.junit.Before;
@@ -27,7 +29,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 
 @RunWith(AndroidJUnit4.class)
@@ -66,6 +73,17 @@ public class FeatureManagerTest {
         final TestFeature feature = (TestFeature)mFeatureManager.startFeature(mFragmentContainer, TestFeature.class, params);
 
         assertNotNull(feature);
+
+        final DependencyScope scope = feature.getOwnedScope();
+        assertNotNull(scope);
+        assertEquals(D.getActiveScope(), scope);
+
+        List<Feature> activeFeatures = mFeatureManager.getActiveFeatures();
+
+        assertFalse(activeFeatures.isEmpty());
+
+
+
     }
 
     private class TestFeatureManager extends AbstractFeatureManager {

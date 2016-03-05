@@ -25,11 +25,12 @@ import org.fuusio.api.feature.Feature;
 import org.fuusio.api.feature.FeatureContainer;
 import org.fuusio.api.plugin.Plugin;
 import org.fuusio.api.plugin.PluginBus;
+import org.fuusio.api.plugin.PluginComponent;
 import org.fuusio.api.util.Params;
 
 /**
  * {@link PluginFeatureManagerImpl} implements {@link PluginFeatureManager} as a plugin component
- * which is used for managing {@link Feature}s used as plugins.
+ * which is used for managing {@link Feature}s that are implemented as {@link PluginComponent}s.
  */
 @Plugin
 public class PluginFeatureManagerImpl extends AbstractFeatureManager
@@ -38,17 +39,6 @@ public class PluginFeatureManagerImpl extends AbstractFeatureManager
     @Scope(RobopupuAppScope.class)
     @Provides(PluginFeatureManager.class)
     public PluginFeatureManagerImpl() {
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public Feature createFeature(final Class<? extends Feature> featureClass, final Params params) {
-        Feature feature = D.get(featureClass);
-
-        if (feature == null) {
-            feature = super.createFeature(featureClass, params);
-        }
-        return feature;
     }
 
     @Override
