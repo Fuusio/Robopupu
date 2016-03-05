@@ -30,7 +30,7 @@ public class ClickBinding implements View.OnClickListener {
 
     private View[] mViews;
 
-    private ClickListener mClickListener;
+    private ViewBinding.ClickListener mClickListener;
 
     private ClickBinding() {
     }
@@ -75,11 +75,11 @@ public class ClickBinding implements View.OnClickListener {
         }
     }
 
-    public ClickListener getClickListener() {
+    public ViewBinding.ClickListener getClickListener() {
         return mClickListener;
     }
 
-    public void setClickListener(ClickListener listener) {
+    public void setClickListener(final ViewBinding.ClickListener listener) {
         mClickListener = listener;
     }
 
@@ -96,12 +96,6 @@ public class ClickBinding implements View.OnClickListener {
      */
     public final View[] getViews() {
         return mViews;
-    }
-
-    public final void setViewVisibility(final int visibility) {
-        for (final View view : mViews) {
-            view.setVisibility(visibility);
-        }
     }
 
     /**
@@ -125,9 +119,9 @@ public class ClickBinding implements View.OnClickListener {
     }
 
     @Override
-    public void onClick(final View view) {
+    public final void onClick(final View view) {
         if (mClickListener != null) {
-            mClickListener.onClicked(this);
+            mClickListener.onClicked(view);
         }
         clicked();
     }
@@ -136,10 +130,5 @@ public class ClickBinding implements View.OnClickListener {
      * This method should be overridden for dispatching {@link View.OnClickListener} events.
      */
     protected void clicked() {
-    }
-
-    public interface ClickListener {
-
-        void onClicked(ClickBinding binding);
     }
 }

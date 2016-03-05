@@ -15,9 +15,23 @@
  */
 package org.fuusio.api.feature;
 
+import org.fuusio.api.util.Params;
+
 public class TestFeature extends AbstractFeature {
+
+    private String mBar;
 
     public TestFeature() {
         super(TestFeatureScope.class);
+    }
+
+    public String getBar() {
+        return mBar;
+    }
+
+    @Override
+    protected void onCreate(Params params) {
+        super.onCreate(params);
+        mBar = params.getString("foo");
     }
 }

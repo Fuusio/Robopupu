@@ -40,10 +40,10 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
 
     protected final ArrayList<View> mActiveViews;
 
-    protected boolean mActivityFeature;
     protected FeatureContainer mFeatureContainer;
     protected FeatureManager mFeatureManager;
     protected DependencyScope mFeatureScope;
+    protected boolean mIsActivityFeature;
     protected Class<? extends DependencyScope> mScopeClass;
 
     /**
@@ -64,7 +64,7 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
      */
     protected AbstractFeature(final Class<? extends DependencyScope> scopeClass, final boolean isActivityFeature) {
         mScopeClass = scopeClass;
-        mActivityFeature = isActivityFeature;
+        mIsActivityFeature = isActivityFeature;
         mActiveViews = new ArrayList<>();
     }
 
@@ -128,21 +128,17 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
 
     @Override
     public void setActivityFeature(boolean isActivityFeature) {
-        mActivityFeature = isActivityFeature;
+        mIsActivityFeature = isActivityFeature;
     }
 
     @Override
     public boolean isActivityFeature() {
-        return mActivityFeature;
+        return mIsActivityFeature;
     }
 
     @Override
     public boolean isActiveView(final View view) {
         return mActiveViews.contains(view);
-    }
-
-    protected final FeatureManager getFeatureManager() {
-        return mFeatureManager;
     }
 
     @Override
@@ -319,6 +315,7 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
             throw new IllegalStateException("A stopped or destroyed feature cannot be resumed");
         }
         super.resume();
+        Dependency.activateScope(this);
         mFeatureManager.onFeatureResumed(this);
     }
 

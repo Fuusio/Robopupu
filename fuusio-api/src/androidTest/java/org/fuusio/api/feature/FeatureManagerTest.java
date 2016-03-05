@@ -62,7 +62,6 @@ public class FeatureManagerTest {
         when(mFragmentContainer.getSupportFragmentManager()).thenReturn(mFragmentManager);
         assertNotNull(mFeatureManager);
 
-
         final Params params = new Params("Foo", "Bar");
         final TestFeature feature = (TestFeature)mFeatureManager.startFeature(mFragmentContainer, TestFeature.class, params);
 

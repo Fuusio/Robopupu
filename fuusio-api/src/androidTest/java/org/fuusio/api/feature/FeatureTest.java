@@ -30,6 +30,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.when;
@@ -41,7 +42,7 @@ public class FeatureTest {
     private FooApp mFooApp;
     private Context mApplicationContext;
     private FeatureContainer mFeatureContainer;
-    private FeatureManager mFeatureManager;
+    private TestFeatureManager mFeatureManager;
     private FragmentManager mFragmentManager;
     private TestFeature mTestFeature;
     private TestView mTestView;
@@ -67,10 +68,28 @@ public class FeatureTest {
 
         mTestFeature = (TestFeature)mFeatureManager.startFeature(mFeatureContainer, TestFeature.class, params);
         assertNotNull(mTestFeature);
+        assertTrue(mTestFeature.isStarted());
+        assertNotNull(mTestFeature.getBar());
 
         final DependencyScope scope = mTestFeature.getOwnedScope();
         assertNotNull(scope);
         assertEquals(D.getActiveScope(), scope);
+
+        mTestFeature.pause();
+        assertTrue(mTestFeature.isPaused());
+        assertTrue(mFeatureManager.mFeaturePaused);
+
+        mTestFeature.resume();
+        assertTrue(mTestFeature.isResumed());
+        assertTrue(mFeatureManager.mFeatureResumed);
+
+        mTestFeature.finish();
+        assertTrue(mTestFeature.isStopped());
+        assertTrue(mFeatureManager.mFeatureStopped);
+
+        mTestFeature.destroy();
+        assertTrue(mTestFeature.isDestroyed());
+        assertTrue(mFeatureManager.mFeatureDestroyed);
     }
 
     @After
@@ -79,6 +98,29 @@ public class FeatureTest {
 
     private class TestFeatureManager extends AbstractFeatureManager {
 
+        protected boolean mFeaturePaused = false;
+        protected boolean mFeatureResumed = false;
+        protected boolean mFeatureStopped = false;
+        protected boolean mFeatureDestroyed = false;
 
+        @Override
+        public void onFeatureResumed(Feature feature) {
+            mFeatureResumed = true;
+        }
+
+        @Override
+        public void onFeaturePaused(Feature feature) {
+            mFeaturePaused = true;
+        }
+
+        @Override
+        public void onFeatureStopped(Feature feature) {
+            mFeatureStopped = true;
+        }
+
+        @Override
+        public void onFeatureDestroyed(Feature feature) {
+            mFeatureDestroyed = true;
+        }
     }
 }

@@ -15,7 +15,10 @@
  */
 package org.fuusio.api.util;
 
-public class ByteToolkit {
+public final class ByteToolkit {
+
+    private ByteToolkit() {
+    }
 
     public static byte[] concatenate(final byte[]... byteArrays) {
         int length = 0;

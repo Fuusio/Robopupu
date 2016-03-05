@@ -17,10 +17,12 @@ package org.fuusio.api.feature;
 
 import android.app.Activity;
 import android.app.Application;
+import android.support.annotation.NonNull;
 
 import org.fuusio.api.component.Manager;
 import org.fuusio.api.dependency.DependencyScope;
 import org.fuusio.api.dependency.DependencyScopeOwner;
+import org.fuusio.api.mvp.View;
 import org.fuusio.api.util.Params;
 
 import java.util.List;
@@ -68,8 +70,15 @@ public interface FeatureManager extends Manager  {
      *
      * @return A {@link List} of {@link Feature}s.
      */
+    @NonNull
     List<Feature> getActiveFeatures();
 
+    /**
+     * Gets all the {@link Feature}s that have {@link View}s in the foreground.
+     *
+     * @return A {@link List} of {@link Feature}s.
+     */
+    @NonNull
     List<Feature> getForegroundFeatures();
 
     /**
@@ -148,6 +157,7 @@ public interface FeatureManager extends Manager  {
      * @param feature A {@link Feature}. May not be {@code null}.
      */
     void onFeatureResumed(Feature feature);
+
     /**
      * Invoked by a {@link Feature#pause()} when the {@link Feature}} has been paused.
      *

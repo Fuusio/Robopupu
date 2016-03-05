@@ -20,6 +20,7 @@ public final class ObjectToolkit {
     private ObjectToolkit() {
     }
 
+    @SuppressWarnings("unchecked")
     public static <T> Class<T> getClass(final Object object) {
         return (Class<T>) object.getClass();
     }

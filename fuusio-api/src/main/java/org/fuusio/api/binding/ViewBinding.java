@@ -145,7 +145,7 @@ public abstract class ViewBinding<T_View extends View> implements View.OnClickLi
     @Override
     public void onClick(final View view) {
         if (mClickListener != null) {
-            mClickListener.onClicked(this);
+            mClickListener.onClicked(view);
         }
         clicked();
     }
@@ -179,6 +179,6 @@ public abstract class ViewBinding<T_View extends View> implements View.OnClickLi
 
     public interface ClickListener {
 
-        void onClicked(ViewBinding binding);
+        void onClicked(View view);
     }
 }

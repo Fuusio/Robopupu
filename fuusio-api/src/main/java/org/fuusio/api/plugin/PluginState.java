@@ -18,7 +18,7 @@ package org.fuusio.api.plugin;
 import org.fuusio.api.util.LifecycleState;
 
 /**
- * {@link PluginState} represents the current state of a {@link PluginComponent}.
+ * {@link PluginState} represents the current state of a {@link PluginStateComponent}.
  */
 public class PluginState {
 
@@ -30,34 +30,87 @@ public class PluginState {
         mRestarted = false;
     }
 
+    /**
+     * Gets the current {@link LifecycleState} of this {@link PluginStateComponent}.
+     * @return A
+     */
+    public LifecycleState getLifecycleState() {
+        return mLifecycleState;
+    }
+
+    /**
+     * Tests if the {@link LifecycleState} is dormant. In dormant state the {@link PluginStateComponent}
+     * is instantiated, but not initialised.
+     * @return A {@code boolean} value.
+     */
     public boolean isDormant() {
         return mLifecycleState.isDormant();
     }
 
+    /**
+     * Tests if the {@link LifecycleState} is created. In created state the {@link PluginStateComponent}
+     * is initialised and is ready to be started.
+     * @return A {@code boolean} value.
+     */
     public boolean isCreated() {
         return mLifecycleState.isCreated();
     }
 
-    public boolean isPaused() {
-        return mLifecycleState.isPaused();
+    /**
+     * Tests if the {@link LifecycleState} is started or resumed. In started state the method
+     * {@link PluginStateComponent#start()} and possibly {@link PluginStateComponent#resume()}
+     * have been invoked. Method {@link PluginState#getLifecycleState()} can be used to determinate
+     * exact lifecycle state.
+     * @return A {@code boolean} value.
+     */
+    public boolean isStarted() {
+        return mLifecycleState.isStarted() || mLifecycleState.isResumed();
     }
 
-    public boolean isRestarted() {
-        return mRestarted;
-    }
-
+    /**
+     * Tests if the {@link LifecycleState} is resumed. In resumed state both the methods
+     * {@link PluginStateComponent#start()} and {@link PluginStateComponent#resume()}
+     * have been invoked.
+     * @return A {@code boolean} value.
+     */
     public boolean isResumed() {
         return mLifecycleState.isResumed();
     }
 
-    public boolean isStarted() {
-        return mLifecycleState.isStarted();
+    /**
+     * Tests if the {@link LifecycleState} is paused. In paused state the method
+     * {@link PluginStateComponent#pause()} has been invoked.
+     * @return A {@code boolean} value.
+     */
+    public boolean isPaused() {
+        return mLifecycleState.isPaused();
     }
 
+    /**
+     * Tests if the {@link LifecycleState} is restarted. In restarted state the method
+     * {@link PluginStateComponent#start()} and possibly {@link PluginStateComponent#resume()}
+     * have been invoked.
+     * @return A {@code boolean} value.
+     */
+    public boolean isRestarted() {
+        return isStarted() && mRestarted;
+    }
+
+    /**
+     * Tests if the {@link LifecycleState} is stopped. In stopped state the method
+     * {@link PluginStateComponent#stop()} and possibly {@link PluginStateComponent#destroy()}
+     * have been invoked.
+     * @return A {@code boolean} value.
+     */
     public boolean isStopped() {
-        return mLifecycleState.isStopped();
+        return mLifecycleState.isStopped() || mLifecycleState.isDestroyed();
     }
 
+    /**
+     * Tests if the {@link LifecycleState} is destroyed. In destroyed state the method
+     * {@link PluginStateComponent#destroy()} has been invoked.
+     * @return A {@code boolean} value.
+     */
     public boolean isDestroyed() {
         return mLifecycleState.isDestroyed();
     }

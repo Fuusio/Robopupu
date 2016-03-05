@@ -15,6 +15,7 @@
  */
 package org.fuusio.api.plugin;
 
+import org.fuusio.api.util.LifecycleState;
 import org.fuusio.api.util.Params;
 
 /**
@@ -24,7 +25,13 @@ import org.fuusio.api.util.Params;
 public interface PluginStateComponent extends PluginComponent {
 
     /**
-     * Return the current state of this {@link PluginStateComponent}.
+     * Gets the current {@link LifecycleState} of this {@link PluginStateComponent}.
+     * @return A {@link LifecycleState}.
+     */
+    LifecycleState getLifecycleState();
+
+    /**
+     * Gets the current state of this {@link PluginStateComponent}.
      * @return The state as a {@link PluginState}.
      */
     PluginState getState();

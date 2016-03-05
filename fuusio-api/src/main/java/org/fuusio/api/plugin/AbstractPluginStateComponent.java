@@ -15,6 +15,7 @@
  */
 package org.fuusio.api.plugin;
 
+import org.fuusio.api.util.LifecycleState;
 import org.fuusio.api.util.Params;
 
 /**
@@ -30,6 +31,11 @@ public class AbstractPluginStateComponent extends AbstractPluginComponent
 
     protected AbstractPluginStateComponent() {
         mState = new PluginState();
+    }
+
+    @Override
+    public LifecycleState getLifecycleState() {
+        return mState.getLifecycleState();
     }
 
     /**

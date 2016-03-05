@@ -32,6 +32,7 @@ import org.fuusio.api.util.Params;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -45,7 +46,8 @@ public abstract class AbstractFeatureManager extends AbstractManager
 
     private static DependencyScopeOwner sMockScopeOwner = null;
 
-    private final ArrayList<Feature> mActiveFeatures;
+    private final HashSet<Feature> mPausedFeatures;
+    private final HashSet<Feature> mResumedFeatures;
     private final DependenciesCache mDependenciesCache;
     private final HashMap<Class<? extends FeatureContainer>, Feature> mFeatureContainers;
 
@@ -54,7 +56,8 @@ public abstract class AbstractFeatureManager extends AbstractManager
     private Activity mLastStoppedActivity;
 
     public AbstractFeatureManager() {
-        mActiveFeatures = new ArrayList<>();
+        mPausedFeatures = new HashSet<>();
+        mResumedFeatures = new HashSet<>();
         mDependenciesCache = D.get(DependenciesCache.class);
         mFeatureContainers = new HashMap<>();
     }
@@ -121,15 +124,16 @@ public abstract class AbstractFeatureManager extends AbstractManager
 
     @Override
     public List<Feature> getActiveFeatures() {
-        return mActiveFeatures;
+        final ArrayList<Feature> activeFeatures = new ArrayList<>();
+        activeFeatures.addAll(mResumedFeatures);
+        return activeFeatures;
     }
 
     @Override
     public List<Feature> getForegroundFeatures() {
         final List<Feature> foregroundFeatures = new ArrayList<>();
 
-        for (int i = mActiveFeatures.size() - 1; i >= 0; i--) {
-            final Feature feature = mActiveFeatures.get(i);
+        for (final Feature feature : mResumedFeatures) {
 
             if (feature.hasForegroundView()) {
                 foregroundFeatures.add(feature);
@@ -222,7 +226,8 @@ public abstract class AbstractFeatureManager extends AbstractManager
         feature.setFeatureManager(this);
         feature.setFeatureContainer(featureContainer);
         feature.start(params);
-        mActiveFeatures.add(feature);
+        mResumedFeatures.add(feature);
+        mPausedFeatures.remove(feature);
 
         if (feature instanceof DependencyScopeOwner) {
             Dependency.activateScope((DependencyScopeOwner)feature);
@@ -260,7 +265,8 @@ public abstract class AbstractFeatureManager extends AbstractManager
      * @param feature A {@link Feature}. May not be {@code null}.
      */
     public void onFeatureResumed(final Feature feature) {
-        mActiveFeatures.add(feature);
+        mPausedFeatures.remove(feature);
+        mResumedFeatures.add(feature);
     }
 
     /**
@@ -269,7 +275,8 @@ public abstract class AbstractFeatureManager extends AbstractManager
      * @param feature A {@link Feature}. May not be {@code null}.
      */
     public void onFeaturePaused(final Feature feature) {
-        mActiveFeatures.remove(feature);
+        mPausedFeatures.add(feature);
+        mResumedFeatures.remove(feature);
     }
 
 
@@ -279,7 +286,8 @@ public abstract class AbstractFeatureManager extends AbstractManager
      * @param feature A {@link Feature}. May not be {@code null}.
      */
     public void onFeatureStopped(final Feature feature) {
-        mActiveFeatures.remove(feature);
+        mPausedFeatures.remove(feature);
+        mResumedFeatures.remove(feature);
     }
 
 
@@ -289,7 +297,8 @@ public abstract class AbstractFeatureManager extends AbstractManager
      * @param feature A {@link Feature}. May not be {@code null}.
      */
     public void onFeatureDestroyed(final Feature feature) {
-        mActiveFeatures.remove(feature);
+        mPausedFeatures.remove(feature);
+        mResumedFeatures.remove(feature);
     }
 
     @Override
