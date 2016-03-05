@@ -1,7 +1,5 @@
 package org.fuusio.api.util;
 
-import android.os.Bundle;
-
 import java.util.HashMap;
 
 /**
@@ -12,14 +10,11 @@ public class Params extends HashMap<String, Object> {
     public Params() {
     }
 
-    public Params(final Bundle bundle) {
-        if (bundle != null) {
-            for (final String key : bundle.keySet()) {
-                put(key, bundle.get(key));
-            }
-        }
-    }
-
+    /**
+     * Constructs an instance of {@link Params} with the given key and value.
+     * @param key The as a {@link String}.
+     * @param value The value as an {@link Object}.
+     */
     public Params(final String key, final Object value) {
         put(key, value);
     }
@@ -85,16 +80,6 @@ public class Params extends HashMap<String, Object> {
     }
 
     /**
-     * Create an instance of {@link Params} from the given {@link Bundle}.
-     * @param bundle A {@link Bundle}. May be {@code null}.
-     * @return The created instance of {@link Params} if {@code bundle} was not null; otherwise
-     * {@code null}.
-     */
-    public static Params from(final Bundle bundle) {
-        return new Params(bundle);
-    }
-
-    /**
      * Merges the given array of {@link Params} to single instance of {@link Params}.
      * @param params An array of {@link Params}. May be {@code null}.
      * @return A {@link Params}. May return {@code null}.
@@ -115,7 +100,6 @@ public class Params extends HashMap<String, Object> {
                 return mergedParams;
             }
         }
-
         return null;
     }
 }

@@ -15,9 +15,8 @@
  */
 package org.fuusio.api.mvp;
 
-import android.os.Bundle;
-
 import org.fuusio.api.dependency.DependencyMap;
+import org.fuusio.api.util.Params;
 
 /**
  * {@link View} is the interface to be implemented by View components of a MVP
@@ -62,13 +61,12 @@ public interface View {
     interface Listener {
 
         /**
-         * Invoked by a {@link View} implementation when it is created,
-         * e.g. on {@link ViewFragment#onViewCreated(android.view.View, Bundle)}.
+         * Invoked by a {@link View} implementation when it is created-
          *
          * @param view    A {@link View}
-         * @param inState {@lin Bundle} containing the initial state.
+         * @param inState {@lin Params} containing the initial state.
          */
-        void onViewCreated(View view, Bundle inState);
+        void onViewCreated(View view, Params inState);
 
         /**
          * Invoked by a {@link View} implementation when it is resumed,

@@ -15,10 +15,6 @@
  */
 package org.fuusio.api.mvp;
 
-import android.os.Bundle;
-import android.support.annotation.CallSuper;
-import android.support.annotation.NonNull;
-
 import org.fuusio.api.dependency.D;
 import org.fuusio.api.dependency.DependencyScope;
 import org.fuusio.api.dependency.Scopeable;
@@ -90,7 +86,6 @@ public abstract class AbstractPresenter<T_View extends View> extends AbstractPlu
      * Gets the {@link ViewState} of the attached {@link View}.
      * @return A {@link ViewState}.
      */
-    @NonNull
     protected ViewState getViewState() {
         return getAttachedView().getState();
     }
@@ -212,19 +207,19 @@ public abstract class AbstractPresenter<T_View extends View> extends AbstractPlu
     }
 
     @Override
-    @CallSuper
+    //@CallSuper
     public void onPlugged(final PluginBus bus) {
         updateListeners(bus);
     }
 
     @Override
-    @CallSuper
+    //@CallSuper
     public void onUnplugged(final PluginBus bus) {
         mListeners.clear();
     }
 
     @Override
-    @CallSuper
+    //@CallSuper
     public void onPluginPlugged(final Object plugin) {
         if (plugin instanceof PresenterListener) {
             updateListeners(PluginBus.getInstance());
@@ -239,39 +234,39 @@ public abstract class AbstractPresenter<T_View extends View> extends AbstractPlu
 
     @SuppressWarnings("unchecked")
     @Override
-    @CallSuper
-    public void onViewCreated(final View view, final Bundle inState) {
+    //@CallSuper
+    public void onViewCreated(final View view, final Params inState) {
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    @CallSuper
+    //@CallSuper
     public void onViewResume(final View view) {
         resume();
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    @CallSuper
+    //@CallSuper
     public void onViewStart(final View view) {
         start();
     }
 
     @Override
-    @CallSuper
+    //@CallSuper
     public void onViewPause(final View view) {
         pause();
     }
 
 
     @Override
-    @CallSuper
+    //@CallSuper
     public void onViewStop(final View view) {
         stop();
     }
 
     @Override
-    @CallSuper
+    //@CallSuper
     public void onViewDestroy(final View view) {
         destroy();
     }

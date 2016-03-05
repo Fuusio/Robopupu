@@ -15,23 +15,13 @@
  */
 package org.fuusio.api.plugin;
 
-import android.os.Handler;
-import android.os.Looper;
-
 /**
  * {@link HandlerInvoker} provides an abstract base class for implementing an invocation delegate
- * that uses a {@link Handler} for synchronising the invocation to main thread.
+ * that uses a {@link android.os.Handler} for synchronising the invocation to main thread.
  */
 public abstract class HandlerInvoker<T> {
 
-    protected final Handler mHandler;
-
     protected T mPlugin;
-
-    @SuppressWarnings("unchecked")
-    protected HandlerInvoker() {
-        mHandler = new Handler(Looper.getMainLooper());
-    }
 
     public void setPlugin(final T plugin) {
         mPlugin = plugin;

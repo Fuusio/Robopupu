@@ -20,6 +20,7 @@ import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.AdapterView;
 
 import org.fuusio.api.binding.AdapterViewBinding;
@@ -32,6 +33,7 @@ import org.fuusio.api.dependency.DependencyScope;
 import org.fuusio.api.dependency.DependencyScopeOwner;
 import org.fuusio.api.dependency.Scopeable;
 import org.fuusio.api.plugin.PluginBus;
+import org.fuusio.api.util.Converter;
 import org.fuusio.api.util.PermissionRequestManager;
 
 /**
@@ -43,6 +45,8 @@ import org.fuusio.api.util.PermissionRequestManager;
  */
 public abstract class ViewActivity<T_Presenter extends Presenter> extends AppCompatActivity
         implements View, Scopeable {
+
+    private static String TAG = ViewDialogFragment.class.getSimpleName();
 
     protected final ViewBinder mBinder;
     protected final ViewState mState;
@@ -89,6 +93,18 @@ public abstract class ViewActivity<T_Presenter extends Presenter> extends AppCom
     @Override
     public String getDependenciesKey() {
         return getClass().getName();
+    }
+
+    @Override
+    protected void onCreate(final Bundle inState) {
+        super.onCreate(inState);
+
+        final T_Presenter presenter = resolvePresenter();
+        if (presenter != null) {
+            presenter.onViewCreated(this, Converter.fromBundleToParams(inState));
+        } else {
+            Log.d(TAG, "onViewCreated(...) : Presenter == null");
+        }
     }
 
     @Override
@@ -271,7 +287,7 @@ public abstract class ViewActivity<T_Presenter extends Presenter> extends AppCom
     }
 
     @Override
-    public void onRequestPermissionsResult(final int requestCode, final String[] permissions, final int[] grantResults) {
+    public void onRequestPermissionsResult(final int requestCode, @NonNull final String[] permissions, @NonNull final int[] grantResults) {
         final PermissionRequestManager manager = D.get(PermissionRequestManager.class);
         manager.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }

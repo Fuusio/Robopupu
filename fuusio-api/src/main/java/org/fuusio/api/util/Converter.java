@@ -3,8 +3,8 @@ package org.fuusio.api.util;
 import android.os.Bundle;
 
 /**
- * {@link Converter} is a utility class that can be used to convert an instance of
- * {@link Bundle} to instance of {@link Params}.
+ * {@link Converter} is a utility class that can be used to convert an instance of some
+ * {@link Class} to instance of an another {@link Class}.
  */
 public final class Converter {
 
@@ -14,7 +14,7 @@ public final class Converter {
      * @return The created instance of {@link Params} if {@code bundle} was not null; otherwise
      * {@code null}.
      */
-    public static Params toParams(final Bundle bundle) {
+    public static Params fromBundleToParams(final Bundle bundle) {
         final Params params = new Params();
 
         if (bundle != null) {

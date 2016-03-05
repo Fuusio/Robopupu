@@ -33,6 +33,7 @@ import org.fuusio.api.dependency.DependencyScope;
 import org.fuusio.api.dependency.DependencyScopeOwner;
 import org.fuusio.api.dependency.Scopeable;
 import org.fuusio.api.plugin.PluginBus;
+import org.fuusio.api.util.Converter;
 
 /**
  * {@link ViewFragment} provides an abstract base class for concrete {@link Fragment} implementations
@@ -113,7 +114,7 @@ public abstract class ViewFragment<T_Presenter extends Presenter> extends Fragme
 
         final T_Presenter presenter = resolvePresenter();
         if (presenter != null) {
-            presenter.onViewCreated(this, inState);
+            presenter.onViewCreated(this, Converter.fromBundleToParams(inState));
         } else {
             Log.d(TAG, "onViewCreated(...) : Presenter == null");
         }
