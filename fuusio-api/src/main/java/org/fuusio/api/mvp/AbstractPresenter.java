@@ -167,7 +167,7 @@ public abstract class AbstractPresenter<T_View extends View> extends AbstractPlu
             }
 
             if (PluginBus.isPlugged(this)) {
-                Log.d(TAG, "onDestroy() : Unplugged from PluginBus");
+                Log.d(TAG, "destroy() : Unplugged from PluginBus");
                 PluginBus.unplug(this);
             }
         }

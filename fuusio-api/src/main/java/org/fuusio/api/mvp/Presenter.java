@@ -20,9 +20,9 @@ import org.fuusio.api.util.Params;
 /**
  * {@link Presenter} is the interface to be implemented by Presenter components of a MVP
  * architectural pattern implementation. By default, a {@link Presenter} implementation is also
- * a listener for {@link View} lifecycle events via the {@link View.Listener} interface.
+ * a listener for {@link View} lifecycle events via the {@link ViewListener} interface.
  */
-public interface Presenter extends View.Listener {
+public interface Presenter extends ViewListener {
 
     /**
      * Gets the {@link View} attached to this {@link Presenter}.
