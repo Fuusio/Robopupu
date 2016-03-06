@@ -15,8 +15,6 @@
  */
 package com.robopupu.feature.main.presenter;
 
-import android.support.annotation.IdRes;
-
 import com.robopupu.R;
 import com.robopupu.api.feature.PluginFeatureManager;
 import com.robopupu.component.AppManager;
@@ -56,7 +54,7 @@ public class MainPresenterImpl extends AbstractPresenter<MainView>
     }
 
     @Override
-    public boolean onNavigationItemSelected(@IdRes final int itemId) {
+    public boolean onNavigationItemSelected(final int itemId) {
         boolean selectionHandled = true;
 
         final FeatureContainer container = mView.getMainFeatureContainer();

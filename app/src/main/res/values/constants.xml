@@ -3,5 +3,5 @@
 
     <string name="oss_licenses_file">file:///android_asset/html/oss_licenses.html</string>
     <string name="robopupu_license_file">file:///android_asset/html/robopupu_license.html</string>
-
+    <string name="robopupu_email_address">robopupu@gmail.com</string>
 </resources>

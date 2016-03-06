@@ -15,12 +15,9 @@
  */
 package com.robopupu.feature.feedback.presenter;
 
-import android.content.ActivityNotFoundException;
-import android.content.Intent;
-import android.net.Uri;
-
 import com.robopupu.R;
 import com.robopupu.component.AppManager;
+import com.robopupu.component.PlatformManager;
 import com.robopupu.feature.feedback.FeedbackFeature;
 import com.robopupu.feature.feedback.view.FeedbackView;
 
@@ -39,6 +36,7 @@ public class FeedbackPresenterImpl extends AbstractFeaturePresenter<FeedbackView
 
     @Plug AppManager mAppManager;
     @Plug FeedbackFeature mFeature;
+    @Plug PlatformManager mPlatformManager;
     @Plug FeedbackView mView;
 
     @Provides(FeedbackPresenter.class)
@@ -74,20 +72,11 @@ public class FeedbackPresenterImpl extends AbstractFeaturePresenter<FeedbackView
 
     @Override
     public void onSendClicked(final String feedback) {
-        final StringBuilder uri = new StringBuilder("mailto:");
-        uri.append(Uri.encode("robopupu@gmail.com"));
-        uri.append("?subject=");
-        uri.append(Uri.encode("ROBOPUPU feedback"));
-        uri.append("&body=");
-        uri.append(Uri.encode(feedback));
+        final String address = mAppManager.getString(R.string.robopupu_email_address);
+        final String subject = mAppManager.getString(R.string.ft_feedback_text_subject);
+        final String chooserTitle = mAppManager.getString(R.string.ft_feedback_prompt_send_email_using);
 
-        final Intent sendIntent = new Intent(android.content.Intent.ACTION_SENDTO);
-        sendIntent.setType("message/rfc822");
-        sendIntent.setData(Uri.parse(uri.toString()));
-
-        try {
-            mAppManager.startActivity(Intent.createChooser(sendIntent, mAppManager.getString(R.string.ft_feedback_prompt_send_email_using)));
-        } catch (ActivityNotFoundException e) {
+        if (!mPlatformManager.sendEmail(address, subject, feedback, chooserTitle)) {
             mView.showMessage(mAppManager.getString(R.string.ft_feedback_error_no_email_client));
         }
         mFeedbackSend = true;

@@ -33,14 +33,10 @@ import org.fuusio.api.plugin.Plugin;
  * A simple {@link Fragment} subclass.
  */
 @Plugin
+@Provides(ThxView.class)
 public class ThxFragment extends FeatureFragment<ThxPresenter> implements ThxView {
 
-    @Plug
-    ThxPresenter mPresenter;
-
-    @Provides(ThxView.class)
-    public ThxFragment() {
-    }
+    @Plug ThxPresenter mPresenter;
 
     @Override
     protected ThxPresenter getPresenter() {

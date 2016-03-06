@@ -15,6 +15,8 @@
  */
 package org.fuusio.api.mvp;
 
+import android.util.Log;
+
 import org.fuusio.api.dependency.D;
 import org.fuusio.api.dependency.DependencyScope;
 import org.fuusio.api.dependency.Scopeable;
@@ -34,6 +36,8 @@ import java.util.List;
  */
 public abstract class AbstractPresenter<T_View extends View> extends AbstractPluginComponent
         implements Presenter, Scopeable {
+
+    private static final String TAG = AbstractPresenter.class.getSimpleName();
 
     protected final List<PresenterListener> mListeners;
 
@@ -140,7 +144,7 @@ public abstract class AbstractPresenter<T_View extends View> extends AbstractPlu
      * Invoked to stop this {@link Presenter}.
      */
     private void stop() {
-        if (!mState.isStopped() && !mState.isDestroyed()) {
+        if (!mState.isStopped()) {
             mState = LifecycleState.STOPPED;
 
             for (final PresenterListener listener : getListeners()) {
@@ -160,6 +164,11 @@ public abstract class AbstractPresenter<T_View extends View> extends AbstractPlu
 
             for (final PresenterListener listener : getListeners()) {
                 listener.onPresenterDestroyed(this);
+            }
+
+            if (PluginBus.isPlugged(this)) {
+                Log.d(TAG, "onDestroy() : Unplugged from PluginBus");
+                PluginBus.unplug(this);
             }
         }
     }

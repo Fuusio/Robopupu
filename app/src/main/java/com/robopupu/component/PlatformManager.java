@@ -35,4 +35,14 @@ public interface PlatformManager extends Manager {
      * @param url A @link Context}.
      */
     void openWebPage(String url);
+
+    /**
+     * Sends the specified email.
+     * @param address The address of the receiver.
+     * @param subject The subject of the email.
+     * @param body The body of the email.
+     * @param chooserTitle The action parameter for the chooser showed selecting an email client.
+     * @return A {@code boolean} value indicating if an email client was found for sending the email.
+     */
+    boolean sendEmail(String address, String subject, String body, String chooserTitle);
 }

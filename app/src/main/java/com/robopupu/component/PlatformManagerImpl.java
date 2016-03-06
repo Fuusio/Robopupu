@@ -15,10 +15,12 @@
  */
 package com.robopupu.component;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.StringRes;
 
+import com.robopupu.R;
 import com.robopupu.app.RobopupuAppScope;
 
 import org.fuusio.api.component.AbstractManager;
@@ -49,5 +51,26 @@ public class PlatformManagerImpl extends AbstractManager implements PlatformMana
         final Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setData(Uri.parse(url));
         mAppManager.startActivity(intent);
+    }
+
+    @Override
+    public boolean sendEmail(final String address, final String subject, final String body, final String chooserTitle) {
+        final StringBuilder uri = new StringBuilder("mailto:");
+        uri.append(Uri.encode(address));
+        uri.append("?subject=");
+        uri.append(Uri.encode(subject));
+        uri.append("&body=");
+        uri.append(Uri.encode(body));
+
+        final Intent sendIntent = new Intent(android.content.Intent.ACTION_SENDTO);
+        sendIntent.setType("message/rfc822");
+        sendIntent.setData(Uri.parse(uri.toString()));
+
+        try {
+            mAppManager.startActivity(Intent.createChooser(sendIntent, chooserTitle));
+            return true;
+        } catch (ActivityNotFoundException e) {
+            return false;
+        }
     }
 }
