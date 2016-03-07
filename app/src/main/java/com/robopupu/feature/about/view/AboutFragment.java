@@ -25,7 +25,6 @@ import com.robopupu.app.view.CoordinatorLayoutFragment;
 import com.robopupu.feature.about.presenter.AboutPresenter;
 
 import org.fuusio.api.binding.Binding;
-import org.fuusio.api.binding.ClickBinding;
 import org.fuusio.api.dependency.Provides;
 import org.fuusio.api.plugin.Plug;
 import org.fuusio.api.plugin.Plugin;
@@ -60,25 +59,6 @@ public class AboutFragment extends CoordinatorLayoutFragment<AboutPresenter> imp
     @Override
     protected void createBindings() {
         super.createBindings();
-
-        new ClickBinding(this, R.id.text_view_label_oss_licenses, R.id.text_view_oss_licenses, R.id.image_view_arrow_oss_licenses) {
-            @Override protected void clicked() {
-                mPresenter.onViewOssLicensesClick();
-            }
-        };
-
-        new ClickBinding(this, R.id.text_view_label_license, R.id.text_view_license, R.id.image_view_arrow_license) {
-            @Override protected void clicked() {
-                mPresenter.onViewLicenseClick();
-            }
-        };
-
-        new ClickBinding(this, R.id.text_view_label_sources, R.id.text_view_sources, R.id.image_view_arrow_sources) {
-            @Override protected void clicked() {
-                mPresenter.onViewSourcesClick();
-            }
-        };
-
         mVersionTextBinding = bind(R.id.text_view_version);
     }
 

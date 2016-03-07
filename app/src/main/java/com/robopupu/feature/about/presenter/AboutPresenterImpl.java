@@ -34,12 +34,6 @@ import org.fuusio.api.plugin.PluginBus;
 public class AboutPresenterImpl extends AbstractFeaturePresenter<AboutView>
         implements AboutPresenter {
 
-    private final static String TAG = AboutPresenterImpl.class.getSimpleName();
-
-    private final static int TAG_VIEW_LICENSE = 1000;
-    private final static int TAG_VIEW_OSS_LICENSES = 1001;
-    private final static int TAG_VIEW_SOURCES = 1002;
-
     @Plug AppManager mAppManager;
     @Plug AboutPresenterListener mListener;
     @Plug AboutView mView;
