@@ -43,7 +43,7 @@ public class AboutFragment extends CoordinatorLayoutFragment<AboutPresenter> imp
     }
 
     @Override
-    protected AboutPresenter getPresenter() {
+    public AboutPresenter getPresenter() {
         return mPresenter;
     }
 
@@ -63,19 +63,19 @@ public class AboutFragment extends CoordinatorLayoutFragment<AboutPresenter> imp
 
         new ClickBinding(this, R.id.text_view_label_oss_licenses, R.id.text_view_oss_licenses, R.id.image_view_arrow_oss_licenses) {
             @Override protected void clicked() {
-                mPresenter.onViewOssLicensesTextClicked();
+                mPresenter.onViewOssLicensesClick();
             }
         };
 
         new ClickBinding(this, R.id.text_view_label_license, R.id.text_view_license, R.id.image_view_arrow_license) {
             @Override protected void clicked() {
-                mPresenter.onViewLicenseTextClicked();
+                mPresenter.onViewLicenseClick();
             }
         };
 
         new ClickBinding(this, R.id.text_view_label_sources, R.id.text_view_sources, R.id.image_view_arrow_sources) {
             @Override protected void clicked() {
-                mPresenter.onSourcesClicked();
+                mPresenter.onViewSourcesClick();
             }
         };
 

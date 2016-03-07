@@ -27,15 +27,12 @@ import org.fuusio.api.util.LifecycleState;
  */
 public class ViewState {
 
-    private final View mView;
-
     private boolean mInstanceStateSaved;
     private LifecycleState mLifecycleState;
     private boolean mMovedToBackground;
     private boolean mRestarted;
 
-    public ViewState(final View view) {
-        mView = view;
+    public ViewState() {
         mInstanceStateSaved = false;
         mLifecycleState = LifecycleState.DORMANT;
         mMovedToBackground = false;
@@ -47,8 +44,8 @@ public class ViewState {
     }
 
     /**
-     * Gets the current {@link LifecycleState} of this {@link PluginStateComponent}.
-     * @return A
+     * Gets the current {@link LifecycleState} of this {@link ViewState}.
+     * @return A {@link LifecycleState}.
      */
     public LifecycleState getLifecycleState() {
         return mLifecycleState;

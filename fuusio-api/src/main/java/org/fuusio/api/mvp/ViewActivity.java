@@ -17,6 +17,7 @@ package org.fuusio.api.mvp;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.annotation.CallSuper;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -44,7 +45,7 @@ import org.fuusio.api.util.PermissionRequestManager;
  * @param <T_Presenter> The type of the {@link Presenter}.
  */
 public abstract class ViewActivity<T_Presenter extends Presenter> extends AppCompatActivity
-        implements View, Scopeable {
+        implements View, PresenterDependant<T_Presenter>, Scopeable {
 
     private static String TAG = ViewDialogFragment.class.getSimpleName();
 
@@ -55,7 +56,7 @@ public abstract class ViewActivity<T_Presenter extends Presenter> extends AppCom
 
     protected ViewActivity() {
         mBinder = new ViewBinder(this);
-        mState = new ViewState(this);
+        mState = new ViewState();
     }
 
     /**
@@ -63,7 +64,8 @@ public abstract class ViewActivity<T_Presenter extends Presenter> extends AppCom
      *
      * @return A {@link Presenter}.
      */
-    protected abstract T_Presenter getPresenter();
+    @Override
+    public abstract T_Presenter getPresenter();
 
     @Override
     public String getViewTag() {
@@ -105,6 +107,8 @@ public abstract class ViewActivity<T_Presenter extends Presenter> extends AppCom
         } else {
             Log.d(TAG, "onViewCreated(...) : Presenter == null");
         }
+
+        mBinder.setActivity(this);
     }
 
     @Override
@@ -137,6 +141,7 @@ public abstract class ViewActivity<T_Presenter extends Presenter> extends AppCom
         final T_Presenter presenter = resolvePresenter();
         if (presenter != null) {
             presenter.onViewStart(this);
+            mBinder.initialise();
         }
     }
 
@@ -305,6 +310,7 @@ public abstract class ViewActivity<T_Presenter extends Presenter> extends AppCom
      * Invoked to bind {@link ViewBinding}s to {@link View}s. This method has to be overridden in
      * classes extended from {@link ViewFragment}.
      */
+    @CallSuper
     protected void createBindings() {
         // Do nothing by default
     }

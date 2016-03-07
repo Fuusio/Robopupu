@@ -42,7 +42,7 @@ public class SplashFragment extends FeatureFragment<SplashPresenter> implements 
     }
 
     @Override
-    protected SplashPresenter getPresenter() {
+    public SplashPresenter getPresenter() {
         return mPresenter;
     }
 

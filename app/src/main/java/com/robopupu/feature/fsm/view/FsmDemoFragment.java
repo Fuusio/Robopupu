@@ -95,7 +95,7 @@ public class FsmDemoFragment extends CoordinatorLayoutFragment<FsmDemoPresenter>
     }
 
     @Override
-    protected FsmDemoPresenter getPresenter() {
+    public FsmDemoPresenter getPresenter() {
         return mPresenter;
     }
 

@@ -289,4 +289,21 @@ public abstract class AbstractPresenter<T_View extends View> extends AbstractPlu
     public void setScope(final DependencyScope scope) {
         mScope = scope;
     }
+
+    /**
+     * The the {@link Presenter} interface class from the class of the given {@link Presenter}
+     * instance.
+     * @param presenter A {@link Presenter}.
+     * @return A {@link Class}. May return {@code null}.
+     */
+    @SuppressWarnings("unchecked")
+    public static Class<? extends Presenter> getInterfaceClass(final Presenter presenter) {
+        final Class<? extends Presenter> presenterClass = presenter.getClass();
+        for (final Class<?> interfaceClass : presenterClass.getInterfaces()) {
+            if (Presenter.class.isAssignableFrom(interfaceClass)) {
+                return (Class<? extends Presenter>)interfaceClass;
+            }
+        }
+        return null;
+    }
 }

@@ -18,6 +18,7 @@ package org.fuusio.api.mvp;
 import android.app.Activity;
 import android.app.Dialog;
 import android.os.Bundle;
+import android.support.annotation.CallSuper;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
@@ -46,7 +47,7 @@ import org.fuusio.api.util.Converter;
  * @param <T_Presenter> The type of the {@link Presenter}.
  */
 public abstract class ViewDialogFragment<T_Presenter extends Presenter> extends DialogFragment
-        implements View, Scopeable {
+        implements View, PresenterDependant<T_Presenter>, Scopeable {
 
     private static String TAG = ViewDialogFragment.class.getSimpleName();
 
@@ -58,8 +59,8 @@ public abstract class ViewDialogFragment<T_Presenter extends Presenter> extends 
     private DependencyScope mScope;
 
     protected ViewDialogFragment() {
-        mBinder = new ViewBinder();
-        mState = new ViewState(this);
+        mBinder = new ViewBinder(this);
+        mState = new ViewState();
     }
 
     @NonNull
@@ -82,7 +83,7 @@ public abstract class ViewDialogFragment<T_Presenter extends Presenter> extends 
      *
      * @return A {@link Presenter}.
      */
-    protected abstract T_Presenter getPresenter();
+    public abstract T_Presenter getPresenter();
 
     /**
      * Resolves the {@link Presenter} assigned for this {@link ViewActivity}.
@@ -182,6 +183,7 @@ public abstract class ViewDialogFragment<T_Presenter extends Presenter> extends 
         final T_Presenter presenter = resolvePresenter();
         if (presenter != null) {
             presenter.onViewStart(this);
+            mBinder.initialise();
         }
     }
 
@@ -197,6 +199,7 @@ public abstract class ViewDialogFragment<T_Presenter extends Presenter> extends 
      * Invoked to bind {@link ViewBinding}s to {@link View}s. This method has to be overridden in
      * classes extended from {@link ViewDialogFragment}.
      */
+    @CallSuper
     protected void createBindings() {
         // Do nothing by default
     }

@@ -44,6 +44,7 @@ public class FeedbackFragment extends CoordinatorLayoutFragment<FeedbackPresente
         super(R.string.ft_feedback_title);
     }
 
+    @Override
     public FeedbackPresenter getPresenter() {
         return mPresenter;
     }

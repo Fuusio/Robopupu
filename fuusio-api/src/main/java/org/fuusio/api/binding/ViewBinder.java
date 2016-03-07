@@ -23,8 +23,16 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.TextView;
 
+import org.fuusio.api.mvp.AbstractPresenter;
+import org.fuusio.api.mvp.EventsDelegateWrapper;
+import org.fuusio.api.mvp.PresenterDelegate;
 import org.fuusio.api.mvp.Presenter;
+import org.fuusio.api.mvp.PresenterDependant;
+import org.fuusio.api.util.UIToolkit;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -33,33 +41,107 @@ import java.util.HashMap;
  */
 public class ViewBinder {
 
+    private final static String SUFFIX_EVENTS_DELEGATE = "_EventsDelegate";
+
     private final HashMap<Integer, ViewBinding<?>> mBindingsCache;
+    private final PresenterDependant mView;
 
     private Activity mActivity;
     private ViewGroup mContentView;
+    private boolean mInitialised;
 
-    public ViewBinder() {
-        this((Activity)null);
+    public ViewBinder(final PresenterDependant view) {
+        mView = view;
+        mBindingsCache = new HashMap<>();
+        mInitialised = false;
     }
 
-    public ViewBinder(final Activity activity) {
-        mBindingsCache = new HashMap<>();
-        mActivity = activity;
-    }
-
-    public ViewBinder(final ViewGroup contentView) {
-        mBindingsCache = new HashMap<>();
-        mContentView = contentView;
+    protected PresenterDependant getPresenterDependant() {
+        return mView;
     }
 
     public void setActivity(@NonNull Activity activity) {
         mActivity = activity;
+
+        if (mActivity != null) {
+            final ViewGroup content = (ViewGroup) mActivity.findViewById(android.R.id.content);
+
+            if (content != null) {
+                final ViewGroup contentView = (ViewGroup) (content).getChildAt(0);
+
+                if (contentView != null) {
+                    mContentView = contentView;
+                } else {
+                    mContentView = contentView;
+                }
+            }
+        }
     }
 
     public void setContentView(@NonNull ViewGroup contentView) {
         mContentView = contentView;
     }
 
+    public void initialise() {
+        if (!mInitialised) {
+            mInitialised = true;
+            bindEventListenersForViews(mContentView);
+        }
+    }
+
+    private void bindEventListenersForViews(final ViewGroup viewGroup) {
+        PresenterDelegate delegate = getEventsDelegate();
+
+        if (delegate != null) {
+            final ArrayList<View> taggedViews = new ArrayList();
+            UIToolkit.collectTaggedViewsOfType(View.class, viewGroup, taggedViews);
+
+            for (final View view : taggedViews) {
+                final Object tag = view.getTag();
+
+                if (tag instanceof String && ((String) tag).length() > 0) {
+                    final EventsDelegateWrapper eventsDelegate = new EventsDelegateWrapper(view, delegate);
+                    view.setOnClickListener(eventsDelegate);
+
+                    if (view instanceof TextView) {
+                        final TextView textView = (TextView)view;
+                        textView.addTextChangedListener(eventsDelegate);
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Gets an instance of {@link PresenterDelegate}.
+     * @return An {@link PresenterDelegate}. May return {@code null}.
+     */
+    @SuppressWarnings("unchecked")
+    private PresenterDelegate getEventsDelegate() {
+        final Presenter presenter = mView.getPresenter();
+        final Class<? extends Presenter> presenterInterfaceClass = AbstractPresenter.getInterfaceClass(presenter);
+        final String delegateClassName = presenterInterfaceClass.getName() + SUFFIX_EVENTS_DELEGATE;
+        PresenterDelegate delegate = null;
+
+        try {
+            final Class[] paramTypes = {presenterInterfaceClass};
+            final Object[] paramValues = {presenter};
+            final Class<? extends PresenterDelegate> delegateClass = (Class<? extends PresenterDelegate>)Class.forName(delegateClassName);
+            final Constructor<? extends PresenterDelegate> constructor = delegateClass.getConstructor(paramTypes);
+            delegate = constructor.newInstance(paramValues);
+        } catch (ClassNotFoundException ignore) {
+            // Ignore
+        } catch (InvocationTargetException e) {
+            throw new IllegalStateException(e);
+        } catch (NoSuchMethodException e) {
+            throw new IllegalStateException(e);
+        } catch (InstantiationException e) {
+            throw new IllegalStateException(e);
+        } catch (IllegalAccessException e) {
+            throw new IllegalStateException(e);
+        }
+        return delegate;
+    }
 
     /**
      * Looks up and returns a {@link View} with the given layout id.

@@ -39,7 +39,7 @@ public class ThxFragment extends FeatureFragment<ThxPresenter> implements ThxVie
     @Plug ThxPresenter mPresenter;
 
     @Override
-    protected ThxPresenter getPresenter() {
+    public ThxPresenter getPresenter() {
         return mPresenter;
     }
 

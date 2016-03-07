@@ -52,7 +52,7 @@ public class MainActivity extends PluginActivity<MainPresenter>
     @Plug PluginFeatureManager mFeatureManager;
 
     @Override
-    protected MainPresenter getPresenter() {
+    public MainPresenter getPresenter() {
         return mPresenter;
     }
 
@@ -66,10 +66,8 @@ public class MainActivity extends PluginActivity<MainPresenter>
         super.onCreate(inState);
 
         setContentView(R.layout.activity_main);
-
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout_navigation);
-
-        final NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        mDrawerLayout = getView(R.id.drawer_layout_navigation);
+        final NavigationView navigationView = getView(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
 

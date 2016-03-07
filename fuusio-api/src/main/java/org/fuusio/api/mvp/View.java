@@ -16,7 +16,6 @@
 package org.fuusio.api.mvp;
 
 import org.fuusio.api.dependency.DependencyMap;
-import org.fuusio.api.util.Params;
 
 /**
  * {@link View} is the interface to be implemented by View components of a MVP

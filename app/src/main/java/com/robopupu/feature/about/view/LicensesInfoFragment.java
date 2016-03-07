@@ -49,7 +49,7 @@ public class LicensesInfoFragment extends FeatureDialogFragment<LicensesInfoPres
     }
 
     @Override
-    protected LicensesInfoPresenter getPresenter() {
+    public LicensesInfoPresenter getPresenter() {
         return mPresenter;
     }
 
