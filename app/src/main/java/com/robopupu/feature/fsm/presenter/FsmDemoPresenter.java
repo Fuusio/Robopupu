@@ -1,6 +1,7 @@
 package com.robopupu.feature.fsm.presenter;
 
 import org.fuusio.api.feature.FeaturePresenter;
+import org.fuusio.api.mvp.OnClick;
 import org.fuusio.api.plugin.PlugInterface;
 
 @PlugInterface
@@ -22,11 +23,14 @@ public interface FsmDemoPresenter extends FeaturePresenter {
 
     void onSelectorChanged(int value);
 
-    void onStartClicked();
+    @OnClick
+    void onStartClick();
 
-    void onStopClicked();
+    @OnClick
+    void onStopClick();
 
-    void onResetClicked();
+    @OnClick
+    void onResetClick();
 
     void onTransitionClicked(TransitionId id);
 }

@@ -59,8 +59,8 @@ public class LicensesInfoFragment extends FeatureDialogFragment<LicensesInfoPres
     }
 
     @Override
-    protected void createBindings() {
-        super.createBindings();
+    protected void onCreateBindings() {
+        super.onCreateBindings();
 
         mWebView = new WebView(getActivity());
 

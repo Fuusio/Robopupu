@@ -250,8 +250,8 @@ public abstract class StateEngine<T_State extends StateEngine> {
      * @param stateClass A {@link Class} specifying the target state for the state transition.
      * @return The current state.
      */
-    protected final T_State toState(final Class<? extends T_State> stateClass) {
-        return toState(stateClass, 0);
+    protected final T_State transitTo(final Class<? extends T_State> stateClass) {
+        return transitTo(stateClass, 0);
     }
 
     /**
@@ -263,7 +263,7 @@ public abstract class StateEngine<T_State extends StateEngine> {
      * @return The current state.
      */
     @SuppressWarnings("unchecked")
-    protected final T_State toState(final Class<? extends T_State> stateClass, final int entryPoint) {
+    protected final T_State transitTo(final Class<? extends T_State> stateClass, final int entryPoint) {
 
         if (isStateEngine()) {
             final T_State currentState = getCurrentState();
@@ -287,7 +287,7 @@ public abstract class StateEngine<T_State extends StateEngine> {
 
             return (T_State) newState.enter(entryPoint);
         } else {
-            return (T_State) getStateEngine().toState(stateClass, entryPoint);
+            return (T_State) getStateEngine().transitTo(stateClass, entryPoint);
         }
     }
 
@@ -350,7 +350,7 @@ public abstract class StateEngine<T_State extends StateEngine> {
 
         if (entryPoint == 0) {
             if (mInitialStateClass != null) {
-                return toState(mInitialStateClass);
+                return transitTo(mInitialStateClass);
             } else {
                 return (T_State) this;
             }
@@ -395,7 +395,7 @@ public abstract class StateEngine<T_State extends StateEngine> {
             return (T_State) mCurrentState.enterDeepHistory();
         } else {
             if (mInitialStateClass != null) {
-                return toState(mInitialStateClass);
+                return transitTo(mInitialStateClass);
             } else {
                 return (T_State) this;
             }
@@ -413,7 +413,7 @@ public abstract class StateEngine<T_State extends StateEngine> {
             return mCurrentState;
         } else {
             if (mInitialStateClass != null) {
-                return toState(mInitialStateClass);
+                return transitTo(mInitialStateClass);
             } else {
                 return (T_State) this;
             }
@@ -514,7 +514,7 @@ public abstract class StateEngine<T_State extends StateEngine> {
      * Starts this {@link StateEngine}. When started, the top-level initial state is entered.
      */
     public synchronized final void start() {
-        mCurrentState = toState(mInitialStateClass);
+        mCurrentState = transitTo(mInitialStateClass);
         getObserver().onStart(this);
     }
 

@@ -105,21 +105,25 @@ public class FeatureTest {
 
         @Override
         public void onFeatureResumed(Feature feature) {
+            super.onFeatureResumed(feature);
             mFeatureResumed = true;
         }
 
         @Override
-        public void onFeaturePaused(Feature feature) {
+        public void onFeaturePaused(Feature feature, boolean finishing) {
+            super.onFeaturePaused(feature, finishing);
             mFeaturePaused = true;
         }
 
         @Override
         public void onFeatureStopped(Feature feature) {
+            super.onFeatureStopped(feature);
             mFeatureStopped = true;
         }
 
         @Override
         public void onFeatureDestroyed(Feature feature) {
+            super.onFeatureDestroyed(feature);
             mFeatureDestroyed = true;
         }
     }

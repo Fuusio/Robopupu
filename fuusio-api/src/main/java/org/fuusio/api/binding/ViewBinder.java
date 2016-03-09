@@ -21,23 +21,27 @@ import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import org.fuusio.api.mvp.AbstractPresenter;
-import org.fuusio.api.mvp.EventsDelegateWrapper;
+import org.fuusio.api.mvp.OnClick;
+import org.fuusio.api.mvp.OnTextChanged;
+import org.fuusio.api.mvp.ViewListenersDelegate;
 import org.fuusio.api.mvp.PresenterDelegate;
 import org.fuusio.api.mvp.Presenter;
 import org.fuusio.api.mvp.PresenterDependant;
 import org.fuusio.api.util.UIToolkit;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * {@link ViewBinder} is component that can be added into an object using {@link ViewBinding}
- * to establish bindings between {@link View}s and {@link Presenter}s.
+ * {@link ViewBinder} is a component that can be used to establish bindings between {@link View}s
+ * and {@link Presenter}s. It also automagically deploys a concrete implementation of
+ * {@link PresenterDelegate} for a {@link Presenter} interface annotated with {@link OnClick} and
+ * {@link OnTextChanged} annotations.
  */
 public class ViewBinder {
 
@@ -49,6 +53,7 @@ public class ViewBinder {
     private Activity mActivity;
     private ViewGroup mContentView;
     private boolean mInitialised;
+    private PresenterDelegate mPresenterDelegate;
 
     public ViewBinder(final PresenterDependant view) {
         mView = view;
@@ -63,17 +68,15 @@ public class ViewBinder {
     public void setActivity(@NonNull Activity activity) {
         mActivity = activity;
 
-        if (mActivity != null) {
-            final ViewGroup content = (ViewGroup) mActivity.findViewById(android.R.id.content);
+        final ViewGroup content = (ViewGroup) mActivity.findViewById(android.R.id.content);
 
-            if (content != null) {
-                final ViewGroup contentView = (ViewGroup) (content).getChildAt(0);
+        if (content != null) {
+            final ViewGroup contentView = (ViewGroup) (content).getChildAt(0);
 
-                if (contentView != null) {
-                    mContentView = contentView;
-                } else {
-                    mContentView = contentView;
-                }
+            if (contentView != null) {
+                mContentView = contentView;
+            } else {
+                mContentView = content;
             }
         }
     }
@@ -90,22 +93,27 @@ public class ViewBinder {
     }
 
     private void bindEventListenersForViews(final ViewGroup viewGroup) {
-        PresenterDelegate delegate = getEventsDelegate();
+        if (mPresenterDelegate == null) {
+            mPresenterDelegate = getEventsDelegate();
+        }
 
-        if (delegate != null) {
-            final ArrayList<View> taggedViews = new ArrayList();
+        if (mPresenterDelegate != null) {
+            final ArrayList<View> taggedViews = new ArrayList<>();
             UIToolkit.collectTaggedViewsOfType(View.class, viewGroup, taggedViews);
 
             for (final View view : taggedViews) {
                 final Object tag = view.getTag();
 
                 if (tag instanceof String && ((String) tag).length() > 0) {
-                    final EventsDelegateWrapper eventsDelegate = new EventsDelegateWrapper(view, delegate);
-                    view.setOnClickListener(eventsDelegate);
+                    final ViewListenersDelegate listenersDelegate = new ViewListenersDelegate(view, mPresenterDelegate);
+                    view.setOnClickListener(listenersDelegate);
 
-                    if (view instanceof TextView) {
+                    if (view instanceof CompoundButton) {
+                        final CompoundButton compoundButton = (CompoundButton)view;
+                        compoundButton.setOnCheckedChangeListener(listenersDelegate);
+                    } else if (view instanceof TextView) {
                         final TextView textView = (TextView)view;
-                        textView.addTextChangedListener(eventsDelegate);
+                        textView.addTextChangedListener(listenersDelegate);
                     }
                 }
             }
@@ -120,6 +128,9 @@ public class ViewBinder {
     private PresenterDelegate getEventsDelegate() {
         final Presenter presenter = mView.getPresenter();
         final Class<? extends Presenter> presenterInterfaceClass = AbstractPresenter.getInterfaceClass(presenter);
+
+        assert(presenterInterfaceClass != null);
+
         final String delegateClassName = presenterInterfaceClass.getName() + SUFFIX_EVENTS_DELEGATE;
         PresenterDelegate delegate = null;
 
@@ -131,13 +142,7 @@ public class ViewBinder {
             delegate = constructor.newInstance(paramValues);
         } catch (ClassNotFoundException ignore) {
             // Ignore
-        } catch (InvocationTargetException e) {
-            throw new IllegalStateException(e);
-        } catch (NoSuchMethodException e) {
-            throw new IllegalStateException(e);
-        } catch (InstantiationException e) {
-            throw new IllegalStateException(e);
-        } catch (IllegalAccessException e) {
+        } catch (Exception e) {
             throw new IllegalStateException(e);
         }
         return delegate;
@@ -151,7 +156,6 @@ public class ViewBinder {
      */
     @SuppressWarnings("unchecked")
     public <T extends View> T getView(@IdRes final int viewId) {
-
         if (mActivity != null) {
             return (T) mActivity.findViewById(viewId);
         } else {

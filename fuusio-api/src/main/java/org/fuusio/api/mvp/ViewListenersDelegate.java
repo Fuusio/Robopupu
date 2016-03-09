@@ -3,23 +3,30 @@ package org.fuusio.api.mvp;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.CompoundButton;
 
 /**
- * {@link EventsDelegateWrapper} implements various event listener interfaces from Android
+ * {@link ViewListenersDelegate} implements various event listener interfaces from Android
  * {@link View} and widgets. It delegate event invocation received via those interfaces to
  * a wrapped {@link PresenterDelegate}.
  */
-public class EventsDelegateWrapper implements View.OnClickListener, TextWatcher {
+public class ViewListenersDelegate
+        implements View.OnClickListener, CompoundButton.OnCheckedChangeListener, TextWatcher {
 
     private PresenterDelegate mDelegate;
     private View mView;
 
-    public EventsDelegateWrapper(final View view, final PresenterDelegate delegate) {
+    public ViewListenersDelegate(final View view, final PresenterDelegate delegate) {
         mView = view;
         mDelegate = delegate;
 
         final String tag = ((String)view.getTag()).toLowerCase();
         mView.setTag(tag);
+    }
+
+    @Override
+    public void onCheckedChanged(final CompoundButton button, final boolean checked) {
+        mDelegate.onChecked((String) button.getTag(), checked);
     }
 
     @Override

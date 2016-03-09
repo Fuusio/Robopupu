@@ -61,8 +61,8 @@ public class FeedbackFragment extends CoordinatorLayoutFragment<FeedbackPresente
     }
 
     @Override
-    protected void createBindings() {
-        super.createBindings();
+    protected void onCreateBindings() {
+        super.onCreateBindings();
 
         mFeedbackTextBinding = new Binding(this, R.id.edit_text_feedback);
     }

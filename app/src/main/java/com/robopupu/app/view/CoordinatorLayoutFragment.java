@@ -57,8 +57,8 @@ public abstract class CoordinatorLayoutFragment<T_Presenter extends FeaturePrese
     }
 
     @Override
-    protected void createBindings() {
-        super.createBindings();
+    protected void onCreateBindings() {
+        super.onCreateBindings();
 
         mCoordinatorLayout = getView(R.id.coordinator_layout);
 

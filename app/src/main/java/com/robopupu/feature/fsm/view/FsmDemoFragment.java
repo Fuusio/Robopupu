@@ -76,14 +76,12 @@ public class FsmDemoFragment extends CoordinatorLayoutFragment<FsmDemoPresenter>
 
     private final ImageButton[] mImageButtons;
 
-    private ViewGroup mContentViewGroup;
     private boolean mTriggerButtonPositionsInitialised;
     private ImageView mStateMachineImageView;
     private ImageButton mResetButton;
     private ImageButton mStopButton;
     private ImageButton mStartButton;
     private RadioButton mSelectCRadioButton;
-    private RadioButton mSelectDRadioButton;
 
     @Plug AppManager mAppManager;
     @Plug FsmDemoPresenter mPresenter;
@@ -106,10 +104,9 @@ public class FsmDemoFragment extends CoordinatorLayoutFragment<FsmDemoPresenter>
 
     @SuppressWarnings("unchecked")
     @Override
-    protected void createBindings() {
-        super.createBindings();
+    protected void onCreateBindings() {
+        super.onCreateBindings();
 
-        mContentViewGroup = getView(R.id.relative_layout_content);
         mStateMachineImageView = getView(R.id.image_view_state_machine);
 
         mStateMachineImageView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
@@ -129,29 +126,8 @@ public class FsmDemoFragment extends CoordinatorLayoutFragment<FsmDemoPresenter>
         setImageButtonEnabled(mStopButton, false);
         setImageButtonEnabled(mStartButton, true);
 
-        mStartButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mPresenter.onStartClicked();
-            }
-        });
-
-        mStopButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mPresenter.onStopClicked();
-            }
-        });
-
-        mResetButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mPresenter.onResetClicked();
-            }
-        });
-
         mSelectCRadioButton = getView(R.id.radio_button_select_c);
-        mSelectDRadioButton = getView(R.id.radio_button_select_d);
+        final RadioButton selectDRadioButton = getView(R.id.radio_button_select_d);
 
         mSelectCRadioButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -162,7 +138,7 @@ public class FsmDemoFragment extends CoordinatorLayoutFragment<FsmDemoPresenter>
             }
         });
 
-        mSelectDRadioButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        selectDRadioButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(final CompoundButton buttonView, final boolean isChecked) {
                 if (isChecked) {

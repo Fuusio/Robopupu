@@ -139,6 +139,14 @@ public interface Feature extends PresenterListener, PluginStateComponent {
     void goBack(FeatureTransitionManager transitionManager);
 
     /**
+     * Invoked to pause this {@link Feature}.
+     *
+     * @param finishing A {@code boolean} value indicating if the {@link Feature} is
+     *                  going to be finished i.e. it is not resumed nor restarted anymore.
+     */
+    void pause(boolean finishing);
+
+    /**
      * Finishes this {@link Feature}. A finished {@link Feature} is stopped and destroyed.
      * If a {@link Feature} is implements a {@link PluginComponent} it is
      * unplugged from a {@link PluginBus}.
@@ -146,22 +154,32 @@ public interface Feature extends PresenterListener, PluginStateComponent {
     void finish();
 
     /**
-     * Invoked when the {@link FeatureContainer} has been started.
+     * Invoked when a {@link FeatureContainer} has been started.
+     *
+     * @param container A {@link FeatureContainer}.
      */
     void onFeatureContainerStarted(FeatureContainer container);
 
     /**
-     * Invoked when the {@link FeatureContainer} has been paused.
+     * Invoked when a {@link FeatureContainer} has been paused.
+     *
+     * @param container A {@link FeatureContainer}.
+     * @param finishing A {@code boolean} flag indicating if the {@link FeatureContainer} is finishing.
      */
-    void onFeatureContainerPaused(FeatureContainer container);
+    void onFeatureContainerPaused(FeatureContainer container, boolean finishing);
 
     /**
-     * Invoked when the {@link FeatureContainer} has been resumed.
+     * Invoked when a {@link FeatureContainer} has been resumed.
+     *
+     * @param container A {@link FeatureContainer}.
      */
     void onFeatureContainerResumed(FeatureContainer container);
 
     /**
-     * Invoked when the {@link FeatureContainer} has been stopped.
+     * Invoked when a {@link FeatureContainer} has been stopped.
+     *
+     * @param container A {@link FeatureContainer}.
+     * @param finishing A {@code boolean} flag indicating if the {@link FeatureContainer} is finishing.
      */
-    void onFeatureContainerStopped(FeatureContainer container);
+    void onFeatureContainerStopped(FeatureContainer container, boolean finishing);
 }

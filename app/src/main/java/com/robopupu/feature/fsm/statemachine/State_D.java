@@ -23,7 +23,7 @@ public class State_D extends State {
 
     @Override
     public void toB() {
-        toState(State_B.class, 3);
+        transitTo(State_B.class, 3);
     }
 
     @Override

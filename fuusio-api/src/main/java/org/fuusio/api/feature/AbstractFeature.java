@@ -301,11 +301,18 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
     @Override
     @CallSuper
     public final void pause() {
+        pause(false);
+    }
+
+    @Override
+    @CallSuper
+    public final void pause(final boolean finishing) {
         if (isStopped()) {
             throw new IllegalStateException("A stopped or destroyed feature cannot be paused");
         }
         super.pause();
-        mFeatureManager.onFeaturePaused(this);
+        onPause(finishing);
+        mFeatureManager.onFeaturePaused(this, finishing);
     }
 
     @Override
@@ -360,6 +367,16 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
         }
     }
 
+    /**
+     * Invoked by {@link Feature#pause(boolean)}.
+     *
+     * @param finishing A {@code boolean} value indicating if the {@link Feature} is
+     *                  going to be finished i.e. it is not resumed nor restarted anymore.
+     */
+    protected void onPause(boolean finishing) {
+        // By default do nothing
+    }
+
     @Override
     public void onPresenterStarted(Presenter presenter) {
         // By default do nothing
@@ -396,7 +413,7 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
     }
 
     @Override
-    public void onFeatureContainerPaused(FeatureContainer container) {
+    public void onFeatureContainerPaused(FeatureContainer container, boolean finishing) {
         // By default do nothing
     }
 
@@ -406,7 +423,7 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
     }
 
     @Override
-    public void onFeatureContainerStopped(FeatureContainer container) {
+    public void onFeatureContainerStopped(FeatureContainer container, boolean finishing) {
         // By default do nothing
     }
 }

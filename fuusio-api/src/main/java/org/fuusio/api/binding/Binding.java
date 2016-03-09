@@ -24,7 +24,7 @@ import org.fuusio.api.mvp.ViewFragment;
 
 /**
  * {@link Binding} provides a convenience class for writing bindings for {@link View}s extending
- * {@link TextView} in {@link ViewFragment#createBindings()} method.
+ * {@link TextView} in {@link ViewFragment#onCreateBindings()} method.
  */
 public class Binding extends TextViewBinding {
 

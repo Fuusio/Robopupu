@@ -23,6 +23,7 @@ import org.fuusio.api.component.Manager;
 import org.fuusio.api.dependency.DependencyScope;
 import org.fuusio.api.dependency.DependencyScopeOwner;
 import org.fuusio.api.mvp.View;
+import org.fuusio.api.plugin.PluginStateComponent;
 import org.fuusio.api.util.Params;
 
 import java.util.List;
@@ -159,8 +160,10 @@ public interface FeatureManager extends Manager  {
      * Invoked by a {@link Feature#pause()} when the {@link Feature}} has been paused.
      *
      * @param feature A {@link Feature}. May not be {@code null}.
+     * @param finishing A {@code boolean} value indicating if the {@link PluginStateComponent} is
+     *                  going to be finished i.e. it is not resumed nor restarted anymore.
      */
-    void onFeaturePaused(Feature feature);
+    void onFeaturePaused(Feature feature, boolean finishing);
 
     /**
      * Invoked by a {@link Feature#stop()} when the {@link Feature}} has been stopped.

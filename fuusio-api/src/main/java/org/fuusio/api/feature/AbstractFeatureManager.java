@@ -246,6 +246,7 @@ public abstract class AbstractFeatureManager extends AbstractManager
      *
      * @return A {@code boolean} value indicating if the event was consumed by this method.
      */
+    @Override
     public boolean onBackPressed() {
 
         final List<Feature> foregroundFeatures = getForegroundFeatures();
@@ -263,47 +264,29 @@ public abstract class AbstractFeatureManager extends AbstractManager
         return false;
     }
 
-    /**
-     * Invoked by a {@link Feature#resume()} when the {@link Feature}} has been resumed.
-     *
-     * @param feature A {@link Feature}. May not be {@code null}.
-     */
     @CallSuper
+    @Override
     public void onFeatureResumed(final Feature feature) {
         mPausedFeatures.remove(feature);
         mResumedFeatures.add(feature);
     }
 
-    /**
-     * Invoked by a {@link Feature#pause()} when the {@link Feature}} has been paused.
-     *
-     * @param feature A {@link Feature}. May not be {@code null}.
-     */
     @CallSuper
-    public void onFeaturePaused(final Feature feature) {
+    @Override
+    public void onFeaturePaused(final Feature feature, final boolean finishing) {
         mPausedFeatures.add(feature);
         mResumedFeatures.remove(feature);
     }
 
-
-    /**
-     * Invoked by a {@link Feature#stop()} when the {@link Feature}} has been stopped.
-     *
-     * @param feature A {@link Feature}. May not be {@code null}.
-     */
     @CallSuper
+    @Override
     public void onFeatureStopped(final Feature feature) {
         mPausedFeatures.remove(feature);
         mResumedFeatures.remove(feature);
     }
 
-
-    /**
-     * Invoked by a {@link Feature#destroy()} when the {@link Feature}} has been destroyed.
-     *
-     * @param feature A {@link Feature}. May not be {@code null}.
-     */
     @CallSuper
+    @Override
     public void onFeatureDestroyed(final Feature feature) {
     }
 
@@ -362,11 +345,13 @@ public abstract class AbstractFeatureManager extends AbstractManager
         if (activity instanceof FeatureContainerActivity) {
             final List<FeatureContainer> containers = ((FeatureContainerActivity)activity).getFeatureContainers();
 
+            final boolean finishing = activity.isFinishing();
+
             for (final FeatureContainer container : containers) {
                 final Feature feature = mFeatureContainers.get(container.getClass());
 
                 if (feature != null) {
-                    feature.onFeatureContainerPaused(container);
+                    feature.onFeatureContainerPaused(container, finishing);
                 }
             }
         }
@@ -382,11 +367,13 @@ public abstract class AbstractFeatureManager extends AbstractManager
         if (activity instanceof FeatureContainerActivity) {
             final List<FeatureContainer> containers = ((FeatureContainerActivity)activity).getFeatureContainers();
 
+            final boolean finishing = activity.isFinishing();
+
             for (final FeatureContainer container : containers) {
                 final Feature feature = mFeatureContainers.get(container.getClass());
 
                 if (feature != null) {
-                    feature.onFeatureContainerStopped(container);
+                    feature.onFeatureContainerStopped(container, finishing);
                 }
             }
         }

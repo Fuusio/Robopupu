@@ -15,10 +15,6 @@ public class SimpleStateMachine extends StateMachine {
         mController = controller;
     }
 
-    public Controller getController() {
-        return mController;
-    }
-
     @Override
     public void start() {
         start(State_A.class);

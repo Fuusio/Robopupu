@@ -24,8 +24,11 @@ import org.fuusio.api.plugin.Plugin;
 import org.fuusio.api.plugin.PluginBus;
 
 @Plugin
+@Provides(FsmDemoPresenter.class)
 public class FsmDemoPresenterImpl extends AbstractFeaturePresenter<FsmDemoView>
         implements FsmDemoPresenter {
+
+    @Plug FsmDemoView mView;
 
     private SimpleStateMachine mStateMachine;
     private Controller mController;
@@ -33,12 +36,6 @@ public class FsmDemoPresenterImpl extends AbstractFeaturePresenter<FsmDemoView>
     private State mStateEngine;
     private TriggerEvents mTriggerEvents;
     private int mSelector;
-
-    @Plug FsmDemoView mView;
-
-    @Provides(FsmDemoPresenter.class)
-    public FsmDemoPresenterImpl() {
-    }
 
     @Override
     protected FsmDemoView getViewPlug() {
@@ -66,17 +63,17 @@ public class FsmDemoPresenterImpl extends AbstractFeaturePresenter<FsmDemoView>
     }
 
     @Override
-    public void onStartClicked() {
+    public void onStartClick() {
         doStartStateMachine();
     }
 
     @Override
-    public void onStopClicked() {
+    public void onStopClick() {
         doStopStateMachine();
     }
 
     @Override
-    public void onResetClicked() {
+    public void onResetClick() {
         doResetStateMachine();
     }
 

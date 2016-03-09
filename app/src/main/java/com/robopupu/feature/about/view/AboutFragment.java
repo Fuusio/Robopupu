@@ -57,8 +57,8 @@ public class AboutFragment extends CoordinatorLayoutFragment<AboutPresenter> imp
     }
 
     @Override
-    protected void createBindings() {
-        super.createBindings();
+    protected void onCreateBindings() {
+        super.onCreateBindings();
         mVersionTextBinding = bind(R.id.text_view_version);
     }
 

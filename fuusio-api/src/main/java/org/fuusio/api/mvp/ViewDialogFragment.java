@@ -147,7 +147,7 @@ public abstract class ViewDialogFragment<T_Presenter extends Presenter> extends 
         super.onActivityCreated(inState);
 
         mBinder.setContentView(mDialogView);
-        createBindings();
+        onCreateBindings();
 
         if (inState != null) {
             onRestoreState(inState);
@@ -200,7 +200,7 @@ public abstract class ViewDialogFragment<T_Presenter extends Presenter> extends 
      * classes extended from {@link ViewDialogFragment}.
      */
     @CallSuper
-    protected void createBindings() {
+    protected void onCreateBindings() {
         // Do nothing by default
     }
 

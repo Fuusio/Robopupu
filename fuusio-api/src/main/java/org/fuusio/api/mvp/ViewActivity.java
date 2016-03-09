@@ -114,7 +114,7 @@ public abstract class ViewActivity<T_Presenter extends Presenter> extends AppCom
     @Override
     protected void onPostCreate(final Bundle inState) {
         super.onPostCreate(inState);
-        createBindings();
+        onCreateBindings();
     }
 
 
@@ -124,7 +124,7 @@ public abstract class ViewActivity<T_Presenter extends Presenter> extends AppCom
         mState.onStart();
 
         if (!mState.isRestarted()) {
-            createBindings();
+            onCreateBindings();
         }
 
         final DependenciesCache cache = D.get(DependenciesCache.class);
@@ -311,7 +311,7 @@ public abstract class ViewActivity<T_Presenter extends Presenter> extends AppCom
      * classes extended from {@link ViewFragment}.
      */
     @CallSuper
-    protected void createBindings() {
+    protected void onCreateBindings() {
         // Do nothing by default
     }
 

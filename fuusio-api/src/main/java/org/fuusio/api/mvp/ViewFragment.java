@@ -127,7 +127,7 @@ public abstract class ViewFragment<T_Presenter extends Presenter> extends Fragme
         super.onActivityCreated(inState);
 
         mBinder.setActivity(getActivity());
-        createBindings();
+        onCreateBindings();
 
         if (inState != null) {
             onRestoreState(inState);
@@ -164,7 +164,7 @@ public abstract class ViewFragment<T_Presenter extends Presenter> extends Fragme
      * classes extended from {@link ViewFragment}.
      */
     @CallSuper
-    protected void createBindings() {
+    protected void onCreateBindings() {
         // Do nothing by default
     }
 

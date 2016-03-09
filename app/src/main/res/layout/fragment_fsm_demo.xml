@@ -175,6 +175,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/image_button_stop"
+                android:tag="Stop"
                 android:layout_below="@+id/image_view_state_machine"
                 android:layout_centerHorizontal="true"
                 android:src="@drawable/ic_stop_black_48dp" />
@@ -183,6 +184,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/image_button_reset"
+                android:tag="Reset"
                 android:layout_toRightOf="@+id/image_button_stop"
                 android:layout_toEndOf="@+id/image_button_stop"
                 android:layout_alignTop="@+id/image_button_stop"
@@ -193,6 +195,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/image_button_start"
+                android:tag="Start"
                 android:layout_alignTop="@+id/image_button_stop"
                 android:src="@drawable/ic_play_arrow_black_48dp"
                 android:layout_toLeftOf="@+id/image_button_stop"

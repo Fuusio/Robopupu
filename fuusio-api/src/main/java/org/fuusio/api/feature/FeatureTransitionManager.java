@@ -18,8 +18,9 @@ package org.fuusio.api.feature;
 import org.fuusio.api.mvp.View;
 
 /**
- * {@link FeatureTransitionManager} defines an interface for objects that can be used to show {@link FeatureFragment}s.
- * Typically a such object is an {@link android.app.Activity}.
+ * {@link FeatureTransitionManager} defines an interface for objects that can be used to show
+ * {@link FeatureFragment}s and {@link FeatureDialogFragment}s. Typically a such object is
+ * an {@link android.app.Activity}.
  */
 public interface FeatureTransitionManager {
 
