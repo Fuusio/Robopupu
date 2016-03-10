@@ -1,4 +1,7 @@
 # Robopupu
+
+<img src="https://github.com/Fuusio/Robopupu/blob/master/images/robopupu.png" width="15%" height="15% alt="robopupu mascot"/>
+
 **Robopupu** is an Android library that provides the following APIs for architecting and developing Android applications:
 
 * **Robopupu.MVP**: A Model-View-Presenter (MVP) API.
@@ -9,8 +12,6 @@
 * **Robopupu.Util**: A collection of utility classes.
 
 Check out the [Robopupup project website](http://robopupu.com/) for further information.
-
-<img src="https://github.com/Fuusio/Robopupu/blob/master/images/robopupu.png" alt="robopupu mascot"/>
 
 ## Robopupu Compiler
 To minimize writing of boiler plate code, **Robopupu** utilises declarative annotations and annotation processing that generates code for using the libraries. 
