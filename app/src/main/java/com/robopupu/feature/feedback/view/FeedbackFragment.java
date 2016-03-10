@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Marko Salmela, http://fuusio.org
+ * Copyright (C) 2016 Marko Salmela, http://robopupu.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,11 +25,11 @@ import com.robopupu.R;
 import com.robopupu.app.view.CoordinatorLayoutFragment;
 import com.robopupu.feature.feedback.presenter.FeedbackPresenter;
 
-import org.fuusio.api.binding.Binding;
-import org.fuusio.api.binding.ClickBinding;
-import org.fuusio.api.dependency.Provides;
-import org.fuusio.api.plugin.Plug;
-import org.fuusio.api.plugin.Plugin;
+import com.robopupu.api.binding.Binding;
+import com.robopupu.api.binding.ClickBinding;
+import com.robopupu.api.dependency.Provides;
+import com.robopupu.api.plugin.Plug;
+import com.robopupu.api.plugin.Plugin;
 
 @Plugin
 public class FeedbackFragment extends CoordinatorLayoutFragment<FeedbackPresenter>
@@ -44,6 +44,7 @@ public class FeedbackFragment extends CoordinatorLayoutFragment<FeedbackPresente
         super(R.string.ft_feedback_title);
     }
 
+    @Override
     public FeedbackPresenter getPresenter() {
         return mPresenter;
     }
@@ -60,8 +61,8 @@ public class FeedbackFragment extends CoordinatorLayoutFragment<FeedbackPresente
     }
 
     @Override
-    protected void createBindings() {
-        super.createBindings();
+    protected void onCreateBindings() {
+        super.onCreateBindings();
 
         mFeedbackTextBinding = new Binding(this, R.id.edit_text_feedback);
     }

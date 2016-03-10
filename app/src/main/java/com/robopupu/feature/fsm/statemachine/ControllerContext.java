@@ -1,9 +1,9 @@
 package com.robopupu.feature.fsm.statemachine;
 
-import org.fuusio.api.fsm.StateMachineContext;
+import com.robopupu.api.fsm.StateMachineContext;
 
 /**
- * {@link ControllerContext} ...
+ * {@link ControllerContext} is a sample of an interface that defines a context for a state machine.
  */
 @StateMachineContext(SimpleStateMachine.class)
 public interface ControllerContext {

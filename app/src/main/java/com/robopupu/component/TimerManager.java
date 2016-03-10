@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Marko Salmela, http://fuusio.org
+ * Copyright (C) 2016 Marko Salmela, http://robopupu.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,18 +15,8 @@
  */
 package com.robopupu.component;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.support.annotation.ColorInt;
-import android.support.annotation.ColorRes;
-import android.support.annotation.IntegerRes;
-import android.support.annotation.StringRes;
-
-import com.robopupu.app.RobopupuApplication;
-
-import org.fuusio.api.component.Manager;
-import org.fuusio.api.plugin.PlugInterface;
+import com.robopupu.api.component.Manager;
+import com.robopupu.api.plugin.PlugInterface;
 
 @PlugInterface
 public interface TimerManager extends Manager {

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Marko Salmela, http://fuusio.org
+ * Copyright (C) 2016 Marko Salmela, http://robopupu.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,8 +15,8 @@
  */
 package com.robopupu.api.feature;
 
-import org.fuusio.api.feature.FeatureManager;
-import org.fuusio.api.plugin.PlugInterface;
+import com.robopupu.api.feature.FeatureManager;
+import com.robopupu.api.plugin.PlugInterface;
 
 /**
  * {@link PluginFeatureManager} extends {@link FeatureManager} to provide a PlugInterface.

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Marko Salmela, http://fuusio.org
+ * Copyright (C) 2016 Marko Salmela, http://robopupu.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,9 +15,9 @@
  */
 package com.robopupu.app;
 
-import org.fuusio.api.app.FuusioAppScope;
-import org.fuusio.api.dependency.Provides;
-import org.fuusio.api.dependency.Scope;
+import com.robopupu.api.app.FuusioAppScope;
+import com.robopupu.api.dependency.Provides;
+import com.robopupu.api.dependency.Scope;
 
 @Scope
 public class RobopupuAppScope extends FuusioAppScope<RobopupuApplication> {

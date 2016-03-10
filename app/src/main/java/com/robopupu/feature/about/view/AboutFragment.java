@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Marko Salmela, http://fuusio.org
+ * Copyright (C) 2016 Marko Salmela, http://robopupu.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,11 +24,10 @@ import com.robopupu.R;
 import com.robopupu.app.view.CoordinatorLayoutFragment;
 import com.robopupu.feature.about.presenter.AboutPresenter;
 
-import org.fuusio.api.binding.Binding;
-import org.fuusio.api.binding.ClickBinding;
-import org.fuusio.api.dependency.Provides;
-import org.fuusio.api.plugin.Plug;
-import org.fuusio.api.plugin.Plugin;
+import com.robopupu.api.binding.Binding;
+import com.robopupu.api.dependency.Provides;
+import com.robopupu.api.plugin.Plug;
+import com.robopupu.api.plugin.Plugin;
 
 @Plugin
 public class AboutFragment extends CoordinatorLayoutFragment<AboutPresenter> implements AboutView {
@@ -43,7 +42,7 @@ public class AboutFragment extends CoordinatorLayoutFragment<AboutPresenter> imp
     }
 
     @Override
-    protected AboutPresenter getPresenter() {
+    public AboutPresenter getPresenter() {
         return mPresenter;
     }
 
@@ -58,27 +57,8 @@ public class AboutFragment extends CoordinatorLayoutFragment<AboutPresenter> imp
     }
 
     @Override
-    protected void createBindings() {
-        super.createBindings();
-
-        new ClickBinding(this, R.id.text_view_label_oss_licenses, R.id.text_view_oss_licenses, R.id.image_view_arrow_oss_licenses) {
-            @Override protected void clicked() {
-                mPresenter.onViewOssLicensesTextClicked();
-            }
-        };
-
-        new ClickBinding(this, R.id.text_view_label_license, R.id.text_view_license, R.id.image_view_arrow_license) {
-            @Override protected void clicked() {
-                mPresenter.onViewLicenseTextClicked();
-            }
-        };
-
-        new ClickBinding(this, R.id.text_view_label_sources, R.id.text_view_sources, R.id.image_view_arrow_sources) {
-            @Override protected void clicked() {
-                mPresenter.onSourcesClicked();
-            }
-        };
-
+    protected void onCreateBindings() {
+        super.onCreateBindings();
         mVersionTextBinding = bind(R.id.text_view_version);
     }
 

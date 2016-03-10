@@ -102,6 +102,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/ft_about_label_license"
                 android:id="@+id/text_view_label_license"
+                android:tag="ViewLicense"
                 android:layout_below="@+id/text_view_label_version"
                 android:layout_alignLeft="@+id/text_view_label_version"
                 android:layout_alignStart="@+id/text_view_label_version"
@@ -113,6 +114,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/text_view_license"
                 android:layout_alignTop="@+id/text_view_label_license"
+                android:tag="ViewLicense"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_marginLeft="@dimen/ft_about_value_column_margin"
@@ -126,6 +128,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/image_view_arrow_license"
+                android:tag="ViewLicense"
                 android:src="@drawable/ic_keyboard_arrow_right_black_24dp"
                 android:layout_alignBottom="@+id/text_view_license"
                 android:layout_marginRight="@dimen/ft_about_right_margin"
@@ -136,6 +139,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/ft_about_label_oss_licenses"
+                android:tag="ViewOssLicenses"
                 android:id="@+id/text_view_label_oss_licenses"
                 android:layout_below="@+id/text_view_label_license"
                 android:layout_alignLeft="@+id/text_view_label_license"
@@ -147,6 +151,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/text_view_oss_licenses"
+                android:tag="ViewOssLicenses"
                 android:text="@string/ft_about_text_oss_licenses"
                 android:layout_alignTop="@+id/text_view_label_oss_licenses"
                 android:layout_alignParentLeft="true"
@@ -156,14 +161,13 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginRight="@dimen/ft_about_right_margin"
                 style="@style/TextView_About_Text"/>
-
-
-
+            
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/image_view_arrow_oss_licenses"
+                android:tag="ViewOssLicenses"
                 android:src="@drawable/ic_keyboard_arrow_right_black_24dp"
                 android:layout_alignBottom="@+id/text_view_oss_licenses"
                 android:layout_marginRight="@dimen/ft_about_right_margin"
@@ -175,6 +179,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/ft_about_label_sources"
                 android:id="@+id/text_view_label_sources"
+                android:tag="ViewSources"
                 android:layout_below="@+id/text_view_label_oss_licenses"
                 android:layout_alignLeft="@+id/text_view_label_oss_licenses"
                 android:layout_alignStart="@+id/text_view_label_oss_licenses"
@@ -185,14 +190,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/text_view_sources"
+                android:tag="ViewSources"
                 android:text="@string/ft_about_text_sources"
                 android:layout_alignTop="@+id/text_view_label_sources"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_marginLeft="@dimen/ft_about_value_column_margin"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:layout_marginRight="@dimen/ft_about_right_margin"
+                android:layout_alignParentRight="false"
+                android:layout_alignParentEnd="false"
                 style="@style/TextView_About_Text"
                 android:layout_toLeftOf="@+id/image_view_arrow_sources" />
 
@@ -200,6 +205,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/image_view_arrow_sources"
+                android:tag="ViewSources"
                 android:src="@drawable/ic_keyboard_arrow_right_black_24dp"
                 android:layout_alignBottom="@+id/text_view_sources"
                 android:layout_marginRight="@dimen/ft_about_right_margin"

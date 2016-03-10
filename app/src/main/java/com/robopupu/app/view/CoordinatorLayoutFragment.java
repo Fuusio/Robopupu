@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Marko Salmela, http://fuusio.org
+ * Copyright (C) 2016 Marko Salmela, http://robopupu.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,9 +33,9 @@ import com.robopupu.R;
 import com.robopupu.component.AppManager;
 import com.squareup.picasso.Picasso;
 
-import org.fuusio.api.dependency.D;
-import org.fuusio.api.feature.FeatureFragment;
-import org.fuusio.api.feature.FeaturePresenter;
+import com.robopupu.api.dependency.D;
+import com.robopupu.api.feature.FeatureFragment;
+import com.robopupu.api.feature.FeaturePresenter;
 
 /**
  * {@link CoordinatorLayoutFragment} provides an abstract base class for implementing
@@ -57,8 +57,8 @@ public abstract class CoordinatorLayoutFragment<T_Presenter extends FeaturePrese
     }
 
     @Override
-    protected void createBindings() {
-        super.createBindings();
+    protected void onCreateBindings() {
+        super.onCreateBindings();
 
         mCoordinatorLayout = getView(R.id.coordinator_layout);
 

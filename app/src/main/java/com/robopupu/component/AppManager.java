@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Marko Salmela, http://fuusio.org
+ * Copyright (C) 2016 Marko Salmela, http://robopupu.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,8 @@ package com.robopupu.component;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.net.Network;
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.support.annotation.IntegerRes;
@@ -25,8 +27,11 @@ import android.support.annotation.StringRes;
 
 import com.robopupu.app.RobopupuApplication;
 
-import org.fuusio.api.component.Manager;
-import org.fuusio.api.plugin.PlugInterface;
+import com.robopupu.api.component.Manager;
+import com.robopupu.api.plugin.PlugInterface;
+
+import java.io.File;
+import java.util.List;
 
 @PlugInterface
 public interface AppManager extends Manager {
@@ -58,6 +63,52 @@ public interface AppManager extends Manager {
      * @return The  version name as an {@link int}.
      */
     String getAppVersionName();
+
+    /**
+     * Gets the {@linkn PackageInfo} of the application.
+     *
+     * @return A {@link PackageInfo}.
+     */
+    PackageInfo getPackageInfo();
+
+    /**
+     * Gets application directory.
+     * @return The directory as a {@link File}. If accessing the directory fails, {@code null} is
+     * returned.
+     */
+    File getApplicationDirectory();
+
+    /**
+     * Gets application directory path.
+     * @return The directory path as a {@link File}. If accessing the directory fails, {@code null}
+     * is returned.
+     */
+    String getApplicationDirectoryPath();
+
+    /**
+     * Tests if the specified package is installed on the device.
+     * @param packageName The package name as a {@link String}.
+     * @return A {@code boolean} value.
+     */
+    boolean isPackageInstalled(final String packageName);
+
+    /**
+     * Tests if NFC is available on the device.
+     * @return A {@code boolean} value.
+     */
+    boolean hasNfc();
+
+    /**
+     * Tests if network is available.
+     * @return A {@code boolean} value.
+     */
+    boolean isNetworkAvailable();
+
+    /**
+     * Gets a list of available networks.
+     * @return A {@link List} of {@link Network}s.
+     */
+    List<Network> getAvailableNetworks();
 
     /**
      * Gets the specified color value.

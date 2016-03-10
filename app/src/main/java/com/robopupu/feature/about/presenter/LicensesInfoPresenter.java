@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Marko Salmela, http://fuusio.org
+ * Copyright (C) 2016 Marko Salmela, http://robopupu.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,8 +17,8 @@ package com.robopupu.feature.about.presenter;
 
 import com.robopupu.app.view.DelegatedWebViewClient;
 
-import org.fuusio.api.feature.FeaturePresenter;
-import org.fuusio.api.plugin.PlugInterface;
+import com.robopupu.api.feature.FeaturePresenter;
+import com.robopupu.api.plugin.PlugInterface;
 
 @PlugInterface
 public interface LicensesInfoPresenter extends FeaturePresenter, DelegatedWebViewClient.Delegate {

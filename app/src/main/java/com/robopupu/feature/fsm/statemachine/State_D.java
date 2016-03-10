@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Marko Salmela, http://fuusio.org
+ * Copyright (C) 2016 Marko Salmela, http://robopupu.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ public class State_D extends State {
 
     @Override
     public void toB() {
-        toState(State_B.class, 3);
+        transitTo(State_B.class, 3);
     }
 
     @Override
