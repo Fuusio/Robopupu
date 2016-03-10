@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Marko Salmela, http://fuusio.org
+ * Copyright (C) 2016 Marko Salmela, http://robopupu.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,11 +34,11 @@ import com.robopupu.feature.main.MainFeature;
 import com.robopupu.feature.main.MainFeatureScope;
 import com.robopupu.feature.main.presenter.MainPresenter;
 
-import org.fuusio.api.feature.FeatureContainer;
-import org.fuusio.api.feature.FeatureFragment;
-import org.fuusio.api.mvp.PluginActivity;
-import org.fuusio.api.plugin.Plug;
-import org.fuusio.api.plugin.Plugin;
+import com.robopupu.api.feature.FeatureContainer;
+import com.robopupu.api.feature.FeatureFragment;
+import com.robopupu.api.mvp.PluginActivity;
+import com.robopupu.api.plugin.Plug;
+import com.robopupu.api.plugin.Plugin;
 
 @Plugin
 public class MainActivity extends PluginActivity<MainPresenter>

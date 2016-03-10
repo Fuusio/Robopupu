@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Marko Salmela, http://fuusio.org
+ * Copyright (C) 2016 Marko Salmela, http://robopupu.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,19 +15,15 @@
  */
 package com.robopupu.feature.about.presenter;
 
-import android.app.Application;
-import android.util.Log;
-
-import com.robopupu.R;
 import com.robopupu.component.AppManager;
 import com.robopupu.feature.about.view.AboutView;
 
-import org.fuusio.api.dependency.Provides;
-import org.fuusio.api.feature.AbstractFeaturePresenter;
-import org.fuusio.api.mvp.View;
-import org.fuusio.api.plugin.Plug;
-import org.fuusio.api.plugin.Plugin;
-import org.fuusio.api.plugin.PluginBus;
+import com.robopupu.api.dependency.Provides;
+import com.robopupu.api.feature.AbstractFeaturePresenter;
+import com.robopupu.api.mvp.View;
+import com.robopupu.api.plugin.Plug;
+import com.robopupu.api.plugin.Plugin;
+import com.robopupu.api.plugin.PluginBus;
 
 @Plugin
 @Provides(AboutPresenter.class)

@@ -16,12 +16,12 @@ import com.robopupu.feature.fsm.statemachine.State_D;
 import com.robopupu.feature.fsm.statemachine.TriggerEvents;
 import com.robopupu.feature.fsm.view.FsmDemoView;
 
-import org.fuusio.api.dependency.Provides;
-import org.fuusio.api.feature.AbstractFeaturePresenter;
-import org.fuusio.api.mvp.View;
-import org.fuusio.api.plugin.Plug;
-import org.fuusio.api.plugin.Plugin;
-import org.fuusio.api.plugin.PluginBus;
+import com.robopupu.api.dependency.Provides;
+import com.robopupu.api.feature.AbstractFeaturePresenter;
+import com.robopupu.api.mvp.View;
+import com.robopupu.api.plugin.Plug;
+import com.robopupu.api.plugin.Plugin;
+import com.robopupu.api.plugin.PluginBus;
 
 @Plugin
 @Provides(FsmDemoPresenter.class)

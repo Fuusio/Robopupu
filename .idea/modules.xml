@@ -4,7 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Robopupu.iml" filepath="$PROJECT_DIR$/Robopupu.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/fuusio-api/fuusio-api.iml" filepath="$PROJECT_DIR$/fuusio-api/fuusio-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/robopupu-api/robopupu-api.iml" filepath="$PROJECT_DIR$/robopupu-api/robopupu-api.iml" />
     </modules>
   </component>
 </project>

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Marko Salmela, http://fuusio.org
+ * Copyright (C) 2016 Marko Salmela, http://robopupu.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,16 +17,15 @@ package com.robopupu.api.feature;
 
 import com.robopupu.app.RobopupuAppScope;
 
-import org.fuusio.api.dependency.D;
-import org.fuusio.api.dependency.Provides;
-import org.fuusio.api.dependency.Scope;
-import org.fuusio.api.feature.AbstractFeatureManager;
-import org.fuusio.api.feature.Feature;
-import org.fuusio.api.feature.FeatureContainer;
-import org.fuusio.api.plugin.Plugin;
-import org.fuusio.api.plugin.PluginBus;
-import org.fuusio.api.plugin.PluginComponent;
-import org.fuusio.api.util.Params;
+import com.robopupu.api.dependency.Provides;
+import com.robopupu.api.dependency.Scope;
+import com.robopupu.api.feature.AbstractFeatureManager;
+import com.robopupu.api.feature.Feature;
+import com.robopupu.api.feature.FeatureContainer;
+import com.robopupu.api.plugin.Plugin;
+import com.robopupu.api.plugin.PluginBus;
+import com.robopupu.api.plugin.PluginComponent;
+import com.robopupu.api.util.Params;
 
 /**
  * {@link PluginFeatureManagerImpl} implements {@link PluginFeatureManager} as a plugin component

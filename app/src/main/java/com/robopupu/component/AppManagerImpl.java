@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Marko Salmela, http://fuusio.org
+ * Copyright (C) 2016 Marko Salmela, http://robopupu.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,13 +41,13 @@ import com.robopupu.api.feature.PluginFeatureManager;
 import com.robopupu.app.RobopupuAppScope;
 import com.robopupu.app.RobopupuApplication;
 
-import org.fuusio.api.component.AbstractManager;
-import org.fuusio.api.dependency.D;
-import org.fuusio.api.dependency.Provides;
-import org.fuusio.api.dependency.Scope;
-import org.fuusio.api.plugin.Plug;
-import org.fuusio.api.plugin.Plugin;
-import org.fuusio.api.util.L;
+import com.robopupu.api.component.AbstractManager;
+import com.robopupu.api.dependency.D;
+import com.robopupu.api.dependency.Provides;
+import com.robopupu.api.dependency.Scope;
+import com.robopupu.api.plugin.Plug;
+import com.robopupu.api.plugin.Plugin;
+import com.robopupu.api.util.L;
 
 import java.io.File;
 import java.util.ArrayList;

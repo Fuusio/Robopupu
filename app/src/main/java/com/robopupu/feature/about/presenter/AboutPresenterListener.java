@@ -1,6 +1,6 @@
 package com.robopupu.feature.about.presenter;
 
-import org.fuusio.api.plugin.PlugInterface;
+import com.robopupu.api.plugin.PlugInterface;
 
 @PlugInterface
 public interface AboutPresenterListener {

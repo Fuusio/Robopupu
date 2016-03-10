@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Marko Salmela, http://fuusio.org
+ * Copyright (C) 2016 Marko Salmela, http://robopupu.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,8 +15,8 @@
  */
 package com.robopupu.feature.fsm;
 
-import org.fuusio.api.feature.Feature;
-import org.fuusio.api.plugin.PlugInterface;
+import com.robopupu.api.feature.Feature;
+import com.robopupu.api.plugin.PlugInterface;
 
 @PlugInterface
 public interface FsmDemoFeature extends Feature {

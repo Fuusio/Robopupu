@@ -1,7 +1,7 @@
 package com.robopupu.feature.main.presenter;
 
-import org.fuusio.api.mvp.Presenter;
-import org.fuusio.api.plugin.PlugInterface;
+import com.robopupu.api.mvp.Presenter;
+import com.robopupu.api.plugin.PlugInterface;
 
 @PlugInterface
 public interface MainPresenter extends Presenter {

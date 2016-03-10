@@ -1,8 +1,8 @@
 package com.robopupu.feature.fsm.presenter;
 
-import org.fuusio.api.feature.FeaturePresenter;
-import org.fuusio.api.mvp.OnClick;
-import org.fuusio.api.plugin.PlugInterface;
+import com.robopupu.api.feature.FeaturePresenter;
+import com.robopupu.api.mvp.OnClick;
+import com.robopupu.api.plugin.PlugInterface;
 
 @PlugInterface
 public interface FsmDemoPresenter extends FeaturePresenter {

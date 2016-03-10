@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Marko Salmela, http://fuusio.org
+ * Copyright (C) 2016 Marko Salmela, http://robopupu.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,14 +20,13 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.StringRes;
 
-import com.robopupu.R;
 import com.robopupu.app.RobopupuAppScope;
 
-import org.fuusio.api.component.AbstractManager;
-import org.fuusio.api.dependency.Provides;
-import org.fuusio.api.dependency.Scope;
-import org.fuusio.api.plugin.Plug;
-import org.fuusio.api.plugin.Plugin;
+import com.robopupu.api.component.AbstractManager;
+import com.robopupu.api.dependency.Provides;
+import com.robopupu.api.dependency.Scope;
+import com.robopupu.api.plugin.Plug;
+import com.robopupu.api.plugin.Plugin;
 
 @Plugin
 public class PlatformManagerImpl extends AbstractManager implements PlatformManager {

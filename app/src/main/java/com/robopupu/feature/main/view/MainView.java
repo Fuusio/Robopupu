@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Marko Salmela, http://fuusio.org
+ * Copyright (C) 2016 Marko Salmela, http://robopupu.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,9 +15,9 @@
  */
 package com.robopupu.feature.main.view;
 
-import org.fuusio.api.feature.FeatureContainer;
-import org.fuusio.api.mvp.View;
-import org.fuusio.api.plugin.PlugInterface;
+import com.robopupu.api.feature.FeatureContainer;
+import com.robopupu.api.mvp.View;
+import com.robopupu.api.plugin.PlugInterface;
 
 @PlugInterface
 public interface MainView extends View {

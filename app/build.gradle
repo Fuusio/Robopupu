@@ -24,7 +24,7 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile project(':fuusio-api')
+    compile project(':robopupu-api')
     apt 'com.squareup:javapoet:1.5.1'
     apt files('libs/fuusio-api-compiler.jar')
     testCompile 'junit:junit:4.12'

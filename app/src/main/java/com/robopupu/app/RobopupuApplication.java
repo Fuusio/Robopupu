@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Marko Salmela, http://fuusio.org
+ * Copyright (C) 2016 Marko Salmela, http://robopupu.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,9 +21,9 @@ import com.robopupu.component.AppManager;
 import com.robopupu.component.PlatformManager;
 import com.robopupu.component.TimerManager;
 
-import org.fuusio.api.app.FuusioApplication;
-import org.fuusio.api.dependency.AppDependencyScope;
-import org.fuusio.api.plugin.PluginBus;
+import com.robopupu.api.app.FuusioApplication;
+import com.robopupu.api.dependency.AppDependencyScope;
+import com.robopupu.api.plugin.PluginBus;
 
 public class RobopupuApplication extends FuusioApplication {
 

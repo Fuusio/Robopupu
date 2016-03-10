@@ -1,7 +1,7 @@
 package com.robopupu.feature.fsm.statemachine;
 
-import org.fuusio.api.fsm.StateEngine;
-import org.fuusio.api.fsm.StateMachine;
+import com.robopupu.api.fsm.StateEngine;
+import com.robopupu.api.fsm.StateMachine;
 
 /**
  * {@link SimpleStateMachine} is a simple {@link StateMachine} implementation demonstrating
