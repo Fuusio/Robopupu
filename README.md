@@ -1,17 +1,17 @@
 # Robopupu
-**Robopupu** is an Android library that provides the following APIs for developing modern Android applications:
+**Robopupu** is an Android library that provides the following APIs for architecting and developing Android applications:
 
-* **Fuusio.MVP**: A Model-View-Presenter (MVP) library.
-* **Fuusio.Dependency**: A dependency injection/pulling framework.
-* **Fuusio.FSM**: A simple library for implementing hierachical Finite State Machines that support most of the UML state diagram features, including: entry points, choice points, and history points.
-* **Fuusio.Plugin**: A plugin framework that supports dependency injection (DI) and allows decouples communication between components without requiring the components to explicitly register with one another.
-* **Fuusio.Feature**: A flow controller type of architectural design pattern for using components that encapsulate navigation and configuration logic for application features.
-* **Fuusio.Util**: A collection of utility classes.
+* **Robopupu.MVP**: A Model-View-Presenter (MVP) API.
+* **Robopupu.Dependency**: A dependency injection/pulling API.
+* **Robopupu.FSM**: A simple library for implementing hierachical Finite State Machines that support most of the UML state diagram features, including: entry points, choice points, and history points.
+* **Robopupu.Plugin**: A plugin framework that supports dependency injection (DI) and allows decouples communication between components without requiring the components to explicitly register with one another.
+* **Robopupu.Feature**: A flow controller type of architectural design pattern for using components that encapsulate navigation and configuration logic for application features.
+* **Robopupu.Util**: A collection of utility classes.
 
 Check out the [project website](http://robopupu.com/) for further information.
 
-## Fuusio API Compiler
-To truly minimize writing of boiler plate code, **Robopupu** utilises declarative annotations and annotation processing that generates code for using the libraries. 
+## Robopupu Compiler
+To minimize writing of boiler plate code, **Robopupu** utilises declarative annotations and annotation processing that generates code for using the libraries. 
 
 ## Sample App APK
 The sample apk file for Robopupu app can be found in the [release section](https://github.com/Fuusio/Robopupu/releases)
@@ -21,7 +21,7 @@ The changelog can be found in the [release section](https://github.com/Fuusio/Ro
 
 ## License
 ```
-Copyright (C) 2015-2016 Marko Salmela
+Copyright (C) 2008-2016 Marko Salmela
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
