@@ -11,7 +11,7 @@
 * **Robopupu.Feature**: A flow controller type of architectural design pattern for using components that encapsulate navigation and configuration logic for application features.
 * **Robopupu.Util**: A collection of utility classes.
 
-Check out the [Robopupup project website](http://robopupu.com/) for further information.
+Check out the [Robopupu project website](http://robopupu.com/) for further information.
 
 ## Robopupu Compiler
 To minimize writing of boiler plate code, **Robopupu** utilises declarative annotations and annotation processing that generates code for using the libraries. 
