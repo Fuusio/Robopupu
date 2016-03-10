@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Marko Salmela, http://fuusio.org
+ * Copyright (C) 2016 Marko Salmela, http://robopupu.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,21 +15,18 @@
  */
 package com.robopupu.feature.feedback.presenter;
 
-import android.content.ActivityNotFoundException;
-import android.content.Intent;
-import android.net.Uri;
-
 import com.robopupu.R;
 import com.robopupu.component.AppManager;
+import com.robopupu.component.PlatformManager;
 import com.robopupu.feature.feedback.FeedbackFeature;
 import com.robopupu.feature.feedback.view.FeedbackView;
 
-import org.fuusio.api.dependency.Provides;
-import org.fuusio.api.feature.AbstractFeaturePresenter;
-import org.fuusio.api.mvp.View;
-import org.fuusio.api.plugin.Plug;
-import org.fuusio.api.plugin.Plugin;
-import org.fuusio.api.plugin.PluginBus;
+import com.robopupu.api.dependency.Provides;
+import com.robopupu.api.feature.AbstractFeaturePresenter;
+import com.robopupu.api.mvp.View;
+import com.robopupu.api.plugin.Plug;
+import com.robopupu.api.plugin.Plugin;
+import com.robopupu.api.plugin.PluginBus;
 
 @Plugin
 public class FeedbackPresenterImpl extends AbstractFeaturePresenter<FeedbackView>
@@ -39,6 +36,7 @@ public class FeedbackPresenterImpl extends AbstractFeaturePresenter<FeedbackView
 
     @Plug AppManager mAppManager;
     @Plug FeedbackFeature mFeature;
+    @Plug PlatformManager mPlatformManager;
     @Plug FeedbackView mView;
 
     @Provides(FeedbackPresenter.class)
@@ -74,20 +72,11 @@ public class FeedbackPresenterImpl extends AbstractFeaturePresenter<FeedbackView
 
     @Override
     public void onSendClicked(final String feedback) {
-        final StringBuilder uri = new StringBuilder("mailto:");
-        uri.append(Uri.encode("robopupu@gmail.com"));
-        uri.append("?subject=");
-        uri.append(Uri.encode("ROBOPUPU feedback"));
-        uri.append("&body=");
-        uri.append(Uri.encode(feedback));
+        final String address = mAppManager.getString(R.string.robopupu_email_address);
+        final String subject = mAppManager.getString(R.string.ft_feedback_text_subject);
+        final String chooserTitle = mAppManager.getString(R.string.ft_feedback_prompt_send_email_using);
 
-        final Intent sendIntent = new Intent(android.content.Intent.ACTION_SENDTO);
-        sendIntent.setType("message/rfc822");
-        sendIntent.setData(Uri.parse(uri.toString()));
-
-        try {
-            mAppManager.startActivity(Intent.createChooser(sendIntent, mAppManager.getString(R.string.ft_feedback_prompt_send_email_using)));
-        } catch (ActivityNotFoundException e) {
+        if (!mPlatformManager.sendEmail(address, subject, feedback, chooserTitle)) {
             mView.showMessage(mAppManager.getString(R.string.ft_feedback_error_no_email_client));
         }
         mFeedbackSend = true;

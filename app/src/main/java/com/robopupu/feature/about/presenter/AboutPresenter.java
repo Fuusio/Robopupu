@@ -1,14 +1,18 @@
 package com.robopupu.feature.about.presenter;
 
-import org.fuusio.api.feature.FeaturePresenter;
-import org.fuusio.api.plugin.PlugInterface;
+import com.robopupu.api.feature.FeaturePresenter;
+import com.robopupu.api.mvp.OnClick;
+import com.robopupu.api.plugin.PlugInterface;
 
 @PlugInterface
 public interface AboutPresenter extends FeaturePresenter {
 
-    void onViewLicenseTextClicked();
+    @OnClick
+    void onViewLicenseClick();
 
-    void onViewOssLicensesTextClicked();
+    @OnClick
+    void onViewOssLicensesClick();
 
-    void onSourcesClicked();
+    @OnClick
+    void onViewSourcesClick();
 }

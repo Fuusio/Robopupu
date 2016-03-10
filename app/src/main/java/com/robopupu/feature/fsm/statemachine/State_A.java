@@ -8,7 +8,7 @@ public class State_A extends State {
 
     @Override
     public void toB() {
-        toState(State_B.class);
+        transitTo(State_B.class);
     }
 
     @Override

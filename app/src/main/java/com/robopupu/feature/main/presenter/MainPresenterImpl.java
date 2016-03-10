@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Marko Salmela, http://fuusio.org
+ * Copyright (C) 2016 Marko Salmela, http://robopupu.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,13 +15,6 @@
  */
 package com.robopupu.feature.main.presenter;
 
-import android.support.annotation.IdRes;
-
-import org.fuusio.api.dependency.D;
-import org.fuusio.api.feature.FeatureContainer;
-import org.fuusio.api.plugin.Plug;
-import org.fuusio.api.plugin.Plugin;
-
 import com.robopupu.R;
 import com.robopupu.api.feature.PluginFeatureManager;
 import com.robopupu.component.AppManager;
@@ -30,9 +23,11 @@ import com.robopupu.feature.feedback.FeedbackFeature;
 import com.robopupu.feature.fsm.FsmDemoFeature;
 import com.robopupu.feature.main.view.MainView;
 
-import org.fuusio.api.dependency.Provides;
-import org.fuusio.api.feature.FeatureManager;
-import org.fuusio.api.mvp.AbstractPresenter;
+import com.robopupu.api.dependency.Provides;
+import com.robopupu.api.feature.FeatureContainer;
+import com.robopupu.api.mvp.AbstractPresenter;
+import com.robopupu.api.plugin.Plug;
+import com.robopupu.api.plugin.Plugin;
 
 @Plugin
 public class MainPresenterImpl extends AbstractPresenter<MainView>
@@ -59,7 +54,7 @@ public class MainPresenterImpl extends AbstractPresenter<MainView>
     }
 
     @Override
-    public boolean onNavigationItemSelected(@IdRes final int itemId) {
+    public boolean onNavigationItemSelected(final int itemId) {
         boolean selectionHandled = true;
 
         final FeatureContainer container = mView.getMainFeatureContainer();

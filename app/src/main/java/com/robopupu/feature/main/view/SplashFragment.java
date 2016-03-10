@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Marko Salmela, http://fuusio.org
+ * Copyright (C) 2016 Marko Salmela, http://robopupu.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,10 +24,10 @@ import android.view.ViewGroup;
 import com.robopupu.R;
 import com.robopupu.feature.main.presenter.SplashPresenter;
 
-import org.fuusio.api.dependency.Provides;
-import org.fuusio.api.feature.FeatureFragment;
-import org.fuusio.api.plugin.Plug;
-import org.fuusio.api.plugin.Plugin;
+import com.robopupu.api.dependency.Provides;
+import com.robopupu.api.feature.FeatureFragment;
+import com.robopupu.api.plugin.Plug;
+import com.robopupu.api.plugin.Plugin;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -42,7 +42,7 @@ public class SplashFragment extends FeatureFragment<SplashPresenter> implements 
     }
 
     @Override
-    protected SplashPresenter getPresenter() {
+    public SplashPresenter getPresenter() {
         return mPresenter;
     }
 

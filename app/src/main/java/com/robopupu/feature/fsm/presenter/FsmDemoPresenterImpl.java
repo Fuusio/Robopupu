@@ -16,16 +16,19 @@ import com.robopupu.feature.fsm.statemachine.State_D;
 import com.robopupu.feature.fsm.statemachine.TriggerEvents;
 import com.robopupu.feature.fsm.view.FsmDemoView;
 
-import org.fuusio.api.dependency.Provides;
-import org.fuusio.api.feature.AbstractFeaturePresenter;
-import org.fuusio.api.mvp.View;
-import org.fuusio.api.plugin.Plug;
-import org.fuusio.api.plugin.Plugin;
-import org.fuusio.api.plugin.PluginBus;
+import com.robopupu.api.dependency.Provides;
+import com.robopupu.api.feature.AbstractFeaturePresenter;
+import com.robopupu.api.mvp.View;
+import com.robopupu.api.plugin.Plug;
+import com.robopupu.api.plugin.Plugin;
+import com.robopupu.api.plugin.PluginBus;
 
 @Plugin
+@Provides(FsmDemoPresenter.class)
 public class FsmDemoPresenterImpl extends AbstractFeaturePresenter<FsmDemoView>
         implements FsmDemoPresenter {
+
+    @Plug FsmDemoView mView;
 
     private SimpleStateMachine mStateMachine;
     private Controller mController;
@@ -33,12 +36,6 @@ public class FsmDemoPresenterImpl extends AbstractFeaturePresenter<FsmDemoView>
     private State mStateEngine;
     private TriggerEvents mTriggerEvents;
     private int mSelector;
-
-    @Plug FsmDemoView mView;
-
-    @Provides(FsmDemoPresenter.class)
-    public FsmDemoPresenterImpl() {
-    }
 
     @Override
     protected FsmDemoView getViewPlug() {
@@ -66,17 +63,17 @@ public class FsmDemoPresenterImpl extends AbstractFeaturePresenter<FsmDemoView>
     }
 
     @Override
-    public void onStartClicked() {
+    public void onStartClick() {
         doStartStateMachine();
     }
 
     @Override
-    public void onStopClicked() {
+    public void onStopClick() {
         doStopStateMachine();
     }
 
     @Override
-    public void onResetClicked() {
+    public void onResetClick() {
         doResetStateMachine();
     }
 

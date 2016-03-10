@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Marko Salmela, http://fuusio.org
+ * Copyright (C) 2016 Marko Salmela, http://robopupu.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,6 @@
  */
 package com.robopupu.feature.main.view;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
@@ -23,17 +22,9 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
-
-import org.fuusio.api.feature.FeatureContainer;
-import org.fuusio.api.feature.FeatureFragment;
-import org.fuusio.api.mvp.PluginActivity;
-import org.fuusio.api.plugin.Plug;
-import org.fuusio.api.plugin.Plugin;
 
 import com.robopupu.R;
 import com.robopupu.api.feature.PluginFeatureManager;
@@ -42,6 +33,12 @@ import com.robopupu.app.view.DrawerLayoutContainer;
 import com.robopupu.feature.main.MainFeature;
 import com.robopupu.feature.main.MainFeatureScope;
 import com.robopupu.feature.main.presenter.MainPresenter;
+
+import com.robopupu.api.feature.FeatureContainer;
+import com.robopupu.api.feature.FeatureFragment;
+import com.robopupu.api.mvp.PluginActivity;
+import com.robopupu.api.plugin.Plug;
+import com.robopupu.api.plugin.Plugin;
 
 @Plugin
 public class MainActivity extends PluginActivity<MainPresenter>
@@ -55,7 +52,7 @@ public class MainActivity extends PluginActivity<MainPresenter>
     @Plug PluginFeatureManager mFeatureManager;
 
     @Override
-    protected MainPresenter getPresenter() {
+    public MainPresenter getPresenter() {
         return mPresenter;
     }
 
@@ -69,10 +66,8 @@ public class MainActivity extends PluginActivity<MainPresenter>
         super.onCreate(inState);
 
         setContentView(R.layout.activity_main);
-
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout_navigation);
-
-        final NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        mDrawerLayout = getView(R.id.drawer_layout_navigation);
+        final NavigationView navigationView = getView(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
 
@@ -136,8 +131,8 @@ public class MainActivity extends PluginActivity<MainPresenter>
 
     @Override
     public void openNavigationDrawer() {
-        if (!mDrawerLayout.isDrawerOpen(Gravity.LEFT)) {
-            mDrawerLayout.openDrawer(Gravity.LEFT);
+        if (!mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+            mDrawerLayout.openDrawer(GravityCompat.START);
         }
     }
 }

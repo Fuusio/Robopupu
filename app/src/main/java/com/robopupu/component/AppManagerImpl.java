@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Marko Salmela, http://fuusio.org
+ * Copyright (C) 2016 Marko Salmela, http://robopupu.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,15 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkInfo;
+import android.nfc.NfcAdapter;
+import android.nfc.NfcManager;
+import android.os.Build;
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.support.annotation.IntegerRes;
@@ -33,11 +41,17 @@ import com.robopupu.api.feature.PluginFeatureManager;
 import com.robopupu.app.RobopupuAppScope;
 import com.robopupu.app.RobopupuApplication;
 
-import org.fuusio.api.component.AbstractManager;
-import org.fuusio.api.dependency.Provides;
-import org.fuusio.api.dependency.Scope;
-import org.fuusio.api.plugin.Plug;
-import org.fuusio.api.plugin.Plugin;
+import com.robopupu.api.component.AbstractManager;
+import com.robopupu.api.dependency.D;
+import com.robopupu.api.dependency.Provides;
+import com.robopupu.api.dependency.Scope;
+import com.robopupu.api.plugin.Plug;
+import com.robopupu.api.plugin.Plugin;
+import com.robopupu.api.util.L;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 @Plugin
 public class AppManagerImpl extends AbstractManager implements AppManager {
@@ -68,32 +82,114 @@ public class AppManagerImpl extends AbstractManager implements AppManager {
 
     @Override
     public int getAppVersionCode() {
-        final Context context = mApplication.getApplicationContext();
-        final PackageManager manager = context.getPackageManager();
-        try {
-            final String packageName = context.getPackageName();
-            return manager.getPackageInfo(packageName, 0).versionCode;
-        } catch (PackageManager.NameNotFoundException e) {
-            Log.d(TAG, e.getMessage());
+        final PackageInfo info = getPackageInfo();
+
+        if (info != null) {
+            return info.versionCode;
+        } else {
+            return -1;
         }
-        return -1;
     }
 
-    /**
-     * Gets the versoin code of the application.
-     *
-     * @return The  version code as an {@link int}.
-     */
+    @Override
     public String getAppVersionName() {
+        final PackageInfo info = getPackageInfo();
+
+        if (info != null) {
+            return info.versionName;
+        } else {
+            return "n/a";
+        }
+    }
+
+    @Override
+    public PackageInfo getPackageInfo() {
         final Context context = mApplication.getApplicationContext();
         final PackageManager manager = context.getPackageManager();
         try {
             final String packageName = context.getPackageName();
-            return manager.getPackageInfo(packageName, 0).versionName;
+            return manager.getPackageInfo(packageName, 0);
         } catch (PackageManager.NameNotFoundException e) {
             Log.d(TAG, e.getMessage());
         }
-        return "n/a";
+        return null;
+    }
+
+    @Override
+    public boolean isPackageInstalled(final String packageName) {
+        final Context context = mApplication.getApplicationContext();
+        final PackageManager manager = context.getPackageManager();
+        final List<ApplicationInfo> infos = manager.getInstalledApplications(PackageManager.GET_META_DATA);
+
+        for (final ApplicationInfo info : infos) {
+            if (packageName.equalsIgnoreCase(info.packageName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean hasNfc() {
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1) {
+            final NfcManager manager = D.get(NfcManager.class);
+            final NfcAdapter adapter = manager.getDefaultAdapter();
+            return (adapter != null && adapter.isEnabled());
+        }
+        return false;
+    }
+
+    @Override
+    public boolean isNetworkAvailable() {
+        final ConnectivityManager manager = D.get(ConnectivityManager.class);
+
+        if (manager == null) {
+            Log.e(TAG, "isNetworkAvailable() : Network access not allowed");
+        } else {
+            final Network[] networks = manager.getAllNetworks();
+
+            if (networks != null) {
+                for (final Network network : networks) {
+                    final NetworkInfo info = manager.getNetworkInfo(network);
+                    if (info.getState() == NetworkInfo.State.CONNECTED) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public List<Network> getAvailableNetworks() {
+        final ArrayList<Network> availableNetworks = new ArrayList<>();
+        final ConnectivityManager manager = D.get(ConnectivityManager.class);
+
+        if (manager == null) {
+            Log.e(TAG, "isNetworkAvailable() : Network access not allowed");
+        } else {
+            final Network[] networks = manager.getAllNetworks();
+
+            if (networks != null) {
+                for (final Network network : networks) {
+                    final NetworkInfo info = manager.getNetworkInfo(network);
+                    if (info.getState() == NetworkInfo.State.CONNECTED) {
+                        availableNetworks.add(network);
+                    }
+                }
+            }
+        }
+        return availableNetworks;
+    }
+
+    @Override
+    public File getApplicationDirectory() {
+        return RobopupuApplication.getApplicationDirectory();
+    }
+
+    @Override
+    public String getApplicationDirectoryPath() {
+        return RobopupuApplication.getApplicationDirectoryPath();
     }
 
     @Override

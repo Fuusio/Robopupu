@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Marko Salmela, http://fuusio.org
+ * Copyright (C) 2016 Marko Salmela, http://robopupu.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,30 +15,13 @@
  */
 package com.robopupu.component;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.support.annotation.ColorInt;
-import android.support.annotation.ColorRes;
-import android.support.annotation.IntegerRes;
-import android.support.annotation.StringRes;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
-import android.util.Log;
-
-import com.robopupu.R;
-import com.robopupu.api.feature.PluginFeatureManager;
 import com.robopupu.app.RobopupuAppScope;
-import com.robopupu.app.RobopupuApplication;
 
-import org.fuusio.api.component.AbstractManager;
-import org.fuusio.api.dependency.Provides;
-import org.fuusio.api.dependency.Scope;
-import org.fuusio.api.plugin.Plug;
-import org.fuusio.api.plugin.Plugin;
-import org.fuusio.api.plugin.PluginBus;
+import com.robopupu.api.component.AbstractManager;
+import com.robopupu.api.dependency.Provides;
+import com.robopupu.api.dependency.Scope;
+import com.robopupu.api.plugin.Plugin;
+import com.robopupu.api.plugin.PluginBus;
 
 import java.util.HashMap;
 

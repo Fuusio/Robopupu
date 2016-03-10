@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Marko Salmela, http://fuusio.org
+ * Copyright (C) 2016 Marko Salmela, http://robopupu.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ import android.content.Context;
 
 import com.robopupu.R;
 
-import org.fuusio.api.app.AppError;
+import com.robopupu.api.app.AppError;
 
 public enum RobopupuAppError implements AppError {
 

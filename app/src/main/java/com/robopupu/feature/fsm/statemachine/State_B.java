@@ -10,20 +10,20 @@ public class State_B extends State {
     public void toCorD(int selector) {
 
         if (selector == 1) {
-            toState(State_C.class);
+            transitTo(State_C.class);
         } else {
-            toState(State_D.class);
+            transitTo(State_D.class);
         }
     }
 
     @Override
     protected State enterEntryPoint(int entryPoint) {
         if (entryPoint == 1) {
-            return toState(State_B1.class);
+            return transitTo(State_B1.class);
         } else if (entryPoint == 2) {
-            return toState(State_B2.class);
+            return transitTo(State_B2.class);
         } else if (entryPoint == 3) {
-            return toState(State_B3.class);
+            return transitTo(State_B3.class);
         }
         return null;
     }

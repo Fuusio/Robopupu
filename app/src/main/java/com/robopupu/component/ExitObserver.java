@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Marko Salmela, http://fuusio.org
+ * Copyright (C) 2016 Marko Salmela, http://robopupu.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,8 +15,8 @@
  */
 package com.robopupu.component;
 
-import org.fuusio.api.plugin.PlugInterface;
-import org.fuusio.api.plugin.PlugMode;
+import com.robopupu.api.plugin.PlugInterface;
+import com.robopupu.api.plugin.PlugMode;
 
 @PlugInterface(PlugMode.BROADCAST)
 public interface ExitObserver {
