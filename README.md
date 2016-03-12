@@ -1,6 +1,6 @@
 # Robopupu
 
-<img src="https://github.com/Fuusio/Robopupu/blob/master/images/robopupu.png" alt="robopupu mascot"/>
+<img src="https://github.com/Fuusio/Robopupu/blob/master/images/robopupu_header_image.png" alt="robopupu mascot"/>
 
 An Android library that provides a set of APIs for architecting and developing Android applications:
 
