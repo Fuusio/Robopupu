@@ -107,21 +107,6 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
     }
 
     @Override
-    public boolean hasFocusedView() {
-        if (!mActiveViews.isEmpty()) {
-
-            for (int i = mActiveViews.size() - 1; i >= 0; i--) {
-                final View view = mActiveViews.get(i);
-
-                if (view.hasFocus()) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    @Override
     public boolean hasForegroundView() {
         return !mActiveViews.isEmpty();
     }

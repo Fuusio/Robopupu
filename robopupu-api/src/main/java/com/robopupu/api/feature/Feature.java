@@ -89,12 +89,6 @@ public interface Feature extends PresenterListener, PluginStateComponent {
     boolean isActivityFeature();
 
     /**
-     * Tests if any of the {@link View}s of this {@link Feature} is in foreground and has a focus.
-     * @return A {@code boolean}.
-     */
-    boolean hasFocusedView();
-
-    /**
      * Tests if this {@link Feature} is in foreground i.e. it has at least one visible
      * {@link View}.
      *

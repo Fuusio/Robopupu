@@ -15,7 +15,6 @@
  */
 package com.robopupu.api.mvp;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
@@ -101,30 +100,8 @@ public abstract class ViewDialogFragment<T_Presenter extends Presenter> extends 
         return presenter;
     }
 
-    @NonNull
-    @Override
-    public String getDependenciesKey() {
-        return getClass().getName();
-    }
-
     public String getViewTag() {
-        return getClass().getSimpleName();
-    }
-
-    /**
-     * Test if this {@link View} has a focus.
-     * @return A {@code boolean}.
-     */
-    @Override
-    public boolean hasFocus() {
-        final Activity activity = getActivity();
-
-        if (activity instanceof ViewActivity) {
-            if (((ViewActivity)activity).hasFocus()) {
-                return mState.isResumed();
-            }
-        }
-        return false;
+        return getClass().getName();
     }
 
     @SuppressWarnings("unchecked")

@@ -7,7 +7,7 @@ import java.util.HashMap;
 /**
  * {@link DependenciesCache} is used for saving and restoring {@link DependencyScope}s for
  * their {@link DependencyScopeOwner}s, and for saving and accessing {@link DependencyMap}s using
- * {@link String} based keys. {@link View}s have a dedicated method {@link View#getDependenciesKey()}
+ * {@link String} based keys. {@link View}s have a dedicated method {@link View#getViewTag()}
  * for providing the key.
  */
 public class DependenciesCache {
@@ -43,15 +43,15 @@ public class DependenciesCache {
     }
 
     public boolean hasDependencies(final View view) {
-        return mDependencyMaps.containsKey(view.getDependenciesKey());
+        return mDependencyMaps.containsKey(view.getViewTag());
     }
 
     public DependencyMap getDependencies(final View view) {
-        return mDependencyMaps.get(view.getDependenciesKey());
+        return mDependencyMaps.get(view.getViewTag());
     }
 
     public DependencyMap getDependencies(final View view, final boolean createDependencyMap) {
-        final String key = view.getDependenciesKey();
+        final String key = view.getViewTag();
 
         if (mDependencyMaps.containsKey(key)) {
             return mDependencyMaps.get(key);
@@ -62,7 +62,7 @@ public class DependenciesCache {
     }
 
     public DependencyMap removeDependencies(final View view) {
-        return mDependencyMaps.remove(view.getDependenciesKey());
+        return mDependencyMaps.remove(view.getViewTag());
     }
 
     public void saveDependencyScope(final DependencyScopeOwner owner, final DependencyScope scope) {
@@ -87,7 +87,6 @@ public class DependenciesCache {
         if (scope != null && scope.isDisposable()) {
             removeDependencyScope(owner);
         }
-
         D.disposeScope(owner);
     }
 }
