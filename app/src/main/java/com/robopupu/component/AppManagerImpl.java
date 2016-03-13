@@ -63,7 +63,6 @@ public class AppManagerImpl extends AbstractManager implements AppManager {
     @Plug ExitObserver mExitObserver;
     @Plug PluginFeatureManager mFeatureManager;
 
-
     @Scope(RobopupuAppScope.class)
     @Provides(AppManager.class)
     public AppManagerImpl(final RobopupuApplication application) {
