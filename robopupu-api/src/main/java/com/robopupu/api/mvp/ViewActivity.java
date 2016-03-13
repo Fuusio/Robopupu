@@ -69,7 +69,7 @@ public abstract class ViewActivity<T_Presenter extends Presenter> extends AppCom
 
     @Override
     public String getViewTag() {
-        return getClass().getSimpleName();
+        return getClass().getName();
     }
 
     /**
@@ -80,21 +80,6 @@ public abstract class ViewActivity<T_Presenter extends Presenter> extends AppCom
     @SuppressWarnings("unchecked")
     protected T_Presenter resolvePresenter() {
         return getPresenter();
-    }
-
-    /**
-     * Test if this {@link View} has a focus.
-     * @return A {@code boolean}.
-     */
-    @Override
-    public boolean hasFocus() {
-        return mState.isResumed();
-    }
-
-    @NonNull
-    @Override
-    public String getDependenciesKey() {
-        return getClass().getName();
     }
 
     @Override

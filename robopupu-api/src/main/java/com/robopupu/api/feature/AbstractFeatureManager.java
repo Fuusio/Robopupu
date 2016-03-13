@@ -252,7 +252,7 @@ public abstract class AbstractFeatureManager extends AbstractManager
         final List<Feature> foregroundFeatures = getForegroundFeatures();
 
         for (final Feature feature : foregroundFeatures) {
-            if (feature.hasFocusedView()) {
+            if (feature.hasForegroundView()) {
                 if (feature.isBackPressedEventHandler()) {
                     if (feature.canGoBack()) {
                         feature.goBack();

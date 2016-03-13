@@ -38,18 +38,4 @@ public interface View {
      * @return A tag as a {@link String}.
      */
     String getViewTag();
-
-    /**
-     * Test if this {@link View} has currently focus.
-     * @return A {@code boolean}.
-     */
-    boolean hasFocus();
-
-    /**
-     * Return a {@link String} based key for accessing a {@link DependencyMap} assigned for this
-     * {@link View}. The default implementation is to return the name of the {@link Class} of
-     * a {@link View}.
-     * @return A {@link String}. May not be empty string nor {@code null}.
-     */
-    String getDependenciesKey();
 }
