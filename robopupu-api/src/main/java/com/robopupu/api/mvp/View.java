@@ -15,8 +15,6 @@
  */
 package com.robopupu.api.mvp;
 
-import com.robopupu.api.dependency.DependencyMap;
-
 /**
  * {@link View} is the interface to be implemented by View components of a MVP
  * architectural pattern implementation.

@@ -26,7 +26,8 @@ import com.robopupu.api.plugin.PluginBus;
 import java.util.HashMap;
 
 @Plugin
-public class TimerManagerImpl extends AbstractManager implements TimerManager {
+public class TimerManagerImpl extends AbstractManager
+        implements TimerManager, ExitObserver {
 
     private static final String TAG = TimerManagerImpl.class.getSimpleName();
 
@@ -53,7 +54,15 @@ public class TimerManagerImpl extends AbstractManager implements TimerManager {
     @Override
     public void onUnplugged(final PluginBus bus) {
         super.onUnplugged(bus);
+        cancelTimers();
+    }
 
+    @Override
+    public void onAppExit() {
+        cancelTimers();
+    }
+
+    private void cancelTimers() {
         for (final TimerHandle handle : mTimerHandles.values()) {
             handle.cancel();
         }

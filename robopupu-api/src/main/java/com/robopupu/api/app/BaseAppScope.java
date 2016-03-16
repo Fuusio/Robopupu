@@ -22,9 +22,9 @@ import com.robopupu.api.graphics.BitmapManagerImpl;
 import com.robopupu.api.plugin.PluginBus;
 import com.robopupu.api.util.PermissionRequestManager;
 
-public abstract class FuusioAppScope<T_Application extends FuusioApplication> extends AppDependencyScope<T_Application> {
+public abstract class BaseAppScope<T_Application extends BaseApplication> extends AppDependencyScope<T_Application> {
 
-    protected FuusioAppScope(final T_Application application) {
+    protected BaseAppScope(final T_Application application) {
         super(application);
     }
 

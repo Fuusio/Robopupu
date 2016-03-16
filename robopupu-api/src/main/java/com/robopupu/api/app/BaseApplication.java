@@ -27,21 +27,20 @@ import android.util.Log;
 import com.robopupu.api.dependency.AppDependencyScope;
 import com.robopupu.api.dependency.DependenciesCache;
 import com.robopupu.api.dependency.Dependency;
-import com.robopupu.api.util.L;
 import com.robopupu.api.util.UIToolkit;
 
 import java.io.File;
 
-public abstract class FuusioApplication extends Application {
+public abstract class BaseApplication extends Application {
 
-    private static final String TAG = FuusioApplication.class.getSimpleName();
+    private static final String TAG = BaseApplication.class.getSimpleName();
 
-    private static FuusioApplication sInstance = null;
+    private static BaseApplication sInstance = null;
 
     protected final AppDependencyScope mAppScope;
     protected final DependenciesCache mDependenciesCache;
 
-    protected FuusioApplication() {
+    protected BaseApplication() {
         setInstance(this);
 
         UIToolkit.setApplication(this);
@@ -75,11 +74,11 @@ public abstract class FuusioApplication extends Application {
     }
 
     @SuppressWarnings("unchecked")
-    public static <T extends FuusioApplication> T getInstance() {
+    public static <T extends BaseApplication> T getInstance() {
         return (T) sInstance;
     }
 
-    private static void setInstance(final FuusioApplication instance) {
+    private static void setInstance(final BaseApplication instance) {
         sInstance = instance;
     }
 
@@ -117,8 +116,8 @@ public abstract class FuusioApplication extends Application {
     }
 
     /**
-     * Test if this {@link FuusioApplication} uses {@link SharedPreferences}. By default an
-     * {@link FuusioApplication} does not use them. Override in your own extended application class
+     * Test if this {@link BaseApplication} uses {@link SharedPreferences}. By default an
+     * {@link BaseApplication} does not use them. Override in your own extended application class
      * if {@link SharedPreferences} are to be used.
      * @return A {@link boolean}.
      */
@@ -135,7 +134,7 @@ public abstract class FuusioApplication extends Application {
     }
 
     /**
-     * Invoked by {@link FuusioApplication#readPreferences()}. This method should be overridden
+     * Invoked by {@link BaseApplication#readPreferences()}. This method should be overridden
      * in extended classes.
      *
      * @param preferences A {@link SharedPreferences} for reading the preferences.
@@ -159,7 +158,7 @@ public abstract class FuusioApplication extends Application {
     }
 
     /**
-     * Invoked by {@link FuusioApplication#writePreferences()}. This method should be overridden
+     * Invoked by {@link BaseApplication#writePreferences()}. This method should be overridden
      * in extended classes.
      *
      * @param preferences A {@link SharedPreferences} for reading the preferences.
@@ -169,7 +168,7 @@ public abstract class FuusioApplication extends Application {
     }
 
     @SuppressWarnings("unchecked")
-    public static <T extends FuusioApplication> T getApplication(final Activity activity) {
+    public static <T extends BaseApplication> T getApplication(final Activity activity) {
         return (T) activity.getApplicationContext();
     }
 
@@ -182,14 +181,16 @@ public abstract class FuusioApplication extends Application {
         final String path = getApplicationDirectoryPath();
         final File directory = new File(path);
 
-        assert (directory != null);
-
         if (!directory.exists()) {
-            directory.mkdirs();
+            if (!directory.mkdirs()) {
+                Log.e(TAG, "getApplicationDirectory() : Failer to create directory; " + path);
+                return null;
+            }
+            if (!directory.canRead()) {
+                Log.e(TAG, "getApplicationDirectory() : Cannot read directory: " + path);
+                return null;
+            }
         }
-
-        assert (directory.exists() && directory.canRead());
-
         return directory;
     }
 

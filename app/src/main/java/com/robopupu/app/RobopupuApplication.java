@@ -21,11 +21,11 @@ import com.robopupu.component.AppManager;
 import com.robopupu.component.PlatformManager;
 import com.robopupu.component.TimerManager;
 
-import com.robopupu.api.app.FuusioApplication;
+import com.robopupu.api.app.BaseApplication;
 import com.robopupu.api.dependency.AppDependencyScope;
 import com.robopupu.api.plugin.PluginBus;
 
-public class RobopupuApplication extends FuusioApplication {
+public class RobopupuApplication extends BaseApplication {
 
     // Google Analytics Property ID
     public final static int PROPERTY_ID = 0;

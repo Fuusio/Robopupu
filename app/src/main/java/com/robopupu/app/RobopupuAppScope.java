@@ -15,12 +15,12 @@
  */
 package com.robopupu.app;
 
-import com.robopupu.api.app.FuusioAppScope;
+import com.robopupu.api.app.BaseAppScope;
 import com.robopupu.api.dependency.Provides;
 import com.robopupu.api.dependency.Scope;
 
 @Scope
-public class RobopupuAppScope extends FuusioAppScope<RobopupuApplication> {
+public class RobopupuAppScope extends BaseAppScope<RobopupuApplication> {
 
     public RobopupuAppScope(final RobopupuApplication app) {
         super(app);
