@@ -13,13 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.robopupu.api.graphics;
+package com.robopupu.api.component;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.v4.util.LruCache;
 import android.util.Log;
 
-import com.robopupu.api.app.BaseApplication;
+import com.robopupu.api.dependency.D;
+import com.robopupu.api.util.AppToolkit;
 import com.robopupu.api.util.StringToolkit;
 
 import java.io.File;
@@ -136,8 +138,10 @@ public class BitmapManagerImpl implements BitmapManager {
         cache.put(key, bitmap);
 
         if (useFileCaching) {
-            final File applicationDirectory = BaseApplication.getApplicationDirectory();
-            final StringBuilder path = new StringBuilder(applicationDirectory.getAbsolutePath());
+            final Context context = D.get(Context.class);
+            final String applicationDirectory = AppToolkit.getApplicationDirectoryPath(context);
+            final StringBuilder path = new StringBuilder();
+            path.append(applicationDirectory);
             path.append("/");
             path.append(StringToolkit.encodeFileName(cacheName));
 

@@ -17,8 +17,8 @@ package com.robopupu.api.app;
 
 import com.robopupu.api.dependency.AppDependencyScope;
 import com.robopupu.api.dependency.DependenciesCache;
-import com.robopupu.api.graphics.BitmapManager;
-import com.robopupu.api.graphics.BitmapManagerImpl;
+import com.robopupu.api.component.BitmapManager;
+import com.robopupu.api.component.BitmapManagerImpl;
 import com.robopupu.api.plugin.PluginBus;
 import com.robopupu.api.util.PermissionRequestManager;
 

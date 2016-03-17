@@ -15,6 +15,7 @@
  */
 package com.robopupu.api.util;
 
+import android.util.Log;
 import android.webkit.URLUtil;
 
 import java.io.UnsupportedEncodingException;
@@ -22,15 +23,15 @@ import java.net.URLEncoder;
 import java.nio.charset.Charset;
 
 public class URLToolkit {
-
-    private static final Charset DEFAULT_CHARSET = Charset.forName("UTF-8");
+    private final static String TAG = URLToolkit.class.getSimpleName();
+    private final static Charset DEFAULT_CHARSET = Charset.forName("UTF-8");
 
     public static String encode(final String format, final Charset charset, final Object... args) {
         final String data = String.format(format, args);
         try {
             return URLEncoder.encode(data, charset.name());
         } catch (UnsupportedEncodingException e) {
-            L.wtf(URLToolkit.class, "encode", e.getMessage());
+            Log.d(TAG, "encode() : " + e.getMessage());
         }
         return null;
     }

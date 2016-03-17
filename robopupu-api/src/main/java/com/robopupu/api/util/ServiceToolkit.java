@@ -22,6 +22,11 @@ import com.robopupu.api.dependency.D;
 
 public class ServiceToolkit {
 
+    /**
+     * Tests if the specified {@link Service} is currently running.
+     * @param serviceClass A {@link Class} specifying the {@link Service}.
+     * @return A {@code boolean} value.
+     */
     public static boolean isServiceRunning(final Class<Service> serviceClass) {
 
         final ActivityManager manager = D.get(ActivityManager.class);

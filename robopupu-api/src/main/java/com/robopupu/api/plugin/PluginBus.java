@@ -189,6 +189,26 @@ public class PluginBus {
         }
     }
 
+    public static void injectPlugs(final Object plugin) {
+        injectPlugs(plugin, false);
+    }
+
+    public static void injectPlugs(final Object plugin, final boolean useHandler) {
+        getInstance().doInjectPlugs(plugin, useHandler);
+    }
+
+    @SuppressWarnings("unchecked")
+    private void doInjectPlugs(final Object plugin, final boolean useHandler) {
+
+        if (plugin instanceof PlugInvoker) {
+            return;
+        }
+
+        final Plugger plugger = getPlugger(plugin.getClass());
+        plugger.plug(plugin, this, useHandler);
+    }
+
+    @SuppressWarnings("unchecked")
     private Plugger getPlugger(final Class<?> pluginClass) {
         final String pluggerClassName = pluginClass.getName() + SUFFIX_PLUGGER;
         Plugger plugger = mPluggers.get(pluggerClassName);

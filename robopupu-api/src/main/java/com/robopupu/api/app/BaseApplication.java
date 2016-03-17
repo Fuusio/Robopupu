@@ -15,11 +15,8 @@
  */
 package com.robopupu.api.app;
 
-import android.app.Activity;
 import android.app.Application;
 import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -28,8 +25,6 @@ import com.robopupu.api.dependency.AppDependencyScope;
 import com.robopupu.api.dependency.DependenciesCache;
 import com.robopupu.api.dependency.Dependency;
 import com.robopupu.api.util.UIToolkit;
-
-import java.io.File;
 
 public abstract class BaseApplication extends Application {
 
@@ -165,51 +160,5 @@ public abstract class BaseApplication extends Application {
      */
     protected void onWritePreferences(final SharedPreferences preferences) {
         // Do nothing by default
-    }
-
-    @SuppressWarnings("unchecked")
-    public static <T extends BaseApplication> T getApplication(final Activity activity) {
-        return (T) activity.getApplicationContext();
-    }
-
-    /**
-     * Gets application directory.
-     * @return The directory as a {@link File}. If accessing the directory fails, {@code null} is
-     * returned.
-     */
-    public static File getApplicationDirectory() {
-        final String path = getApplicationDirectoryPath();
-        final File directory = new File(path);
-
-        if (!directory.exists()) {
-            if (!directory.mkdirs()) {
-                Log.e(TAG, "getApplicationDirectory() : Failer to create directory; " + path);
-                return null;
-            }
-            if (!directory.canRead()) {
-                Log.e(TAG, "getApplicationDirectory() : Cannot read directory: " + path);
-                return null;
-            }
-        }
-        return directory;
-    }
-
-    /**
-     * Gets application directory path.
-     * @return The directory path as a {@link File}. If accessing the directory fails, {@code null}
-     * is returned.
-     */
-    public static String getApplicationDirectoryPath() {
-        final Application application = getInstance();
-        final PackageManager manager = application.getPackageManager();
-        final String packageName = application.getPackageName();
-
-        try {
-            final PackageInfo info = manager.getPackageInfo(packageName, 0);
-            return info.applicationInfo.dataDir;
-        } catch (final PackageManager.NameNotFoundException e) {
-            Log.d(TAG, "getApplicationDirectoryPath : Error Package name not found ");
-        }
-        return null;
     }
 }

@@ -95,13 +95,13 @@ public class UIToolkit {
         return activity.findViewById(layoutResId);
     }
 
-    public static Dimension getDisplaySize() {
+    public static Point getDisplaySize() {
         final WindowManager manager = (WindowManager) sApplication
                 .getSystemService(Context.WINDOW_SERVICE);
         final Display display = manager.getDefaultDisplay();
         final Point size = new Point();
         display.getSize(size);
-        return new Dimension(size.x, size.y);
+        return size;
     }
 
     public static int getDensity() {
