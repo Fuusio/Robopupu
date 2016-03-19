@@ -17,14 +17,14 @@ package com.robopupu.api.app;
 
 import com.robopupu.api.dependency.AppDependencyScope;
 import com.robopupu.api.dependency.DependenciesCache;
-import com.robopupu.api.graphics.BitmapManager;
-import com.robopupu.api.graphics.BitmapManagerImpl;
+import com.robopupu.api.component.BitmapManager;
+import com.robopupu.api.component.BitmapManagerImpl;
 import com.robopupu.api.plugin.PluginBus;
 import com.robopupu.api.util.PermissionRequestManager;
 
-public abstract class FuusioAppScope<T_Application extends FuusioApplication> extends AppDependencyScope<T_Application> {
+public abstract class BaseAppScope<T_Application extends BaseApplication> extends AppDependencyScope<T_Application> {
 
-    protected FuusioAppScope(final T_Application application) {
+    protected BaseAppScope(final T_Application application) {
         super(application);
     }
 
@@ -35,7 +35,8 @@ public abstract class FuusioAppScope<T_Application extends FuusioApplication> ex
         } else if (type(BitmapManager.class)) {
             return dependency(new BitmapManagerImpl());
         } else if (type(DependenciesCache.class)) {
-            return dependency(getApplication().getDependenciesCache());
+            final Robopupu robopupu = Robopupu.getInstance();
+            return dependency(robopupu.getDependenciesCache());
         } else if (type(PermissionRequestManager.class)) {
             return dependency(new PermissionRequestManager());
         }

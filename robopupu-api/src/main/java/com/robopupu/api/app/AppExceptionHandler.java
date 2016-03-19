@@ -17,8 +17,6 @@ package com.robopupu.api.app;
 
 import android.util.Log;
 
-import com.robopupu.api.util.L;
-
 import java.lang.Thread.UncaughtExceptionHandler;
 
 public abstract class AppExceptionHandler<T_ApplicationError extends AppError> implements UncaughtExceptionHandler {
@@ -47,16 +45,17 @@ public abstract class AppExceptionHandler<T_ApplicationError extends AppError> i
 
     public static void createLogEntryFor(final Object object, final AppError error, final String message) {
         if (message != null) {
-            L.wtf(object, "ERROR - Error:", message);
+            final String tag = (object != null) ? object.toString() : AppExceptionHandler.class.getSimpleName();
+            Log.e(tag, "ERROR  : " + message);
         }
     }
 
     public static void createLogEntryFor(final Object object, final AppError error, final Throwable throwable) {
         if (throwable != null) {
             final String stackTrace = Log.getStackTraceString(throwable);
-
-            L.wtf(object, "ERROR - UncaughtException", throwable.getMessage());
-            L.wtf(object, "ERROR - Stack Trace", stackTrace);
+            final String tag = (object != null) ? object.toString() : AppExceptionHandler.class.getSimpleName();
+            Log.e(tag, "ERROR : UncaughtException: " + throwable.getMessage());
+            Log.e(tag, "ERROR : Stack Trace : " + stackTrace);
         }
     }
 

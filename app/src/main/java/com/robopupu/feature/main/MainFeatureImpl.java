@@ -15,6 +15,7 @@
  */
 package com.robopupu.feature.main;
 
+import com.robopupu.api.feature.FeatureContainer;
 import com.robopupu.app.RobopupuAppScope;
 import com.robopupu.feature.main.presenter.MainPresenter;
 import com.robopupu.feature.main.presenter.SplashPresenter;
@@ -39,6 +40,16 @@ public class MainFeatureImpl extends AbstractFeature implements MainFeature {
     public MainFeatureImpl() {
         super(MainFeatureScope.class, true);
         mSplashShown = false;
+    }
+
+    @Override
+    public void onFeatureContainerStarted(final FeatureContainer container) {
+        super.onFeatureContainerStarted(container);
+
+        if (mSplashShown) {
+            openNavigationDrawer();
+        }
+
     }
 
     @Override

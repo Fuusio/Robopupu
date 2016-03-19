@@ -15,28 +15,26 @@
  */
 package com.robopupu.app;
 
+import com.robopupu.api.app.Robopupu;
 import com.robopupu.api.feature.PluginFeatureManager;
 import com.robopupu.app.error.RobopupuAppError;
 import com.robopupu.component.AppManager;
 import com.robopupu.component.PlatformManager;
 import com.robopupu.component.TimerManager;
 
-import com.robopupu.api.app.FuusioApplication;
+import com.robopupu.api.app.BaseApplication;
 import com.robopupu.api.dependency.AppDependencyScope;
 import com.robopupu.api.plugin.PluginBus;
 
-public class RobopupuApplication extends FuusioApplication {
+public class RobopupuApplication extends BaseApplication {
 
     // Google Analytics Property ID
     public final static int PROPERTY_ID = 0;
 
+    private Robopupu mRobopupu;
+
     public RobopupuApplication() {
         super();
-    }
-
-    @Override
-    protected AppDependencyScope createAppScope() {
-        return new RobopupuAppScope(this);
     }
 
     @Override
@@ -45,17 +43,16 @@ public class RobopupuApplication extends FuusioApplication {
         RobopupuAppError.setContext(getApplicationContext());
     }
 
-    /**
-     * Gets the Google Analytics Property ID.
-     * @return The property ID as an {@code int} value.
-     */
+    @Override
     public int getAnalyticsPropertyId() {
         return PROPERTY_ID;
     }
 
     @Override
     protected void configureApplication() {
-        super.configureApplication();
+        final AppDependencyScope appScope = new RobopupuAppScope(this);
+
+        mRobopupu = new Robopupu(appScope);
 
         PluginBus.plug(AppManager.class);
         PluginBus.plug(PlatformManager.class);

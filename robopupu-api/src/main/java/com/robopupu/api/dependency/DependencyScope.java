@@ -232,7 +232,7 @@ public abstract class DependencyScope {
      * @return The cached dependency {@link Object}.
      */
     @SuppressWarnings("unchecked")
-    public <T> T cache(final Class<T> dependencyType, final Object dependency) {
+    protected <T> T cache(final Class<T> dependencyType, final Object dependency) {
         if (dependency != null) {
             mDependencies.put(dependencyType, dependency);
             return (T) dependency;

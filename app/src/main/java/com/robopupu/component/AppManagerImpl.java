@@ -38,6 +38,7 @@ import android.util.Log;
 
 import com.robopupu.R;
 import com.robopupu.api.feature.PluginFeatureManager;
+import com.robopupu.api.util.AppToolkit;
 import com.robopupu.app.RobopupuAppScope;
 import com.robopupu.app.RobopupuApplication;
 
@@ -47,7 +48,6 @@ import com.robopupu.api.dependency.Provides;
 import com.robopupu.api.dependency.Scope;
 import com.robopupu.api.plugin.Plug;
 import com.robopupu.api.plugin.Plugin;
-import com.robopupu.api.util.L;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -62,7 +62,6 @@ public class AppManagerImpl extends AbstractManager implements AppManager {
 
     @Plug ExitObserver mExitObserver;
     @Plug PluginFeatureManager mFeatureManager;
-
 
     @Scope(RobopupuAppScope.class)
     @Provides(AppManager.class)
@@ -184,12 +183,12 @@ public class AppManagerImpl extends AbstractManager implements AppManager {
 
     @Override
     public File getApplicationDirectory() {
-        return RobopupuApplication.getApplicationDirectory();
+        return AppToolkit.getApplicationDirectory(getAppContext());
     }
 
     @Override
     public String getApplicationDirectoryPath() {
-        return RobopupuApplication.getApplicationDirectoryPath();
+        return AppToolkit.getApplicationDirectoryPath(getAppContext());
     }
 
     @Override
