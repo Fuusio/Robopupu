@@ -17,10 +17,12 @@ package com.robopupu.feature.main.presenter;
 
 import com.robopupu.R;
 import com.robopupu.api.feature.PluginFeatureManager;
+import com.robopupu.api.mvp.View;
 import com.robopupu.component.AppManager;
 import com.robopupu.feature.about.AboutFeature;
 import com.robopupu.feature.feedback.FeedbackFeature;
 import com.robopupu.feature.fsm.FsmDemoFeature;
+import com.robopupu.feature.main.MainFeature;
 import com.robopupu.feature.main.view.MainView;
 
 import com.robopupu.api.dependency.Provides;

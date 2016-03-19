@@ -35,7 +35,8 @@ public abstract class BaseAppScope<T_Application extends BaseApplication> extend
         } else if (type(BitmapManager.class)) {
             return dependency(new BitmapManagerImpl());
         } else if (type(DependenciesCache.class)) {
-            return dependency(getApplication().getDependenciesCache());
+            final Robopupu robopupu = Robopupu.getInstance();
+            return dependency(robopupu.getDependenciesCache());
         } else if (type(PermissionRequestManager.class)) {
             return dependency(new PermissionRequestManager());
         }
