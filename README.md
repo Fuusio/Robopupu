@@ -21,12 +21,38 @@ To minimize writing of boiler plate code, **Robopupu** utilises declarative anno
 * [Robopupu developer documentation](http://robopupu.com/)
 * [Javadoc API documentation](http://fuusio.github.io/Robopupu/javadocs/)
 
-## Sample App APK
-The sample apk file for Robopupu app can be found in the [release section](https://github.com/Fuusio/Robopupu/releases)
+## Sample App 
+The sample application build from source codes the [app module](https://github.com/Fuusio/Robopupu/tree/master/app) is also available in [Google Play Store](https://play.google.com/store/apps/details?id=com.robopupu).
 
 ## Installation
+Use the following dependencies into your application module's ```build.gradle```file:
 
-TBD
+```groovy
+dependencies {
+	compile 'com.robopupu:robopupu:0.3.0'
+	apt 'com.squareup:javapoet:1.5.1' 
+	apt compile 'com.robopupu:robopupu-compiler:0.3.0'
+}
+```
+In addition, since the Robopupu Compiler utilises annotation processing we need to use [android-apt plugin](https://bitbucket.org/hvisser/android-apt). For this reason, you need to declare the plugin in your into your application module's ```build.gradle```file:
+
+```groovy
+apply plugin: 'com.android.application'
+apply plugin: 'com.neenbedankt.android-apt'
+```
+Finally, you need to declare the following ```classpath``` for the android-apt plugin in your project's ```build.gradle```file:
+
+```groovy
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:1.5.0'
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+    }
+}
+```
 
 ## Changelog
 
