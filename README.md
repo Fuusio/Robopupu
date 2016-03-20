@@ -19,14 +19,13 @@ The compiler is currently included as [JAR file](https://github.com/Fuusio/Robop
 available as an open source project.
 
 ## Status
-
-Robopupu is currently under active development.
+The current version is 0.3. Robopupu is currently under active development.
 
 ## Documentation
 Robopupu documentation can be found in [Robopupu project website](http://robopupu.com/). API documentation can be found in the [API documentation](https://github.com/Fuusio/Robopupu/wiki/Documentation)
 
-## Sample App APK
-The sample apk file for Robopupu app can be found in the [release section](https://github.com/Fuusio/Robopupu/releases)
+## Sample App
+This repository includes a sample app that demonstrated the usage of all the Robopupu APIs. The app is also available from [Google Play Store](https://play.google.com/store/apps/details?id=com.robopupu)
 
 ## Installation
 
