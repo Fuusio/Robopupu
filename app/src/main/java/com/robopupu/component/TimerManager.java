@@ -23,7 +23,8 @@ public interface TimerManager extends Manager {
 
     /**
      * Creates and starts a timer that expires after the specified delay.
-     * @param delay delay in milliseconds before the timer expires.
+     * @param callback A {@link Callback} to be invoked when a timer expires.
+     * @param delay The delay in milliseconds before the timer expires.
      * @return A {@link TimerHandle} that can be used to cancel the timer.
      */
     TimerHandle createTimer(Callback callback, long delay);

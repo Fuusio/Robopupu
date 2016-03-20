@@ -176,7 +176,9 @@ public class AdapterViewBinding<T_Item> extends ViewBinding<AdapterView>
     }
 
     /**
-     * This method should be overridden for dispatching {@link android.widget.AdapterView.OnItemSelectedListener#onItemSelected(android.widget.AdapterView, android.view.View, int, long)} events.
+     * This method should be overridden for dispatching
+     * {@link android.widget.AdapterView.OnItemSelectedListener#onItemSelected(android.widget.AdapterView, android.view.View, int, long)} events.
+     * @param item The selected item.
      */
     protected void itemSelected(final Object item) {
         // By default do nothing

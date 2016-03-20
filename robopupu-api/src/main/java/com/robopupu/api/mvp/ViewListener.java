@@ -11,9 +11,9 @@ public interface ViewListener {
      * Invoked by a {@link View} implementation when it is created-
      *
      * @param view    A {@link View}
-     * @param inState {@lin Params} containing the initial state.
+     * @param params {@link Params} containing the initial state.
      */
-    void onViewCreated(View view, Params inState);
+    void onViewCreated(View view, Params params);
 
     /**
      * Invoked by a {@link View} implementation when it is resumed,

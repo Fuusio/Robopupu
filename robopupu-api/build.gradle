@@ -1,14 +1,19 @@
 apply plugin: 'com.android.library'
 
+ext {
+    PUBLISH_GROUP_ID = 'com.robopupu'
+    PUBLISH_ARTIFACT_ID = 'robopupu'
+    PUBLISH_VERSION = '0.3.1'
+}
+
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.2"
-
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 23
         versionCode 1
-        versionName "1.0"
+        versionName '0.3.1'
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -17,19 +22,21 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    productFlavors {
+    }
+
+    lintOptions {
+        abortOnError false
+    }
 }
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:support-v4:23.1.1'
     compile 'com.android.support:design:23.1.1'
-    compile 'com.mcxiaoke.volley:library:1.0.19'
-    compile 'com.squareup.okhttp3:okhttp:3.1.2'
-    compile 'com.squareup.okhttp:okhttp-urlconnection:2.7.0'
-    compile 'com.google.collections:google-collections:1.0'
     compile 'com.google.code.gson:gson:2.6.1'
+
     testCompile 'junit:junit:4.12'
     androidTestCompile('com.android.support.test:runner:0.4.1') {
         exclude group: 'com.android.support', module: 'support-annotations'
@@ -49,3 +56,8 @@ dependencies {
         exclude group: 'org.hamcrest'
     }
 }
+
+apply from: 'https://raw.githubusercontent.com/blundell/release-android-library/master/android-release-aar.gradle'
+
+
+
