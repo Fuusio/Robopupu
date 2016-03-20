@@ -1,6 +1,6 @@
 # Robopupu
 
-<img src="https://github.com/Fuusio/Robopupu/blob/master/images/robopupu_header_image.png" alt="robopupu mascot"/>
+<img src="https://github.com/Fuusio/Robopupu/blob/gh-pages/images/robopupu_header_image.png" alt="Robopupu mascot"/>
 
 An Android library that provides a set of APIs for architecting and developing Android applications:
 
@@ -14,25 +14,23 @@ An Android library that provides a set of APIs for architecting and developing A
 Check out the [Robopupu project website](http://robopupu.com/) for further information.
 
 ## Robopupu Compiler
-To minimize writing of boiler plate code, **Robopupu** utilises declarative annotations and annotation processing that generates code for using the libraries.
-The compiler is currently included as [JAR file](https://github.com/Fuusio/Robopupu/blob/master/app/libs/robopupu-compiler.jar), but the source codes will be made soon
-available as an open source project.
-
-## Status
-The current version is 0.3. Robopupu is currently under active development.
+To minimize writing of boiler plate code, **Robopupu** utilises declarative annotations and annotation processing that generates code for using the libraries. The source codes for Robopupu Compiler and the instructions for getting started are available in Github : [https://github.com/Fuusio/Robopupu-Compiler](https://github.com/Fuusio/Robopupu-Compiler).
 
 ## Documentation
-Robopupu documentation can be found in [Robopupu project website](http://robopupu.com/). API documentation can be found in the [API documentation](https://github.com/Fuusio/Robopupu/wiki/Documentation)
 
-## Sample App
-This repository includes a sample app that demonstrated the usage of all the Robopupu APIs. The app is also available from [Google Play Store](https://play.google.com/store/apps/details?id=com.robopupu)
+* [Robopupu developer documentation](http://robopupu.com/)
+* [Javadoc API documentation](http://fuusio.github.io/Robopupu/javadocs/)
+
+## Sample App APK
+The sample apk file for Robopupu app can be found in the [release section](https://github.com/Fuusio/Robopupu/releases)
 
 ## Installation
 
 TBD
 
 ## Changelog
-The changelog can be found in the [release section](https://github.com/Fuusio/Robopupu/releases)
+
+The current release is 0.3
 
 ## License
 ```
