@@ -1,6 +1,6 @@
 # Robopupu
 
-<img src="https://github.com/Fuusio/Robopupu/blob/master/images/robopupu_header_image.png" alt="robopupu mascot"/>
+<img src="https://github.com/Fuusio/Robopupu/blob/gh-pages/images/robopupu_header_image.png" alt="Robopupu mascot"/>
 
 An Android library that provides a set of APIs for architecting and developing Android applications:
 
@@ -23,7 +23,9 @@ available as an open source project.
 Robopupu is currently under active development.
 
 ## Documentation
-Robopupu documentation can be found in [Robopupu project website](http://robopupu.com/). API documentation can be found in the [API documentation](https://github.com/Fuusio/Robopupu/wiki/Documentation)
+Robopupu documentation can be found in [Robopupu project website](http://robopupu.com/).
+
+Javadocs-vased API documentation can be found in the [API documentation](https://github.com/Fuusio/Robopupu/tree/gh-pages/javadocs/javadoc)
 
 ## Sample App APK
 The sample apk file for Robopupu app can be found in the [release section](https://github.com/Fuusio/Robopupu/releases)
@@ -33,7 +35,8 @@ The sample apk file for Robopupu app can be found in the [release section](https
 TBD
 
 ## Changelog
-The changelog can be found in the [release section](https://github.com/Fuusio/Robopupu/releases)
+
+The current release is 0.3
 
 ## License
 ```
