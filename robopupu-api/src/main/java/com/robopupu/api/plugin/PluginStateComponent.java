@@ -58,7 +58,7 @@ public interface PluginStateComponent extends PluginComponent {
 
     /**
      * Invoked to start the {@link PluginStateComponent} using the given parameters.
-     * @param params A {@link Params}. May not be {@link null}.
+     * @param params A {@link Params}. May not be {@code null}.
      */
     void start(Params params);
 

@@ -65,7 +65,7 @@ public interface AppManager extends Manager {
     String getAppVersionName();
 
     /**
-     * Gets the {@linkn PackageInfo} of the application.
+     * Gets the {@link PackageInfo} of the application.
      *
      * @return A {@link PackageInfo}.
      */
