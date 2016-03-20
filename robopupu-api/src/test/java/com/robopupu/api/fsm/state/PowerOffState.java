@@ -35,6 +35,6 @@ public class PowerOffState extends State {
 
     @Override
     public void switchPowerOn() {
-        toState(PowerOnState.class);
+        transitTo(PowerOnState.class);
     }
 }

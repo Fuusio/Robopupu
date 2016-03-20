@@ -1,27 +1,9 @@
 apply plugin: 'com.android.library'
 
 ext {
-    bintrayRepo = 'maven'
-    bintrayName = 'robopupu'
-
-    publishedGroupId = 'com.robopupu'
-    libraryName = 'Robopupu'
-    artifact = 'robopupu'
-
-    libraryDescription = 'An Android library that provides a collection of advanced APIs for architecting and developing Android applications. The library provides MVP, DI, inter-component communication, and application feature framework APIs.'
-
-    siteUrl = 'https://github.com/Fuusio/Robopupu'
-    gitUrl = 'https://github.com/Fuusio/Robopupu.git'
-
-    libraryVersion = '0.3.0'
-
-    developerId = 'robopupu'
-    developerName = 'Marko Salmela'
-    developerEmail = 'marko.fuusio.salmela@gmail.com'
-
-    licenseName = 'The Apache Software License, Version 2.0'
-    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-    allLicenses = ["Apache-2.0"]
+    PUBLISH_GROUP_ID = 'com.robopupu'
+    PUBLISH_ARTIFACT_ID = 'robopupu'
+    PUBLISH_VERSION = '0.3.1'
 }
 
 android {
@@ -31,7 +13,7 @@ android {
         minSdkVersion 16
         targetSdkVersion 23
         versionCode 1
-        versionName '0.3.0'
+        versionName '0.3.1'
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -42,26 +24,9 @@ android {
     }
     productFlavors {
     }
-}
 
-android.libraryVariants.all { variant ->
-    task("generate${variant.name.capitalize()}Javadoc", type: Javadoc) {
-        source = variant.javaCompile.source
-        classpath = files(variant.javaCompile.classpath.files, project.android.getBootClasspath())
-        options {
-            links "http://docs.oracle.com/javase/7/docs/api/"
-            linksOffline "http://d.android.com/reference","${android.sdkDirectory}/docs/reference"
-        }
-        exclude '**/BuildConfig.java'
-        exclude '**/R.java'
-    }
-}
-
-if (JavaVersion.current().isJava8Compatible()) {
-    allprojects {
-        tasks.withType(Javadoc) {
-            options.addStringOption('Xdoclint:none', '-quiet')
-        }
+    lintOptions {
+        abortOnError false
     }
 }
 
@@ -70,11 +35,8 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:support-v4:23.1.1'
     compile 'com.android.support:design:23.1.1'
-    compile 'com.mcxiaoke.volley:library:1.0.19'
-    compile 'com.squareup.okhttp3:okhttp:3.1.2'
-    compile 'com.squareup.okhttp:okhttp-urlconnection:2.7.0'
-    compile 'com.google.collections:google-collections:1.0'
     compile 'com.google.code.gson:gson:2.6.1'
+
     testCompile 'junit:junit:4.12'
     androidTestCompile('com.android.support.test:runner:0.4.1') {
         exclude group: 'com.android.support', module: 'support-annotations'
@@ -95,8 +57,7 @@ dependencies {
     }
 }
 
-apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'
-apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/bintrayv1.gradle'
+apply from: 'https://raw.githubusercontent.com/blundell/release-android-library/master/android-release-aar.gradle'
 
 
 

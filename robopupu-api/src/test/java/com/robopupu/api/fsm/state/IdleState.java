@@ -35,6 +35,6 @@ public class IdleState extends State {
 
     @Override
     public void makeButtonPressed() {
-        toState(MakingCoffeeState.class);
+        transitTo(MakingCoffeeState.class);
     }
 }

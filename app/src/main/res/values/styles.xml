@@ -18,13 +18,6 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="CardView.Default" parent="CardView">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_gravity">center</item>
-        <item name="android:layout_margin">4dp</item>
-    </style>
-
     <style name="Widget.Card.Default" parent="android:Widget">
         <item name="android:layout_width">match_parent</item>
         <item name="android:paddingLeft">16dp</item>
