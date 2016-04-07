@@ -79,10 +79,8 @@ public abstract class ViewFragment<T_Presenter extends Presenter> extends Fragme
 
         if (presenter == null) {
             if (PluginBus.isPlugin(getClass())) {
-                Log.d(TAG, "resolvePresenter() : Needs to plug the View to PluginBus");
                 PluginBus.plug(this);
                 presenter = getPresenter();
-                Log.d(TAG, "resolvePresenter() : Presenter: " + presenter);
             }
         }
         return presenter;

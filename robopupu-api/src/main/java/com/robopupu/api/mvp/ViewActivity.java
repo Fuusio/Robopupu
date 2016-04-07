@@ -79,7 +79,15 @@ public abstract class ViewActivity<T_Presenter extends Presenter> extends AppCom
      */
     @SuppressWarnings("unchecked")
     protected T_Presenter resolvePresenter() {
-        return getPresenter();
+        T_Presenter presenter = getPresenter();
+
+        if (presenter == null) {
+            if (PluginBus.isPlugin(getClass())) {
+                PluginBus.plug(this);
+                presenter = getPresenter();
+            }
+        }
+        return presenter;
     }
 
     @Override
