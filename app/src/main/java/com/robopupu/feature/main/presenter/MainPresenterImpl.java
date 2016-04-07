@@ -32,16 +32,14 @@ import com.robopupu.api.plugin.Plug;
 import com.robopupu.api.plugin.Plugin;
 
 @Plugin
+@Provides(MainPresenter.class)
 public class MainPresenterImpl extends AbstractPresenter<MainView>
         implements MainPresenter {
 
     @Plug AppManager mAppManager;
     @Plug PluginFeatureManager mFeatureManager;
+    @Plug MainFeature mMainFeature;
     @Plug MainView mView;
-
-    @Provides(MainPresenter.class)
-    public MainPresenterImpl() {
-    }
 
     @Override
     public MainView getViewPlug() {
@@ -75,5 +73,12 @@ public class MainPresenterImpl extends AbstractPresenter<MainView>
             selectionHandled = false;
         }
         return selectionHandled;
+    }
+
+
+    @Override
+    public void onViewStart(final View view) {
+        super.onViewStart(view);
+        mMainFeature.onMainPresenterStarted();
     }
 }

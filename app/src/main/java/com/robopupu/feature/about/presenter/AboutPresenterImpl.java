@@ -34,6 +34,13 @@ public class AboutPresenterImpl extends AbstractFeaturePresenter<AboutView>
     @Plug AboutPresenterListener mListener;
     @Plug AboutView mView;
 
+
+    private final String mTimeText; // XXX
+
+    public AboutPresenterImpl() { // XXX
+        mTimeText = Long.toString(System.currentTimeMillis());
+    }
+
     @Override
     public AboutView getViewPlug() {
         return mView;
@@ -48,7 +55,8 @@ public class AboutPresenterImpl extends AbstractFeaturePresenter<AboutView>
     @Override
     public void onViewResume(final View view) {
         super.onViewResume(view);
-        mView.setVersionText(mAppManager.getAppVersionName());
+        mView.setVersionText(mTimeText);
+        //mView.setVersionText(mAppManager.getAppVersionName());
     }
 
     @Override

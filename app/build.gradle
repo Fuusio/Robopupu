@@ -31,11 +31,11 @@ repositories {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    // compile project(':robopupu-api')
-    // apt files('libs/fuusio-api-compiler.jar')
+    compile project(':robopupu-api')
+    apt files('libs/robopupu-compiler.jar')
 
-    compile 'com.robopupu:robopupu:0.3.1'
-    apt 'com.robopupu:robopupu-compiler:0.3.1'
+    // compile 'com.robopupu:robopupu:0.3.1'
+    // apt 'com.robopupu:robopupu-compiler:0.3.1'
     apt 'com.squareup:javapoet:1.5.1'
 
     testCompile 'junit:junit:4.12'

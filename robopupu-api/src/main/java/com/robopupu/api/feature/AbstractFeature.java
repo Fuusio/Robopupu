@@ -363,37 +363,7 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
     }
 
     @Override
-    public void onPresenterStarted(Presenter presenter) {
-        // By default do nothing
-    }
-
-    @Override
-    public void onPresenterResumed(Presenter presenter) {
-        // By default do nothing
-    }
-
-    @Override
-    public void onPresenterPaused(Presenter presenter) {
-        // By default do nothing
-    }
-
-    @Override
-    public void onPresenterStopped(Presenter presenter) {
-        // By default do nothing
-    }
-
-    @Override
-    public void onPresenterDestroyed(Presenter presenter) {
-        // By default do nothing
-    }
-
-    @Override
     public void onPresenterFinished(Presenter presenter) {
-        // By default do nothing
-    }
-
-    @Override
-    public void onFeatureContainerStarted(FeatureContainer container) {
         // By default do nothing
     }
 
@@ -404,6 +374,11 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
 
     @Override
     public void onFeatureContainerResumed(FeatureContainer container) {
+        // By default do nothing
+    }
+
+    @Override
+    public void onFeatureContainerStarted(FeatureContainer container) {
         // By default do nothing
     }
 

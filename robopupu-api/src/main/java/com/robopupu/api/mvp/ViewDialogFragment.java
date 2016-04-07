@@ -46,7 +46,7 @@ import com.robopupu.api.util.Converter;
  * @param <T_Presenter> The type of the {@link Presenter}.
  */
 public abstract class ViewDialogFragment<T_Presenter extends Presenter> extends DialogFragment
-        implements View, PresenterDependant<T_Presenter>, Scopeable {
+        implements View, PresentedView<T_Presenter>, Scopeable {
 
     private static String TAG = ViewDialogFragment.class.getSimpleName();
 
@@ -59,7 +59,7 @@ public abstract class ViewDialogFragment<T_Presenter extends Presenter> extends 
 
     protected ViewDialogFragment() {
         mBinder = new ViewBinder(this);
-        mState = new ViewState();
+        mState = new ViewState(this);
     }
 
     @NonNull

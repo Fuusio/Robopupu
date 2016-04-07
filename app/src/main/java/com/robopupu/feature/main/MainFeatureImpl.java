@@ -53,13 +53,11 @@ public class MainFeatureImpl extends AbstractFeature implements MainFeature {
     }
 
     @Override
-    public void onPresenterStarted(final Presenter presenter) {
+    public void onMainPresenterStarted() {
 
-        if (presenter instanceof MainPresenter) {
-            if (!mSplashShown) {
-                mSplashShown = true;
-                showView(mMainView.getMainFeatureContainer(), SplashPresenter.class, false);
-            }
+        if (!mSplashShown) {
+            mSplashShown = true;
+            showView(mMainView.getMainFeatureContainer(), SplashPresenter.class, false);
         }
     }
 
