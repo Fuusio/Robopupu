@@ -37,12 +37,12 @@ import com.robopupu.api.util.Converter;
 
 /**
  * {@link ViewFragment} provides an abstract base class for concrete {@link Fragment} implementations
- * that implement {@link View} components for a MVP architectural pattern implementation.
+ * that are used as {@link View} components in Robopupu MVP implementation.
  *
- * @param <T_Presenter> The type of the {@link Presenter}.
+ * @param <T_Presenter> The parametrised type of the {@link Presenter}.
  */
 public abstract class ViewFragment<T_Presenter extends Presenter> extends Fragment
-        implements View, PresenterDependant<T_Presenter>, Scopeable {
+        implements View, PresentedView<T_Presenter>, Scopeable {
 
     private static String TAG = ViewFragment.class.getSimpleName();
 
@@ -53,7 +53,7 @@ public abstract class ViewFragment<T_Presenter extends Presenter> extends Fragme
 
     protected ViewFragment() {
         mBinder = new ViewBinder(this);
-        mState = new ViewState();
+        mState = new ViewState(this);
     }
 
     /**
@@ -79,8 +79,8 @@ public abstract class ViewFragment<T_Presenter extends Presenter> extends Fragme
 
         if (presenter == null) {
             if (PluginBus.isPlugin(getClass())) {
-                Log.d(TAG, "resolvePresenter() : Plugged to PluginBus");
                 PluginBus.plug(this);
+                presenter = getPresenter();
             }
         }
         return presenter;
@@ -88,6 +88,7 @@ public abstract class ViewFragment<T_Presenter extends Presenter> extends Fragme
 
     @Override
     public void onViewCreated(final android.view.View view, final Bundle inState) {
+        Log.d(TAG, "onViewCreated(...)");
         super.onViewCreated(view, inState);
         mState.onCreate();
 
@@ -126,6 +127,7 @@ public abstract class ViewFragment<T_Presenter extends Presenter> extends Fragme
 
     @Override
     public void onStart() {
+        Log.d(TAG, "onStart()");
         super.onStart();
         mState.onStart();
 
@@ -147,6 +149,7 @@ public abstract class ViewFragment<T_Presenter extends Presenter> extends Fragme
 
     @Override
     public void onResume() {
+        Log.d(TAG, "onResume()");
         super.onResume();
         mState.onResume();
 
@@ -161,6 +164,7 @@ public abstract class ViewFragment<T_Presenter extends Presenter> extends Fragme
 
     @Override
     public void onStop() {
+        Log.d(TAG, "onStop()");
         super.onStop();
         mState.onStop();
 
@@ -172,6 +176,7 @@ public abstract class ViewFragment<T_Presenter extends Presenter> extends Fragme
 
     @Override
     public void onPause() {
+        Log.d(TAG, "onPause()");
         super.onPause();
         mState.onPause();
 
@@ -183,6 +188,7 @@ public abstract class ViewFragment<T_Presenter extends Presenter> extends Fragme
 
     @Override
     public void onDestroy() {
+        Log.d(TAG, "onDestroy()");
         super.onDestroy();
         mState.onDestroy();
 

@@ -15,16 +15,16 @@
  */
 package com.robopupu.api.mvp;
 
+import android.support.annotation.CallSuper;
 import android.util.Log;
 
 import com.robopupu.api.dependency.D;
 import com.robopupu.api.dependency.DependencyScope;
 import com.robopupu.api.dependency.Scopeable;
-import com.robopupu.api.plugin.AbstractPluginComponent;
+import com.robopupu.api.plugin.AbstractPluginStateComponent;
 import com.robopupu.api.plugin.PlugInvoker;
 import com.robopupu.api.plugin.PluginBus;
 import com.robopupu.api.util.AbstractListenable;
-import com.robopupu.api.util.LifecycleState;
 import com.robopupu.api.util.Params;
 
 import java.util.ArrayList;
@@ -34,7 +34,7 @@ import java.util.List;
  * {@link AbstractPresenter} extends {@link AbstractListenable} to provide an abstract base class
  * for concrete implementations of {@link Presenter}s.
  */
-public abstract class AbstractPresenter<T_View extends View> extends AbstractPluginComponent
+public abstract class AbstractPresenter<T_View extends View> extends AbstractPluginStateComponent
         implements Presenter, Scopeable {
 
     private static final String TAG = AbstractPresenter.class.getSimpleName();
@@ -42,17 +42,15 @@ public abstract class AbstractPresenter<T_View extends View> extends AbstractPlu
     protected final List<PresenterListener> mListeners;
 
     protected Params mParams;
-    protected LifecycleState mState;
 
     private DependencyScope mScope;
 
     protected AbstractPresenter() {
         mListeners = new ArrayList<>();
-        mState = LifecycleState.CREATED;
     }
 
     /**
-     * Gets the {@link View} attached to this {@link Presenter}.
+     * Gets the {@link View} attached to this {@link AbstractPresenter}.
      *
      * @return A {@link View}.
      */
@@ -67,6 +65,11 @@ public abstract class AbstractPresenter<T_View extends View> extends AbstractPlu
         }
     }
 
+    /**
+     * Gets the {@link PresenterListener}s.
+     *
+     * @return A {@link List} containing the {@link PresenterListener}s.
+     */
     protected List<PresenterListener> getListeners() {
         final ArrayList<PresenterListener> listeners = new ArrayList<>();
         listeners.addAll(mListeners);
@@ -91,7 +94,28 @@ public abstract class AbstractPresenter<T_View extends View> extends AbstractPlu
      * @return A {@link ViewState}.
      */
     protected ViewState getViewState() {
-        return getAttachedView().getState();
+        final View view = getAttachedView();
+
+        if (view != null) {
+            return view.getState();
+        }
+        return new ViewState(null);
+    }
+
+    /**
+     * Tests if this {@link AbstractPresenter} has an attached {@link View}.
+     * @return A {@code boolean}.
+     */
+    protected boolean isAttached() {
+        final View view = getView();
+
+        if (view != null) {
+            if (view instanceof PlugInvoker) {
+                return ((PlugInvoker)view).hasPlugins();
+            }
+            return true;
+         }
+        return false;
     }
 
     /**
@@ -107,80 +131,16 @@ public abstract class AbstractPresenter<T_View extends View> extends AbstractPlu
         mParams = params;
     }
 
-    /**
-     * Invoked to pause this {@link Presenter}.
-     */
-    private void pause() {
-        mState = LifecycleState.PAUSED;
 
-        for (final PresenterListener listener : getListeners()) {
-            listener.onPresenterPaused(this);
-        }
-    }
-
-    /**
-     * Invoked to resume this {@link Presenter}.
-     */
-    private void resume() {
-        mState = LifecycleState.RESUMED;
-
-        for (final PresenterListener listener : getListeners()) {
-            listener.onPresenterResumed(this);
-        }
-    }
-
-    /**
-     * Invoked to start this {@link Presenter}.
-     */
-     private void start() {
-        mState = LifecycleState.STARTED;
-
-         for (final PresenterListener listener : getListeners()) {
-            listener.onPresenterStarted(this);
-        }
-    }
-
-    /**
-     * Invoked to stop this {@link Presenter}.
-     */
-    private void stop() {
-        if (!mState.isStopped()) {
-            mState = LifecycleState.STOPPED;
-
-            for (final PresenterListener listener : getListeners()) {
-                listener.onPresenterStopped(this);
-            }
-        }
-    }
-
-    /**
-     * Invoked to destroy this {@link Presenter}.
-     */
-    private void destroy() {
-
-        if (!mState.isDestroyed()) {
-
-            mState = LifecycleState.DESTROYED;
-
-            for (final PresenterListener listener : getListeners()) {
-                listener.onPresenterDestroyed(this);
-            }
-
-            if (PluginBus.isPlugged(this)) {
-                Log.d(TAG, "destroy() : Unplugged from PluginBus");
-                PluginBus.unplug(this);
-            }
-        }
-    }
 
     @Override
     public void finish() {
         stop();
+        Log.d(TAG, "finish()");
 
         for (final PresenterListener listener : getListeners()) {
             listener.onPresenterFinished(this);
         }
-
         PluginBus.unplug(this);
     }
 
@@ -218,12 +178,14 @@ public abstract class AbstractPresenter<T_View extends View> extends AbstractPlu
     @Override
     //@CallSuper
     public void onPlugged(final PluginBus bus) {
+        Log.d(TAG, "onPlugged(...)");
         updateListeners(bus);
     }
 
     @Override
     //@CallSuper
     public void onUnplugged(final PluginBus bus) {
+        Log.d(TAG, "onUnplugged(...)");
         mListeners.clear();
     }
 
@@ -243,41 +205,45 @@ public abstract class AbstractPresenter<T_View extends View> extends AbstractPlu
 
     @SuppressWarnings("unchecked")
     @Override
-    //@CallSuper
+    @CallSuper
     public void onViewCreated(final View view, final Params inState) {
+        Log.d(TAG, "onViewCreated(...)");
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    //@CallSuper
+    @CallSuper
     public void onViewResume(final View view) {
         resume();
+        Log.d(TAG, "onViewResume(View)");
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    //@CallSuper
+    @CallSuper
     public void onViewStart(final View view) {
         start();
+        Log.d(TAG, "onViewStart(View)");
     }
 
     @Override
-    //@CallSuper
+    @CallSuper
     public void onViewPause(final View view) {
         pause();
+        Log.d(TAG, "onViewPause(View)");
     }
 
 
     @Override
-    //@CallSuper
+    @CallSuper
     public void onViewStop(final View view) {
-        stop();
+        Log.d(TAG, "onViewStop(View)");
     }
 
     @Override
-    //@CallSuper
+    @CallSuper
     public void onViewDestroy(final View view) {
-        destroy();
+        Log.d(TAG, "onViewDestroy(View)");
     }
 
     @Override
@@ -299,6 +265,7 @@ public abstract class AbstractPresenter<T_View extends View> extends AbstractPlu
     @SuppressWarnings("unchecked")
     public static Class<? extends Presenter> getInterfaceClass(final Presenter presenter) {
         final Class<? extends Presenter> presenterClass = presenter.getClass();
+
         for (final Class<?> interfaceClass : presenterClass.getInterfaces()) {
             if (Presenter.class.isAssignableFrom(interfaceClass)) {
                 return (Class<? extends Presenter>)interfaceClass;

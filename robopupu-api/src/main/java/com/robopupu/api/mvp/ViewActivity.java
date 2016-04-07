@@ -45,7 +45,7 @@ import com.robopupu.api.util.PermissionRequestManager;
  * @param <T_Presenter> The type of the {@link Presenter}.
  */
 public abstract class ViewActivity<T_Presenter extends Presenter> extends AppCompatActivity
-        implements View, PresenterDependant<T_Presenter>, Scopeable {
+        implements View, PresentedView<T_Presenter>, Scopeable {
 
     private static String TAG = ViewDialogFragment.class.getSimpleName();
 
@@ -56,7 +56,7 @@ public abstract class ViewActivity<T_Presenter extends Presenter> extends AppCom
 
     protected ViewActivity() {
         mBinder = new ViewBinder(this);
-        mState = new ViewState();
+        mState = new ViewState(this);
     }
 
     /**
@@ -79,7 +79,15 @@ public abstract class ViewActivity<T_Presenter extends Presenter> extends AppCom
      */
     @SuppressWarnings("unchecked")
     protected T_Presenter resolvePresenter() {
-        return getPresenter();
+        T_Presenter presenter = getPresenter();
+
+        if (presenter == null) {
+            if (PluginBus.isPlugin(getClass())) {
+                PluginBus.plug(this);
+                presenter = getPresenter();
+            }
+        }
+        return presenter;
     }
 
     @Override

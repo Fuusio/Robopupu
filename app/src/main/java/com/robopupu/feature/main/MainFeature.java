@@ -22,4 +22,6 @@ import com.robopupu.api.plugin.PlugInterface;
 public interface MainFeature extends Feature {
 
     void openNavigationDrawer();
+
+    void onMainPresenterStarted();
 }

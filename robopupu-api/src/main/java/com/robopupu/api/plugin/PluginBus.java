@@ -15,6 +15,8 @@
  */
 package com.robopupu.api.plugin;
 
+import android.util.Log;
+
 import com.robopupu.api.dependency.D;
 import com.robopupu.api.dependency.Dependency;
 import com.robopupu.api.dependency.DependencyScope;
@@ -26,6 +28,8 @@ import java.util.HashMap;
 import java.util.List;
 
 public class PluginBus {
+
+    private static final String TAG = PluginBus.class.getSimpleName();
 
     private static final String SUFFIX_PLUGGER = "_Plugger";
 
@@ -167,10 +171,12 @@ public class PluginBus {
         }
 
         if (mPlugins.contains(plugin)) {
+            Log.d(TAG, "doPlug(...) : PluginBus already contained: " + plugin);
             return;
         }
 
         final Plugger plugger = getPlugger(plugin.getClass());
+        Log.d(TAG, "doPlug(...) : Using plugger: " + plugger);
         plugger.plug(plugin, this, useHandler);
 
         mPlugins.add(plugin);

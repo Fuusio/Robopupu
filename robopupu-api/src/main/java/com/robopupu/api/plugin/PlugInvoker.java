@@ -85,4 +85,10 @@ public abstract class PlugInvoker<T> {
             }
         }
     }
+
+    protected void handleInvocationTargetNotAvailable(final boolean returnsValue) {
+        if (returnsValue) {
+            throw new NullPointerException("Invocation target not available.");
+        }
+    }
 }

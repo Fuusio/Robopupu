@@ -27,16 +27,24 @@ import com.robopupu.api.util.LifecycleState;
  */
 public class ViewState {
 
+    private final View mView;
+
     private boolean mInstanceStateSaved;
     private LifecycleState mLifecycleState;
     private boolean mMovedToBackground;
     private boolean mRestarted;
 
-    public ViewState() {
+    public ViewState(final View view) {
+        mView = view;
         mInstanceStateSaved = false;
         mLifecycleState = LifecycleState.DORMANT;
         mMovedToBackground = false;
         mRestarted = false;
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T extends View> T getView() {
+        return (T)mView;
     }
 
     public void setInstanceStateSaved(final boolean saved) {
@@ -53,12 +61,13 @@ public class ViewState {
 
     /**
      * Tests if the {@link LifecycleState} is dormant. In dormant state the {@link View}
-     * is instantiated, but not created i.e. method {@link Fragment#onCreate(Bundle)}/{@link Activity#onCreate(Bundle)}
-     * has not been invoked yet.
+     * is either not instantiated or is instantiated but isnot created i.e. method
+     * {@link Fragment#onCreate(Bundle)}/{@link Activity#onCreate(Bundle)} has not
+     * been invoked yet.
      * @return A {@code boolean} value.
      */
     public boolean isDormant() {
-        return mLifecycleState.isDormant();
+        return mView == null || mLifecycleState.isDormant();
     }
 
     /**

@@ -15,6 +15,8 @@
  */
 package com.robopupu.api.plugin;
 
+import android.support.annotation.CallSuper;
+
 import com.robopupu.api.util.LifecycleState;
 import com.robopupu.api.util.Params;
 
@@ -107,31 +109,38 @@ public class AbstractPluginStateComponent extends AbstractPluginComponent
         return mState;
     }
 
+    @CallSuper
     @SuppressWarnings("unused")
     protected void onCreate(final Params params) {
         // By default do nothing
     }
 
+    @CallSuper
     protected void onStart() {
         // By default do nothing
     }
 
+    @CallSuper
     protected void onRestart() {
         // By default do nothing
     }
 
+    @CallSuper
     protected void onResume() {
         // By default do nothing
     }
 
+    @CallSuper
     protected void onPause() {
         // By default do nothing
     }
 
+    @CallSuper
     protected void onStop() {
         // By default do nothing
     }
 
+    @CallSuper
     protected void onDestroy() {
         // By default do nothing
     }

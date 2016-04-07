@@ -30,7 +30,7 @@ import com.robopupu.api.mvp.OnTextChanged;
 import com.robopupu.api.mvp.ViewListenersDelegate;
 import com.robopupu.api.mvp.PresenterDelegate;
 import com.robopupu.api.mvp.Presenter;
-import com.robopupu.api.mvp.PresenterDependant;
+import com.robopupu.api.mvp.PresentedView;
 import com.robopupu.api.util.UIToolkit;
 
 import java.lang.reflect.Constructor;
@@ -48,20 +48,20 @@ public class ViewBinder {
     private final static String SUFFIX_EVENTS_DELEGATE = "_EventsDelegate";
 
     private final HashMap<Integer, ViewBinding<?>> mBindingsCache;
-    private final PresenterDependant mView;
+    private final PresentedView mView;
 
     private Activity mActivity;
     private ViewGroup mContentView;
     private boolean mInitialised;
     private PresenterDelegate mPresenterDelegate;
 
-    public ViewBinder(final PresenterDependant view) {
+    public ViewBinder(final PresentedView view) {
         mView = view;
         mBindingsCache = new HashMap<>();
         mInitialised = false;
     }
 
-    protected PresenterDependant getPresenterDependant() {
+    protected PresentedView getPresentedView() {
         return mView;
     }
 
