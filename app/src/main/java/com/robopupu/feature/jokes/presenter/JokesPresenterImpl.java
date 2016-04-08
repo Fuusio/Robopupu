@@ -51,11 +51,6 @@ public class JokesPresenterImpl extends AbstractFeaturePresenter<JokesView>
         plug(JokesView.class);
     }
 
-    @Override
-    public void onViewStart(final View view) {
-        super.onViewStart(view);
-    }
-
     private void displayJoke(final JokeResponse response) {
         final String joke = response.getValue().getJoke();
         final String formattedJoke = joke.replace("&quot;", "\"");

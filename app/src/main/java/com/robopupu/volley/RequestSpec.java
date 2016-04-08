@@ -19,10 +19,10 @@ import java.nio.charset.Charset;
 import java.util.List;
 
 /**
- * {@link RequestBuilder} is a utility that is used to build a complete URL from given base URL,
+ * {@link RequestSpec} is a utility that is used to build a complete URL from given base URL,
  * relative URL, query params, and path params.
  */
-public class RequestBuilder<T_Response> implements RequestDelegate<T_Response> {
+public class RequestSpec<T_Response> implements RequestDelegate<T_Response> {
 
     protected static final String PATH_SEPARATOR = "/";
 
@@ -43,11 +43,11 @@ public class RequestBuilder<T_Response> implements RequestDelegate<T_Response> {
     private int mTimeout; // In milliseconds
     private String mUrl;
     
-    public RequestBuilder(final Context context) {
+    public RequestSpec(final Context context) {
         this(context, null);
     }
 
-    public RequestBuilder(final Context context, final String url) {
+    public RequestSpec(final Context context, final String url) {
         mContext = context;
         mUrl = url;
         mBuild = false;
@@ -57,7 +57,7 @@ public class RequestBuilder<T_Response> implements RequestDelegate<T_Response> {
         mParams = new HttpParams();
     }
 
-    public RequestBuilder(final Context context, final String baseUrl, final String relativeUrl) {
+    public RequestSpec(final Context context, final String baseUrl, final String relativeUrl) {
         this(context, null);
         mBaseUrl = baseUrl;
         mRelativeUrl = relativeUrl;
@@ -71,60 +71,60 @@ public class RequestBuilder<T_Response> implements RequestDelegate<T_Response> {
         return mContext;
     }
 
-    private RequestBuilder<T_Response> reset() {
+    private RequestSpec<T_Response> reset() {
         mBuild = false;
         mBuildUrl = null;
         return this;
     }
 
-    protected RequestBuilder<T_Response> encoding(final Charset encoding) {
+    protected RequestSpec<T_Response> encoding(final Charset encoding) {
         mEncoding = encoding;
         return reset();
     }
 
-    public RequestBuilder<T_Response> baseUrl(final String url) {
+    public RequestSpec<T_Response> baseUrl(final String url) {
         mBaseUrl = url;
         return reset();
     }
 
-    public RequestBuilder<T_Response> header(final HeaderRequestField field, final String value) {
+    public RequestSpec<T_Response> header(final HeaderRequestField field, final String value) {
         mHeaders.add(field, value);
         return this;
     }
 
-    public RequestBuilder<T_Response> header(final String field, final String value) {
+    public RequestSpec<T_Response> header(final String field, final String value) {
         mHeaders.add(field, value);
         return this;
     }
 
-    public RequestBuilder<T_Response> headers(final HttpHeaders headers) {
+    public RequestSpec<T_Response> headers(final HttpHeaders headers) {
         mHeaders.addAll(headers);
         return this;
     }
 
-    public RequestBuilder<T_Response> pathParams(final HttpParams params) {
+    public RequestSpec<T_Response> pathParams(final HttpParams params) {
         mPathParams.addAll(params);
         return this;
     }
 
-    public RequestBuilder<T_Response> params(final HttpParams params) {
+    public RequestSpec<T_Response> params(final HttpParams params) {
         mParams.addAll(params);
         return reset();
     }
 
-    public RequestBuilder<T_Response> relativeUrl(final String url) {
+    public RequestSpec<T_Response> relativeUrl(final String url) {
         mRelativeUrl = url;
         return reset();
     }
 
-    public RequestBuilder<T_Response> retryPolicy(final RetryPolicy retryPolicy) {
+    public RequestSpec<T_Response> retryPolicy(final RetryPolicy retryPolicy) {
         mRetryPolicy = retryPolicy;
         return this;
     }
 
     /**
      * Gets the {@link BaseRequest}. A {@link BaseRequest} can be added to {@link RequestQueue} only
-     * after it has been prepared by invoking {@link RequestBuilder#build()}.
+     * after it has been prepared by invoking {@link RequestSpec#build()}.
      *
      * @return A {@link BaseRequest},
      */
@@ -136,9 +136,9 @@ public class RequestBuilder<T_Response> implements RequestDelegate<T_Response> {
      * Sets the {@link BaseRequest} to be build.
      * @param request A {@link BaseRequest}.
      *
-     * @return This {@link RequestBuilder}.
+     * @return This {@link RequestSpec}.
      */
-    public RequestBuilder<T_Response> request(final BaseRequest<T_Response> request) {
+    public RequestSpec<T_Response> request(final BaseRequest<T_Response> request) {
         mRequest = request;
         return this;
     }
@@ -154,14 +154,14 @@ public class RequestBuilder<T_Response> implements RequestDelegate<T_Response> {
     /**
      * Sets the timeout for waiting the request responseas seconds.
      * @param timeout An {@link int} value as seconds.
-     * @return This {@link RequestBuilder}.
+     * @return This {@link RequestSpec}.
      */
-    public RequestBuilder<T_Response> timeout(final int timeout) {
+    public RequestSpec<T_Response> timeout(final int timeout) {
         mTimeout = timeout;
         return this;
     }
 
-    public RequestBuilder<T_Response> url(final String url) {
+    public RequestSpec<T_Response> url(final String url) {
         mUrl = url;
         return this;
     }
@@ -171,29 +171,29 @@ public class RequestBuilder<T_Response> implements RequestDelegate<T_Response> {
      *
      * @param key   The name of the parameter to be added as a {@link String}.
      * @param value The value of the parameter.
-     * @return This {@link RequestBuilder}.
+     * @return This {@link RequestSpec}.
      */
-    public RequestBuilder<T_Response> param(final String key, final String value) {
+    public RequestSpec<T_Response> param(final String key, final String value) {
         mParams.add(key, value);
         return reset();
     }
 
-    public RequestBuilder<T_Response> param(final String key, final boolean value) {
+    public RequestSpec<T_Response> param(final String key, final boolean value) {
         mParams.add(key, Boolean.toString(value));
         return reset();
     }
 
-    public RequestBuilder<T_Response> param(final String key, final float value) {
+    public RequestSpec<T_Response> param(final String key, final float value) {
         mParams.add(key, Float.toString(value));
         return reset();
     }
 
-    public RequestBuilder<T_Response> param(final String key, final int value) {
+    public RequestSpec<T_Response> param(final String key, final int value) {
         mParams.add(key, Integer.toString(value));
         return reset();
     }
 
-    public RequestBuilder<T_Response> param(final String key, final long value) {
+    public RequestSpec<T_Response> param(final String key, final long value) {
         mParams.add(key, Long.toString(value));
         return reset();
     }
@@ -203,29 +203,29 @@ public class RequestBuilder<T_Response> implements RequestDelegate<T_Response> {
      *
      * @param key   The name of the parameter to be added as a {@link String}.
      * @param value The value of the parameter.
-     * @return This {@link RequestBuilder}.
+     * @return This {@link RequestSpec}.
      */
-    public RequestBuilder<T_Response> pathParam(final String key, final String value) {
+    public RequestSpec<T_Response> pathParam(final String key, final String value) {
         mPathParams.add(key, value);
         return reset();
     }
 
-    public RequestBuilder<T_Response> pathParam(final String key, final boolean value) {
+    public RequestSpec<T_Response> pathParam(final String key, final boolean value) {
         mPathParams.add(key, Boolean.toString(value));
         return reset();
     }
 
-    public RequestBuilder<T_Response> pathParam(final String key, final float value) {
+    public RequestSpec<T_Response> pathParam(final String key, final float value) {
         mPathParams.add(key, Float.toString(value));
         return reset();
     }
 
-    public RequestBuilder<T_Response> pathParam(final String key, final int value) {
+    public RequestSpec<T_Response> pathParam(final String key, final int value) {
         mPathParams.add(key, Integer.toString(value));
         return reset();
     }
 
-    public RequestBuilder<T_Response> pathParam(final String key, final long value) {
+    public RequestSpec<T_Response> pathParam(final String key, final long value) {
         mPathParams.add(key, Long.toString(value));
         return reset();
     }

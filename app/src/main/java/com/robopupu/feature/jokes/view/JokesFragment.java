@@ -1,7 +1,6 @@
 package com.robopupu.feature.jokes.view;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.NestedScrollView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +19,6 @@ public class JokesFragment extends CoordinatorLayoutFragment<JokesPresenter>
         implements JokesView {
 
     private TextView mJokesTextView;
-    private FloatingActionButton mRequestJokeFab;
     private NestedScrollView mScrollView;
 
     @Plug JokesPresenter mPresenter;
@@ -44,16 +42,13 @@ public class JokesFragment extends CoordinatorLayoutFragment<JokesPresenter>
     protected void onCreateBindings() {
         super.onCreateBindings();
         mJokesTextView = getView(R.id.text_view_jokes);
-        mRequestJokeFab = getView(R.id.fab_request_joke);
         mScrollView = getView(R.id.nested_scroll_view_jokes);
-
-        // mRequestJokeFab.setOnClickListener(view -> mPresenter.onRequestJokeClick());
     }
 
     @Override
     public void displayJoke(final String formattedJoke) {
         mJokesTextView.append(formattedJoke);
-        mJokesTextView.append("\n\n");
+        mJokesTextView.append("\n\n\n");
         mScrollView.fullScroll(View.FOCUS_DOWN);
     }
 
