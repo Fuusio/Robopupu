@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'me.tatarka.retrolambda'
 
 ext {
     PUBLISH_GROUP_ID = 'com.robopupu'
@@ -15,6 +16,10 @@ android {
         versionCode 1
         versionName '0.3.1'
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
     buildTypes {
         release {
@@ -55,6 +60,22 @@ dependencies {
     debugCompile('org.mockito:mockito-core:1.10.19') {
         exclude group: 'org.hamcrest'
     }
+}
+
+String java8 = getJavaVersion(8)
+String java7 = getJavaVersion(7)
+
+retrolambda {
+    jdk java8
+    oldJdk java7
+}
+
+String getJavaVersion(Integer version) {
+    def sout = new StringBuffer()
+    def exec = "/usr/libexec/java_home -v 1.$version".execute()
+    exec.consumeProcessOutput(sout, new StringBuffer())
+    exec.waitForOrKill(1000)
+    return sout.toString().replace("\n", "").replace("\r", "")
 }
 
 apply from: 'https://raw.githubusercontent.com/blundell/release-android-library/master/android-release-aar.gradle'

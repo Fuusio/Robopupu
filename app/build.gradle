@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: 'me.tatarka.retrolambda'
 
 android {
     compileSdkVersion 23
@@ -10,11 +11,14 @@ android {
         targetSdkVersion 23
         versionCode 3
         versionName '1.0.2'
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -57,10 +61,28 @@ dependencies {
     debugCompile('org.mockito:mockito-core:1.10.19') {
         exclude group: 'org.hamcrest'
     }
-    provided 'com.google.code.gson:gson:2.6.1'
-    compile 'com.android.support:appcompat-v7:23.1.1'
-    compile 'com.android.support:support-v4:23.1.1'
-    compile 'com.android.support:design:23.1.1'
-    compile 'com.android.support:cardview-v7:23.1.1'
+
+    compile 'com.mcxiaoke.volley:library:1.0.19'
+    compile 'com.google.code.gson:gson:2.6.2'
+    compile 'com.android.support:appcompat-v7:23.2.1'
+    compile 'com.android.support:support-v4:23.2.1'
+    compile 'com.android.support:design:23.2.1'
+    compile 'com.android.support:cardview-v7:23.2.1'
     compile 'com.squareup.picasso:picasso:2.5.2'
+}
+
+String java8 = getJavaVersion(8)
+String java7 = getJavaVersion(7)
+
+retrolambda {
+    jdk java8
+    oldJdk java7
+}
+
+String getJavaVersion(Integer version) {
+    def sout = new StringBuffer()
+    def exec = "/usr/libexec/java_home -v 1.$version".execute()
+    exec.consumeProcessOutput(sout, new StringBuffer())
+    exec.waitForOrKill(1000)
+    return sout.toString().replace("\n", "").replace("\r", "")
 }

@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:id="@+id/group_features">
+    <group android:id="@+id/group_demos">
         <item
             android:id="@+id/navigation_fsm_demo"
             android:icon="@drawable/ic_slideshow_black_36dp"
             android:title="@string/ft_main_navigation_item_fsm_demo" />
+        <item
+            android:id="@+id/navigation_jokes"
+            android:icon="@drawable/ic_chuck_norris_black_36dp"
+            android:title="@string/ft_main_navigation_item_jokes" />
     </group>
-
 
     <group android:id="@+id/group_social_media">
         <item

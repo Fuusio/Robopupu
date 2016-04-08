@@ -22,6 +22,7 @@ import com.robopupu.component.AppManager;
 import com.robopupu.feature.about.AboutFeature;
 import com.robopupu.feature.feedback.FeedbackFeature;
 import com.robopupu.feature.fsm.FsmDemoFeature;
+import com.robopupu.feature.jokes.JokesFeature;
 import com.robopupu.feature.main.MainFeature;
 import com.robopupu.feature.main.view.MainView;
 
@@ -65,6 +66,8 @@ public class MainPresenterImpl extends AbstractPresenter<MainView>
             mFeatureManager.startFeature(container, FeedbackFeature.class);
         } else if (itemId == R.id.navigation_fsm_demo) {
             mFeatureManager.startFeature(container, FsmDemoFeature.class);
+        } else if (itemId == R.id.navigation_jokes) {
+            mFeatureManager.startFeature(container, JokesFeature.class);
         } else if (itemId == R.id.navigation_settings) {
             //mFeatureManager.startFeature(container, SettingsFeature.class);
         } else if (itemId == R.id.navigation_exit) {

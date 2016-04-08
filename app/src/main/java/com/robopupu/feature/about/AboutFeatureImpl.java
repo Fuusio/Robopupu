@@ -43,6 +43,7 @@ public class AboutFeatureImpl extends AbstractFeature implements AboutFeature, A
 
     @Override
     protected void onStart() {
+        super.onStart();
         showView(AboutPresenter.class, false);
     }
 

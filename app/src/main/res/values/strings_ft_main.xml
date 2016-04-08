@@ -7,6 +7,7 @@
     <string name="ft_main_title_robopupu">ROBOPUPU</string>
 
     <string name="ft_main_navigation_item_fsm_demo">FSM Demo</string>
+    <string name="ft_main_navigation_item_jokes">Chuck Norris Jokes</string>
     <string name="ft_main_navigation_item_plugins_demo">Plugins Demo</string>
     <string name="ft_main_navigation_item_about">About</string>
     <string name="ft_main_navigation_item_settings">Settings</string>
