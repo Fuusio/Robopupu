@@ -11,11 +11,11 @@ public interface OutputNode<OUT> {
      * Attaches the given {@link InputNode} to this {@link OutputNode}.
      * @param inputNode An{@link InputNode}.
      */
-    void attach(final InputNode<OUT> inputNode);
+    void attach(InputNode<OUT> inputNode);
 
     /**
      * Detaches the given {@link InputNode} from this {@link OutputNode}.
      * @param inputNode An {@link InputNode}.
      */
-    void detach(final InputNode<OUT> inputNode);
+    void detach(InputNode<OUT> inputNode);
 }

@@ -9,13 +9,13 @@ public interface InputNode<IN> {
      * @param input The input {@link Object}.
      * @return  This {@link InputNode}.
      */
-    void onInput(final OutputNode<IN> outputNode, final IN input);
+    void onInput(OutputNode<IN> outputNode, IN input);
 
     /**
      * Invoked when the specified input {@link OutputNode} is completed.
      * @param outputNode The completed {@link OutputNode}.
      */
-    void onCompleted(final OutputNode<?> outputNode);
+    void onCompleted(OutputNode<?> outputNode);
 
     /**
      * Invoked when the {@link OutputNode} has detected or received an error. The default
@@ -24,5 +24,5 @@ public interface InputNode<IN> {
      * @param outputNode The {@link OutputNode} notifying about error.
      * @param throwable A {@link Throwable} representing the error.
      */
-    void onError(final OutputNode<?> outputNode, final Throwable throwable);
+    void onError(OutputNode<?> outputNode, Throwable throwable);
 }
