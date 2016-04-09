@@ -7,41 +7,41 @@ import com.robopupu.api.graph.functions.Function8;
  */
 public class Zip8Node<IN1, IN2, IN3, IN4, IN5, IN6, IN7, IN8, OUT> extends ZipNode<OUT> {
 
-    public final ZipInputNode<IN1, OUT> input1;
-    public final ZipInputNode<IN2, OUT> input2;
-    public final ZipInputNode<IN3, OUT> input3;
-    public final ZipInputNode<IN4, OUT> input4;
-    public final ZipInputNode<IN5, OUT> input5;
-    public final ZipInputNode<IN6, OUT> input6;
-    public final ZipInputNode<IN7, OUT> input7;
-    public final ZipInputNode<IN8, OUT> input8;
+    public final ZipInputNode<IN1, OUT> in1;
+    public final ZipInputNode<IN2, OUT> in2;
+    public final ZipInputNode<IN3, OUT> in3;
+    public final ZipInputNode<IN4, OUT> in4;
+    public final ZipInputNode<IN5, OUT> in5;
+    public final ZipInputNode<IN6, OUT> in6;
+    public final ZipInputNode<IN7, OUT> in7;
+    public final ZipInputNode<IN8, OUT> in8;
 
     private final Function8<IN1, IN2, IN3, IN4, IN5, IN6, IN7, IN8, OUT> mCombineFunction;
 
     public Zip8Node(final Function8<IN1, IN2, IN3, IN4, IN5, IN6, IN7, IN8, OUT> combineFunction) {
         super(8);
         mCombineFunction = combineFunction;
-        input1 = new ZipInputNode<>(this, 0);
-        input2 = new ZipInputNode<>(this, 1);
-        input3 = new ZipInputNode<>(this, 2);
-        input4 = new ZipInputNode<>(this, 3);
-        input5 = new ZipInputNode<>(this, 4);
-        input6 = new ZipInputNode<>(this, 5);
-        input7 = new ZipInputNode<>(this, 6);
-        input8 = new ZipInputNode<>(this, 7);
+        in1 = new ZipInputNode<>(this, 0);
+        in2 = new ZipInputNode<>(this, 1);
+        in3 = new ZipInputNode<>(this, 2);
+        in4 = new ZipInputNode<>(this, 3);
+        in5 = new ZipInputNode<>(this, 4);
+        in6 = new ZipInputNode<>(this, 5);
+        in7 = new ZipInputNode<>(this, 6);
+        in8 = new ZipInputNode<>(this, 7);
     }
 
     @SuppressWarnings("unchecked")
     @Override
     protected OUT zip() {
-        final IN1 input1 = (IN1)mBuffers[0].remove(0);
-        final IN2 input2 = (IN2)mBuffers[1].remove(0);
-        final IN3 input3 = (IN3)mBuffers[2].remove(0);
-        final IN4 input4 = (IN4)mBuffers[3].remove(0);
-        final IN5 input5 = (IN5)mBuffers[4].remove(0);
-        final IN6 input6 = (IN6)mBuffers[5].remove(0);
-        final IN7 input7 = (IN7)mBuffers[6].remove(0);
-        final IN8 input8 = (IN8)mBuffers[7].remove(0);
-        return mCombineFunction.eval(input1, input2, input3, input4, input5, input6, input7, input8);
+        final IN1 in1 = (IN1)mBuffers[0].remove(0);
+        final IN2 in2 = (IN2)mBuffers[1].remove(0);
+        final IN3 in3 = (IN3)mBuffers[2].remove(0);
+        final IN4 in4 = (IN4)mBuffers[3].remove(0);
+        final IN5 in5 = (IN5)mBuffers[4].remove(0);
+        final IN6 in6 = (IN6)mBuffers[5].remove(0);
+        final IN7 in7 = (IN7)mBuffers[6].remove(0);
+        final IN8 in8 = (IN8)mBuffers[7].remove(0);
+        return mCombineFunction.eval(in1, in2, in3, in4, in5, in6, in7, in8);
     }
 }

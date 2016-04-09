@@ -60,7 +60,7 @@ public class NodeTest {
 
         mEndNode.reset();
 
-        graph.next(beginNode).next(node1).next(node2).end(mEndNode);
+        graph.to(beginNode).to(node1).to(node2).end(mEndNode);
 
         for (int i = 1; i < 4; i++) {
             beginNode.onInput(i);
@@ -91,7 +91,7 @@ public class NodeTest {
 
         mEndNode.reset();
 
-        graph.skip(3).next(node0).next(node1).next(node2).end(mEndNode);
+        graph.skip(3).to(node0).to(node1).to(node2).end(mEndNode);
 
         final Node<Integer, Integer> beginNode = graph.getBeginNode();
 
@@ -106,7 +106,7 @@ public class NodeTest {
     public void test_repeat() {
 
         Graph<Integer> graph = new Graph<>();
-        graph.repeat(0).next(mEndNode);
+        graph.repeat(0).to(mEndNode);
         mEndNode.reset();
         Node<Integer, Integer> beginNode = graph.getBeginNode();
         beginNode.onInput(1);
@@ -154,7 +154,7 @@ public class NodeTest {
 
         mEndNode.reset();
 
-        graph.take(3).next(node0).next(node1).end(mEndNode);
+        graph.take(3).to(node0).to(node1).end(mEndNode);
 
         final Node<Integer, Integer> beginNode = graph.getBeginNode();
 
@@ -226,8 +226,8 @@ public class NodeTest {
         final Tag<Character> begin = Tag.create();
 
         Graph.begin(begin, createList('A', 'B', 'C')).
-                node(begin).next(zipNode.input1).
-                node(begin).map(c -> c - 'A' + 1).next(zipNode.input2).
+                node(begin).to(zipNode.input1).
+                node(begin).map(c -> c - 'A' + 1).to(zipNode.input2).
                 end(endNode).emit();
 
         assertTrue(endNode.received("A1", "B2", "C3"));
@@ -242,9 +242,9 @@ public class NodeTest {
         final Tag<Character> begin = Tag.create();
 
         Graph.begin(begin, createList('A', 'B', 'C')).
-                next(zipNode.input1).
-                node(begin).map(c -> c - 'A' + 1).next(zipNode.input2).
-                node(begin).string().next(zipNode.input3).end(endNode).emit();
+                to(zipNode.in1).
+                node(begin).map(c -> c - 'A' + 1).to(zipNode.in2).
+                node(begin).string().to(zipNode.in3).end(endNode).emit();
 
         assertTrue(endNode.received("A1A", "B2B", "C3C"));
     }
@@ -259,15 +259,15 @@ public class NodeTest {
         final Tag<Character> begin = Tag.create();
 
         Graph.begin(begin, createList('A', 'B', 'C')).
-                node(begin).next(zipNode.input1).
-                node(begin).map(c -> c - 'A' + 1).next(zipNode.input2).
-                node(begin).string().next(zipNode.input3).
-                node(begin).next(zipNode.input4).
-                node(begin).map(c -> c - 'A' + 1).next(zipNode.input5).
-                node(begin).string().next(zipNode.input6).
-                node(begin).next(zipNode.input7).
-                node(begin).map(c -> c - 'A' + 1).next(zipNode.input8).
-                node(begin).string().next(zipNode.input9).
+                node(begin).to(zipNode.input1).
+                node(begin).map(c -> c - 'A' + 1).to(zipNode.input2).
+                node(begin).string().to(zipNode.input3).
+                node(begin).to(zipNode.input4).
+                node(begin).map(c -> c - 'A' + 1).to(zipNode.input5).
+                node(begin).string().to(zipNode.input6).
+                node(begin).to(zipNode.input7).
+                node(begin).map(c -> c - 'A' + 1).to(zipNode.input8).
+                node(begin).string().to(zipNode.input9).
                 end(endNode).emit();
 
         assertTrue(endNode.received("A1AA1AA1A", "B2BB2BB2B", "C3CC3CC3C"));

@@ -8,7 +8,6 @@ import org.junit.Test;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -124,21 +123,21 @@ public class GraphExamples {
     @Test
     public void zipThreeStrings() {
 
-        final Zip3Node<String, String, String, String> zipNode =
-                new Zip3Node<>((input1, input2, input3) -> input1 + input2 + input3);
+        final Zip3Node<String, String, String, String> zip =
+                new Zip3Node<>((in1, in2, in3) -> in1 + in2 + in3);
         final Tag<String> list  = Tag.create();
 
         final String string = Graph.begin(list, "Robopupu ", "is ", "awesome").
-                node(list).nth(1).next(zipNode.input1).
-                node(list).nth(2).next(zipNode.input2).
-                node(list).nth(3).next(zipNode.input3).stringValue();
+                node(list).nth(1).to(zip.in1).
+                node(list).nth(2).to(zip.in2).
+                node(list).nth(3).to(zip.in3).stringValue();
 
         assertEquals("Robopupu is awesome", string);
     }
 
     @Test
-    public void concatFourStrings() {
-        final String string = Graph.begin("Robo", "pupu ", "is ", "awesome").concat().stringValue();
+    public void concatThreeStrings() {
+        final String string = Graph.begin("Robopupu ", "is ", "awesome").concat().stringValue();
         assertEquals("Robopupu is awesome", string);
     }
 

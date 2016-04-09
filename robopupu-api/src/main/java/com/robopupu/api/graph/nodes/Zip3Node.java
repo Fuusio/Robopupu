@@ -7,18 +7,18 @@ import com.robopupu.api.graph.functions.Function3;
  */
 public class Zip3Node<IN1, IN2, IN3, OUT> extends ZipNode<OUT> {
 
-    public final ZipInputNode<IN1, OUT> input1;
-    public final ZipInputNode<IN2, OUT> input2;
-    public final ZipInputNode<IN3, OUT> input3;
+    public final ZipInputNode<IN1, OUT> in1;
+    public final ZipInputNode<IN2, OUT> in2;
+    public final ZipInputNode<IN3, OUT> in3;
 
     private final Function3<IN1, IN2, IN3, OUT> mCombineFunction;
 
     public Zip3Node(final Function3<IN1, IN2, IN3, OUT> combineFunction) {
         super(3);
         mCombineFunction = combineFunction;
-        input1 = new ZipInputNode<>(this, 0);
-        input2 = new ZipInputNode<>(this, 1);
-        input3 = new ZipInputNode<>(this, 2);
+        in1 = new ZipInputNode<>(this, 0);
+        in2 = new ZipInputNode<>(this, 1);
+        in3 = new ZipInputNode<>(this, 2);
     }
 
     @SuppressWarnings("unchecked")

@@ -274,7 +274,7 @@ public class Graph<T> {
      */
     @SuppressWarnings("unchecked")
     public Graph<T> action(final Action<T> action) {
-        return next(new ActionNode<>(action));
+        return to(new ActionNode<>(action));
     }
 
     /**
@@ -284,7 +284,7 @@ public class Graph<T> {
      */
     @SuppressWarnings("unchecked")
     public <OUT> Graph<OUT> map(final Function<T, OUT> function) {
-        return next(new FunctionNode<>(function));
+        return to(new FunctionNode<>(function));
     }
 
     /**
@@ -304,7 +304,7 @@ public class Graph<T> {
      * @return This {@link Graph}.
      */
     @SuppressWarnings("unchecked")
-    public <OUT> Graph<OUT> next(final Node<T, OUT> node) {
+    public <OUT> Graph<OUT> to(final Node<T, OUT> node) {
         Node<T, OUT> nextNode = node;
 
         if (node instanceof ZipInputNode) {
@@ -334,9 +334,9 @@ public class Graph<T> {
      * @param node A {@link Node}.
      * @return This {@link Graph}.
      */
-    public <OUT> Graph<OUT> next(final Tag attachTag, final Node<T, OUT> node) {
+    public <OUT> Graph<OUT> to(final Tag attachTag, final Node<T, OUT> node) {
         tag(attachTag);
-        return next(node);
+        return to(node);
     }
 
     /**
@@ -346,7 +346,7 @@ public class Graph<T> {
      */
     @SuppressWarnings("unchecked")
     public Graph<T> filter(final BooleanFunction<T> condition) {
-        return next(new FilterNode<>(condition));
+        return to(new FilterNode<>(condition));
     }
 
     /**
@@ -355,7 +355,7 @@ public class Graph<T> {
      */
     @SuppressWarnings("unchecked")
     public Graph<T> first() {
-        return next(new FirstNode<>());
+        return to(new FirstNode<>());
     }
 
     /**
@@ -365,7 +365,7 @@ public class Graph<T> {
      */
     @SuppressWarnings("unchecked")
     public Graph<T> first(final BooleanFunction<T> condition) {
-        return next(new FirstNode<>(condition));
+        return to(new FirstNode<>(condition));
     }
 
     /**
@@ -374,7 +374,7 @@ public class Graph<T> {
      */
     @SuppressWarnings("unchecked")
     public Graph<T> last() {
-        return next(new LastNode<>());
+        return to(new LastNode<>());
     }
 
     /**
@@ -384,7 +384,7 @@ public class Graph<T> {
      */
     @SuppressWarnings("unchecked")
     public Graph<T> last(final BooleanFunction<T> condition) {
-        return next(new LastNode<>(condition));
+        return to(new LastNode<>(condition));
     }
 
     /**
@@ -393,7 +393,7 @@ public class Graph<T> {
      */
     @SuppressWarnings("unchecked")
     public Graph<T> distinct() {
-        return next(new DistinctNode<>());
+        return to(new DistinctNode<>());
     }
 
     /**
@@ -402,7 +402,7 @@ public class Graph<T> {
      */
     @SuppressWarnings("unchecked")
     public Graph<T> reverse() {
-        return next(new ReverseNode<>());
+        return to(new ReverseNode<>());
     }
 
     /**
@@ -412,7 +412,7 @@ public class Graph<T> {
      */
     @SuppressWarnings("unchecked")
     public Graph<T> buffer(final int capacity) {
-        return next(new BufferNode<>(capacity));
+        return to(new BufferNode<>(capacity));
     }
 
     /**
@@ -421,7 +421,7 @@ public class Graph<T> {
      * @return This {@link Graph}.
      */
     public Graph<T> callback(final Callback<T> callback) {
-        return next(new CallbackNode<>(callback));
+        return to(new CallbackNode<>(callback));
     }
 
     /**
@@ -431,7 +431,7 @@ public class Graph<T> {
      */
     @SuppressWarnings("unchecked")
     public Graph<T> repeat(final int times) {
-        return next(new RepeatNode<>(times));
+        return to(new RepeatNode<>(times));
     }
 
     /**
@@ -441,7 +441,7 @@ public class Graph<T> {
      */
     @SuppressWarnings("unchecked")
     public Graph<T> skip(final int steps) {
-        return next(new SkipNode<>(steps));
+        return to(new SkipNode<>(steps));
     }
 
     /**
@@ -451,7 +451,7 @@ public class Graph<T> {
      */
     @SuppressWarnings("unchecked")
     public Graph<T> skipWhile(final BooleanFunction<T> condition) {
-        return next(new SkipWhileNode<>(condition));
+        return to(new SkipWhileNode<>(condition));
     }
 
     /**
@@ -459,7 +459,7 @@ public class Graph<T> {
      * @return This {@link Graph}.
      */
     public Graph<String> string() {
-        return next(new StringNode<>());
+        return to(new StringNode<>());
     }
 
     /**
@@ -469,7 +469,7 @@ public class Graph<T> {
      */
     @SuppressWarnings("unchecked")
     public Graph<T> take(final int steps) {
-        return next(new TakeNode<>(steps));
+        return to(new TakeNode<>(steps));
     }
 
     /**
@@ -479,7 +479,7 @@ public class Graph<T> {
      */
     @SuppressWarnings("unchecked")
     public Graph<T> nth(final int index) {
-        return next(new NthNode<>(index));
+        return to(new NthNode<>(index));
     }
 
     /**
@@ -487,7 +487,7 @@ public class Graph<T> {
      * @return This {@link Graph}.
      */
     public Graph<Double> sum() {
-        return next(new SumNode<>());
+        return to(new SumNode<>());
     }
 
     /**
@@ -495,7 +495,7 @@ public class Graph<T> {
      * @return This {@link Graph}.
      */
     public Graph<String> concat() {
-        return next(new ConcatNode<>());
+        return to(new ConcatNode<>());
     }
 
     /**
@@ -530,7 +530,7 @@ public class Graph<T> {
      */
     @SuppressWarnings("unchecked")
     public <OUT> Graph<OUT> request(final RequestDelegate<OUT> delegate) {
-        return next(new RequestNode<>(delegate));
+        return to(new RequestNode<>(delegate));
     }
 
     /**
@@ -547,7 +547,7 @@ public class Graph<T> {
      */
     public boolean booleanValue() {
         final BooleanNode<T> node = new BooleanNode<>();
-        next(node);
+        to(node);
         emit();
         return node.getValue();
     }
@@ -558,7 +558,7 @@ public class Graph<T> {
      */
     public byte toByte() {
         final ByteNode<T> node = new ByteNode<>();
-        next(node);
+        to(node);
         emit();
         return node.getValue();
     }
@@ -569,7 +569,7 @@ public class Graph<T> {
      */
     public char charValue() {
         final CharacterNode<T> node = new CharacterNode<>();
-        next(node);
+        to(node);
         emit();
         return node.getValue();
     }
@@ -580,7 +580,7 @@ public class Graph<T> {
      */
     public double doubleValue() {
         final DoubleNode<T> node = new DoubleNode<>();
-        next(node);
+        to(node);
         emit();
         return node.getValue();
     }
@@ -591,7 +591,7 @@ public class Graph<T> {
      */
     public float floatValue() {
         final FloatNode<T> node = new FloatNode<>();
-        next(node);
+        to(node);
         emit();
         return node.getValue();
     }
@@ -602,7 +602,7 @@ public class Graph<T> {
      */
     public int intValue() {
         final IntNode<T> node = new IntNode<>();
-        next(node);
+        to(node);
         emit();
         return node.getValue();
     }
@@ -613,7 +613,7 @@ public class Graph<T> {
      */
     public long longValue() {
         final LongNode<T> node = new LongNode<>();
-        next(node);
+        to(node);
         emit();
         return node.getValue();
     }
@@ -624,7 +624,7 @@ public class Graph<T> {
      */
     public short shortValue() {
         final ShortNode<T> node = new ShortNode<>();
-        next(node);
+        to(node);
         emit();
         return node.getValue();
     }
@@ -635,7 +635,7 @@ public class Graph<T> {
      */
     public String stringValue() {
         final StringNode<T> node = new StringNode<>();
-        next(node);
+        to(node);
         emit();
         return node.getValue();
     }
@@ -646,7 +646,7 @@ public class Graph<T> {
      */
     public List<T> toList() {
         final ListNode<T> node = new ListNode<>();
-        next(node);
+        to(node);
         emit();
         return node.getList();
     }
