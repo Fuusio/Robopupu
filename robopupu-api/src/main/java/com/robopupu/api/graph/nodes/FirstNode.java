@@ -7,12 +7,17 @@ import com.robopupu.api.graph.functions.BooleanFunction;
 public class FirstNode<IN> extends AbstractNode<IN, IN> {
 
     private BooleanFunction<IN> mCondition;
+    private int mCounter;
+    private boolean mValueEmitted;
 
     public FirstNode() {
+        this(null);
     }
 
     public FirstNode(final BooleanFunction<IN> condition) {
         setCondition(condition);
+        mCounter = 0;
+        mValueEmitted = false;
     }
 
     public void setCondition(final BooleanFunction condition) {
@@ -22,24 +27,18 @@ public class FirstNode<IN> extends AbstractNode<IN, IN> {
     @SuppressWarnings("unchecked")
     @Override
     protected IN processInput(final OutputNode<IN> outputNode, final IN input) {
-        if (input != null) {
+        if (input != null && !mValueEmitted) {
             if (mCondition != null) {
                 if (mCondition.eval(input)) {
+                    mValueEmitted = true;
                     return input;
                 }
-            } else if (accepts(input)) {
+            } else if (mCounter == 0) {
+                mValueEmitted = true;
                 return input;
             }
         }
+        mCounter++;
         return null;
-    }
-
-    /**
-     * Override this method to implement a condition for filtering.
-     * @param input
-     * @return A {@link boolean} value.
-     */
-    protected boolean accepts(final IN input) {
-        return false;
     }
 }

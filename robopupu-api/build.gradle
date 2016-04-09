@@ -15,7 +15,6 @@ android {
         targetSdkVersion 23
         versionCode 1
         versionName '0.3.1'
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8

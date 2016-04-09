@@ -2,31 +2,54 @@ package com.robopupu.api.graph.nodes;
 
 import com.robopupu.api.graph.AbstractNode;
 import com.robopupu.api.graph.OutputNode;
+import com.robopupu.api.graph.functions.BooleanFunction;
 
 import java.util.ArrayList;
 
 public class LastNode<IN> extends AbstractNode<IN, IN> {
 
     private ArrayList<IN> mBuffer;
-    private int mCapacity;
+    private BooleanFunction<IN> mCondition;
 
-    public LastNode(final int capacity) {
+    public LastNode() {
+        this(null);
+    }
+
+    public LastNode(final BooleanFunction<IN> condition) {
         mBuffer = new ArrayList<>();
-        mCapacity = capacity;
+        setCondition(condition);
+    }
+
+    public void setCondition(final BooleanFunction condition) {
+        mCondition = condition;
     }
 
     @SuppressWarnings("unchecked")
     @Override
     protected IN processInput(final OutputNode<IN> outputNode, final IN input) {
-        if (mBuffer.size() < mCapacity) {
+        if (input != null) {
             mBuffer.add(input);
-            return null;
-        } else {
-            for (final IN output : mBuffer) {
-                out(output);
+        }
+        return null;
+    }
+
+    @Override
+    public void onCompleted(final OutputNode<?> outputNode) {
+        final int size = mBuffer.size();
+
+        if (size > 0) {
+            if (mCondition != null) {
+                for (int i = size - 1; i >= 0; i--) {
+                    final IN value = mBuffer.get(i);
+
+                    if (mCondition.eval(value)) {
+                        out(value);
+                        break;
+                    }
+                }
+            } else {
+                out(mBuffer.get(size - 1 ));
             }
-            mBuffer.clear();
-            return null;
         }
     }
 }

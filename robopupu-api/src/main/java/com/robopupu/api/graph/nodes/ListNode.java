@@ -23,6 +23,10 @@ public class ListNode<IN> extends AbstractNode<IN, IN> {
         mMutableList = list.isEmpty();
     }
 
+    public List<IN> getList() {
+        return mList;
+    }
+
     @Override
     public void onInput(final OutputNode<IN> outputNode, final IN input) {
         if (mMutableList) {
@@ -41,8 +45,7 @@ public class ListNode<IN> extends AbstractNode<IN, IN> {
 
         if (mMutableList) {
             mList.clear();
-        } else {
-            completed(this);
         }
+        completed(this);
     }
 }

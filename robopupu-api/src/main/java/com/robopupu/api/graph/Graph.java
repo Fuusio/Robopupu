@@ -10,10 +10,14 @@ import com.robopupu.api.graph.nodes.BufferNode;
 import com.robopupu.api.graph.nodes.ByteNode;
 import com.robopupu.api.graph.nodes.CallbackNode;
 import com.robopupu.api.graph.nodes.CharacterNode;
+import com.robopupu.api.graph.nodes.ConcatNode;
 import com.robopupu.api.graph.nodes.DoubleNode;
 import com.robopupu.api.graph.nodes.FilterNode;
+import com.robopupu.api.graph.nodes.FirstNode;
 import com.robopupu.api.graph.nodes.FloatNode;
 import com.robopupu.api.graph.nodes.FunctionNode;
+import com.robopupu.api.graph.nodes.LastNode;
+import com.robopupu.api.graph.nodes.NthNode;
 import com.robopupu.api.graph.nodes.IntNode;
 import com.robopupu.api.graph.nodes.ListNode;
 import com.robopupu.api.graph.nodes.LongNode;
@@ -31,6 +35,8 @@ import com.robopupu.api.graph.nodes.ViewNode;
 import com.robopupu.api.graph.nodes.ZipInputNode;
 import com.robopupu.api.network.RequestDelegate;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -90,7 +96,7 @@ public class Graph<T> {
      * @param tag An attach {@link Tag}.
      * @param outputNode A {@link OutputNode}.
      */
-    protected void setBeginNode(final Tag tag, final OutputNode<T> outputNode) {
+    protected void setBeginNode(final Tag<T> tag, final OutputNode<T> outputNode) {
         mTaggedNodes.put(tag, outputNode);
         mBeginNode = outputNode;
         mCurrentNode = outputNode;
@@ -137,7 +143,7 @@ public class Graph<T> {
      * @param action The action as an {@link Action}.
      * @return A {@link Graph}.
      */
-    public static <OUT> Graph<OUT> begin(final Tag tag, final Action<OUT> action) {
+    public static <OUT> Graph<OUT> begin(final Tag<OUT> tag, final Action<OUT> action) {
         final Graph<OUT> graph = new Graph<>();
         graph.setBeginNode(tag, new ActionNode<>(action));
         return graph;
@@ -174,7 +180,7 @@ public class Graph<T> {
      * @return A {@link Graph}.
      */
     @SuppressWarnings("unchecked")
-    public static <OUT> Graph<OUT> begin(final Tag tag, final OutputNode<OUT> outputNode) {
+    public static <OUT> Graph<OUT> begin(final Tag<OUT> tag, final OutputNode<OUT> outputNode) {
         final Graph<OUT> graph = new Graph<>();
         graph.setBeginNode(tag, outputNode);
         return graph;
@@ -190,13 +196,37 @@ public class Graph<T> {
     }
 
     /**
+     * Begins this {@link Graph} with a {@link ListNode} as a begin node.
+     * @param items A variable length parameter of items for a  {@link List}
+     * @return A {@link Graph}.
+     */
+    public static <OUT> Graph<OUT> begin(final OUT... items) {
+        final ArrayList<OUT> itemsList = new ArrayList<>();
+        Collections.addAll(itemsList, items);
+        return begin(new ListNode<>(itemsList));
+    }
+
+    /**
+     * Begins this {@link Graph} with a {@link ListNode} as a begin node. The begin
+     * node is tagged with the given {@link Tag}.
+     * @param tag A {@link Tag}.
+     * @param items A variable length parameter of items for a  {@link List}
+     * @return A {@link Graph}.
+     */
+    public static <OUT> Graph<OUT> begin(final Tag<OUT> tag, final OUT... items) {
+        final ArrayList<OUT> itemsList = new ArrayList<>();
+        Collections.addAll(itemsList, items);
+        return begin(tag, new ListNode<>(itemsList));
+    }
+
+    /**
      * Begins this {@link Graph} with a {@link ListNode} as a begin node. The begin
      * node is tagged with the given {@link Tag}.
      * @param tag A {@link Tag}.
      * @param list A {@link List}
      * @return A {@link Graph}.
      */
-    public static <OUT> Graph<OUT> begin(final Tag tag, final List<OUT> list) {
+    public static <OUT> Graph<OUT> begin(final Tag<OUT> tag, final List<OUT> list) {
         return begin(tag, new ListNode<>(list));
     }
 
@@ -231,7 +261,7 @@ public class Graph<T> {
      * @return The found {@link OutputNode}. May return {@code null}.
      */
     @SuppressWarnings("unchecked")
-    public <OUT> OutputNode<OUT> findNode(final Tag tag) {
+    public <OUT> OutputNode<OUT> findNode(final Tag<OUT> tag) {
         return (OutputNode<OUT>)mTaggedNodes.get(tag);
     }
 
@@ -261,7 +291,7 @@ public class Graph<T> {
      * @return This {@link Graph}.
      */
     @SuppressWarnings("unchecked")
-    public Graph<T> tag(final Tag tag) {
+    public Graph<T> tag(final Tag<T> tag) {
         mPendingAttachTag = tag;
         return this;
     }
@@ -315,6 +345,44 @@ public class Graph<T> {
     @SuppressWarnings("unchecked")
     public Graph<T> filter(final BooleanFunction<T> condition) {
         return next(new FilterNode<>(condition));
+    }
+
+    /**
+     * Attaches a {@link FirstNode} to the current {@link OutputNode}.
+     * @return This {@link Graph}.
+     */
+    @SuppressWarnings("unchecked")
+    public Graph<T> first() {
+        return next(new FirstNode<>());
+    }
+
+    /**
+     * Attaches a {@link FirstNode} with the given condition to the current {@link OutputNode}.
+     * @param condition The condition as a {@link BooleanFunction}.
+     * @return This {@link Graph}.
+     */
+    @SuppressWarnings("unchecked")
+    public Graph<T> first(final BooleanFunction<T> condition) {
+        return next(new FirstNode<>(condition));
+    }
+
+    /**
+     * Attaches a {@link LastNode} to the current {@link OutputNode}.
+     * @return This {@link Graph}.
+     */
+    @SuppressWarnings("unchecked")
+    public Graph<T> last() {
+        return next(new LastNode<>());
+    }
+
+    /**
+     * Attaches a {@link LastNode} with the given condition to the current {@link OutputNode}.
+     * @param condition The condition as a {@link BooleanFunction}.
+     * @return This {@link Graph}.
+     */
+    @SuppressWarnings("unchecked")
+    public Graph<T> last(final BooleanFunction<T> condition) {
+        return next(new LastNode<>(condition));
     }
 
     /**
@@ -385,11 +453,29 @@ public class Graph<T> {
     }
 
     /**
+     * Attaches a {@link NthNode} with the given index parameter value to the current {@link OutputNode}.
+     * @param index The index value.
+     * @return This {@link Graph}.
+     */
+    @SuppressWarnings("unchecked")
+    public Graph<T> nth(final int index) {
+        return next(new NthNode<>(index));
+    }
+
+    /**
      * Attaches a {@link SumNode} to the current {@link OutputNode}.
      * @return This {@link Graph}.
      */
     public Graph<Double> sum() {
         return next(new SumNode<>());
+    }
+
+    /**
+     * Attaches a {@link ConcatNode} to the current {@link OutputNode}.
+     * @return This {@link Graph}.
+     */
+    public Graph<String> concat() {
+        return next(new ConcatNode<>());
     }
 
     /**
@@ -439,7 +525,7 @@ public class Graph<T> {
      * Invokes emit on {@link Graph} and converts the emitted output to {@code boolean} value.
      * @return A {@code boolean} value.
      */
-    public boolean toBoolean() {
+    public boolean booleanValue() {
         final BooleanNode<T> node = new BooleanNode<>();
         next(node);
         emit();
@@ -461,7 +547,7 @@ public class Graph<T> {
      * Invokes emit on {@link Graph} and converts the emitted output to {@code char} value.
      * @return A {@code char} value.
      */
-    public char toChar() {
+    public char charValue() {
         final CharacterNode<T> node = new CharacterNode<>();
         next(node);
         emit();
@@ -472,7 +558,7 @@ public class Graph<T> {
      * Invokes emit on {@link Graph} and converts the emitted output to {@code double} value.
      * @return A {@code double} value.
      */
-    public double toDouble() {
+    public double doubleValue() {
         final DoubleNode<T> node = new DoubleNode<>();
         next(node);
         emit();
@@ -483,7 +569,7 @@ public class Graph<T> {
      * Invokes emit on {@link Graph} and converts the emitted output to {@code float} value.
      * @return A {@code float} value.
      */
-    public float toFloat() {
+    public float floatValue() {
         final FloatNode<T> node = new FloatNode<>();
         next(node);
         emit();
@@ -494,7 +580,7 @@ public class Graph<T> {
      * Invokes emit on {@link Graph} and converts the emitted output to {@code int} value.
      * @return An {@code int} value.
      */
-    public int toInt() {
+    public int intValue() {
         final IntNode<T> node = new IntNode<>();
         next(node);
         emit();
@@ -505,7 +591,7 @@ public class Graph<T> {
      * Invokes emit on {@link Graph} and converts the emitted output to {@code long} value.
      * @return A {@code long} value.
      */
-    public long toLong() {
+    public long longValue() {
         final LongNode<T> node = new LongNode<>();
         next(node);
         emit();
@@ -516,11 +602,33 @@ public class Graph<T> {
      * Invokes emit on {@link Graph} and converts the emitted output to {@code short} value.
      * @return A {@code short} value.
      */
-    public short toShort() {
+    public short shortValue() {
         final ShortNode<T> node = new ShortNode<>();
         next(node);
         emit();
         return node.getValue();
+    }
+
+    /**
+     * Invokes emit on {@link Graph} and converts the emitted output to {@link String} value.
+     * @return A {@code short} value.
+     */
+    public String stringValue() {
+        final StringNode<T> node = new StringNode<>();
+        next(node);
+        emit();
+        return node.getValue();
+    }
+
+    /**
+     * Invokes emit on {@link Graph} and converts the emitted outputs to {@link List}.
+     * @return A {@link List}.
+     */
+    public List<T> toList() {
+        final ListNode<T> node = new ListNode<>();
+        next(node);
+        emit();
+        return node.getList();
     }
 
     /**

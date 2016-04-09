@@ -18,15 +18,16 @@ public class BufferNode<IN> extends AbstractNode<IN, IN> {
     @SuppressWarnings("unchecked")
     @Override
     protected IN processInput(final OutputNode<IN> outputNode, final IN input) {
-        if (mBuffer.size() < mCapacity) {
-            mBuffer.add(input);
-            return null;
-        } else {
-            for (final IN output : mBuffer) {
-                out(output);
+        if (input != null) {
+            if (mBuffer.size() < mCapacity) {
+                mBuffer.add(input);
+            } else {
+                for (final IN output : mBuffer) {
+                    out(output);
+                }
+                mBuffer.clear();
             }
-            mBuffer.clear();
-            return null;
         }
+        return null;
     }
 }

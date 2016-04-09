@@ -17,7 +17,6 @@ package com.robopupu.api.graph;
 
 import android.test.suitebuilder.annotation.SmallTest;
 
-import com.robopupu.api.graph.nodes.ActionNode;
 import com.robopupu.api.graph.nodes.SimpleNode;
 import com.robopupu.api.graph.nodes.Zip2Node;
 import com.robopupu.api.graph.nodes.Zip3Node;
@@ -201,7 +200,7 @@ public class NodeTest {
         final List<Item> items =
                 createList(new Item(false, 1), new Item(true, 2), new Item(false, 3), new Item(true, 4), new Item(false, 5), new Item(true, 6));
 
-        final int sum = Graph.begin(items).filter(item -> item.on).map(item -> item.value).sum().toInt();
+        final int sum = Graph.begin(items).filter(item -> item.on).map(item -> item.value).sum().intValue();
 
         assertTrue(sum == 12);
     }
