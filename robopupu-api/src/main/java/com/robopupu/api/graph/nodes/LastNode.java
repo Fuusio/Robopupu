@@ -51,5 +51,6 @@ public class LastNode<IN> extends AbstractNode<IN, IN> {
                 out(mBuffer.get(size - 1 ));
             }
         }
+        completed(this);
     }
 }

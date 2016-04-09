@@ -60,6 +60,25 @@ public class GraphExamples {
     }
 
     @Test
+    public void distinctIntValues() {
+        final List<Integer> integers = Graph.begin(1, 2, 3, 1, 6, 4, 5, 3).distinct().toList();
+        assertTrue(equals(integers, 1, 2, 3, 6, 4, 5));
+    }
+
+    @Test
+    public void reversedIntValues() {
+        final List<Integer> integers = Graph.begin(1, 2, 3, 4, 5, 6).reverse().toList();
+        assertTrue(equals(integers, 6, 5, 4, 3, 2, 1));
+    }
+
+    @Test
+    public void listToList() {
+        final List<Integer> integers = Graph.begin(1, 2, 3, 4, 5, 6).toList();
+        assertTrue(equals(integers, 1, 2, 3, 4, 5, 6));
+    }
+
+
+    @Test
     public void firstGreaterThanThreeIntValue() {
         final List<Integer> integers = Graph.begin(1, 2, 3, 4, 5, 6).first(value -> value > 3).toList();
         assertTrue(equals(integers, 4));

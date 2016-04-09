@@ -11,6 +11,7 @@ import com.robopupu.api.graph.nodes.ByteNode;
 import com.robopupu.api.graph.nodes.CallbackNode;
 import com.robopupu.api.graph.nodes.CharacterNode;
 import com.robopupu.api.graph.nodes.ConcatNode;
+import com.robopupu.api.graph.nodes.DistinctNode;
 import com.robopupu.api.graph.nodes.DoubleNode;
 import com.robopupu.api.graph.nodes.FilterNode;
 import com.robopupu.api.graph.nodes.FirstNode;
@@ -23,6 +24,7 @@ import com.robopupu.api.graph.nodes.ListNode;
 import com.robopupu.api.graph.nodes.LongNode;
 import com.robopupu.api.graph.nodes.RepeatNode;
 import com.robopupu.api.graph.nodes.RequestNode;
+import com.robopupu.api.graph.nodes.ReverseNode;
 import com.robopupu.api.graph.nodes.ShortNode;
 import com.robopupu.api.graph.nodes.SkipNode;
 import com.robopupu.api.graph.nodes.SkipWhileNode;
@@ -383,6 +385,24 @@ public class Graph<T> {
     @SuppressWarnings("unchecked")
     public Graph<T> last(final BooleanFunction<T> condition) {
         return next(new LastNode<>(condition));
+    }
+
+    /**
+     * Attaches a {@link DistinctNode} to the current {@link OutputNode}.
+     * @return This {@link Graph}.
+     */
+    @SuppressWarnings("unchecked")
+    public Graph<T> distinct() {
+        return next(new DistinctNode<>());
+    }
+
+    /**
+     * Attaches a {@link ReverseNode} to the current {@link OutputNode}.
+     * @return This {@link Graph}.
+     */
+    @SuppressWarnings("unchecked")
+    public Graph<T> reverse() {
+        return next(new ReverseNode<>());
     }
 
     /**
