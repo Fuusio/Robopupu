@@ -59,8 +59,8 @@ buildscript {
 ### 0.4.0
 * Fix issue with resolving Presenter in View after configuration change
 * Other minor fixes
-* Added Functional Reactive Programmin (FRP) API
-* Added light-weight REST API for specifying Google Volley requests
+* Added new Robopupu API: [Functional Reactive Programming (FRP) API](https://robopupu.com/robopupu-frp/)
+* Added new Robopupu API : [Light-weight REST API for specifying Google Volley requests](https://robopupu.com/robopupu-rest-api/)
 
 ### 0.3.1
 * Initial open source release
