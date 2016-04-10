@@ -317,21 +317,21 @@ public class NodeTest {
     private Node<Response, Response> createGraph(final Authenticator authenticator) {
 
         final Tag<Response> authToken = Tag.create();
-        final Tag<Response> code400 = Tag.create();
-        final Tag<Response> code401 = Tag.create();
-        final Graph<Response> graph = Graph.begin(authToken, response -> authenticator.onRequestAuthCode());
+        final Tag<Response> http400 = Tag.create();
+        final Tag<Response> http401 = Tag.create();
+        final Graph<Response> graph = Graph.begin(authToken, response -> authenticator.onRequestAuthToken());
 
         graph.
             node(authToken).filter(response -> response.statusCode == 200).end(authenticator::onAuthenticationSucceeded).
 
-            node(authToken).tag(code400).filter(response -> response.statusCode == 400).
-                node(code400).filter(Error.A::is).end(authenticator::onAuthenticationFailed).
-                node(code400).filter(Error.B::is).end(authenticator::onAuthenticationFailed).
+            node(authToken).tag(http400).filter(response -> response.statusCode == 400).
+                node(http400).filter(Error.A::is).end(authenticator::onAuthenticationFailed).
+                node(http400).filter(Error.B::is).end(authenticator::onAuthenticationFailed).
 
-            node(authToken).tag(code401).filter(response -> response.statusCode == 401).
-                node(code401).filter(Error.C::is).end(authenticator::onAuthenticationFailed).
-                node(code401).filter(Error.D::is).end(authenticator::onAuthenticationFailed).
-                node(code401).filter(Error.E::is).end(authenticator::onAuthenticationFailed);
+            node(authToken).tag(http401).filter(response -> response.statusCode == 401).
+                node(http401).filter(Error.C::is).end(authenticator::onAuthenticationFailed).
+                node(http401).filter(Error.D::is).end(authenticator::onAuthenticationFailed).
+                node(http401).filter(Error.E::is).end(authenticator::onAuthenticationFailed);
 
         return graph.getBeginNode();
     }
@@ -434,7 +434,7 @@ public class NodeTest {
 
         void onAuthenticationFailed(Response response);
         void onAuthenticationSucceeded(Response response);
-        void onRequestAuthCode();
+        void onRequestAuthToken();
     }
 
     private class AuthenticatorImpl implements Authenticator {
@@ -462,7 +462,7 @@ public class NodeTest {
         }
 
         @Override
-        public void onRequestAuthCode() {
+        public void onRequestAuthToken() {
         }
 
         public boolean failed() {
