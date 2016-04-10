@@ -29,8 +29,8 @@ Use the following dependencies into your application module's ```build.gradle```
 
 ```groovy
 dependencies {
-	compile 'com.robopupu:robopupu:0.3.1'
-	apt 'com.robopupu:robopupu-compiler:0.3.1'	
+	compile 'com.robopupu:robopupu:0.4.0'
+	apt 'com.robopupu:robopupu-compiler:0.4.0'	
 	apt 'com.squareup:javapoet:1.5.1' 
 }
 ```
@@ -56,7 +56,14 @@ buildscript {
 
 ## Changelog
 
-The current release is 0.3.1
+### 0.4.0
+* Fix issue with resolving Presenter in View after configuration change
+* Other minor fixes
+* Added Functional Reactive Programmin (FRP) API
+* Added light-weight REST API for specifying Google Volley requests
+
+### 0.3.1
+* Initial open source release
 
 ## License
 ```
