@@ -35,15 +35,12 @@ repositories {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile project(':robopupu-api')
-    apt files('libs/robopupu-compiler.jar')
-
-    // compile 'com.robopupu:robopupu:0.3.1'
-    // apt 'com.robopupu:robopupu-compiler:0.3.1'
+    // LIBRARY DEV compile project(':robopupu-api')
+    // LIBRARY DEV apt files('libs/robopupu-compiler.jar')
+    compile 'com.robopupu:robopupu:0.4.0'
+    apt 'com.robopupu:robopupu-compiler:0.4.0'
     apt 'com.squareup:javapoet:1.5.1'
-
     testCompile 'junit:junit:4.12'
-
     androidTestCompile('com.android.support.test:runner:0.4.1') {
         exclude group: 'com.android.support', module: 'support-annotations'
     }
@@ -61,7 +58,6 @@ dependencies {
     debugCompile('org.mockito:mockito-core:1.10.19') {
         exclude group: 'org.hamcrest'
     }
-
     compile 'com.mcxiaoke.volley:library:1.0.19'
     compile 'com.google.code.gson:gson:2.6.2'
     compile 'com.android.support:appcompat-v7:23.3.0'
