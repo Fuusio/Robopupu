@@ -226,8 +226,8 @@ public class NodeTest {
         final Tag<Character> begin = Tag.create();
 
         Graph.begin(begin, createList('A', 'B', 'C')).
-                node(begin).to(zipNode.input1).
-                node(begin).map(c -> c - 'A' + 1).to(zipNode.input2).
+                node(begin).to(zipNode.in1).
+                node(begin).map(c -> c - 'A' + 1).to(zipNode.in2).
                 end(endNode).emit();
 
         assertTrue(endNode.received("A1", "B2", "C3"));
@@ -256,18 +256,18 @@ public class NodeTest {
         final Zip9Node<Character, Integer, String, Character, Integer, String, Character, Integer, String, String> zipNode =
                 new Zip9Node<>((input1, input2, input3, input4, input5, input6, input7, input8, input9) ->
                         Character.toString(input1) + Integer.toString(input2) + input3 + Character.toString(input4) + Integer.toString(input5) + input6 + Character.toString(input7) + Integer.toString(input8) + input9);
-        final Tag<Character> begin = Tag.create();
+        final Tag<Character> list = Tag.create();
 
-        Graph.begin(begin, createList('A', 'B', 'C')).
-                node(begin).to(zipNode.input1).
-                node(begin).map(c -> c - 'A' + 1).to(zipNode.input2).
-                node(begin).string().to(zipNode.input3).
-                node(begin).to(zipNode.input4).
-                node(begin).map(c -> c - 'A' + 1).to(zipNode.input5).
-                node(begin).string().to(zipNode.input6).
-                node(begin).to(zipNode.input7).
-                node(begin).map(c -> c - 'A' + 1).to(zipNode.input8).
-                node(begin).string().to(zipNode.input9).
+        Graph.begin(list, createList('A', 'B', 'C')).
+                node(list).to(zipNode.in1).
+                node(list).map(c -> c - 'A' + 1).to(zipNode.in2).
+                node(list).string().to(zipNode.in3).
+                node(list).to(zipNode.in4).
+                node(list).map(c -> c - 'A' + 1).to(zipNode.in5).
+                node(list).string().to(zipNode.in6).
+                node(list).to(zipNode.in7).
+                node(list).map(c -> c - 'A' + 1).to(zipNode.in8).
+                node(list).string().to(zipNode.in9).
                 end(endNode).emit();
 
         assertTrue(endNode.received("A1AA1AA1A", "B2BB2BB2B", "C3CC3CC3C"));
