@@ -4,6 +4,11 @@ com.robopupu.api.component
 com.robopupu.api.dependency
 com.robopupu.api.feature
 com.robopupu.api.fsm
+com.robopupu.api.graph
+com.robopupu.api.graph.actions
+com.robopupu.api.graph.functions
+com.robopupu.api.graph.nodes
 com.robopupu.api.mvp
+com.robopupu.api.network
 com.robopupu.api.plugin
 com.robopupu.api.util
