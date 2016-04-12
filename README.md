@@ -9,7 +9,7 @@ An Android library that provides a set of APIs for architecting and developing A
 * **Robopupu.FSM**: A simple library for implementing hierachical Finite State Machines that support most of the UML state diagram features, including: entry points, choice points, and history points.
 * **Robopupu.Plugin**: A plugin framework that supports dependency injection (DI) and allows decouples communication between components without requiring the components to explicitly register with one another.
 * **Robopupu.Feature**: A flow controller type of architectural design pattern for using components that encapsulate navigation and configuration logic for application features.
-* **Robopupu.FSR**: A simple to use API for Functional Reactive Programming (FRP). API is based on constructing a graph of functional nodes to perform a specified computation. Use of Retrolambda for lambda expressions recommend.
+* **Robopupu.FRP**: A simple to use API for Functional Reactive Programming (FRP). API is based on constructing a graph of functional nodes to perform a specified computation. Use of Retrolambda for lambda expressions recommend.
 * **Robopupu.Util**: A collection of utility classes.
 
 Check out the [Robopupu project website](http://robopupu.com/) for further information.
