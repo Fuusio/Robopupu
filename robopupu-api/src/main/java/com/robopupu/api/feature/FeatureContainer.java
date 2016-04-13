@@ -19,8 +19,10 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.view.ViewGroup;
 
 /**
  * {@link FeatureContainer} extends {@link FeatureTransitionManager} to define
@@ -35,6 +37,12 @@ public interface FeatureContainer extends FeatureTransitionManager {
      * @return A {@link Context}.
      */
     Context getContext();
+
+    /**
+     * Gets the container {@link ViewGroup} ID for this {@link FeatureContainer}.
+     * @return An ID an {@code int} constant.
+     */
+    @IdRes int getContainerViewId();
 
     /**
      * Gets the {@link Resources} available for {@link FeatureFragment}s
