@@ -16,6 +16,7 @@
 package com.robopupu.feature.main.view;
 
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -50,6 +51,11 @@ public class MainActivity extends PluginActivity<MainPresenter>
     @Plug(RobopupuAppScope.class) MainFeature mFeature;
     @Plug(MainFeatureScope.class) MainPresenter mPresenter;
     @Plug PluginFeatureManager mFeatureManager;
+
+    @Override
+    public @IdRes int getContainerViewId() {
+        return R.id.frame_layout_fragment_container;
+    }
 
     @Override
     public MainPresenter getPresenter() {
@@ -113,7 +119,7 @@ public class MainActivity extends PluginActivity<MainPresenter>
         final FragmentManager manager = getSupportFragmentManager();
         final FragmentTransaction transaction = manager.beginTransaction();
 
-        transaction.replace(R.id.frame_layout_fragment_container, fragment, tag);
+        transaction.replace(getContainerViewId(), fragment, tag);
 
         if (addToBackStack) {
             transaction.addToBackStack(tag);

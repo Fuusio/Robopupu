@@ -32,6 +32,7 @@ import com.robopupu.api.graph.nodes.StringNode;
 import com.robopupu.api.graph.nodes.SumNode;
 import com.robopupu.api.graph.nodes.TakeNode;
 import com.robopupu.api.graph.nodes.TextViewNode;
+import com.robopupu.api.graph.nodes.ThreadNode;
 import com.robopupu.api.graph.nodes.TriggerNode;
 import com.robopupu.api.graph.nodes.ViewNode;
 import com.robopupu.api.graph.nodes.ZipInputNode;
@@ -43,7 +44,7 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * {@link Graph} is a builder utility for constructing graphcs consisting of {@link Node}s.
+ * {@link Graph} is a builder utility for constructing graphs consisting of {@link Node}s.
  *
  * @param <T> The parametrized output type of the {@link Graph}.
  */
@@ -111,6 +112,17 @@ public class Graph<T> {
     @SuppressWarnings("unchecked")
     public <T_Node> T_Node getCurrentNode() {
         return (T_Node)mCurrentNode;
+    }
+
+    /**
+     * Begins this {@link Graph} with an {@link ThreadNode} as a begin node. The execution of
+     * the {@link Node}s succeeding the {@link ThreadNode} is performed in a worker {@link Thread}.
+     * @return A {@link Graph}.
+     */
+    public static Graph<Void> beginWorker() {
+        final Graph<Void> graph = new Graph<>();
+        graph.setBeginNode(new ThreadNode<>(false));
+        return graph;
     }
 
     /**
@@ -540,7 +552,6 @@ public class Graph<T> {
         getBeginNode().emit();
     }
 
-
     /**
      * Invokes emit on {@link Graph} and converts the emitted output to {@code boolean} value.
      * @return A {@code boolean} value.
@@ -680,9 +691,28 @@ public class Graph<T> {
         return (T_Graph)this;
     }
 
-    public interface Callback<OUT> {
+    /**
+     * Transfers execution to the main thread.
+     * @return This {@link Graph}.
+     */
+    public Graph<T> toMain() {
+        return to(new ThreadNode<>(true));
+    }
 
-        void onInput(OUT value);
+    /**
+     * Transfers execution to a worker thread.
+     * @return This {@link Graph}.
+     */
+    public Graph<T> toWorker() {
+        return to(new ThreadNode<>(false));
+    }
+
+    /**
+     * {@link Callback} is callback interface to be used with {@link CallbackNode}.
+     */
+    public interface Callback<IN> {
+
+        void onInput(IN value);
         void onCompleted();
         void onError(Throwable throwable);
     }

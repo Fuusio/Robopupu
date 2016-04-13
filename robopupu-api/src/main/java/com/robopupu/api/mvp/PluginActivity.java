@@ -15,7 +15,7 @@ import java.util.List;
 
 /**
  * {@link PluginActivity} extends {@link ViewActivity} to provide an abstract base class for
- * implementing {@code Activities} that utilise Fuusio Plugin library.
+ * implementing {@code Activities} that utilise Robopupu.Plugin library.
  */
 public abstract class PluginActivity<T_Presenter extends Presenter>
         extends ViewActivity<T_Presenter> implements FeatureContainer, FeatureContainerActivity, PluginComponent {
@@ -50,11 +50,11 @@ public abstract class PluginActivity<T_Presenter extends Presenter>
     }
 
     @Override
-    public void showDialogFragment(final FeatureDialogFragment fragment, final boolean addToBackStack, final String fragmentTag) {
-        final String tag = (fragmentTag != null) ? fragmentTag : fragment.getViewTag();
+    public void showDialogFragment(final FeatureDialogFragment dialogFragment, final boolean addToBackStack, final String fragmentTag) {
+        final String tag = (fragmentTag != null) ? fragmentTag : dialogFragment.getViewTag();
         final FragmentManager manager = getSupportFragmentManager();
         final FragmentTransaction transaction = manager.beginTransaction();
-        transaction.add(fragment, tag);
+        transaction.add(dialogFragment, tag);
 
         if (addToBackStack) {
             transaction.addToBackStack(tag);

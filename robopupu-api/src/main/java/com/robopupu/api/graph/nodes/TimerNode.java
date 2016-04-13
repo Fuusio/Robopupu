@@ -77,9 +77,16 @@ public class TimerNode<IN> extends AbstractNode<IN, IN> {
             mId = System.currentTimeMillis();
             mInterval = interval;
             mRepeatCount = repeatCount;
-            mRunnable = this::timeout;
             mCancelled = false;
             mTimeoutCounter = 0;
+
+            // Note : This could be replaced with a lambda expression
+            mRunnable = new Runnable() {
+                @Override
+                public void run() {
+                    timeout();
+                }
+            };
         }
 
         protected void start() {
