@@ -11,7 +11,11 @@ import android.view.ViewGroup;
 import com.robopupu.api.mvp.View;
 
 /**
- * {@link FeatureContainerAdapter} pr...
+ * {@link FeatureContainerAdapter} provides an adapter for implementing {@link FeatureContainer}s.
+ * Typically an {@link AppCompatActivity} would implement {@link FeatureContainer} interface directly,
+ * but if an {@link AppCompatActivity} implements {@link FeatureContainerActivity} interface, it may
+ * provide multiple {@link FeatureContainer}s, one for each {@link ViewGroup} that is used as
+ * a container for a {@link FeatureFragment}.
  */
 public class FeatureContainerAdapter
         implements FeatureContainer {

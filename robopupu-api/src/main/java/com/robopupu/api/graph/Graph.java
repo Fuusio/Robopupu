@@ -692,18 +692,18 @@ public class Graph<T> {
     }
 
     /**
-     * Transfers execution to the main thread.
+     * Transfers the execution to the main thread.
      * @return This {@link Graph}.
      */
-    public Graph<T> toMain() {
+    public Graph<T> mainThread() {
         return to(new ThreadNode<>(true));
     }
 
     /**
-     * Transfers execution to a worker thread.
+     * Transfers the execution to a worker thread.
      * @return This {@link Graph}.
      */
-    public Graph<T> toWorker() {
+    public Graph<T> workerThread() {
         return to(new ThreadNode<>(false));
     }
 

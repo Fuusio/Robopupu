@@ -31,8 +31,10 @@ public class JokesInteractorImpl extends GraphInteractor implements JokesInterac
 
     @Override
     public void requestJoke(final Graph.Callback<JokeResponse> callback) {
-        //Graph.begin(mGetJoke).callback(callback).emit();
+        Graph.begin(mGetJoke).callback(callback).emit();
 
-        Graph.beginWorker().request(mGetJoke).toMain().callback(callback).emit();
+        // This following Graph version would use a worker thread for executing the request, and
+        // then resume to main thread of the callback
+        //Graph.beginWorker().request(mGetJoke).mainThread().callback(callback).emit();
     }
 }
