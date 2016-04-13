@@ -30,7 +30,7 @@ Use the following dependencies into your application module's ```build.gradle```
 
 ```groovy
 dependencies {
-	compile 'com.robopupu:robopupu:0.4.0'
+	compile 'com.robopupu:robopupu:0.4.1'
 	apt 'com.robopupu:robopupu-compiler:0.4.0'	
 	apt 'com.squareup:javapoet:1.5.1' 
 }
@@ -56,6 +56,9 @@ buildscript {
 ```
 
 ## Changelog
+
+### 0.4.1
+* Added basic threading support to [Functional Reactive Programming (FRP) API](https://robopupu.com/robopupu-frp/)
 
 ### 0.4.0
 * Fix issue with resolving Presenter in View after a configuration change
