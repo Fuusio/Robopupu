@@ -546,10 +546,33 @@ public class Graph<T> {
     }
 
     /**
+     * Resets this {@link Graph} by starting from the begin node.
+     */
+    public void reset() {
+        onReset();
+        getBeginNode().onReset();
+    }
+
+    /**
+     * Invoked by {@link Graph#reset()}.
+     */
+    protected void onReset() {
+        // By default do nothing
+    }
+
+    /**
      * Invokes the begin node to emit its value(s).
      */
     public void emit() {
+        onEmit();
         getBeginNode().emit();
+    }
+
+    /**
+     * Invoked by {@link Graph#emit()}.
+     */
+    protected void onEmit() {
+        // By default do nothing
     }
 
     /**

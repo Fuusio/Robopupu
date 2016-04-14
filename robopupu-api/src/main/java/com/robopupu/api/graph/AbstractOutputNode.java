@@ -1,5 +1,7 @@
 package com.robopupu.api.graph;
 
+import android.support.annotation.CallSuper;
+
 import java.util.ArrayList;
 
 /**
@@ -15,11 +17,6 @@ public abstract class AbstractOutputNode<OUT> implements OutputNode<OUT> {
      */
     protected AbstractOutputNode() {
         mInputNodes = new ArrayList<>();
-    }
-
-    @Override
-    public void emit() {
-        // By default do nothing
     }
 
     /**
@@ -122,5 +119,21 @@ public abstract class AbstractOutputNode<OUT> implements OutputNode<OUT> {
     protected String createErrorMessage(final String message, final String... args) {
         final String formattedMessage = String.format(message, (Object[]) args);
         return "Error in nodes " + getClass().getSimpleName() + " : " + formattedMessage;
+    }
+
+    @Override
+    public void emit() {
+        // By default do nothing
+    }
+
+    /**
+     * Invoked by {@link Graph#reset()}.
+     */
+    @CallSuper
+    @Override
+    public void onReset() {
+        for (final InputNode<OUT> inputNode : mInputNodes) {
+            inputNode.onReset();
+        }
     }
 }

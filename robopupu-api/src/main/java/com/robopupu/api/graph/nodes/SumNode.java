@@ -27,4 +27,10 @@ public class SumNode<IN> extends AbstractNode<IN, Double> {
     public void onCompleted(final OutputNode<?> outputNode) {
         out(mSum);
     }
+
+    @Override
+    public void onReset() {
+        super.onReset();
+        mSum = 0;
+    }
 }

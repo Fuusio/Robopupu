@@ -25,4 +25,9 @@ public interface InputNode<IN> {
      * @param throwable A {@link Throwable} representing the error.
      */
     void onError(OutputNode<?> outputNode, Throwable throwable);
+
+    /**
+     * Invoked to reset this {@link InputNode}.
+     */
+    void onReset();
 }

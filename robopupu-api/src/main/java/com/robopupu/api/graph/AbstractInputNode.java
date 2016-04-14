@@ -45,4 +45,12 @@ public abstract class AbstractInputNode<IN> implements InputNode<IN> {
         final String formattedMessage = String.format(message, (Object[]) args);
         return "Error in nodes " + getClass().getSimpleName() + " : " + formattedMessage;
     }
+
+    /**
+     * Invoked by {@link AbstractOutputNode#onReset()}.
+     */
+    @Override
+    public void onReset() {
+        // By default do nothing
+    }
 }

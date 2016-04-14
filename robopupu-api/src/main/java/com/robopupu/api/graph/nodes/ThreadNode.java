@@ -96,4 +96,10 @@ public class ThreadNode<IN, OUT> extends AbstractNode<IN, OUT> {
             new Thread(mRunnable).start();
         }
     }
+
+    @Override
+    public void onReset() {
+        super.onReset();
+        mCancelled = false;
+    }
 }

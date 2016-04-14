@@ -28,4 +28,10 @@ public class TakeNode<IN> extends AbstractNode<IN, IN> {
             return input;
         }
     }
+
+    @Override
+    public void onReset() {
+        super.onReset();
+        mCounter = 0;
+    }
 }
