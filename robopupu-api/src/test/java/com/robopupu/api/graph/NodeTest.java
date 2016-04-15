@@ -63,7 +63,7 @@ public class NodeTest {
         graph.to(beginNode).to(node1).to(node2).end(mEndNode);
 
         for (int i = 1; i < 4; i++) {
-            beginNode.onInput(i);
+            beginNode.onInput(null, i);
         }
 
         assertTrue(mEndNode.received(1, 2, 3));
@@ -77,7 +77,7 @@ public class NodeTest {
 
         mEndNode.reset();
         final Node<Integer, Integer> functionNode = graph.getBeginNode();
-        functionNode.onInput(20);
+        functionNode.onInput(null, 20);
         assertTrue(mEndNode.received(1000));
     }
 
@@ -96,7 +96,7 @@ public class NodeTest {
         final Node<Integer, Integer> beginNode = graph.getBeginNode();
 
         for (int i = 1; i < 7; i++) {
-            beginNode.onInput(i);
+            beginNode.onInput(null, i);
         }
 
         assertTrue(mEndNode.received(4, 5, 6));
@@ -109,21 +109,21 @@ public class NodeTest {
         graph.repeat(0).to(mEndNode);
         mEndNode.reset();
         Node<Integer, Integer> beginNode = graph.getBeginNode();
-        beginNode.onInput(1);
+        beginNode.onInput(null, 1);
         assertTrue(mEndNode.received());
 
         graph = new Graph<>();
         graph.repeat(1).end(mEndNode);
         mEndNode.reset();
         beginNode = graph.getBeginNode();
-        beginNode.onInput(1);
+        beginNode.onInput(null, 1);
         assertTrue(mEndNode.received(1));
 
         graph = new Graph<>();
         graph.repeat(5).end(mEndNode);
         mEndNode.reset();
         beginNode = graph.getBeginNode();
-        beginNode.onInput(1);
+        beginNode.onInput(null, 1);
         assertTrue(mEndNode.received(1, 1, 1, 1, 1));
     }
 
@@ -134,14 +134,14 @@ public class NodeTest {
         graph.skipWhile(input -> input > 3).end(mEndNode);
         mEndNode.reset();
         Node<Integer, Integer> beginNode = graph.getBeginNode();
-        beginNode.onInput(5);
-        beginNode.onInput(6);
-        beginNode.onInput(7);
-        beginNode.onInput(1);
-        beginNode.onInput(8);
-        beginNode.onInput(9);
-        beginNode.onInput(2);
-        beginNode.onInput(3);
+        beginNode.onInput(null, 5);
+        beginNode.onInput(null, 6);
+        beginNode.onInput(null, 7);
+        beginNode.onInput(null, 1);
+        beginNode.onInput(null, 8);
+        beginNode.onInput(null, 9);
+        beginNode.onInput(null, 2);
+        beginNode.onInput(null, 3);
         assertTrue(mEndNode.received(1, 8, 9, 2, 3));
     }
 
@@ -159,7 +159,7 @@ public class NodeTest {
         final Node<Integer, Integer> beginNode = graph.getBeginNode();
 
         for (int i = 1; i < 7; i++) {
-            beginNode.onInput(i);
+            beginNode.onInput(null, i);
         }
 
         assertTrue(mEndNode.received(1, 2, 3));
@@ -176,7 +176,7 @@ public class NodeTest {
         final Node<Integer, Integer> beginNode = graph.getBeginNode();
 
         for (int i = 1; i < 7; i++) {
-            beginNode.onInput(i);
+            beginNode.onInput(null, i);
         }
 
         assertTrue(mEndNode.received(4, 5, 6));
@@ -289,7 +289,7 @@ public class NodeTest {
 
         loginNode = createGraph(authenticator);
         authenticator.reset();
-        loginNode.onInput(response);
+        loginNode.onInput(null, response);
         assertTrue(authenticator.failed());
 
         // Http 401, Error D
@@ -300,7 +300,7 @@ public class NodeTest {
 
         loginNode = createGraph(authenticator);
         authenticator.reset();
-        loginNode.onInput(response);
+        loginNode.onInput(null, response);
         assertTrue(authenticator.failed());
 
         // Http 200
@@ -310,7 +310,7 @@ public class NodeTest {
 
         loginNode = createGraph(authenticator);
         authenticator.reset();
-        loginNode.onInput(response);
+        loginNode.onInput(null, response);
         assertTrue(authenticator.succeeded());
     }
 

@@ -17,7 +17,7 @@ public class IntNode<IN> extends AbstractNode<IN, Integer> {
             mValue = ((Number)input).intValue();
             return mValue;
         } else {
-            error(this, new ClassCastException(createErrorMessage("Received an object that cannot be converted to int")));
+            dispatchError(this, new ClassCastException(createErrorMessage("Received an object that cannot be converted to int")));
             return null;
         }
     }

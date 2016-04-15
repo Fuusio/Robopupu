@@ -17,7 +17,7 @@ public class CharacterNode<IN> extends AbstractNode<IN, Character> {
             mValue = (Character)input;
             return mValue;
         } else {
-            error(this, new ClassCastException(createErrorMessage("Received an object that cannot be converted to Character")));
+            dispatchError(this, new ClassCastException(createErrorMessage("Received an object that cannot be converted to Character")));
             return null;
         }
     }

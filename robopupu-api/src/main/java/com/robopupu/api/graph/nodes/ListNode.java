@@ -1,7 +1,6 @@
 package com.robopupu.api.graph.nodes;
 
 import com.robopupu.api.graph.AbstractNode;
-import com.robopupu.api.graph.AbstractOutputNode;
 import com.robopupu.api.graph.OutputNode;
 
 import java.util.ArrayList;
@@ -38,9 +37,9 @@ public class ListNode<IN> extends AbstractNode<IN, IN> {
      * Invoked to emit the contents of this {@link ListNode}.
      */
     @Override
-    public void emit() {
+    public void emitOutput() {
         for (final IN output : mList) {
-            out(output);
+            emitOutput(output);
         }
 
         if (mMutableList) {

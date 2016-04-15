@@ -38,7 +38,7 @@ public class TextViewNode extends AbstractOutputNode<String> implements TextWatc
     @Override
     public void afterTextChanged(final Editable editable) {
         if (mEnabled) {
-            out(editable.toString());
+            emitOutput(editable.toString());
         }
     }
 }

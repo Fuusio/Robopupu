@@ -2,7 +2,6 @@ package com.robopupu.api.graph.nodes;
 
 import android.view.View;
 
-import com.robopupu.api.graph.AbstractNode;
 import com.robopupu.api.graph.AbstractOutputNode;
 
 public class ViewNode extends AbstractOutputNode<View> implements View.OnClickListener {
@@ -32,7 +31,7 @@ public class ViewNode extends AbstractOutputNode<View> implements View.OnClickLi
     @Override
     public void onClick(final View view) {
         if (mEnabled) {
-            out(view);
+            emitOutput(view);
         }
     }
 }

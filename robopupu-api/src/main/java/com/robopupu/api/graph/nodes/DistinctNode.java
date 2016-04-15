@@ -31,7 +31,7 @@ public class DistinctNode<IN> extends AbstractNode<IN, IN> {
     @Override
     public void onCompleted(final OutputNode<?> outputNode) {
         for (final IN output : mBuffer) {
-            out(output);
+            emitOutput(output);
         }
         completed(this);
     }

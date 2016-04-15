@@ -17,7 +17,7 @@ public class ByteNode<IN> extends AbstractNode<IN, Byte> {
             mValue = ((Number)input).byteValue();
             return mValue;
         } else {
-            error(this, new ClassCastException(createErrorMessage("Received an object that cannot be converted to byte value")));
+            dispatchError(this, new ClassCastException(createErrorMessage("Received an object that cannot be converted to byte value")));
             return null;
         }
     }

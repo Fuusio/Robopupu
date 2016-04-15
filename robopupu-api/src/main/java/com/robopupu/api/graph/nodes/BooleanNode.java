@@ -17,7 +17,7 @@ public class BooleanNode<IN> extends AbstractNode<IN, Boolean> {
             mValue = (Boolean)input;
             return mValue;
         } else {
-            error(this, new ClassCastException(createErrorMessage("Received an object that cannot be converted to Boolean")));
+            dispatchError(this, new ClassCastException(createErrorMessage("Received an object that cannot be converted to Boolean")));
             return null;
         }
     }

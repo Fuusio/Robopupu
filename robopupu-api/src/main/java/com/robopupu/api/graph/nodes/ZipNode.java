@@ -38,7 +38,7 @@ public abstract class ZipNode<OUT> extends AbstractNode<Void, OUT> {
         buffer.add(input);
 
         if (isReadyToZip()) {
-            out(zip());
+            emitOutput(zip());
         }
     }
 

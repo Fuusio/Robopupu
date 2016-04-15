@@ -17,7 +17,7 @@ public class LongNode<IN> extends AbstractNode<IN, Long> {
             mValue = ((Number)input).longValue();
             return mValue;
         } else {
-            error(this, new ClassCastException(createErrorMessage("Received an object that cannot be converted to Long")));
+            dispatchError(this, new ClassCastException(createErrorMessage("Received an object that cannot be converted to Long")));
             return null;
         }
     }

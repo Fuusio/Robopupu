@@ -20,7 +20,7 @@ public class RepeatNode<IN> extends AbstractNode<IN, IN> {
     protected IN processInput(final OutputNode<IN> outputNode, final IN input) {
         if (input != null) {
             for (int i = 0; i < mTimes; i++) {
-                out(input);
+                emitOutput(input);
             }
         }
         return null;

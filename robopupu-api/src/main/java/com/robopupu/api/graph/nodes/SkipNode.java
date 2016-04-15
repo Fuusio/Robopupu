@@ -29,8 +29,7 @@ public class SkipNode<IN> extends AbstractNode<IN, IN> {
     }
 
     @Override
-    public void onReset() {
-        super.onReset();
+    public void doOnReset() {
         mCounter = 0;
     }
 }

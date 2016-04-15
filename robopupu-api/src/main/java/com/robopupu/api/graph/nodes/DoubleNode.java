@@ -17,7 +17,7 @@ public class DoubleNode<IN> extends AbstractNode<IN, Double> {
             mValue = ((Number)input).doubleValue();
             return mValue;
         } else {
-            error(this, new ClassCastException(createErrorMessage("Received an object that cannot be converted to Double")));
+            dispatchError(this, new ClassCastException(createErrorMessage("Received an object that cannot be converted to Double")));
             return null;
         }
     }

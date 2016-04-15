@@ -43,12 +43,12 @@ public class LastNode<IN> extends AbstractNode<IN, IN> {
                     final IN value = mBuffer.get(i);
 
                     if (mCondition.eval(value)) {
-                        out(value);
+                        emitOutput(value);
                         break;
                     }
                 }
             } else {
-                out(mBuffer.get(size - 1 ));
+                emitOutput(mBuffer.get(size - 1 ));
             }
         }
         completed(this);

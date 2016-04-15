@@ -17,7 +17,7 @@ public class ShortNode<IN> extends AbstractNode<IN, Short> {
             mValue = ((Number)input).shortValue();
             return mValue;
         } else {
-            error(this, new ClassCastException(createErrorMessage("Received an object that cannot be converted to short value")));
+            dispatchError(this, new ClassCastException(createErrorMessage("Received an object that cannot be converted to short value")));
             return null;
         }
     }

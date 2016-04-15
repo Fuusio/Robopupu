@@ -20,22 +20,22 @@ public class RequestNode<IN, OUT> extends AbstractNode<IN, OUT> implements Reque
     }
 
     @Override
-    public void emit() {
+    public void emitOutput() {
         mRequestDelegate.executeRequest(this);
     }
 
     @Override
     public void onInput(final OutputNode<IN> outputNode, final IN input) {
-        emit();
+        emitOutput();
     }
 
     @Override
     public void onResponse(final OUT response) {
-        out(response);
+        emitOutput(response);
     }
 
     @Override
     public void onError(final RequestError requestError) {
-        error(this, requestError);
+        dispatchError(this, requestError);
     }
 }

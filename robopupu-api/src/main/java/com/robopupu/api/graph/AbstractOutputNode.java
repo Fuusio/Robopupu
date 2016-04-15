@@ -12,6 +12,8 @@ public abstract class AbstractOutputNode<OUT> implements OutputNode<OUT> {
 
     protected final ArrayList<InputNode<OUT>> mInputNodes;
 
+    protected Graph<?> mGraph;
+
     /**
      * Constructs a new instance of {@link AbstractOutputNode}.
      */
@@ -19,11 +21,16 @@ public abstract class AbstractOutputNode<OUT> implements OutputNode<OUT> {
         mInputNodes = new ArrayList<>();
     }
 
+    @Override
+    public void setGraph(final Graph<?> graph) {
+        mGraph = graph;
+    }
+
     /**
      * Invoked to emit the given output to attached {@link InputNode}s, if any.
      * @param output The outbut {@link Object}.
      */
-    protected void out(final OUT output) {
+    protected void emitOutput(final OUT output) {
         if (output != null) {
             for (final InputNode<OUT> inputNode : mInputNodes) {
                 inputNode.onInput(this, output);
@@ -33,22 +40,22 @@ public abstract class AbstractOutputNode<OUT> implements OutputNode<OUT> {
 
     /**
      * Invoked to notify all {@link InputNode}s about completion.
-     * @param outputNode The completed {@link OutputNode}.
+     * @param source The completed {@link OutputNode}.
      */
-    protected void completed(final OutputNode<?> outputNode) {
+    protected void completed(final OutputNode<?> source) {
         for (final InputNode<OUT> inputNode : mInputNodes) {
-            inputNode.onCompleted(outputNode);
+            inputNode.onCompleted(source);
         }
     }
 
     /**
-     * Dispatches an error to all output {@link InputNode}s, if any.
-     * @param outputNode The {@link OutputNode} that has detected the error.
+     * Dispatches an error to all {@link InputNode}s, if any.
+     * @param source The {@link OutputNode} that has detected the error.
      * @param throwable A {@link Throwable} representing the error.
      */
-    protected void error(final OutputNode<?> outputNode, final Throwable throwable) {
+    protected void dispatchError(final OutputNode<?> source, final Throwable throwable) {
         for (final InputNode<OUT> inputNode : mInputNodes) {
-            inputNode.onError(outputNode, throwable);
+            inputNode.onError(source, throwable);
         }
     }
 
@@ -122,7 +129,7 @@ public abstract class AbstractOutputNode<OUT> implements OutputNode<OUT> {
     }
 
     @Override
-    public void emit() {
+    public void emitOutput() {
         // By default do nothing
     }
 
@@ -132,8 +139,25 @@ public abstract class AbstractOutputNode<OUT> implements OutputNode<OUT> {
     @CallSuper
     @Override
     public void onReset() {
+        dispatchReset();
+    }
+
+    /**
+     * Dispatches a resetting to all {@link InputNode}s, if any.
+     */
+    protected void dispatchReset() {
+        doOnReset();
+
         for (final InputNode<OUT> inputNode : mInputNodes) {
             inputNode.onReset();
         }
+    }
+
+    /**
+     * Invoked by {@link InputNode#onCompleted(OutputNode)}. This method can be overridden
+     * in subclasses for hooking on the reset events.
+     */
+    protected void doOnReset() {
+        // By default do nothing
     }
 }

@@ -2,7 +2,6 @@ package com.robopupu.api.graph.nodes;
 
 import com.robopupu.api.graph.AbstractNode;
 import com.robopupu.api.graph.OutputNode;
-import com.robopupu.api.graph.functions.BooleanFunction;
 
 import java.util.ArrayList;
 
@@ -29,7 +28,7 @@ public class ReverseNode<IN> extends AbstractNode<IN, IN> {
 
         if (size > 0) {
             for (int i = size - 1; i >= 0; i--) {
-                out(mBuffer.get(i));
+                emitOutput(mBuffer.get(i));
             }
         }
         completed(this);

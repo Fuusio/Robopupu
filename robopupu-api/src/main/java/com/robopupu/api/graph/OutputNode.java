@@ -3,21 +3,27 @@ package com.robopupu.api.graph;
 public interface OutputNode<OUT> {
 
     /**
-     * Attaches the given {@link InputNode} to this {@link OutputNode}.
-     * @param inputNode An{@link InputNode}.
+     * Sets the {@link Graph} that contains this {@link OutputNode}.
+     * @param graph A {@link Graph}.
      */
-    void attach(InputNode<OUT> inputNode);
+    void setGraph(Graph<?> graph);
 
     /**
-     * Detaches the given {@link InputNode} from this {@link OutputNode}.
-     * @param inputNode An {@link InputNode}.
+     * Attaches the given target {@link InputNode} to this {@link OutputNode}.
+     * @param target An {@link InputNode}.
      */
-    void detach(InputNode<OUT> inputNode);
+    void attach(InputNode<OUT> target);
+
+    /**
+     * Detaches the given target {@link InputNode} from this {@link OutputNode}.
+     * @param target An {@link InputNode}.
+     */
+    void detach(InputNode<OUT> target);
 
     /**
      * Invoked to emit available output value(s) from this {@link OutputNode}.
      */
-    void emit();
+    void emitOutput();
 
     /**
      * Invoked to reset this {@link OutputNode}.

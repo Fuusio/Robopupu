@@ -17,7 +17,7 @@ public class FloatNode<IN> extends AbstractNode<IN, Float> {
             mValue = ((Number)input).floatValue();
             return mValue;
         } else {
-            error(this, new ClassCastException(createErrorMessage("Received an object that cannot be converted to Float")));
+            dispatchError(this, new ClassCastException(createErrorMessage("Received an object that cannot be converted to Float")));
             return null;
         }
     }

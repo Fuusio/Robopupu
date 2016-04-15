@@ -5,7 +5,7 @@ import com.robopupu.api.graph.AbstractOutputNode;
 public class TriggerNode extends AbstractOutputNode<Long> {
 
     @Override
-    public void emit() {
-        out(System.currentTimeMillis());
+    public void emitOutput() {
+        emitOutput(System.currentTimeMillis());
     }
 }

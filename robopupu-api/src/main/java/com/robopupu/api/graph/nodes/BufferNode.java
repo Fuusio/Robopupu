@@ -23,7 +23,7 @@ public class BufferNode<IN> extends AbstractNode<IN, IN> {
                 mBuffer.add(input);
             } else {
                 for (final IN output : mBuffer) {
-                    out(output);
+                    emitOutput(output);
                 }
                 mBuffer.clear();
             }
@@ -32,8 +32,7 @@ public class BufferNode<IN> extends AbstractNode<IN, IN> {
     }
 
     @Override
-    public void onReset() {
-        super.onReset();
+    public void doOnReset() {
         mBuffer.clear();
     }
 }

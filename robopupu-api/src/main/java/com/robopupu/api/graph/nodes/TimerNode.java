@@ -44,7 +44,7 @@ public class TimerNode<IN> extends AbstractNode<IN, IN> {
     }
 
     protected void timeout(final TimerHandle handle, final IN input) {
-        out(input);
+        emitOutput(input);
 
         if (handle.isFinished()) {
             remove(handle);

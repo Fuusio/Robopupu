@@ -18,19 +18,18 @@ public class SumNode<IN> extends AbstractNode<IN, Double> {
         if (input instanceof Number) {
             mSum += ((Number)input).doubleValue();
         } else {
-            error(this, new ClassCastException(createErrorMessage("Received an object that cannot be converted to Number")));
+            dispatchError(this, new ClassCastException(createErrorMessage("Received an object that cannot be converted to Number")));
         }
         return null;
     }
 
     @Override
     public void onCompleted(final OutputNode<?> outputNode) {
-        out(mSum);
+        emitOutput(mSum);
     }
 
     @Override
-    public void onReset() {
-        super.onReset();
+    public void doOnReset() {
         mSum = 0;
     }
 }

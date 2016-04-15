@@ -22,13 +22,13 @@ public class ConcatNode<IN> extends AbstractNode<IN, String> {
         if (input != null) {
             mString.append(input.toString());
         } else {
-            error(this, new ClassCastException(createErrorMessage("Received an input value that cannot be converted to String")));
+            dispatchError(this, new ClassCastException(createErrorMessage("Received an input value that cannot be converted to String")));
         }
         return null;
     }
 
     @Override
     public void onCompleted(final OutputNode<?> outputNode) {
-        out(mString.toString());
+        emitOutput(mString.toString());
     }
 }

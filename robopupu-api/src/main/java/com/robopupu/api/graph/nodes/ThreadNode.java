@@ -48,8 +48,8 @@ public class ThreadNode<IN, OUT> extends AbstractNode<IN, OUT> {
     }
 
     @Override
-    public void emit() {
-        out(null);
+    public void emitOutput() {
+        emitOutput(null);
     }
 
     @SuppressWarnings("unchecked")
@@ -59,14 +59,14 @@ public class ThreadNode<IN, OUT> extends AbstractNode<IN, OUT> {
             try {
                 return (OUT) input;
             } catch (ClassCastException e) {
-                error(this, e);
+                dispatchError(this, e);
             }
         }
         return null;
     }
 
     @Override
-    protected void out(final OUT output) {
+    protected void emitOutput(final OUT output) {
         if (mExecuteInMainThread) {
             // Note : This could be replaced with a lambda expression
             mRunnable = new Runnable() {
@@ -98,8 +98,7 @@ public class ThreadNode<IN, OUT> extends AbstractNode<IN, OUT> {
     }
 
     @Override
-    public void onReset() {
-        super.onReset();
+    public void doOnReset() {
         mCancelled = false;
     }
 }

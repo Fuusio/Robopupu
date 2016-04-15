@@ -565,7 +565,7 @@ public class Graph<T> {
      */
     public void emit() {
         onEmit();
-        getBeginNode().emit();
+        getBeginNode().emitOutput();
     }
 
     /**
