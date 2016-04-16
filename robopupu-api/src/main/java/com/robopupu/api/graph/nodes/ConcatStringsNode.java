@@ -18,7 +18,7 @@ public class ConcatStringsNode<IN> extends AbstractNode<IN, String> {
 
     @SuppressWarnings("unchecked")
     @Override
-    protected String processInput(final OutputNode<IN> outputNode, final IN input) {
+    protected String processInput(final OutputNode<IN> source, final IN input) {
         if (input != null) {
             mString.append(input.toString());
         } else {
