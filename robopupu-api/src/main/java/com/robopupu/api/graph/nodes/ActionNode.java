@@ -19,7 +19,7 @@ public class ActionNode<IN, OUT> extends AbstractNode<IN, OUT> {
 
     @SuppressWarnings("unchecked")
     @Override
-    protected OUT processInput(final OutputNode<IN> outputNode, final IN input) {
+    protected OUT processInput(final OutputNode<IN> source, final IN input) {
         if (mAction != null) {
             mAction.execute(input);
         } else {

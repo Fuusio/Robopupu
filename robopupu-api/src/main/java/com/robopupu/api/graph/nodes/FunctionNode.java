@@ -16,7 +16,7 @@ public class FunctionNode<IN, OUT> extends AbstractNode<IN, OUT> {
     }
 
     @Override
-    protected OUT processInput(final OutputNode<IN> outputNode, final IN input) {
+    protected OUT processInput(final OutputNode<IN> source, final IN input) {
         if (mFunction != null) {
             return mFunction.eval(input);
         } else {

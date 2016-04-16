@@ -26,7 +26,7 @@ public class FirstNode<IN> extends AbstractNode<IN, IN> {
 
     @SuppressWarnings("unchecked")
     @Override
-    protected IN processInput(final OutputNode<IN> outputNode, final IN input) {
+    protected IN processInput(final OutputNode<IN> source, final IN input) {
         if (input != null && !mValueEmitted) {
             if (mCondition != null) {
                 if (mCondition.eval(input)) {

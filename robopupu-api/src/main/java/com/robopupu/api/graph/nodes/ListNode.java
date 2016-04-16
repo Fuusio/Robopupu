@@ -27,10 +27,11 @@ public class ListNode<IN> extends AbstractNode<IN, IN> {
     }
 
     @Override
-    public void onInput(final OutputNode<IN> outputNode, final IN input) {
+    protected IN processInput(final OutputNode<IN> source, final IN input) {
         if (mMutableList) {
             mList.add(input);
         }
+        return null;
     }
 
     /**

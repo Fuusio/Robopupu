@@ -12,7 +12,7 @@ public class ByteNode<IN> extends AbstractNode<IN, Byte> {
     private byte mValue;
 
     @Override
-    protected Byte processInput(final OutputNode<IN> outputNode, final IN input) {
+    protected Byte processInput(final OutputNode<IN> source, final IN input) {
         if (input instanceof Number) {
             mValue = ((Number)input).byteValue();
             return mValue;

@@ -12,7 +12,7 @@ public class BooleanNode<IN> extends AbstractNode<IN, Boolean> {
     private boolean mValue;
 
     @Override
-    protected Boolean processInput(final OutputNode<IN> outputNode, final IN input) {
+    protected Boolean processInput(final OutputNode<IN> source, final IN input) {
         if (input instanceof Boolean) {
             mValue = (Boolean)input;
             return mValue;

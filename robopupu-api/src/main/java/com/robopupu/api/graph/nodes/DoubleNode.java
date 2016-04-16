@@ -12,7 +12,7 @@ public class DoubleNode<IN> extends AbstractNode<IN, Double> {
     private double mValue;
 
     @Override
-    protected Double processInput(final OutputNode<IN> outputNode, final IN input) {
+    protected Double processInput(final OutputNode<IN> source, final IN input) {
         if (input instanceof Number) {
             mValue = ((Number)input).doubleValue();
             return mValue;

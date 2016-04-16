@@ -17,7 +17,7 @@ public class RepeatNode<IN> extends AbstractNode<IN, IN> {
 
     @SuppressWarnings("unchecked")
     @Override
-    protected IN processInput(final OutputNode<IN> outputNode, final IN input) {
+    protected IN processInput(final OutputNode<IN> source, final IN input) {
         if (input != null) {
             for (int i = 0; i < mTimes; i++) {
                 emitOutput(input);

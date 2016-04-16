@@ -14,7 +14,7 @@ public class SumNode<IN> extends AbstractNode<IN, Double> {
 
     @SuppressWarnings("unchecked")
     @Override
-    protected Double processInput(final OutputNode<IN> outputNode, final IN input) {
+    protected Double processInput(final OutputNode<IN> source, final IN input) {
         if (input instanceof Number) {
             mSum += ((Number)input).doubleValue();
         } else {

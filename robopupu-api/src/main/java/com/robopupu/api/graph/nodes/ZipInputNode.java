@@ -5,8 +5,7 @@ import com.robopupu.api.graph.Node;
 import com.robopupu.api.graph.OutputNode;
 
 /**
- * {@link ZipInputNode} extends {@link AbstractNode} to define an interface for {@link Node}s that are
- * used as input nodes for {@link ZipNode}s.
+ * {@link ZipInputNode} is used as a specific input node for a {@link ZipNode}.
  */
 public class ZipInputNode<IN, OUT>  extends AbstractNode<IN, OUT> {
 
@@ -28,7 +27,8 @@ public class ZipInputNode<IN, OUT>  extends AbstractNode<IN, OUT> {
     }
 
     @Override
-    public void onInput(final OutputNode<IN> outputNode, final IN input) {
+    protected OUT processInput(final OutputNode<IN> source, final IN input) {
         mZipNode.onInput(this, input);
+        return null;
     }
 }

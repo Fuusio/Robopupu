@@ -12,7 +12,7 @@ public class ShortNode<IN> extends AbstractNode<IN, Short> {
     private short mValue;
 
     @Override
-    protected Short processInput(final OutputNode<IN> outputNode, final IN input) {
+    protected Short processInput(final OutputNode<IN> source, final IN input) {
         if (input instanceof Number) {
             mValue = ((Number)input).shortValue();
             return mValue;

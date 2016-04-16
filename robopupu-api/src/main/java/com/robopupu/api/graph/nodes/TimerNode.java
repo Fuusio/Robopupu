@@ -31,8 +31,9 @@ public class TimerNode<IN> extends AbstractNode<IN, IN> {
     }
 
     @Override
-    public void onInput(final OutputNode<IN> outputNode, final IN input) {
+    protected IN processInput(final OutputNode<IN> source, final IN input) {
         start(input);
+        return null;
     }
 
     /**

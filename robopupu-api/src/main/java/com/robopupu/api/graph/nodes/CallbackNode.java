@@ -16,18 +16,18 @@ public class CallbackNode<IN> extends AbstractNode<IN, IN> {
 
     @SuppressWarnings("unchecked")
     @Override
-    protected IN processInput(final OutputNode<IN> outputNode, final IN input) {
+    protected IN processInput(final OutputNode<IN> source, final IN input) {
         mCallback.onInput(input);
         return input;
     }
 
     @Override
-    public void onCompleted(final OutputNode<?> outputNode) {
+    public void onCompleted(final OutputNode<?> source) {
         mCallback.onCompleted();
     }
 
     @Override
-    public void onError(final OutputNode<?> outputNode, final Throwable throwable) {
+    protected void doOnError(final OutputNode<?> source, final Throwable throwable) {
         mCallback.onError(throwable);
     }
 }

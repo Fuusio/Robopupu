@@ -21,7 +21,7 @@ public class FilterNode<IN> extends AbstractNode<IN, IN> {
 
     @SuppressWarnings("unchecked")
     @Override
-    protected IN processInput(final OutputNode<IN> outputNode, final IN input) {
+    protected IN processInput(final OutputNode<IN> source, final IN input) {
         if (input != null) {
             if (mCondition != null) {
                 if (mCondition.eval(input)) {

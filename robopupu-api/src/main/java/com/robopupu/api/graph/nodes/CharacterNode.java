@@ -12,7 +12,7 @@ public class CharacterNode<IN> extends AbstractNode<IN, Character> {
     private char mValue;
 
     @Override
-    protected Character processInput(final OutputNode<IN> outputNode, final IN input) {
+    protected Character processInput(final OutputNode<IN> source, final IN input) {
         if (input instanceof Character) {
             mValue = (Character)input;
             return mValue;

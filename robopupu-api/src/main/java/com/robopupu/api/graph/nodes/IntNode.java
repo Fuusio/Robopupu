@@ -12,7 +12,7 @@ public class IntNode<IN> extends AbstractNode<IN, Integer> {
     private int mValue;
 
     @Override
-    protected Integer processInput(final OutputNode<IN> outputNode, final IN input) {
+    protected Integer processInput(final OutputNode<IN> source, final IN input) {
         if (input instanceof Number) {
             mValue = ((Number)input).intValue();
             return mValue;

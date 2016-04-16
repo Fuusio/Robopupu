@@ -18,7 +18,7 @@ public class DistinctNode<IN> extends AbstractNode<IN, IN> {
 
     @SuppressWarnings("unchecked")
     @Override
-    protected IN processInput(final OutputNode<IN> outputNode, final IN input) {
+    protected IN processInput(final OutputNode<IN> source, final IN input) {
         if (input != null) {
             if (!mMapped.containsKey(input)) {
                 mMapped.put(input, input);

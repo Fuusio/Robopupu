@@ -17,6 +17,8 @@ package com.robopupu.api.graph;
 
 import android.test.suitebuilder.annotation.SmallTest;
 
+import com.robopupu.api.graph.nodes.ConcatNode;
+import com.robopupu.api.graph.nodes.ListNode;
 import com.robopupu.api.graph.nodes.SimpleNode;
 import com.robopupu.api.graph.nodes.Zip2Node;
 import com.robopupu.api.graph.nodes.Zip3Node;
@@ -35,7 +37,6 @@ import static org.junit.Assert.assertTrue;
 @SmallTest
 public class NodeTest {
 
-    private BeginNode<Integer> mBeginNode = new BeginNode<>();
     private EndNode<Integer> mEndNode = new EndNode<>();
     private List<Integer> mIntList;
 
@@ -82,10 +83,31 @@ public class NodeTest {
         assertTrue(mEndNode.received(1000));
     }
 
+    @SuppressWarnings("unchecked")
+    @Test
+    public void test_concat() {
+        final ListNode<Integer> listNode1 = new ListNode<>(createList(1, 2, 3));
+        final ListNode<Integer> listNode2 = new ListNode<>(createList(4, 5, 6));
+        final ListNode<Integer> listNode3 = new ListNode<>(createList(7, 8, 9));
+        final ListNode<Integer> listNode4 = new ListNode<>(createList(10, 11, 12));
+
+        final ConcatNode<Integer> concatNode = new ConcatNode<>(listNode1, listNode2, listNode3, listNode4);
+        concatNode.attach(mEndNode);
+
+        mEndNode.onReset();
+
+        listNode4.emitOutput();
+        listNode2.emitOutput();
+        listNode1.emitOutput();
+        listNode3.emitOutput();
+
+        assertTrue(mEndNode.received(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12));
+    }
+
     @Test
     public void test_error_and_reset() {
 
-        final BeginNode beginNode = new BeginNode();
+        final BeginNode<Integer> beginNode = new BeginNode<>();
         final Node<Integer, Integer> node0 = new SimpleNode<>();
         final Node<Integer, Integer> node1 = new SimpleNode<>();
         final Node<Integer, Integer> node2 = new SimpleNode<>();

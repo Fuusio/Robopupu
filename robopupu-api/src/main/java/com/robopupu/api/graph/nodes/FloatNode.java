@@ -12,7 +12,7 @@ public class FloatNode<IN> extends AbstractNode<IN, Float> {
     private float mValue;
 
     @Override
-    protected Float processInput(final OutputNode<IN> outputNode, final IN input) {
+    protected Float processInput(final OutputNode<IN> source, final IN input) {
         if (input instanceof Number) {
             mValue = ((Number)input).floatValue();
             return mValue;

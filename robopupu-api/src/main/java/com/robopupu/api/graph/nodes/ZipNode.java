@@ -1,6 +1,7 @@
 package com.robopupu.api.graph.nodes;
 
 import com.robopupu.api.graph.AbstractNode;
+import com.robopupu.api.graph.Function;
 import com.robopupu.api.graph.InputNode;
 import com.robopupu.api.graph.Node;
 import com.robopupu.api.graph.OutputNode;
@@ -8,8 +9,10 @@ import com.robopupu.api.graph.OutputNode;
 import java.util.ArrayList;
 
 /**
- * {@link ZipNode} extends {@link Node} to define an interface for {@link Node}s that are used
- * as input nodes for {@link ZipNode}s.
+ * A{@link ZipNode} has 2 to 9 {@link ZipInputNode}s from which it receives input values and combines
+ * them to produce an output value using a provided {@link Function}. {@link ZipNode} is an abstract
+ * base class for concrete classes: {@link Zip2Node}, {@link Zip3Node}, {@link Zip4Node},
+ * {@link Zip5Node}, {@link Zip6Node}, {@link Zip7Node}, {@link Zip8Node}, and {@link Zip9Node}.
  */
 public abstract class ZipNode<OUT> extends AbstractNode<Void, OUT> {
 
@@ -39,20 +42,6 @@ public abstract class ZipNode<OUT> extends AbstractNode<Void, OUT> {
 
         if (isReadyToZip()) {
             emitOutput(zip());
-        }
-    }
-
-    @Override
-    public void onCompleted(final OutputNode<?> outputNode) { // TODO
-        for (final InputNode<OUT> inputNode : mInputNodes) {
-            inputNode.onCompleted(outputNode);
-        }
-    }
-
-    @Override
-    public void onError(final OutputNode<?> outputNode, final Throwable throwable) {
-        for (final InputNode<OUT> inputNode : mInputNodes) {
-            inputNode.onError(outputNode, throwable);
         }
     }
 

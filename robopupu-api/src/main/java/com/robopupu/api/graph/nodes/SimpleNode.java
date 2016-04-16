@@ -13,7 +13,7 @@ public class SimpleNode<IN, OUT> extends AbstractNode<IN, OUT> {
 
     @SuppressWarnings("unchecked")
     @Override
-    protected OUT processInput(final OutputNode<IN> outputNode, final IN input) {
+    protected OUT processInput(final OutputNode<IN> source, final IN input) {
         if (input != null) {
             try {
                 return (OUT) input;

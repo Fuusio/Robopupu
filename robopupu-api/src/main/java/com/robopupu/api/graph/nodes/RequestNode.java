@@ -25,8 +25,9 @@ public class RequestNode<IN, OUT> extends AbstractNode<IN, OUT> implements Reque
     }
 
     @Override
-    public void onInput(final OutputNode<IN> outputNode, final IN input) {
+    protected OUT processInput(final OutputNode<IN> source, final IN input) {
         emitOutput();
+        return null;
     }
 
     @Override

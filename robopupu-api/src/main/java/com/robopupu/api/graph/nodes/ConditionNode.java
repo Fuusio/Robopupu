@@ -17,7 +17,7 @@ public class ConditionNode<IN> extends AbstractNode<IN, Boolean> {
     }
 
     @Override
-    protected Boolean processInput(final OutputNode<IN> outputNode, final IN input) {
+    protected Boolean processInput(final OutputNode<IN> source, final IN input) {
         if (input != null) {
             if (mCondition != null) {
                 return mCondition.eval(input);

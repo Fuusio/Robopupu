@@ -12,7 +12,7 @@ public class LongNode<IN> extends AbstractNode<IN, Long> {
     private long mValue;
 
     @Override
-    protected Long processInput(final OutputNode<IN> outputNode, final IN input) {
+    protected Long processInput(final OutputNode<IN> source, final IN input) {
         if (input instanceof Number) {
             mValue = ((Number)input).longValue();
             return mValue;

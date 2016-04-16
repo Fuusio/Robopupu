@@ -42,7 +42,7 @@ public class GraphExamples {
 
     @Test
     public void convertCharValuesToString() {
-        final String string = Graph.begin('A', 'B', 'C', 'D', 'E', 'F').string().concat().stringValue();
+        final String string = Graph.begin('A', 'B', 'C', 'D', 'E', 'F').string().concatStrings().stringValue();
         assertEquals("ABCDEF", string);
     }
 
@@ -137,7 +137,7 @@ public class GraphExamples {
 
     @Test
     public void concatThreeStrings() {
-        final String string = Graph.begin("Robopupu ", "is ", "awesome").concat().stringValue();
+        final String string = Graph.begin("Robopupu ", "is ", "awesome").concatStrings().stringValue();
         assertEquals("Robopupu is awesome", string);
     }
 

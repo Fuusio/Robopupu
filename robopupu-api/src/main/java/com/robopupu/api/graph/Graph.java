@@ -11,6 +11,7 @@ import com.robopupu.api.graph.nodes.ByteNode;
 import com.robopupu.api.graph.nodes.CallbackNode;
 import com.robopupu.api.graph.nodes.CharacterNode;
 import com.robopupu.api.graph.nodes.ConcatNode;
+import com.robopupu.api.graph.nodes.ConcatStringsNode;
 import com.robopupu.api.graph.nodes.DistinctNode;
 import com.robopupu.api.graph.nodes.DoubleNode;
 import com.robopupu.api.graph.nodes.FilterNode;
@@ -506,8 +507,16 @@ public class Graph<T> {
      * Attaches a {@link ConcatNode} to the current {@link OutputNode}.
      * @return This {@link Graph}.
      */
-    public Graph<String> concat() {
-        return to(new ConcatNode<>());
+    public Graph<T> concat(final OutputNode<T>... sources) {
+        return to(new ConcatNode<>(sources));
+    }
+
+    /**
+     * Attaches a {@link ConcatStringsNode} to the current {@link OutputNode}.
+     * @return This {@link Graph}.
+     */
+    public Graph<String> concatStrings() {
+        return to(new ConcatStringsNode<>());
     }
 
     /**
