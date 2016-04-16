@@ -1,14 +1,14 @@
 package com.robopupu.api.graph.nodes;
 
-import com.robopupu.api.graph.AbstractNode;
+import com.robopupu.api.graph.Node;
 import com.robopupu.api.graph.InputNode;
 import com.robopupu.api.graph.OutputNode;
 
 /**
- * {@link SumNode} sums the reveived input values until {@link InputNode#onCompleted(OutputNode)}
+ * {@link SumNode} sums the received input values until {@link InputNode#onCompleted(OutputNode)}
  * is invoked.
  */
-public class SumNode<IN> extends AbstractNode<IN, Double> {
+public class SumNode<IN> extends Node<IN, Double> {
 
     private double mSum;
 

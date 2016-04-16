@@ -1,11 +1,11 @@
 package com.robopupu.api.graph.nodes;
 
-import com.robopupu.api.graph.AbstractNode;
+import com.robopupu.api.graph.Node;
 import com.robopupu.api.graph.OutputNode;
 
 import java.util.ArrayList;
 
-public class BufferNode<IN> extends AbstractNode<IN, IN> {
+public class BufferNode<IN> extends Node<IN, IN> {
 
     private ArrayList<IN> mBuffer;
     private int mCapacity;

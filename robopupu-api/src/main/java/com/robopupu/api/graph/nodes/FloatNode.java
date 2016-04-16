@@ -1,13 +1,13 @@
 package com.robopupu.api.graph.nodes;
 
-import com.robopupu.api.graph.AbstractNode;
+import com.robopupu.api.graph.Node;
 import com.robopupu.api.graph.OutputNode;
 
 /**
  * {@link FloatNode} converts the input value to a {@link Float}.
  * @param <IN> The input type.
  */
-public class FloatNode<IN> extends AbstractNode<IN, Float> {
+public class FloatNode<IN> extends Node<IN, Float> {
 
     private float mValue;
 

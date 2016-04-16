@@ -1,10 +1,10 @@
 package com.robopupu.api.graph.nodes;
 
-import com.robopupu.api.graph.AbstractNode;
+import com.robopupu.api.graph.Node;
 import com.robopupu.api.graph.OutputNode;
 import com.robopupu.api.graph.functions.BooleanFunction;
 
-public class ConditionNode<IN> extends AbstractNode<IN, Boolean> {
+public class ConditionNode<IN> extends Node<IN, Boolean> {
 
     private BooleanFunction<IN> mCondition;
 

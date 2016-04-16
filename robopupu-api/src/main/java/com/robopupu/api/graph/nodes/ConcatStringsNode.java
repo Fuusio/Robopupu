@@ -1,6 +1,6 @@
 package com.robopupu.api.graph.nodes;
 
-import com.robopupu.api.graph.AbstractNode;
+import com.robopupu.api.graph.Node;
 import com.robopupu.api.graph.InputNode;
 import com.robopupu.api.graph.OutputNode;
 
@@ -8,7 +8,7 @@ import com.robopupu.api.graph.OutputNode;
  * {@link ConcatStringsNode} sums the reveived input values until {@link InputNode#onCompleted(OutputNode)}
  * is invoked.
  */
-public class ConcatStringsNode<IN> extends AbstractNode<IN, String> {
+public class ConcatStringsNode<IN> extends Node<IN, String> {
 
     private final StringBuilder mString;
 

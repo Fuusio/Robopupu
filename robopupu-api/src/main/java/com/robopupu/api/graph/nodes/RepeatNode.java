@@ -1,13 +1,13 @@
 package com.robopupu.api.graph.nodes;
 
-import com.robopupu.api.graph.AbstractNode;
+import com.robopupu.api.graph.Node;
 import com.robopupu.api.graph.OutputNode;
 
 /**
  * {@link RepeatNode} TODO
  * @param <IN>
  */
-public class RepeatNode<IN> extends AbstractNode<IN, IN> {
+public class RepeatNode<IN> extends Node<IN, IN> {
 
     private int mTimes;
 

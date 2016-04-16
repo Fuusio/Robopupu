@@ -1,11 +1,6 @@
 package com.robopupu.api.graph.nodes;
 
-import com.robopupu.api.graph.AbstractOutputNode;
+import com.robopupu.api.graph.Node;
 
-public class TriggerNode extends AbstractOutputNode<Long> {
-
-    @Override
-    public void emitOutput() {
-        emitOutput(System.currentTimeMillis());
-    }
+public class TriggerNode<IN> extends Node<IN, IN> {
 }

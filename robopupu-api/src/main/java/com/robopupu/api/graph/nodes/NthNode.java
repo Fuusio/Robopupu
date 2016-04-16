@@ -1,13 +1,13 @@
 package com.robopupu.api.graph.nodes;
 
-import com.robopupu.api.graph.AbstractNode;
+import com.robopupu.api.graph.Node;
 import com.robopupu.api.graph.OutputNode;
 
 /**
  * {@link NthNode} takes one input with the specified index. Indexing starts from 1.
  * @param <IN>
  */
-public class NthNode<IN> extends AbstractNode<IN, IN> {
+public class NthNode<IN> extends Node<IN, IN> {
 
     private int mCounter;
     private int mIndex;

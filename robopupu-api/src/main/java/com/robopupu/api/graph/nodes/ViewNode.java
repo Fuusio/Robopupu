@@ -2,9 +2,9 @@ package com.robopupu.api.graph.nodes;
 
 import android.view.View;
 
-import com.robopupu.api.graph.AbstractOutputNode;
+import com.robopupu.api.graph.Node;
 
-public class ViewNode extends AbstractOutputNode<View> implements View.OnClickListener {
+public class ViewNode extends Node<View, View> implements View.OnClickListener {
 
     protected boolean mEnabled;
     protected View mView;
@@ -15,16 +15,17 @@ public class ViewNode extends AbstractOutputNode<View> implements View.OnClickLi
         mEnabled = true;
     }
 
+    @SuppressWarnings("unchecked")
+    public <T extends View>  T getView() {
+        return (T)mView;
+    }
+
     public boolean isEnabled() {
         return mEnabled;
     }
 
     public void setEnabled(final boolean enabled) {
         mEnabled = enabled;
-    }
-
-    public View getView() {
-        return mView;
     }
 
     @SuppressWarnings("unchecked")

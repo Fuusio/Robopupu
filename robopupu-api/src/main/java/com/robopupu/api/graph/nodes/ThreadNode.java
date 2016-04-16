@@ -3,18 +3,17 @@ package com.robopupu.api.graph.nodes;
 import android.os.Handler;
 import android.os.Looper;
 
-import com.robopupu.api.graph.AbstractNode;
-import com.robopupu.api.graph.InputNode;
 import com.robopupu.api.graph.Node;
+import com.robopupu.api.graph.InputNode;
 import com.robopupu.api.graph.OutputNode;
 
 /**
- * {@link ThreadNode} implements {@link Node} that can be used to transfer execution to a worker
+ * {@link ThreadNode} implements a {@link Node} that can be used to transfer execution to a worker
  * {@link Thread} or to main {@link Thread}.
  * @param <IN> The type of input value.
  * @param <OUT> The type of output value.
  */
-public class ThreadNode<IN, OUT> extends AbstractNode<IN, OUT> {
+public class ThreadNode<IN, OUT> extends Node<IN, OUT> {
 
     private final Handler mHandler;
     private final boolean mExecuteInMainThread;

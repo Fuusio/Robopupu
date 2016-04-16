@@ -18,8 +18,9 @@ package com.robopupu.feature.jokes.presenter;
 import com.robopupu.R;
 import com.robopupu.api.dependency.Provides;
 import com.robopupu.api.feature.AbstractFeaturePresenter;
-import com.robopupu.api.graph.Graph;
-import com.robopupu.api.mvp.View;
+import com.robopupu.api.graph.NodeObserver;
+import com.robopupu.api.graph.NodeObserverAdapter;
+import com.robopupu.api.graph.OutputNode;
 import com.robopupu.api.plugin.Plug;
 import com.robopupu.api.plugin.Plugin;
 import com.robopupu.api.plugin.PluginBus;
@@ -30,7 +31,7 @@ import com.robopupu.feature.jokes.view.JokesView;
 
 @Plugin
 public class JokesPresenterImpl extends AbstractFeaturePresenter<JokesView>
-        implements JokesPresenter, Graph.Callback<JokeResponse> {
+        implements JokesPresenter {
 
     @Plug AppManager mAppManager;
     @Plug JokesInteractor mInteractor;
@@ -59,20 +60,16 @@ public class JokesPresenterImpl extends AbstractFeaturePresenter<JokesView>
 
     @Override
     public void onRequestJokeClick() {
-        mInteractor.requestJoke(this);
-    }
+        mInteractor.requestJoke(new NodeObserverAdapter<JokeResponse>() {
+            @Override
+            public void onInput(OutputNode<JokeResponse> node, JokeResponse response) {
+                displayJoke(response);
+            }
 
-    @Override
-    public void onInput(final JokeResponse response) {
-        displayJoke(response);
-    }
-
-    @Override
-    public void onCompleted() {
-    }
-
-    @Override
-    public void onError(final Throwable throwable) {
-        mView.displayJoke(mAppManager.getString(R.string.ft_jokes_not_worthy));
+            @Override
+            public void onError(OutputNode<JokeResponse> node, Throwable throwable) {
+                super.onError(node, throwable);
+            }
+        });
     }
 }

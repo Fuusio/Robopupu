@@ -3,7 +3,7 @@ package com.robopupu.api.graph.nodes;
 import android.os.Handler;
 import android.os.Looper;
 
-import com.robopupu.api.graph.AbstractNode;
+import com.robopupu.api.graph.Node;
 import com.robopupu.api.graph.OutputNode;
 
 import java.util.HashMap;
@@ -12,7 +12,7 @@ import java.util.HashMap;
  * {@link TimerNode} TODO
  * @param <IN>
  */
-public class TimerNode<IN> extends AbstractNode<IN, IN> {
+public class TimerNode<IN> extends Node<IN, IN> {
 
     private final HashMap<Long, TimerHandle> mTimerHandles;
     private final long mDelay;

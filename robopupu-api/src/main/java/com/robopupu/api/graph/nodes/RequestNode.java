@@ -1,6 +1,5 @@
 package com.robopupu.api.graph.nodes;
 
-import com.robopupu.api.graph.AbstractNode;
 import com.robopupu.api.graph.Node;
 import com.robopupu.api.graph.OutputNode;
 import com.robopupu.api.network.RequestCallback;
@@ -8,10 +7,10 @@ import com.robopupu.api.network.RequestDelegate;
 import com.robopupu.api.network.RequestError;
 
 /**
- * {@link RequestNode} extends {@link AbstractNode} to implement {@link Node} for making REST
- * requests.
+ * {@link RequestNode} implements a {@link Node} that can be used to execute REST
+ * requests using {@link RequestDelegate} interface.
  */
-public class RequestNode<IN, OUT> extends AbstractNode<IN, OUT> implements RequestCallback<OUT> {
+public class RequestNode<IN, OUT> extends Node<IN, OUT> implements RequestCallback<OUT> {
 
     private final RequestDelegate<OUT> mRequestDelegate;
 

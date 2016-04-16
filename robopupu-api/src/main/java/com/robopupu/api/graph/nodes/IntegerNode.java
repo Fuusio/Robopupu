@@ -1,13 +1,13 @@
 package com.robopupu.api.graph.nodes;
 
-import com.robopupu.api.graph.AbstractNode;
+import com.robopupu.api.graph.Node;
 import com.robopupu.api.graph.OutputNode;
 
 /**
- * {@link IntNode} converts the input value to a {@link Integer}.
+ * {@link IntegerNode} converts the input value to a {@link Integer}.
  * @param <IN> The input type.
  */
-public class IntNode<IN> extends AbstractNode<IN, Integer> {
+public class IntegerNode<IN> extends Node<IN, Integer> {
 
     private int mValue;
 

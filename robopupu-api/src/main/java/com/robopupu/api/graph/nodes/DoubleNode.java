@@ -1,13 +1,13 @@
 package com.robopupu.api.graph.nodes;
 
-import com.robopupu.api.graph.AbstractNode;
+import com.robopupu.api.graph.Node;
 import com.robopupu.api.graph.OutputNode;
 
 /**
  * {@link DoubleNode} converts the input value to a {@link Double}.
  * @param <IN> The input type.
  */
-public class DoubleNode<IN> extends AbstractNode<IN, Double> {
+public class DoubleNode<IN> extends Node<IN, Double> {
 
     private double mValue;
 

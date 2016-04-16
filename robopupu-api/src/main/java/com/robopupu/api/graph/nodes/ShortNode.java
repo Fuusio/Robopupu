@@ -1,13 +1,13 @@
 package com.robopupu.api.graph.nodes;
 
-import com.robopupu.api.graph.AbstractNode;
+import com.robopupu.api.graph.Node;
 import com.robopupu.api.graph.OutputNode;
 
 /**
  * {@link ShortNode} converts the input value to a {@link Short}.
  * @param <IN> The input type.
  */
-public class ShortNode<IN> extends AbstractNode<IN, Short> {
+public class ShortNode<IN> extends Node<IN, Short> {
 
     private short mValue;
 

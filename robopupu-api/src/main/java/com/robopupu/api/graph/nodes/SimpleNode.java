@@ -1,9 +1,9 @@
 package com.robopupu.api.graph.nodes;
 
-import com.robopupu.api.graph.AbstractNode;
+import com.robopupu.api.graph.Node;
 import com.robopupu.api.graph.OutputNode;
 
-public class SimpleNode<IN, OUT> extends AbstractNode<IN, OUT> {
+public class SimpleNode<IN, OUT> extends Node<IN, OUT> {
 
     /**
      * Constructs a new instance of {@link SimpleNode}.

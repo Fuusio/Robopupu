@@ -1,11 +1,11 @@
 package com.robopupu.api.graph.nodes;
 
-import com.robopupu.api.graph.AbstractNode;
+import com.robopupu.api.graph.Node;
 import com.robopupu.api.graph.OutputNode;
 
 import java.util.ArrayList;
 
-public class ReverseNode<IN> extends AbstractNode<IN, IN> {
+public class ReverseNode<IN> extends Node<IN, IN> {
 
     private final ArrayList<IN> mBuffer;
 

@@ -1,19 +1,18 @@
 package com.robopupu.api.graph.nodes;
 
-import com.robopupu.api.graph.AbstractNode;
-import com.robopupu.api.graph.Action;
+import com.robopupu.api.graph.Action1;
 import com.robopupu.api.graph.Node;
 import com.robopupu.api.graph.OutputNode;
 
 /**
- * {@link ActionNode} is a {@link Node} that can be used to execute arbitrary action
- * in method {@link ActionNode#execute(Object)}.
+ * {@link Action1Node} is a {@link Node} that can be used to execute a given {@link Action1}
+ * or arbitrary action as overridden method {@link Action1#execute(Object)}.
  */
-public class ActionNode<IN, OUT> extends AbstractNode<IN, OUT> {
+public class Action1Node<IN, OUT> extends Node<IN, OUT> {
 
-    private final Action<IN> mAction;
+    private final Action1<IN> mAction;
 
-    public ActionNode(final Action<IN> action) {
+    public Action1Node(final Action1<IN> action) {
         mAction = action;
     }
 

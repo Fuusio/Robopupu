@@ -5,6 +5,7 @@ import android.content.Context;
 import com.robopupu.api.component.GraphInteractor;
 import com.robopupu.api.dependency.Provides;
 import com.robopupu.api.graph.Graph;
+import com.robopupu.api.graph.NodeObserver;
 import com.robopupu.api.plugin.Plug;
 import com.robopupu.api.plugin.Plugin;
 import com.robopupu.api.plugin.PluginBus;
@@ -30,11 +31,7 @@ public class JokesInteractorImpl extends GraphInteractor implements JokesInterac
     }
 
     @Override
-    public void requestJoke(final Graph.Callback<JokeResponse> callback) {
-        Graph.begin(mGetJoke).callback(callback).emit();
-
-        // This following Graph version would use a worker thread for executing the request, and
-        // then resume to main thread of the callback
-        //Graph.beginWorker().request(mGetJoke).mainThread().callback(callback).emit();
+    public void requestJoke(final NodeObserver<JokeResponse> callback) {
+        Graph.begin(mGetJoke).observer(callback).start();
     }
 }

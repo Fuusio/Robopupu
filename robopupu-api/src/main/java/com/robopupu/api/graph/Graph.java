@@ -4,14 +4,14 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.robopupu.api.graph.functions.BooleanFunction;
-import com.robopupu.api.graph.nodes.ActionNode;
+import com.robopupu.api.graph.nodes.Action1Node;
 import com.robopupu.api.graph.nodes.BooleanNode;
 import com.robopupu.api.graph.nodes.BufferNode;
 import com.robopupu.api.graph.nodes.ByteNode;
-import com.robopupu.api.graph.nodes.CallbackNode;
 import com.robopupu.api.graph.nodes.CharacterNode;
 import com.robopupu.api.graph.nodes.ConcatNode;
 import com.robopupu.api.graph.nodes.ConcatStringsNode;
+import com.robopupu.api.graph.nodes.CountNode;
 import com.robopupu.api.graph.nodes.DistinctNode;
 import com.robopupu.api.graph.nodes.DoubleNode;
 import com.robopupu.api.graph.nodes.FilterNode;
@@ -20,9 +20,10 @@ import com.robopupu.api.graph.nodes.FloatNode;
 import com.robopupu.api.graph.nodes.FunctionNode;
 import com.robopupu.api.graph.nodes.LastNode;
 import com.robopupu.api.graph.nodes.NthNode;
-import com.robopupu.api.graph.nodes.IntNode;
+import com.robopupu.api.graph.nodes.IntegerNode;
 import com.robopupu.api.graph.nodes.ListNode;
 import com.robopupu.api.graph.nodes.LongNode;
+import com.robopupu.api.graph.nodes.ObserverNode;
 import com.robopupu.api.graph.nodes.RepeatNode;
 import com.robopupu.api.graph.nodes.RequestNode;
 import com.robopupu.api.graph.nodes.ReverseNode;
@@ -34,7 +35,6 @@ import com.robopupu.api.graph.nodes.SumNode;
 import com.robopupu.api.graph.nodes.TakeNode;
 import com.robopupu.api.graph.nodes.TextViewNode;
 import com.robopupu.api.graph.nodes.ThreadNode;
-import com.robopupu.api.graph.nodes.TriggerNode;
 import com.robopupu.api.graph.nodes.ViewNode;
 import com.robopupu.api.graph.nodes.ZipInputNode;
 import com.robopupu.api.network.RequestDelegate;
@@ -115,52 +115,31 @@ public class Graph<T> {
         return (T_Node)mCurrentNode;
     }
 
-    /**
-     * Begins this {@link Graph} with an {@link ThreadNode} as a begin node. The execution of
-     * the {@link Node}s succeeding the {@link ThreadNode} is performed in a worker {@link Thread}.
-     * @return A {@link Graph}.
-     */
-    public static Graph<Void> beginWorker() {
-        final Graph<Void> graph = new Graph<>();
-        graph.setBeginNode(new ThreadNode<>(false));
-        return graph;
-    }
 
     /**
-     * Begins this {@link Graph} with an {@link TriggerNode} as a begin node.
+     * Begins this {@link Graph} with an {@link Action1Node} as a begin node. The given {@link Action1}
+     * is used to create the {@link Action1Node}.
+     * @param action The action as an {@link Action1}.
      * @return A {@link Graph}.
      */
     @SuppressWarnings("unchecked")
-    public static Graph<Long> begin() {
-        final Graph<Long> graph = new Graph<>();
-        graph.setBeginNode(new TriggerNode());
-        return graph;
-    }
-
-    /**
-     * Begins this {@link Graph} with an {@link ActionNode} as a begin node. The given {@link Action}
-     * is used to create the {@link ActionNode}.
-     * @param action The action as an {@link Action}.
-     * @return A {@link Graph}.
-     */
-    @SuppressWarnings("unchecked")
-    public static <OUT> Graph<OUT> begin(final Action<OUT> action) {
+    public static <OUT> Graph<OUT> begin(final Action1<OUT> action) {
         final Graph<OUT> graph = new Graph<>();
-        graph.setBeginNode(new ActionNode<>(action));
+        graph.setBeginNode(new Action1Node<>(action));
         return graph;
     }
 
     /**
-     * Begins this {@link Graph} with a {@link ActionNode} as a begin node. The begin
-     * node is tagged with the given {@link Tag}. The given {@link Action}
-     * is used to create the {@link ActionNode}.
+     * Begins this {@link Graph} with a {@link Action1Node} as a begin node. The begin
+     * node is tagged with the given {@link Tag}. The given {@link Action1}
+     * is used to create the {@link Action1Node}.
      * @param tag A {@link Tag}.
-     * @param action The action as an {@link Action}.
+     * @param action The action as an {@link Action1}.
      * @return A {@link Graph}.
      */
-    public static <OUT> Graph<OUT> begin(final Tag<OUT> tag, final Action<OUT> action) {
+    public static <OUT> Graph<OUT> begin(final Tag<OUT> tag, final Action1<OUT> action) {
         final Graph<OUT> graph = new Graph<>();
-        graph.setBeginNode(tag, new ActionNode<>(action));
+        graph.setBeginNode(tag, new Action1Node<>(action));
         return graph;
     }
 
@@ -215,6 +194,7 @@ public class Graph<T> {
      * @param items A variable length parameter of items for a  {@link List}
      * @return A {@link Graph}.
      */
+    @SafeVarargs
     public static <OUT> Graph<OUT> begin(final OUT... items) {
         final ArrayList<OUT> itemsList = new ArrayList<>();
         Collections.addAll(itemsList, items);
@@ -228,6 +208,7 @@ public class Graph<T> {
      * @param items A variable length parameter of items for a  {@link List}
      * @return A {@link Graph}.
      */
+    @SafeVarargs
     public static <OUT> Graph<OUT> begin(final Tag<OUT> tag, final OUT... items) {
         final ArrayList<OUT> itemsList = new ArrayList<>();
         Collections.addAll(itemsList, items);
@@ -243,18 +224,6 @@ public class Graph<T> {
      */
     public static <OUT> Graph<OUT> begin(final Tag<OUT> tag, final List<OUT> list) {
         return begin(tag, new ListNode<>(list));
-    }
-
-    /**
-     * Finds a {@link OutputNode} tagged with the given {@link Tag} and sets it to be current node.
-     * @param tag A {@link Tag}.
-     * @param <OUT> The output type of the current {@link Node}.
-     * @return This {@link Graph}.
-     */
-    @SuppressWarnings("unchecked")
-    public <OUT> Graph<OUT> n(final Tag<OUT> tag) {
-        mCurrentNode = mTaggedNodes.get(tag);
-        return (Graph<OUT>)this;
     }
 
     /**
@@ -281,14 +250,23 @@ public class Graph<T> {
     }
 
     /**
-     * Attaches an {@link ActionNode} with the given action to the current {@link OutputNode}.
-     * @param action The action as an {@link Action}.
+     * Attaches an {@link Action1Node} with the given action to the current {@link OutputNode}.
+     * @param action The action as an {@link Action1}.
      * @return This {@link Graph}.
      */
     @SuppressWarnings("unchecked")
-    public Graph<T> action(final Action<T> action) {
-        return to(new ActionNode<>(action));
+    public Graph<T> action(final Action1<T> action) {
+        return to(new Action1Node<>(action));
     }
+
+    /**
+     * Attaches a {@link CountNode} to the current {@link OutputNode}.
+     * @return This {@link Graph}.
+     */
+    public Graph<Integer> count() {
+        return to(new CountNode<>());
+    }
+
 
     /**
      * Attaches a {@link FunctionNode} with the given mapping function to the current {@link OutputNode}.
@@ -347,6 +325,7 @@ public class Graph<T> {
      * @param node A {@link Node}.
      * @return This {@link Graph}.
      */
+    @SuppressWarnings("unchecked")
     public <OUT> Graph<OUT> to(final Tag attachTag, final Node<T, OUT> node) {
         tag(attachTag);
         return to(node);
@@ -429,12 +408,12 @@ public class Graph<T> {
     }
 
     /**
-     * Attaches a {@link CallbackNode} for the given {@link Callback} to the current {@link OutputNode}.
-     * @param callback A {@link Callback}.
+     * Attaches a {@link ObserverNode} for the given {@link NodeObserver} to the current {@link OutputNode}.
+     * @param callback A {@link NodeObserver}.
      * @return This {@link Graph}.
      */
-    public Graph<T> callback(final Callback<T> callback) {
-        return to(new CallbackNode<>(callback));
+    public Graph<T> observer(final NodeObserver<T> callback) {
+        return to(new ObserverNode<>(callback));
     }
 
     /**
@@ -507,7 +486,8 @@ public class Graph<T> {
      * Attaches a {@link ConcatNode} to the current {@link OutputNode}.
      * @return This {@link Graph}.
      */
-    public Graph<T> concat(final OutputNode<T>... sources) {
+    @SafeVarargs
+    public final Graph<T> concat(final OutputNode<T>... sources) {
         return to(new ConcatNode<>(sources));
     }
 
@@ -538,7 +518,7 @@ public class Graph<T> {
      * @return This {@link Graph}.
      */
     @SuppressWarnings("unchecked")
-    public static Graph<String> onText(final TextView view) {
+    public static Graph<String> onTextChanged(final TextView view) {
         final Graph<String> graph = new Graph<>();
         graph.setBeginNode(new TextViewNode(view));
         return graph;
@@ -572,13 +552,13 @@ public class Graph<T> {
     /**
      * Invokes the begin node to emit its value(s).
      */
-    public void emit() {
+    public void start() {
         onEmit();
         getBeginNode().emitOutput();
     }
 
     /**
-     * Invoked by {@link Graph#emit()}.
+     * Invoked by {@link Graph#start()}.
      */
     protected void onEmit() {
         // By default do nothing
@@ -591,7 +571,7 @@ public class Graph<T> {
     public boolean booleanValue() {
         final BooleanNode<T> node = new BooleanNode<>();
         to(node);
-        emit();
+        start();
         return node.getValue();
     }
 
@@ -599,10 +579,10 @@ public class Graph<T> {
      * Invokes emit on {@link Graph} and converts the emitted output to {@code byte} value.
      * @return A {@code byte} value.
      */
-    public byte toByte() {
+    public byte byteValue() {
         final ByteNode<T> node = new ByteNode<>();
         to(node);
-        emit();
+        start();
         return node.getValue();
     }
 
@@ -613,7 +593,7 @@ public class Graph<T> {
     public char charValue() {
         final CharacterNode<T> node = new CharacterNode<>();
         to(node);
-        emit();
+        start();
         return node.getValue();
     }
 
@@ -624,7 +604,7 @@ public class Graph<T> {
     public double doubleValue() {
         final DoubleNode<T> node = new DoubleNode<>();
         to(node);
-        emit();
+        start();
         return node.getValue();
     }
 
@@ -635,7 +615,7 @@ public class Graph<T> {
     public float floatValue() {
         final FloatNode<T> node = new FloatNode<>();
         to(node);
-        emit();
+        start();
         return node.getValue();
     }
 
@@ -644,9 +624,9 @@ public class Graph<T> {
      * @return An {@code int} value.
      */
     public int intValue() {
-        final IntNode<T> node = new IntNode<>();
+        final IntegerNode<T> node = new IntegerNode<>();
         to(node);
-        emit();
+        start();
         return node.getValue();
     }
 
@@ -657,7 +637,7 @@ public class Graph<T> {
     public long longValue() {
         final LongNode<T> node = new LongNode<>();
         to(node);
-        emit();
+        start();
         return node.getValue();
     }
 
@@ -668,7 +648,7 @@ public class Graph<T> {
     public short shortValue() {
         final ShortNode<T> node = new ShortNode<>();
         to(node);
-        emit();
+        start();
         return node.getValue();
     }
 
@@ -679,7 +659,7 @@ public class Graph<T> {
     public String stringValue() {
         final StringNode<T> node = new StringNode<>();
         to(node);
-        emit();
+        start();
         return node.getValue();
     }
 
@@ -690,7 +670,7 @@ public class Graph<T> {
     public List<T> toList() {
         final ListNode<T> node = new ListNode<>();
         to(node);
-        emit();
+        start();
         return node.getList();
     }
 
@@ -705,29 +685,20 @@ public class Graph<T> {
     }
 
     /**
-     * Adds the specified {@link ActionNode} as and end nodes.
-     * @param action An {@link Action} specifying the added {@link ActionNode}.
+     * Adds the specified {@link Action1Node} as and end nodes.
+     * @param action An {@link Action1} specifying the added {@link Action1Node}.
      */
     @SuppressWarnings("unchecked")
-    public <IN> Graph<IN> end(final Action<IN> action) {
-        ((OutputNode<IN>)mCurrentNode).attach(new ActionNode<>(action));
+    public <IN> Graph<IN> end(final Action1<IN> action) {
+        ((OutputNode<IN>)mCurrentNode).attach(new Action1Node<>(action));
         return (Graph<IN>)this;
-    }
-
-    /**
-     * Converts this {@link Graph}.
-     * @return This {@link Graph}.
-     */
-    @SuppressWarnings("unchecked")
-    public <T_Graph extends Graph<?>> T_Graph cast() {
-        return (T_Graph)this;
     }
 
     /**
      * Transfers the execution to the main thread.
      * @return This {@link Graph}.
      */
-    public Graph<T> mainThread() {
+    public Graph<T> toMain() {
         return to(new ThreadNode<>(true));
     }
 
@@ -735,17 +706,7 @@ public class Graph<T> {
      * Transfers the execution to a worker thread.
      * @return This {@link Graph}.
      */
-    public Graph<T> workerThread() {
+    public Graph<T> toWorker() {
         return to(new ThreadNode<>(false));
-    }
-
-    /**
-     * {@link Callback} is callback interface to be used with {@link CallbackNode}.
-     */
-    public interface Callback<IN> {
-
-        void onInput(IN value);
-        void onCompleted();
-        void onError(Throwable throwable);
     }
 }

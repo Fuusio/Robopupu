@@ -1,10 +1,7 @@
 package com.robopupu.api.graph.nodes;
 
-import com.robopupu.api.graph.AbstractNode;
-import com.robopupu.api.graph.Function;
-import com.robopupu.api.graph.InputNode;
 import com.robopupu.api.graph.Node;
-import com.robopupu.api.graph.OutputNode;
+import com.robopupu.api.graph.Function;
 
 import java.util.ArrayList;
 
@@ -14,7 +11,7 @@ import java.util.ArrayList;
  * base class for concrete classes: {@link Zip2Node}, {@link Zip3Node}, {@link Zip4Node},
  * {@link Zip5Node}, {@link Zip6Node}, {@link Zip7Node}, {@link Zip8Node}, and {@link Zip9Node}.
  */
-public abstract class ZipNode<OUT> extends AbstractNode<Void, OUT> {
+public abstract class ZipNode<OUT> extends Node<Void, OUT> {
 
     protected final ArrayList[] mBuffers;
     protected final int mInputCount;

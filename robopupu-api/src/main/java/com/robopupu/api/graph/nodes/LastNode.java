@@ -1,12 +1,12 @@
 package com.robopupu.api.graph.nodes;
 
-import com.robopupu.api.graph.AbstractNode;
+import com.robopupu.api.graph.Node;
 import com.robopupu.api.graph.OutputNode;
 import com.robopupu.api.graph.functions.BooleanFunction;
 
 import java.util.ArrayList;
 
-public class LastNode<IN> extends AbstractNode<IN, IN> {
+public class LastNode<IN> extends Node<IN, IN> {
 
     private ArrayList<IN> mBuffer;
     private BooleanFunction<IN> mCondition;

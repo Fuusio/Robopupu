@@ -1,13 +1,13 @@
 package com.robopupu.api.graph.nodes;
 
-import com.robopupu.api.graph.AbstractNode;
+import com.robopupu.api.graph.Node;
 import com.robopupu.api.graph.OutputNode;
 
 /**
  * {@link LongNode} converts the input value to a {@link Long}.
  * @param <IN> The input type.
  */
-public class LongNode<IN> extends AbstractNode<IN, Long> {
+public class LongNode<IN> extends Node<IN, Long> {
 
     private long mValue;
 

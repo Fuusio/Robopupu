@@ -1,13 +1,13 @@
 package com.robopupu.api.graph.nodes;
 
-import com.robopupu.api.graph.AbstractNode;
+import com.robopupu.api.graph.Node;
 import com.robopupu.api.graph.OutputNode;
 
 /**
  * {@link ByteNode} converts the input value to a {@link Byte}.
  * @param <IN> The input type.
  */
-public class ByteNode<IN> extends AbstractNode<IN, Byte> {
+public class ByteNode<IN> extends Node<IN, Byte> {
 
     private byte mValue;
 

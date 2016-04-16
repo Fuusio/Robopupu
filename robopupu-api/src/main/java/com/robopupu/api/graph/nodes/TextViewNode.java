@@ -4,9 +4,9 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.TextView;
 
-import com.robopupu.api.graph.AbstractOutputNode;
+import com.robopupu.api.graph.Node;
 
-public class TextViewNode extends AbstractOutputNode<String> implements TextWatcher {
+public class TextViewNode extends Node<TextView, String> implements TextWatcher {
 
     protected boolean mEnabled;
     private TextView mTextView;
@@ -15,6 +15,11 @@ public class TextViewNode extends AbstractOutputNode<String> implements TextWatc
         mTextView = textView;
         mTextView.addTextChangedListener(this);
         mEnabled = true;
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T extends TextView>  T getView() {
+        return (T)mTextView;
     }
 
     public boolean isEnabled() {

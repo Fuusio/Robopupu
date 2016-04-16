@@ -1,6 +1,6 @@
 package com.robopupu.api.graph.nodes;
 
-import com.robopupu.api.graph.AbstractNode;
+import com.robopupu.api.graph.Node;
 import com.robopupu.api.graph.OutputNode;
 
 import java.util.ArrayList;
@@ -11,7 +11,7 @@ import java.util.List;
  * {@link ConcatNode} takes any number of {@link OutputNode}s and emits the input values received
  * from them one after the other, without interleaving the values.
  */
-public class ConcatNode<IN> extends AbstractNode<IN, IN> {
+public class ConcatNode<IN> extends Node<IN, IN> {
 
     protected final ArrayList[] mBuffers;
     protected final boolean[] mCompleted;
@@ -21,6 +21,7 @@ public class ConcatNode<IN> extends AbstractNode<IN, IN> {
 
     protected int mCompletedIndex;
 
+    @SafeVarargs
     public ConcatNode(final OutputNode<IN>... sources) {
         mSources = sources;
         mSourcesCount = sources.length;

@@ -1,13 +1,14 @@
 package com.robopupu.api.graph.nodes;
 
-import com.robopupu.api.graph.AbstractNode;
+import com.robopupu.api.graph.Node;
 import com.robopupu.api.graph.Function;
 import com.robopupu.api.graph.OutputNode;
 
 /**
- * {@link FunctionNode} ...
+ * {@link FunctionNode} takes a {@link Function} to produce an output of value of the specified
+ * type from the received input value of specified type.
  */
-public class FunctionNode<IN, OUT> extends AbstractNode<IN, OUT> {
+public class FunctionNode<IN, OUT> extends Node<IN, OUT> {
 
     private final Function<IN,OUT> mFunction;
 

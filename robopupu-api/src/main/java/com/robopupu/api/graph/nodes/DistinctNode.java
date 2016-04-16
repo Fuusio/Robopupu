@@ -1,12 +1,12 @@
 package com.robopupu.api.graph.nodes;
 
-import com.robopupu.api.graph.AbstractNode;
+import com.robopupu.api.graph.Node;
 import com.robopupu.api.graph.OutputNode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class DistinctNode<IN> extends AbstractNode<IN, IN> {
+public class DistinctNode<IN> extends Node<IN, IN> {
 
     private ArrayList<IN> mBuffer;
     private HashMap<IN, IN> mMapped;

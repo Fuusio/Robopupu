@@ -1,12 +1,12 @@
 package com.robopupu.api.graph.nodes;
 
-import com.robopupu.api.graph.AbstractNode;
+import com.robopupu.api.graph.Node;
 import com.robopupu.api.graph.OutputNode;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListNode<IN> extends AbstractNode<IN, IN> {
+public class ListNode<IN> extends Node<IN, IN> {
 
     protected ArrayList<IN> mList;
     protected boolean mMutableList;

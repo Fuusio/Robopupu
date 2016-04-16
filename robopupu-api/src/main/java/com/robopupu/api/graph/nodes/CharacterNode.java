@@ -1,13 +1,13 @@
 package com.robopupu.api.graph.nodes;
 
-import com.robopupu.api.graph.AbstractNode;
+import com.robopupu.api.graph.Node;
 import com.robopupu.api.graph.OutputNode;
 
 /**
  * {@link CharacterNode} converts the input value to a {@link Character}.
  * @param <IN> The input type.
  */
-public class CharacterNode<IN> extends AbstractNode<IN, Character> {
+public class CharacterNode<IN> extends Node<IN, Character> {
 
     private char mValue;
 

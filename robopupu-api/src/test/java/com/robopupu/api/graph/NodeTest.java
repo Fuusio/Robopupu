@@ -246,11 +246,11 @@ public class NodeTest {
     public void test_list() {
 
         mEndNode.onReset();
-        Graph.begin(mIntList).take(3).end(mEndNode).emit();
+        Graph.begin(mIntList).take(3).end(mEndNode).start();
         assertTrue(mEndNode.received(0, 1, 2));
 
         mEndNode.onReset();
-        Graph.begin(mIntList).skip(7).end(mEndNode).emit();
+        Graph.begin(mIntList).skip(7).end(mEndNode).start();
         assertTrue(mEndNode.received(7, 8, 9));
     }
 
@@ -288,7 +288,7 @@ public class NodeTest {
         Graph.begin(begin, createList('A', 'B', 'C')).
                 node(begin).to(zipNode.in1).
                 node(begin).map(c -> c - 'A' + 1).to(zipNode.in2).
-                end(endNode).emit();
+                end(endNode).start();
 
         assertTrue(endNode.received("A1", "B2", "C3"));
     }
@@ -304,7 +304,7 @@ public class NodeTest {
         Graph.begin(begin, createList('A', 'B', 'C')).
                 to(zipNode.in1).
                 node(begin).map(c -> c - 'A' + 1).to(zipNode.in2).
-                node(begin).string().to(zipNode.in3).end(endNode).emit();
+                node(begin).string().to(zipNode.in3).end(endNode).start();
 
         assertTrue(endNode.received("A1A", "B2B", "C3C"));
     }
@@ -328,7 +328,7 @@ public class NodeTest {
                 node(list).to(zipNode.in7).
                 node(list).map(c -> c - 'A' + 1).to(zipNode.in8).
                 node(list).string().to(zipNode.in9).
-                end(endNode).emit();
+                end(endNode).start();
 
         assertTrue(endNode.received("A1AA1AA1A", "B2BB2BB2B", "C3CC3CC3C"));
     }
@@ -403,7 +403,7 @@ public class NodeTest {
         return list;
     }
 
-    private class BeginNode<T> extends AbstractNode<T, T> {
+    private class BeginNode<T> extends Node<T, T> {
 
         private boolean mCompleted;
         private boolean mErrorReceived;
@@ -449,7 +449,7 @@ public class NodeTest {
         }
     }
 
-    private class EndNode<T> extends AbstractNode<T, T> {
+    private class EndNode<T> extends Node<T, T> {
 
         private final ArrayList<T> mReceivedInputs;
 
