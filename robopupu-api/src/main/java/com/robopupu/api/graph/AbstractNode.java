@@ -19,8 +19,10 @@ public abstract class AbstractNode<IN, OUT> extends AbstractOutputNode<OUT>
     @CallSuper
     @Override
     public void onInput(final OutputNode<IN> source, final IN input) {
-        doOnInput(source, input);
-        emitOutput(processInput(source, input));
+        if (!mErrorReceived) {
+            doOnInput(source, input);
+            emitOutput(processInput(source, input));
+        }
     }
 
     /**

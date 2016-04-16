@@ -1,7 +1,7 @@
 package com.robopupu.api.graph;
 
 /**
- * {@link Tag} is a utility object that can be used for tagging {@link Node}s added to
+ * {@link Tag} is an object that can be used for tagging {@link Node}s added to
  * a {@link Graph}.
  */
 public class Tag<T> {

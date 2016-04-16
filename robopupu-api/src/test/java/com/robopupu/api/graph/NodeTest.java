@@ -35,7 +35,8 @@ import static org.junit.Assert.assertTrue;
 @SmallTest
 public class NodeTest {
 
-    private TerminalNode<Integer> mEndNode = new TerminalNode<>();
+    private BeginNode<Integer> mBeginNode = new BeginNode<>();
+    private EndNode<Integer> mEndNode = new EndNode<>();
     private List<Integer> mIntList;
 
     @Before
@@ -58,7 +59,7 @@ public class NodeTest {
         final Node<Integer, Integer> node1 = new SimpleNode<>();
         final Node<Integer, Integer> node2 = new SimpleNode<>();
 
-        mEndNode.reset();
+        mEndNode.onReset();
 
         graph.to(beginNode).to(node1).to(node2).end(mEndNode);
 
@@ -75,10 +76,47 @@ public class NodeTest {
                 map(input -> input ? 1000 : 0).
                 end(mEndNode);
 
-        mEndNode.reset();
+        mEndNode.onReset();
         final Node<Integer, Integer> functionNode = graph.getBeginNode();
         functionNode.onInput(null, 20);
         assertTrue(mEndNode.received(1000));
+    }
+
+    @Test
+    public void test_error_and_reset() {
+
+        final BeginNode beginNode = new BeginNode();
+        final Node<Integer, Integer> node0 = new SimpleNode<>();
+        final Node<Integer, Integer> node1 = new SimpleNode<>();
+        final Node<Integer, Integer> node2 = new SimpleNode<>();
+
+        final Graph<Integer> graph = Graph.begin(beginNode).to(node0).to(node1).to(node2).end(mEndNode);
+
+        mEndNode.onReset();
+
+        for (int i = 1; i < 7; i++) {
+            beginNode.onInput(null, i);
+        }
+
+        assertTrue(mEndNode.received(1, 2, 3, 4, 5, 6));
+
+        graph.reset();
+
+        beginNode.causeError();
+
+        for (int i = 1; i < 7; i++) {
+            beginNode.onInput(null, i);
+        }
+
+        assertTrue(mEndNode.received());
+
+        graph.reset();
+
+        for (int i = 1; i < 7; i++) {
+            beginNode.onInput(null, i);
+        }
+
+        assertTrue(mEndNode.received(1, 2, 3, 4, 5, 6));
     }
 
     @Test
@@ -89,7 +127,7 @@ public class NodeTest {
         final Node<Integer, Integer> node1 = new SimpleNode<>();
         final Node<Integer, Integer> node2 = new SimpleNode<>();
 
-        mEndNode.reset();
+        mEndNode.onReset();
 
         graph.skip(3).to(node0).to(node1).to(node2).end(mEndNode);
 
@@ -107,21 +145,21 @@ public class NodeTest {
 
         Graph<Integer> graph = new Graph<>();
         graph.repeat(0).to(mEndNode);
-        mEndNode.reset();
+        mEndNode.onReset();
         Node<Integer, Integer> beginNode = graph.getBeginNode();
         beginNode.onInput(null, 1);
         assertTrue(mEndNode.received());
 
         graph = new Graph<>();
         graph.repeat(1).end(mEndNode);
-        mEndNode.reset();
+        mEndNode.onReset();
         beginNode = graph.getBeginNode();
         beginNode.onInput(null, 1);
         assertTrue(mEndNode.received(1));
 
         graph = new Graph<>();
         graph.repeat(5).end(mEndNode);
-        mEndNode.reset();
+        mEndNode.onReset();
         beginNode = graph.getBeginNode();
         beginNode.onInput(null, 1);
         assertTrue(mEndNode.received(1, 1, 1, 1, 1));
@@ -132,7 +170,7 @@ public class NodeTest {
 
         final Graph<Integer> graph = new Graph<>();
         graph.skipWhile(input -> input > 3).end(mEndNode);
-        mEndNode.reset();
+        mEndNode.onReset();
         Node<Integer, Integer> beginNode = graph.getBeginNode();
         beginNode.onInput(null, 5);
         beginNode.onInput(null, 6);
@@ -152,7 +190,7 @@ public class NodeTest {
         final Node<Integer, Integer> node0 = new SimpleNode<>();
         final Node<Integer, Integer> node1 = new SimpleNode<>();
 
-        mEndNode.reset();
+        mEndNode.onReset();
 
         graph.take(3).to(node0).to(node1).end(mEndNode);
 
@@ -169,7 +207,7 @@ public class NodeTest {
     public void test_filter() {
         final Graph<Integer> graph = new Graph<>();
 
-        mEndNode.reset();
+        mEndNode.onReset();
 
         graph.filter(value -> value > 3).end(mEndNode);
 
@@ -185,11 +223,11 @@ public class NodeTest {
     @Test
     public void test_list() {
 
-        mEndNode.reset();
+        mEndNode.onReset();
         Graph.begin(mIntList).take(3).end(mEndNode).emit();
         assertTrue(mEndNode.received(0, 1, 2));
 
-        mEndNode.reset();
+        mEndNode.onReset();
         Graph.begin(mIntList).skip(7).end(mEndNode).emit();
         assertTrue(mEndNode.received(7, 8, 9));
     }
@@ -220,7 +258,7 @@ public class NodeTest {
     @Test
     public void test_zip2() {
 
-        final TerminalNode<String> endNode = new TerminalNode<>();
+        final EndNode<String> endNode = new EndNode<>();
         final Zip2Node<Character, Integer, String> zipNode =
                 new Zip2Node<>((input1, input2) -> Character.toString(input1) + Integer.toString(input2));
         final Tag<Character> begin = Tag.create();
@@ -236,7 +274,7 @@ public class NodeTest {
     @Test
     public void test_zip3() {
 
-        final TerminalNode<String> endNode = new TerminalNode<>();
+        final EndNode<String> endNode = new EndNode<>();
         final Zip3Node<Character, Integer, String, String> zipNode =
                 new Zip3Node<>((input1, input2, input3) -> Character.toString(input1) + Integer.toString(input2) + input3);
         final Tag<Character> begin = Tag.create();
@@ -252,7 +290,7 @@ public class NodeTest {
     @Test
     public void test_zip9() {
 
-        final TerminalNode<String> endNode = new TerminalNode<>();
+        final EndNode<String> endNode = new EndNode<>();
         final Zip9Node<Character, Integer, String, Character, Integer, String, Character, Integer, String, String> zipNode =
                 new Zip9Node<>((input1, input2, input3, input4, input5, input6, input7, input8, input9) ->
                         Character.toString(input1) + Integer.toString(input2) + input3 + Character.toString(input4) + Integer.toString(input5) + input6 + Character.toString(input7) + Integer.toString(input8) + input9);
@@ -343,16 +381,13 @@ public class NodeTest {
         return list;
     }
 
-    private class TerminalNode<T> extends AbstractNode<T, T> {
-
-        private final ArrayList<T> mReceivedInputs;
+    private class BeginNode<T> extends AbstractNode<T, T> {
 
         private boolean mCompleted;
         private boolean mErrorReceived;
 
-        public TerminalNode() {
-            mReceivedInputs = new ArrayList<>();
-            reset();
+        public BeginNode() {
+            doOnReset();
         }
 
         @SuppressWarnings("unused")
@@ -365,25 +400,76 @@ public class NodeTest {
             return mErrorReceived;
         }
 
-        public void reset() {
+        @Override
+        protected void doOnReset() {
+            mCompleted = false;
+            mErrorReceived = false;
+        }
+
+        @Override
+        public T processInput(final OutputNode<T> source, final T input) {
+            return input;
+        }
+
+        @Override
+        public void onCompleted(final OutputNode<?> source) {
+            mCompleted = true;
+        }
+
+        @Override
+        public void onError(final OutputNode<?> source, final Throwable throwable) {
+            super.onError(source, throwable);
+            mErrorReceived = true;
+        }
+
+        public void causeError() {
+            dispatchError(this, new Exception("Test"));
+        }
+    }
+
+    private class EndNode<T> extends AbstractNode<T, T> {
+
+        private final ArrayList<T> mReceivedInputs;
+
+        private boolean mCompleted;
+        private boolean mErrorReceived;
+
+        public EndNode() {
+            mReceivedInputs = new ArrayList<>();
+            doOnReset();
+        }
+
+        @SuppressWarnings("unused")
+        public boolean isCompleted() {
+            return mCompleted;
+        }
+
+        @SuppressWarnings("unused")
+        public boolean isErrorReceived() {
+            return mErrorReceived;
+        }
+
+        @Override
+        protected void doOnReset() {
             mReceivedInputs.clear();
             mCompleted = false;
             mErrorReceived = false;
         }
 
         @Override
-        public T processInput(final OutputNode<T> outputNode, final T input) {
+        public T processInput(final OutputNode<T> source, final T input) {
             mReceivedInputs.add(input);
             return input;
         }
 
         @Override
-        public void onCompleted(final OutputNode<?> outputNode) {
+        public void onCompleted(final OutputNode<?> source) {
             mCompleted = true;
         }
 
         @Override
-        public void onError(final OutputNode<?> outputNode, final Throwable throwable) {
+        public void onError(final OutputNode<?> source, final Throwable throwable) {
+            super.onError(source, throwable);
             mErrorReceived = true;
         }
 

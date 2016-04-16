@@ -9,16 +9,16 @@ public interface OutputNode<OUT> {
     void setGraph(Graph<?> graph);
 
     /**
-     * Attaches the given target {@link InputNode} to this {@link OutputNode}.
-     * @param target An {@link InputNode}.
+     * Attaches the given {@link InputNode} to this {@link OutputNode}.
+     * @param inputNode An {@link InputNode}.
      */
-    void attach(InputNode<OUT> target);
+    void attach(InputNode<OUT> inputNode);
 
     /**
-     * Detaches the given target {@link InputNode} from this {@link OutputNode}.
-     * @param target An {@link InputNode}.
+     * Detaches the given {@link InputNode} from this {@link OutputNode}.
+     * @param inputNode An {@link InputNode}.
      */
-    void detach(InputNode<OUT> target);
+    void detach(InputNode<OUT> inputNode);
 
     /**
      * Invoked to emit available output value(s) from this {@link OutputNode}.

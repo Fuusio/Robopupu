@@ -12,13 +12,31 @@ public abstract class AbstractOutputNode<OUT> implements OutputNode<OUT> {
 
     protected final ArrayList<InputNode<OUT>> mInputNodes;
 
+    protected boolean mErrorReceived;
     protected Graph<?> mGraph;
 
     /**
      * Constructs a new instance of {@link AbstractOutputNode}.
      */
     protected AbstractOutputNode() {
+        mErrorReceived = false;
         mInputNodes = new ArrayList<>();
+    }
+
+    /**
+     * Tests if an error has been received.
+     * @return A {@code boolean}.
+     */
+    public boolean isErrorReceived() {
+        return mErrorReceived;
+    }
+
+    /**
+     * Sets an error to be received.
+     * @return A {@code boolean}.
+     */
+    protected void setErrorReceived(boolean mErrorReceived) {
+        this.mErrorReceived = mErrorReceived;
     }
 
     @Override
@@ -31,7 +49,7 @@ public abstract class AbstractOutputNode<OUT> implements OutputNode<OUT> {
      * @param output The outbut {@link Object}.
      */
     protected void emitOutput(final OUT output) {
-        if (output != null) {
+        if (!mErrorReceived && output != null) {
             for (final InputNode<OUT> inputNode : mInputNodes) {
                 inputNode.onInput(this, output);
             }
@@ -54,6 +72,8 @@ public abstract class AbstractOutputNode<OUT> implements OutputNode<OUT> {
      * @param throwable A {@link Throwable} representing the error.
      */
     protected void dispatchError(final OutputNode<?> source, final Throwable throwable) {
+        mErrorReceived = true;
+
         for (final InputNode<OUT> inputNode : mInputNodes) {
             inputNode.onError(source, throwable);
         }
@@ -139,6 +159,7 @@ public abstract class AbstractOutputNode<OUT> implements OutputNode<OUT> {
     @CallSuper
     @Override
     public void onReset() {
+        mErrorReceived = false;
         dispatchReset();
     }
 

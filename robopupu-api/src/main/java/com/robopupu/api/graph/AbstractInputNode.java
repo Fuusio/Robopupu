@@ -8,6 +8,7 @@ import android.support.annotation.CallSuper;
  */
 public abstract class AbstractInputNode<IN> implements InputNode<IN> {
 
+    protected boolean mErrorReceived;
     protected Graph<?> mGraph;
 
     @Override
@@ -19,13 +20,32 @@ public abstract class AbstractInputNode<IN> implements InputNode<IN> {
      * Constructs a new instance of {@link AbstractInputNode}.
      */
     protected AbstractInputNode() {
+        mErrorReceived = false;
+    }
+
+    /**
+     * Tests if an error has been received.
+     * @return A {@code boolean}.
+     */
+    public boolean isErrorReceived() {
+        return mErrorReceived;
+    }
+
+    /**
+     * Sets an error to be received.
+     * @return A {@code boolean}.
+     */
+    protected void setErrorReceived(boolean mErrorReceived) {
+        this.mErrorReceived = mErrorReceived;
     }
 
     @CallSuper
     @Override
     public void onInput(final OutputNode<IN> source, final IN input) {
-        doOnInput(source, input);
-        processInput(source, input);
+        if (!mErrorReceived) {
+            doOnInput(source, input);
+            processInput(source, input);
+        }
     }
 
     /**
@@ -53,9 +73,10 @@ public abstract class AbstractInputNode<IN> implements InputNode<IN> {
         // By default do nothing
     }
 
+    @CallSuper
     @Override
     public void onError(final OutputNode<?> source, final Throwable throwable) {
-        // By default do nothing
+        mErrorReceived = true;
     }
 
     /**
@@ -72,8 +93,9 @@ public abstract class AbstractInputNode<IN> implements InputNode<IN> {
     /**
      * Invoked by {@link AbstractOutputNode#onReset()}.
      */
+    @CallSuper
     @Override
     public void onReset() {
-        // By default do nothing
+        mErrorReceived = false;
     }
 }
