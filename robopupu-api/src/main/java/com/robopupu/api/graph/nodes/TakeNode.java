@@ -4,8 +4,8 @@ import com.robopupu.api.graph.Node;
 import com.robopupu.api.graph.OutputNode;
 
 /**
- * {@link TakeNode} TODO
- * @param <IN>
+ * {@link TakeNode} takes defined number of input values, emits them, and ignores the rest input
+ * values.
  */
 public class TakeNode<IN> extends Node<IN, IN> {
 

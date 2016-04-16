@@ -4,6 +4,10 @@ import com.robopupu.api.graph.Node;
 import com.robopupu.api.graph.OutputNode;
 import com.robopupu.api.graph.functions.BooleanFunction;
 
+/**
+ * {@link FilterNode} filters the received input values as specified by the assigned
+ * {@link BooleanFunction}.
+ */
 public class FilterNode<IN> extends Node<IN, IN> {
 
     private BooleanFunction<IN> mCondition;

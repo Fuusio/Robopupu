@@ -4,6 +4,11 @@ import com.robopupu.api.graph.Node;
 import com.robopupu.api.graph.OutputNode;
 import com.robopupu.api.graph.functions.BooleanFunction;
 
+/**
+ * {@link FirstNode} emits only the first received input value if no condition is given as
+ * a {@link BooleanFunction}. If condition is given, then the first value that gets accepted by
+ * the condition is emitted.
+ */
 public class FirstNode<IN> extends Node<IN, IN> {
 
     private BooleanFunction<IN> mCondition;
@@ -40,5 +45,10 @@ public class FirstNode<IN> extends Node<IN, IN> {
         }
         mCounter++;
         return null;
+    }
+
+    @Override
+    protected void doOnReset() {
+        mValueEmitted = false;
     }
 }

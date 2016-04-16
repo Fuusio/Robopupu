@@ -5,8 +5,8 @@ import com.robopupu.api.graph.OutputNode;
 import com.robopupu.api.graph.functions.BooleanFunction;
 
 /**
- * {@link SkipWhileNode} TODO
- * @param <IN>
+ * {@link SkipWhileNode} skip input values while the assigned {@link BooleanFunction} evaluates to
+ * true.
  */
 public class SkipWhileNode<IN> extends Node<IN, IN> {
 

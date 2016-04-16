@@ -6,6 +6,11 @@ import com.robopupu.api.graph.OutputNode;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * {@link ListNode} either emits all the values from a given {@link List} (immutable version), or
+ * the input values that are received and stored to a  {@link List} until {@link Node#onCompleted(OutputNode)}
+ * is invoked (mutable version).
+ */
 public class ListNode<IN> extends Node<IN, IN> {
 
     protected ArrayList<IN> mList;
@@ -47,5 +52,19 @@ public class ListNode<IN> extends Node<IN, IN> {
             mList.clear();
         }
         completed(this);
+    }
+
+    @Override
+    protected void doOnReset() {
+        if (mMutableList) {
+            mList.clear();
+        }
+    }
+
+    @Override
+    public void onCompleted(final OutputNode<?> source) {
+        for (final IN output : mList) {
+            emitOutput(output);
+        }
     }
 }

@@ -7,7 +7,7 @@ import com.robopupu.api.graph.actions.Action1;
 
 /**
  * {@link ActionNode} is a {@link Node} that can be used to execute a given {@link Action}
- * or arbitrary action as overridden method {@link Action#execute()}.
+ * or an arbitrary action defined as overridden method {@link Action#execute()}.
  */
 public class ActionNode<IN, OUT> extends Node<IN, OUT> {
 

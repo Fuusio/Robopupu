@@ -336,8 +336,7 @@ public class NodeTest {
     @Test
     public void test_logic() {
 
-        final AuthenticatorImpl authenticator = new AuthenticatorImpl();
-
+        AuthenticatorImpl authenticator;
         Node<Response, Response> loginNode;
         Response response;
 
@@ -347,9 +346,9 @@ public class NodeTest {
         response.error = Error.A.getErrorMsg();
         response.statusCode = 400;
 
+        authenticator = new AuthenticatorImpl(response);
         loginNode = createGraph(authenticator);
-        authenticator.reset();
-        loginNode.onInput(null, response);
+        loginNode.emitOutput();
         assertTrue(authenticator.failed());
 
         // Http 401, Error D
@@ -358,9 +357,9 @@ public class NodeTest {
         response.error = Error.D.getErrorMsg();
         response.statusCode = 401;
 
+        authenticator = new AuthenticatorImpl(response);
         loginNode = createGraph(authenticator);
-        authenticator.reset();
-        loginNode.onInput(null, response);
+        loginNode.emitOutput();
         assertTrue(authenticator.failed());
 
         // Http 200
@@ -368,9 +367,9 @@ public class NodeTest {
         response = new Response();
         response.statusCode = 200;
 
+        authenticator = new AuthenticatorImpl(response);
         loginNode = createGraph(authenticator);
-        authenticator.reset();
-        loginNode.onInput(null, response);
+        loginNode.emitOutput();
         assertTrue(authenticator.succeeded());
     }
 
@@ -379,7 +378,7 @@ public class NodeTest {
         final Tag<Response> authToken = Tag.create();
         final Tag<Response> http400 = Tag.create();
         final Tag<Response> http401 = Tag.create();
-        final Graph<Response> graph = Graph.begin(authToken, response -> authenticator.onRequestAuthToken());
+        final Graph<Response> graph = Graph.begin(authToken, authenticator::onRequestAuthToken);
 
         graph.
             node(authToken).filter(response -> response.statusCode == 200).end(authenticator::onAuthenticationSucceeded).
@@ -542,15 +541,18 @@ public class NodeTest {
 
         void onAuthenticationFailed(Response response);
         void onAuthenticationSucceeded(Response response);
-        void onRequestAuthToken();
+        Response onRequestAuthToken();
     }
 
     private class AuthenticatorImpl implements Authenticator {
 
+        private final Response mResponse;
+
         private boolean mFailed;
         private boolean mSucceeded;
 
-        public AuthenticatorImpl() {
+        public AuthenticatorImpl(final Response response) {
+            mResponse = response;
             reset();
         }
 
@@ -570,7 +572,8 @@ public class NodeTest {
         }
 
         @Override
-        public void onRequestAuthToken() {
+        public Response onRequestAuthToken() {
+            return mResponse;
         }
 
         public boolean failed() {

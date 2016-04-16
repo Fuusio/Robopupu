@@ -5,6 +5,9 @@ import com.robopupu.api.graph.OutputNode;
 
 import java.util.ArrayList;
 
+/**
+ * {@link BufferNode} buffers a max amount of input values before emitting them as output values.
+ */
 public class BufferNode<IN> extends Node<IN, IN> {
 
     private ArrayList<IN> mBuffer;

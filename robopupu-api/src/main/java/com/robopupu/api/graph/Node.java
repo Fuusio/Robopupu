@@ -40,6 +40,7 @@ import com.robopupu.api.graph.nodes.SumNode;
 import com.robopupu.api.graph.nodes.TakeNode;
 import com.robopupu.api.graph.nodes.TextViewNode;
 import com.robopupu.api.graph.nodes.ThreadNode;
+import com.robopupu.api.graph.nodes.TimerNode;
 import com.robopupu.api.graph.nodes.ViewNode;
 import com.robopupu.api.network.RequestDelegate;
 
@@ -81,6 +82,28 @@ public class Node<IN, OUT> implements InputNode<IN>, OutputNode<OUT> {
      */
     public static <OUT> RequestNode<OUT, OUT> begin(final RequestDelegate<OUT> delegate) {
         return new RequestNode<>(delegate);
+    }
+
+    /**
+     * Creates a {@link TimerNode} with the given input value and delay.
+     * @param input The input value.
+     * @param delay The delay in milliseconds.
+     * @return The created {@link RequestNode}.
+     */
+    public static <OUT> TimerNode<OUT> beginTimer(final OUT input, final long delay) {
+        return new TimerNode<>(input, delay);
+    }
+
+    /**
+     * Creates a {@link TimerNode} with the given input value and parameters.
+     * @param input The input value.
+     * @param delay The delay in milliseconds.
+     * @param interval The interval in milliseconds for repeated timeouts.
+     * @param repeatCount The number of repeats.
+     * @return The created {@link RequestNode}.
+     */
+    public static <OUT> TimerNode<OUT> beginTimer(final OUT input, final long delay, final long interval, final int repeatCount) {
+        return new TimerNode<>(input, delay, interval, repeatCount);
     }
 
     /**
@@ -574,6 +597,30 @@ public class Node<IN, OUT> implements InputNode<IN>, OutputNode<OUT> {
      */
     public Node<OUT, OUT> take(final int steps) {
         final TakeNode<OUT> node = new TakeNode<>(steps);
+        attach(node);
+        return node;
+    }
+
+    /**
+     * Attaches a {@link TimerNode} with the given delay to this {@link Node}.
+     * @param delay The delay in milliseconds.
+     * @return The attached {@link Node}.
+     */
+    public Node<OUT, OUT> timer(final long delay) {
+        final TimerNode<OUT> node = new TimerNode<>(delay);
+        attach(node);
+        return node;
+    }
+
+    /**
+     * Attaches a {@link TimerNode} with the given parameters to this {@link Node}.
+     * @param delay The delay in milliseconds.
+     * @param interval The interval in milliseconds for repeated timeouts.
+     * @param repeatCount The number of repeats.
+     * @return The attached {@link Node}.
+     */
+    public Node<OUT, OUT> timer(final long delay, final long interval, final int repeatCount) {
+        final TimerNode<OUT> node = new TimerNode<>(delay, interval, repeatCount);
         attach(node);
         return node;
     }

@@ -6,6 +6,10 @@ import com.robopupu.api.graph.OutputNode;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * {@link DistinctNode} emits distinct values buffered until {@link Node#onCompleted(OutputNode)} is
+ * invoked.
+ */
 public class DistinctNode<IN> extends Node<IN, IN> {
 
     private ArrayList<IN> mBuffer;

@@ -5,8 +5,9 @@ import com.robopupu.api.graph.InputNode;
 import com.robopupu.api.graph.OutputNode;
 
 /**
- * {@link ConcatStringsNode} sums the reveived input values until {@link InputNode#onCompleted(OutputNode)}
- * is invoked.
+ * {@link ConcatStringsNode} combines the received input strings in a {@link StringBuilder} until
+ * {@link InputNode#onCompleted(OutputNode)} is invoked. The resulting combined string is then
+ * emitted as an output value.
  */
 public class ConcatStringsNode<IN> extends Node<IN, String> {
 

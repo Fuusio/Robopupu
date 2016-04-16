@@ -6,6 +6,10 @@ import android.widget.TextView;
 
 import com.robopupu.api.graph.Node;
 
+/**
+ * {@link TextViewNode} emits the the text content of the assigmmed {@link TextView} the change of
+ * the content is committed.
+ */
 public class TextViewNode extends Node<TextView, String> implements TextWatcher {
 
     protected boolean mEnabled;

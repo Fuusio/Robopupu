@@ -4,6 +4,10 @@ import com.robopupu.api.graph.Node;
 import com.robopupu.api.graph.OutputNode;
 import com.robopupu.api.graph.functions.BooleanFunction;
 
+/**
+ * {@link ConditionNode} converts the received input value to {@link Boolean} output value according
+ * to assigned {@link BooleanFunction}.
+ */
 public class ConditionNode<IN> extends Node<IN, Boolean> {
 
     private BooleanFunction<IN> mCondition;

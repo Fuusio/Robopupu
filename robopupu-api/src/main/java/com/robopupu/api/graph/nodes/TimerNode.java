@@ -19,21 +19,41 @@ public class TimerNode<IN> extends Node<IN, IN> {
     private final long mInterval;
     private final int mRepeatCount;
 
+    private IN mInput;
+
     public TimerNode(final long delay) {
-        this(delay, 0L, 0);
+        this(null, delay, 0L, 0);
+    }
+
+    public TimerNode(final IN input, final long delay) {
+        this(input, delay, 0L, 0);
     }
 
     public TimerNode(final long delay, final long interval, final int repeatCount) {
+        this(null, delay, interval, repeatCount);
+    }
+
+    public TimerNode(final IN input, final long delay, final long interval, final int repeatCount) {
+        mInput = input;
         mTimerHandles = new HashMap<>();
         mDelay = delay;
         mInterval = interval;
         mRepeatCount = repeatCount;
     }
 
+    public void setInput(final IN input) {
+        mInput = input;
+    }
+
     @Override
     protected IN processInput(final OutputNode<IN> source, final IN input) {
         start(input);
         return null;
+    }
+
+    @Override
+    public void emitOutput() {
+        start(mInput);
     }
 
     /**

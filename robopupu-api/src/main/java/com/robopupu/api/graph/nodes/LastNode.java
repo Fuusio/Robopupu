@@ -6,6 +6,11 @@ import com.robopupu.api.graph.functions.BooleanFunction;
 
 import java.util.ArrayList;
 
+/**
+ * {@link LastNode} emits only the last received input value if no condition is given as
+ * a {@link BooleanFunction}. If condition is given, then the last value that gets accepted by
+ * the condition is emitted.
+ */
 public class LastNode<IN> extends Node<IN, IN> {
 
     private ArrayList<IN> mBuffer;

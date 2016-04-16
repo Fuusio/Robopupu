@@ -9,8 +9,8 @@ android {
         applicationId 'com.robopupu'
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 3
-        versionName '1.0.2'
+        versionCode 4
+        versionName '1.0.3'
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -35,8 +35,10 @@ repositories {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile project(':robopupu-api') // LIBRARY DEV
-    apt files('libs/robopupu-compiler.jar') // LIBRARY DEV
+    compile project(':robopupu-api')
+    // LIBRARY DEV
+    apt files('libs/robopupu-compiler.jar')
+    // LIBRARY DEV
     //compile 'com.robopupu:robopupu:0.4.0'
     //apt 'com.robopupu:robopupu-compiler:0.4.0'
     apt 'com.squareup:javapoet:1.5.1'

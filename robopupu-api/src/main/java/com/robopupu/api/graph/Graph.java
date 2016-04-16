@@ -38,6 +38,7 @@ import com.robopupu.api.graph.nodes.SumNode;
 import com.robopupu.api.graph.nodes.TakeNode;
 import com.robopupu.api.graph.nodes.TextViewNode;
 import com.robopupu.api.graph.nodes.ThreadNode;
+import com.robopupu.api.graph.nodes.TimerNode;
 import com.robopupu.api.graph.nodes.ViewNode;
 import com.robopupu.api.graph.nodes.ZipInputNode;
 import com.robopupu.api.network.RequestDelegate;
@@ -229,6 +230,27 @@ public class Graph<T> {
         return begin(tag, new ListNode<>(list));
     }
 
+    /**
+     * Begins this {@link Graph} with a {@link TimerNode} with the given input value and delay.
+     * @param input The input value.
+     * @param delay The delay in milliseconds.
+     * @return A {@link Graph}.
+     */
+    public static <OUT> Graph<OUT> beginTimer(final OUT input, final long delay) {
+        return begin(new TimerNode<>(input, delay));
+    }
+
+    /**
+     * Begins this {@link Graph} with a {@link TimerNode} with the given input value and parameters.
+     * @param input The input value.
+     * @param delay The delay in milliseconds.
+     * @param interval The interval in milliseconds for repeated timeouts.
+     * @param repeatCount The number of repeats.
+     * @return A {@link Graph}.
+     */
+    public static <OUT> Graph<OUT> beginTimer(final OUT input, final long delay, final long interval, final int repeatCount) {
+        return begin(new TimerNode<>(input, delay, interval, repeatCount));
+    }
     /**
      * Finds a {@link OutputNode} tagged with the given {@link Tag} and sets it to be current node.
      * @param tag A {@link Tag}.
@@ -535,6 +557,26 @@ public class Graph<T> {
     @SuppressWarnings("unchecked")
     public <OUT> Graph<OUT> request(final RequestDelegate<OUT> delegate) {
         return to(new RequestNode<>(delegate));
+    }
+
+    /**
+     * Attaches a {@link TimerNode} with the given delay to current {@link OutputNode}.
+     * @param delay The delay in milliseconds.
+     * @return The attached {@link Node}.
+     */
+    public Graph<T> timer(final long delay) {
+        return to(new TimerNode<>(delay));
+    }
+
+    /**
+     * Attaches a {@link TimerNode} with the given parameters to current {@link OutputNode}.
+     * @param delay The delay in milliseconds.
+     * @param interval The interval in milliseconds for repeated timeouts.
+     * @param repeatCount The number of repeats.
+     * @return The attached {@link Node}.
+     */
+    public Graph<T> timer(final long delay, final long interval, final int repeatCount) {
+        return to(new TimerNode<>(delay, interval, repeatCount));
     }
 
     /**

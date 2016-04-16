@@ -6,7 +6,7 @@ import com.robopupu.api.graph.OutputNode;
 
 /**
  * {@link OutputActionNode} is a {@link Node} that can be used to execute a given {@link OutputAction}
- * or arbitrary action as overridden method {@link OutputActionNode#execute()}.
+ * or arbitrary action defined as overridden method {@link OutputActionNode#execute()}.
  */
 public class OutputActionNode<OUT> extends Node<Void, OUT> {
 
@@ -32,6 +32,6 @@ public class OutputActionNode<OUT> extends Node<Void, OUT> {
 
     @Override
     public void emitOutput() {
-        processInput(null, null);
+        emitOutput(processInput(null, null));
     }
 }
