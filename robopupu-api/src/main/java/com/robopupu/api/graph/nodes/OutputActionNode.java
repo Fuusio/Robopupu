@@ -1,8 +1,7 @@
 package com.robopupu.api.graph.nodes;
 
-import com.robopupu.api.graph.Action1;
 import com.robopupu.api.graph.Node;
-import com.robopupu.api.graph.OutputAction;
+import com.robopupu.api.graph.actions.OutputAction;
 import com.robopupu.api.graph.OutputNode;
 
 /**
@@ -29,5 +28,10 @@ public class OutputActionNode<OUT> extends Node<Void, OUT> {
 
     protected OUT execute() {
         return null;
+    }
+
+    @Override
+    public void emitOutput() {
+        processInput(null, null);
     }
 }

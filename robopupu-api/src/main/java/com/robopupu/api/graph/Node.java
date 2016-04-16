@@ -4,8 +4,12 @@ import android.support.annotation.CallSuper;
 import android.view.View;
 import android.widget.TextView;
 
+import com.robopupu.api.graph.actions.Action;
+import com.robopupu.api.graph.actions.Action1;
+import com.robopupu.api.graph.actions.OutputAction;
 import com.robopupu.api.graph.functions.BooleanFunction;
 import com.robopupu.api.graph.nodes.Action1Node;
+import com.robopupu.api.graph.nodes.ActionNode;
 import com.robopupu.api.graph.nodes.BooleanNode;
 import com.robopupu.api.graph.nodes.BufferNode;
 import com.robopupu.api.graph.nodes.ByteNode;
@@ -327,6 +331,17 @@ public class Node<IN, OUT> implements InputNode<IN>, OutputNode<OUT> {
     protected String createErrorMessage(final String message, final String... args) {
         final String formattedMessage = String.format(message, (Object[]) args);
         return "Error in nodes " + getClass().getSimpleName() + " : " + formattedMessage;
+    }
+
+    /**
+     * Attaches an {@link ActionNode} with the given {@link Action} to this {@link Node}.
+     * @param action An {@link Action}.
+     * @return The attached {@link Node}.
+     */
+    public <T> Node<OUT, T> action(final Action action) {
+        final ActionNode<OUT, T> node = new ActionNode<>(action);
+        attach(node);
+        return node;
     }
 
     /**

@@ -1,6 +1,6 @@
 package com.robopupu.api.graph.nodes;
 
-import com.robopupu.api.graph.Action1;
+import com.robopupu.api.graph.actions.Action1;
 import com.robopupu.api.graph.Node;
 import com.robopupu.api.graph.OutputNode;
 

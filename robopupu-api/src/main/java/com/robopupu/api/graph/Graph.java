@@ -3,6 +3,8 @@ package com.robopupu.api.graph;
 import android.view.View;
 import android.widget.TextView;
 
+import com.robopupu.api.graph.actions.Action1;
+import com.robopupu.api.graph.actions.OutputAction;
 import com.robopupu.api.graph.functions.BooleanFunction;
 import com.robopupu.api.graph.nodes.Action1Node;
 import com.robopupu.api.graph.nodes.BooleanNode;
@@ -24,6 +26,7 @@ import com.robopupu.api.graph.nodes.IntegerNode;
 import com.robopupu.api.graph.nodes.ListNode;
 import com.robopupu.api.graph.nodes.LongNode;
 import com.robopupu.api.graph.nodes.ObserverNode;
+import com.robopupu.api.graph.nodes.OutputActionNode;
 import com.robopupu.api.graph.nodes.RepeatNode;
 import com.robopupu.api.graph.nodes.RequestNode;
 import com.robopupu.api.graph.nodes.ReverseNode;
@@ -117,29 +120,29 @@ public class Graph<T> {
 
 
     /**
-     * Begins this {@link Graph} with an {@link Action1Node} as a begin node. The given {@link Action1}
-     * is used to create the {@link Action1Node}.
-     * @param action The action as an {@link Action1}.
+     * Begins this {@link Graph} with an {@link OutputActionNode} as a begin node. The given
+     * {@link OutputAction} is used to create the {@link OutputActionNode}.
+     * @param action The action as an {@link OutputAction}.
      * @return A {@link Graph}.
      */
     @SuppressWarnings("unchecked")
-    public static <OUT> Graph<OUT> begin(final Action1<OUT> action) {
+    public static <OUT> Graph<OUT> begin(final OutputAction<OUT> action) {
         final Graph<OUT> graph = new Graph<>();
-        graph.setBeginNode(new Action1Node<>(action));
+        graph.setBeginNode(new OutputActionNode<>(action));
         return graph;
     }
 
     /**
-     * Begins this {@link Graph} with a {@link Action1Node} as a begin node. The begin
-     * node is tagged with the given {@link Tag}. The given {@link Action1}
-     * is used to create the {@link Action1Node}.
+     * Begins this {@link Graph} with a {@link OutputActionNode} as a begin node. The begin
+     * node is tagged with the given {@link Tag}. The given {@link OutputAction}
+     * is used to create the {@link OutputActionNode}.
      * @param tag A {@link Tag}.
      * @param action The action as an {@link Action1}.
      * @return A {@link Graph}.
      */
-    public static <OUT> Graph<OUT> begin(final Tag<OUT> tag, final Action1<OUT> action) {
+    public static <OUT> Graph<OUT> begin(final Tag<OUT> tag, final OutputAction<OUT> action) {
         final Graph<OUT> graph = new Graph<>();
-        graph.setBeginNode(tag, new Action1Node<>(action));
+        graph.setBeginNode(tag, new OutputActionNode<>(action));
         return graph;
     }
 

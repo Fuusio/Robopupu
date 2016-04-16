@@ -1,11 +1,9 @@
 package com.robopupu.api.graph.actions;
 
-import com.robopupu.api.graph.Action1;
-
 public interface Action3<IN1, IN2, IN3> {
 
     /**
-     * Executes an {@link Action1} using the given inputs.
+     * Executes an {@link Action3} using the given inputs.
      * @param input1 An input value of type {@code IN1}.
      * @param input2 An input value of type {@code IN2}.
      * @param input3 An input value of type {@code IN3}.

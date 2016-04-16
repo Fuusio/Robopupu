@@ -1,4 +1,4 @@
-package com.robopupu.api.graph;
+package com.robopupu.api.graph.actions;
 
 public interface Action1<IN> {
 
