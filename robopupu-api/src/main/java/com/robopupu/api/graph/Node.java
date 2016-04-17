@@ -26,6 +26,7 @@ import com.robopupu.api.graph.nodes.FunctionNode;
 import com.robopupu.api.graph.nodes.IntegerNode;
 import com.robopupu.api.graph.nodes.LastNode;
 import com.robopupu.api.graph.nodes.LongNode;
+import com.robopupu.api.graph.nodes.MergeNode;
 import com.robopupu.api.graph.nodes.NthNode;
 import com.robopupu.api.graph.nodes.ObserverNode;
 import com.robopupu.api.graph.nodes.OutputActionNode;
@@ -490,6 +491,17 @@ public class Node<IN, OUT> implements InputNode<IN>, OutputNode<OUT> {
      */
     public Node<OUT, OUT> last() {
         final LastNode<OUT> node = new LastNode<>();
+        attach(node);
+        return node;
+    }
+
+    /**
+     * Attaches a {@link MergeNode} to the current {@link OutputNode}.
+     * @return The attached {@link Node}.
+     */
+    @SafeVarargs
+    public final  Node<OUT, OUT> merge(final OutputNode<OUT>... sources) {
+        final MergeNode<OUT> node = new MergeNode<>(sources);
         attach(node);
         return node;
     }

@@ -19,6 +19,7 @@ import android.test.suitebuilder.annotation.SmallTest;
 
 import com.robopupu.api.graph.nodes.ConcatNode;
 import com.robopupu.api.graph.nodes.ListNode;
+import com.robopupu.api.graph.nodes.MergeNode;
 import com.robopupu.api.graph.nodes.SimpleNode;
 import com.robopupu.api.graph.nodes.Zip2Node;
 import com.robopupu.api.graph.nodes.Zip3Node;
@@ -102,6 +103,27 @@ public class NodeTest {
         listNode3.emitOutput();
 
         assertTrue(mEndNode.received(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12));
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    public void test_merge() {
+        final ListNode<Integer> listNode1 = new ListNode<>(createList(1, 2, 3));
+        final ListNode<Integer> listNode2 = new ListNode<>(createList(4, 5, 6));
+        final ListNode<Integer> listNode3 = new ListNode<>(createList(7, 8, 9));
+        final ListNode<Integer> listNode4 = new ListNode<>(createList(10, 11, 12));
+
+        final MergeNode<Integer> mergeNode = new MergeNode<>(listNode1, listNode2, listNode3, listNode4);
+        mergeNode.attach(mEndNode);
+
+        mEndNode.onReset();
+
+        listNode4.emitOutput();
+        listNode2.emitOutput();
+        listNode1.emitOutput();
+        listNode3.emitOutput();
+
+        assertTrue(mEndNode.received(10, 11, 12, 4, 5, 6, 1, 2, 3, 7, 8, 9));
     }
 
     @Test

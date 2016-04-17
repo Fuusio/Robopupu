@@ -4,12 +4,15 @@ import com.robopupu.api.graph.Node;
 import com.robopupu.api.graph.OutputNode;
 
 /**
- * {@link RepeatNode} TODO
- * @param <IN>
+ * {@link RepeatNode} emits the received input value specified times as an output value.
  */
 public class RepeatNode<IN> extends Node<IN, IN> {
 
     private int mTimes;
+
+    public RepeatNode() {
+        mTimes = Integer.MAX_VALUE;
+    }
 
     public RepeatNode(final int times) {
         mTimes = times;

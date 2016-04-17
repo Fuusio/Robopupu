@@ -21,6 +21,7 @@ import com.robopupu.api.graph.nodes.FirstNode;
 import com.robopupu.api.graph.nodes.FloatNode;
 import com.robopupu.api.graph.nodes.FunctionNode;
 import com.robopupu.api.graph.nodes.LastNode;
+import com.robopupu.api.graph.nodes.MergeNode;
 import com.robopupu.api.graph.nodes.NthNode;
 import com.robopupu.api.graph.nodes.IntegerNode;
 import com.robopupu.api.graph.nodes.ListNode;
@@ -522,6 +523,15 @@ public class Graph<T> {
      */
     public Graph<String> concatStrings() {
         return to(new ConcatStringsNode<>());
+    }
+
+    /**
+     * Attaches a {@link MergeNode} to the current {@link OutputNode}.
+     * @return This {@link Graph}.
+     */
+    @SafeVarargs
+    public final Graph<T> merge(final OutputNode<T>... sources) {
+        return to(new MergeNode<>(sources));
     }
 
     /**
