@@ -47,10 +47,11 @@ public abstract class AbstractFeatureManager extends AbstractManager
 
     private static DependencyScopeOwner sMockScopeOwner = null;
 
+    private final HashMap<Integer, Feature> mCurrentFeatures;
     private final HashSet<Feature> mPausedFeatures;
     private final HashSet<Feature> mResumedFeatures;
     private final DependenciesCache mDependenciesCache;
-    private final HashMap<Class<? extends FeatureContainer>, Feature> mFeatureContainers;
+    private final HashMap<Integer, FeatureContainer> mFeatureContainers;
 
     private Activity mForegroundActivity;
     private Activity mLastPausedActivity;
@@ -60,6 +61,7 @@ public abstract class AbstractFeatureManager extends AbstractManager
         mPausedFeatures = new HashSet<>();
         mResumedFeatures = new HashSet<>();
         mDependenciesCache = D.get(DependenciesCache.class);
+        mCurrentFeatures = new HashMap<>();
         mFeatureContainers = new HashMap<>();
     }
 
@@ -153,6 +155,11 @@ public abstract class AbstractFeatureManager extends AbstractManager
         return foregroundFeatures;
     }
 
+    @Override
+    public FeatureContainer getFeatureContainer(final int featureContainerId) {
+        return mFeatureContainers.get(featureContainerId);
+    }
+
     @SuppressWarnings("unchecked")
     @Override
     public Feature createFeature(final Class<? extends Feature> featureClass) {
@@ -218,10 +225,10 @@ public abstract class AbstractFeatureManager extends AbstractManager
     public Feature startFeature(final FeatureContainer featureContainer, final Feature feature, final Params params) {
 
         if (featureContainer != null) {
-            final Class<? extends FeatureContainer> key = featureContainer.getClass();
-            final Feature previousFeature = mFeatureContainers.get(key);
+            final int key = featureContainer.getContainerViewId();
+            final Feature previousFeature = mCurrentFeatures.get(key);
 
-            mFeatureContainers.put(key, feature);
+            mCurrentFeatures.put(key, feature);
 
             // Activity Features are finished by the Activities that own them.
             if (previousFeature != null && !previousFeature.isActivityFeature() && previousFeature != feature) {
@@ -301,7 +308,7 @@ public abstract class AbstractFeatureManager extends AbstractManager
             final List<FeatureContainer> containers = ((FeatureContainerActivity)activity).getFeatureContainers();
 
             for (final FeatureContainer container : containers) {
-                final Feature feature = mFeatureContainers.get(container.getClass());
+                final Feature feature = mCurrentFeatures.get(container.getContainerViewId());
 
                 if (feature != null) {
                     feature.onFeatureContainerStarted(container);
@@ -326,7 +333,7 @@ public abstract class AbstractFeatureManager extends AbstractManager
             final List<FeatureContainer> containers = ((FeatureContainerActivity)activity).getFeatureContainers();
 
             for (final FeatureContainer container : containers) {
-                final Feature feature = mFeatureContainers.get(container.getClass());
+                final Feature feature = mCurrentFeatures.get(container.getContainerViewId());
 
                 if (feature != null) {
                     feature.onFeatureContainerResumed(container);
@@ -348,7 +355,7 @@ public abstract class AbstractFeatureManager extends AbstractManager
             final boolean finishing = activity.isFinishing();
 
             for (final FeatureContainer container : containers) {
-                final Feature feature = mFeatureContainers.get(container.getClass());
+                final Feature feature = mCurrentFeatures.get(container.getContainerViewId());
 
                 if (feature != null) {
                     feature.onFeatureContainerPaused(container, finishing);
@@ -370,7 +377,7 @@ public abstract class AbstractFeatureManager extends AbstractManager
             final boolean finishing = activity.isFinishing();
 
             for (final FeatureContainer container : containers) {
-                final Feature feature = mFeatureContainers.get(container.getClass());
+                final Feature feature = mCurrentFeatures.get(container.getContainerViewId());
 
                 if (feature != null) {
                     feature.onFeatureContainerStopped(container, finishing);

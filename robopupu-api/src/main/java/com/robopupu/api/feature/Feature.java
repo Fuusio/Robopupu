@@ -107,7 +107,7 @@ public interface Feature extends PresenterListener, PluginStateComponent {
      * Tests if this {@link Feature} has any {@link View}s in back stack.
      * @return A {@code boolean} value.
      */
-    boolean hasViewsInBackStack();
+    boolean hasBackStackViews();
 
     /**
      * Clears the back stack managed by {@link FragmentManager}.

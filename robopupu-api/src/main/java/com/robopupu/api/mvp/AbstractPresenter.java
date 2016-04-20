@@ -135,12 +135,14 @@ public abstract class AbstractPresenter<T_View extends View> extends AbstractPlu
 
     @Override
     public void finish() {
-        stop();
         Log.d(TAG, "finish()");
 
+        // Listeners need to be notified before unregistering this
+        // AbstractPresenter from PluginBus
         for (final PresenterListener listener : getListeners()) {
             listener.onPresenterFinished(this);
         }
+        stop();
         PluginBus.unplug(this);
     }
 
@@ -161,7 +163,7 @@ public abstract class AbstractPresenter<T_View extends View> extends AbstractPlu
      * @param plugin A plugin {@link Object}.
      */
     @SuppressWarnings("unchecked")
-    public <T> T  plug(final Object plugin) {
+    public <T> T plug(final Object plugin) {
         PluginBus.plug(plugin);
         return (T)plugin;
     }

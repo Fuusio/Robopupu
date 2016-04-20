@@ -91,6 +91,13 @@ public interface FeatureManager extends Manager  {
     List<Feature> getForegroundFeatures();
 
     /**
+     * Gets a {@link FeatureContainer} with the given ID.
+     * @param featureContainerId The ID of the {@link FeatureContainer}.
+     * @return A {@link FeatureContainer}.
+     */
+    FeatureContainer getFeatureContainer(int featureContainerId);
+
+    /**
      * Creates the specified {@link Feature}, but does not start it. If the feature is
      * a {@link DependencyScopeOwner} its {@link DependencyScope} is added to cache of
      * {@link DependencyScope}s.

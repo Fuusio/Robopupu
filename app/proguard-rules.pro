@@ -17,25 +17,19 @@
 #}
 
 # ==================================================================================================
-# Commonly used configurations
+# Common configurations
 
--optimizationpasses 5
--dontusemixedcaseclassnames
--dontskipnonpubliclibraryclasses
 -dontskipnonpubliclibraryclassmembers
 -dontpreverify
 -verbose
--dump class_files.txt
--printseeds seeds.txt
--printusage unused.txt
--printmapping mapping.txt
 -optimizations !code/simplification/arithmetic,!field/*,!class/merging/*
 
 -allowaccessmodification
--keepattributes *Annotation*
 -renamesourcefileattribute SourceFile
 -keepattributes SourceFile,LineNumberTable
 -repackageclasses ''
+
+-keepattributes *Annotation*
 
 -keep public class * extends android.app.Activity
 -keep public class * extends android.app.Application
@@ -44,8 +38,8 @@
 -keep public class * extends android.content.ContentProvider
 -keep public class * extends android.preference.Preference
 -keep public class com.android.vending.licensing.ILicensingService
--dontnote com.android.vending.licensing.ILicensingService
 
+-dontnote com.android.vending.licensing.ILicensingService
 
 # We want to keep methods in Activity that could be used in the XML attribute onClick
 -keepclassmembers class * extends android.app.Activity {
@@ -61,27 +55,27 @@
     public <init>(android.content.Context, android.util.AttributeSet, int);
 }
 
-
-# Preserve static fields of inner classes of R classes that might be accessed
-# through introspection.
--keepclassmembers class **.R$* {
-  public static <fields>;
-}
-
--keepattributes *Annotation*
-
--keep public class * {
-    public protected *;
-}
-
-# Keep setters in Views for animations
--keepclassmembers public class * extends android.view.View {
-   void set*(***);
-   *** get*();
-}
-
-# Support libraries
+# The support library contains references to newer platform versions.
+# Don't warn about those in case this app is linking against an older
+# platform version.  We know about them, and they are safe.
 -dontwarn android.support.**
+
+# Understand the @Keep support annotation.
+-keep class android.support.annotation.Keep
+
+-keep @android.support.annotation.Keep class * {*;}
+
+-keepclasseswithmembers class * {
+    @android.support.annotation.Keep <methods>;
+}
+
+-keepclasseswithmembers class * {
+    @android.support.annotation.Keep <fields>;
+}
+
+-keepclasseswithmembers class * {
+    @android.support.annotation.Keep <init>(...);
+}
 
 # Build configurations
 -dontwarn **BuildConfig
@@ -98,33 +92,31 @@
     public static *** getStackTraceString(...);
 }
 
-# ==================================================================================================
-# Configurations for Robopupu API classes
+-keep class sun.misc.Unsafe { *; }
 
-# Flow Framework
+# ==================================================================================================
+# Configurations for Robopupu Libraries
+
+# Feature Framework
+-keep class * extends com.robopupu.api.feature.AbstractFeature
 -keepclassmembers class * extends com.robopupu.api.feature.AbstractFeature {
     public <init>(java.lang.Class);
     public <init>(java.lang.Class, boolean);
 }
 
--keepnames class * implements com.robopupu.api.feature.Feature
--keepnames interface * extends com.robopupu.api.feature.Feature
+-keepnames public class * implements com.robopupu.api.feature.Feature
+-keepnames public interface * extends com.robopupu.api.feature.Feature
+
+-dontwarn com.robopupu.compiler.**
 
 # ==================================================================================================
-# Configurations for Gson
+# Configurations for libraries
 
 # Gson uses generic type information stored in a class file when working with fields. Proguard
 # removes such information by default, so configure it to keep all of it.
 -keepattributes Signature
 
 #-keepnames class com.google.gson.reflect.TypeToken
-
--keep class sun.misc.Unsafe { *; }
-
--dontwarn com.robopupu.compiler.**
-
-# ==================================================================================================
-# Configurations for libraries
 
 -keep public class javax.net.ssl.**
 -keepclassmembers public class javax.net.ssl.** {
@@ -137,10 +129,8 @@
   *;
 }
 
-
 # Google Volley
 -dontwarn com.android.volley.**
-
 
 # OkHttp
 -dontwarn okio.**

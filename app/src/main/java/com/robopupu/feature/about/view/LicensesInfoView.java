@@ -21,5 +21,7 @@ import com.robopupu.api.plugin.PlugInterface;
 @PlugInterface
 public interface LicensesInfoView extends View {
 
+    void dismiss();
+
     void loadUrl(String url);
 }

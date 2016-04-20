@@ -102,4 +102,35 @@ public class Params extends HashMap<String, Object> {
         }
         return null;
     }
+
+    /**
+     * Tests if the given {@link Params} contains any values.
+    * @param params A {@link Params}. May be {@code null}.
+            * @return A {@code boolean} values.
+    */
+    public static boolean containsValues(final Params params) {
+        if (params != null) {
+            return params.size() > 0;
+        }
+        return false;
+    }
+
+    /**
+     * Tests if the given array of {@link Params} contains any values.
+     * @param paramsArray An array of {@link Params}. May be {@code null}.
+     * @return A {@code boolean} values.
+     */
+    public static boolean containsValues(final Params[] paramsArray) {
+        if (paramsArray != null) {
+            if (paramsArray.length > 0) {
+                int valuesCount = 0;
+
+                for (final Params params : paramsArray) {
+                    valuesCount += params.size();
+                }
+                return (valuesCount > 0);
+            }
+        }
+        return false;
+    }
 }

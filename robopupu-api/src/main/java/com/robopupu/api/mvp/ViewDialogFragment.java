@@ -203,6 +203,7 @@ public abstract class ViewDialogFragment<T_Presenter extends Presenter> extends 
         mState.onStop();
 
         final T_Presenter presenter = resolvePresenter();
+
         if (presenter != null) {
             presenter.onViewStop(this);
         }
@@ -214,6 +215,7 @@ public abstract class ViewDialogFragment<T_Presenter extends Presenter> extends 
         mState.onPause();
 
         final T_Presenter presenter = resolvePresenter();
+
         if (presenter != null) {
             presenter.onViewPause(this);
         }
@@ -236,6 +238,7 @@ public abstract class ViewDialogFragment<T_Presenter extends Presenter> extends 
         }
 
         final T_Presenter presenter = resolvePresenter();
+
         if (presenter != null) {
             presenter.onViewDestroy(this);
         }

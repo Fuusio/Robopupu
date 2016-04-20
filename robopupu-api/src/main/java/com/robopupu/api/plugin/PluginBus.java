@@ -170,16 +170,19 @@ public class PluginBus {
             return;
         }
 
-        if (mPlugins.contains(plugin)) {
+        final boolean alreadyPlugged = mPlugins.contains(plugin);
+
+        if (alreadyPlugged) {
             Log.d(TAG, "doPlug(...) : PluginBus already contained: " + plugin);
-            return;
         }
 
         final Plugger plugger = getPlugger(plugin.getClass());
         Log.d(TAG, "doPlug(...) : Using plugger: " + plugger);
         plugger.plug(plugin, this, useHandler);
 
-        mPlugins.add(plugin);
+        if (!alreadyPlugged) {
+            mPlugins.add(plugin);
+        }
 
         if (plugin instanceof PluginComponent) {
             final PluginComponent component = (PluginComponent) plugin;

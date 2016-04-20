@@ -33,9 +33,13 @@ import com.robopupu.api.dependency.DependencyMap;
 import com.robopupu.api.dependency.DependencyScope;
 import com.robopupu.api.dependency.DependencyScopeOwner;
 import com.robopupu.api.dependency.Scopeable;
+import com.robopupu.api.feature.FeatureContainer;
+import com.robopupu.api.feature.FeatureContainerActivity;
 import com.robopupu.api.plugin.PluginBus;
 import com.robopupu.api.util.Converter;
 import com.robopupu.api.util.PermissionRequestManager;
+
+import java.util.List;
 
 /**
  * {@link ViewActivity} provides an abstract base class for concrete {@link Activity}
@@ -192,6 +196,13 @@ public abstract class ViewActivity<T_Presenter extends Presenter> extends AppCom
 
         if (PluginBus.isPlugged(this)) {
             PluginBus.unplug(this);
+        }
+
+        if (this instanceof FeatureContainerActivity) {
+            final FeatureContainerActivity activity = (FeatureContainerActivity)this;
+            final List<FeatureContainer> featureContainers = activity.getFeatureContainers();
+
+            XXX
         }
     }
 

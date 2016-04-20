@@ -78,6 +78,6 @@ public class LicensesInfoPresenterImpl extends AbstractFeaturePresenter<Licenses
 
     @Override
     public void onOkButtonClicked() {
-        finish();
+        mView.dismiss();
     }
 }

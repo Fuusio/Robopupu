@@ -50,26 +50,18 @@ public class AboutFeatureImpl extends AbstractFeature implements AboutFeature, A
     @Override
     public void onShowLicenseInfo() {
         final Params params = new Params(LicensesInfoPresenter.KEY_PARAM_LICENSE_URL, mPlatformManager.getString(R.string.robopupu_license_file));
-        showView(LicensesInfoPresenter.class, true, params);
+        showView(LicensesInfoPresenter.class, false, params);
     }
 
     @Override
     public void onShowOssLicensesInfo() {
         final Params params = new Params(LicensesInfoPresenter.KEY_PARAM_LICENSE_URL, mPlatformManager.getString(R.string.oss_licenses_file));
-        showView(LicensesInfoPresenter.class, true, params);
+        showView(LicensesInfoPresenter.class, false, params);
     }
 
     @Override
     public void onOpenSourcesWebPage() {
         final String url = mPlatformManager.getString(R.string.ft_about_text_sources);
         mPlatformManager.openWebPage(url);
-    }
-
-    @Override
-    public void onPresenterFinished(final Presenter presenter) {
-
-        if (presenter instanceof LicensesInfoPresenter) {
-            goBack();
-        }
     }
 }
