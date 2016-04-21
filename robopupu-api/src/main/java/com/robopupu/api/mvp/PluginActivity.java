@@ -5,7 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
 import com.robopupu.api.feature.FeatureContainer;
-import com.robopupu.api.feature.FeatureContainerActivity;
+import com.robopupu.api.feature.FeatureContainerProvider;
 import com.robopupu.api.feature.FeatureDialogFragment;
 import com.robopupu.api.plugin.PluginBus;
 import com.robopupu.api.plugin.PluginComponent;
@@ -18,7 +18,7 @@ import java.util.List;
  * implementing {@code Activities} that utilise Robopupu.Plugin library.
  */
 public abstract class PluginActivity<T_Presenter extends Presenter>
-        extends ViewActivity<T_Presenter> implements FeatureContainer, FeatureContainerActivity, PluginComponent {
+        extends ViewActivity<T_Presenter> implements FeatureContainer, FeatureContainerProvider, PluginComponent {
 
     private final List<FeatureContainer> mFeatureContainers;
 

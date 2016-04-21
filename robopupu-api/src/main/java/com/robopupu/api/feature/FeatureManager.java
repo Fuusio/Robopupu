@@ -185,4 +185,17 @@ public interface FeatureManager extends Manager  {
      * @param feature A {@link Feature}. May not be {@code null}.
      */
     void onFeatureDestroyed(Feature feature);
+
+    /**
+     * Register the given {@link FeatureContainerProvider} for this {@link FeatureManager} so
+     * that {@link Feature}s can access their {@link FeatureContainer}s.
+     * @param provider A {@link FeatureContainerProvider}.
+     */
+    void registerFeatureContainerProvider(FeatureContainerProvider provider);
+
+    /**
+     * Unregister the given {@link FeatureContainerProvider} from this {@link FeatureManager}.
+     * @param provider A {@link FeatureContainerProvider}.
+     */
+    void unregisterFeatureContainerProvider(FeatureContainerProvider provider);
 }

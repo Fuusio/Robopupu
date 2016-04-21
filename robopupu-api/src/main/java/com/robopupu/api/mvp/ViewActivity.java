@@ -34,7 +34,8 @@ import com.robopupu.api.dependency.DependencyScope;
 import com.robopupu.api.dependency.DependencyScopeOwner;
 import com.robopupu.api.dependency.Scopeable;
 import com.robopupu.api.feature.FeatureContainer;
-import com.robopupu.api.feature.FeatureContainerActivity;
+import com.robopupu.api.feature.FeatureContainerProvider;
+import com.robopupu.api.feature.FeatureManager;
 import com.robopupu.api.plugin.PluginBus;
 import com.robopupu.api.util.Converter;
 import com.robopupu.api.util.PermissionRequestManager;
@@ -140,6 +141,14 @@ public abstract class ViewActivity<T_Presenter extends Presenter> extends AppCom
             presenter.onViewStart(this);
             mBinder.initialise();
         }
+
+        // If this Activity is a FeatureContainerProvider, it needs to be registered to
+        // FeatureManager
+        if (this instanceof FeatureContainerProvider) {
+            final FeatureContainerProvider provider = (FeatureContainerProvider)this;
+            final FeatureManager featureManager = D.get(FeatureManager.class);
+            featureManager.registerFeatureContainerProvider(provider);
+        }
     }
 
 
@@ -198,11 +207,10 @@ public abstract class ViewActivity<T_Presenter extends Presenter> extends AppCom
             PluginBus.unplug(this);
         }
 
-        if (this instanceof FeatureContainerActivity) {
-            final FeatureContainerActivity activity = (FeatureContainerActivity)this;
-            final List<FeatureContainer> featureContainers = activity.getFeatureContainers();
-
-            XXX
+        if (this instanceof FeatureContainerProvider) {
+            final FeatureContainerProvider provider = (FeatureContainerProvider)this;
+            final FeatureManager featureManager = D.get(FeatureManager.class);
+            featureManager.unregisterFeatureContainerProvider(provider);
         }
     }
 

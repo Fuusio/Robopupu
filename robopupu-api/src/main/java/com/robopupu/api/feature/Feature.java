@@ -127,12 +127,6 @@ public interface Feature extends PresenterListener, PluginStateComponent {
     void goBack();
 
     /**
-     * Goes back to previous {@link View} using the given {@link FeatureTransitionManager}.
-     * @param transitionManager A {@link FeatureTransitionManager}.
-     */
-    void goBack(FeatureTransitionManager transitionManager);
-
-    /**
      * Invoked to pause this {@link Feature}.
      *
      * @param finishing A {@code boolean} value indicating if the {@link Feature} is

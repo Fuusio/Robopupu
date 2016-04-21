@@ -248,6 +248,20 @@ public abstract class AbstractFeatureManager extends AbstractManager
         return feature;
     }
 
+    @Override
+    public void registerFeatureContainerProvider(final FeatureContainerProvider provider) {
+        for (final FeatureContainer container : provider.getFeatureContainers()) {
+            mFeatureContainers.put(container.getContainerViewId(), container);
+        }
+    }
+
+    @Override
+    public void unregisterFeatureContainerProvider(final FeatureContainerProvider provider) {
+        for (final FeatureContainer container : provider.getFeatureContainers()) {
+            mFeatureContainers.remove(container.getContainerViewId());
+        }
+    }
+
     /**
      * Invoked to handle Back Pressed event received by the {@link FeatureContainer}.
      *
@@ -304,8 +318,8 @@ public abstract class AbstractFeatureManager extends AbstractManager
 
     @Override
     public void onActivityStarted(final Activity activity) {
-        if (activity instanceof FeatureContainerActivity) {
-            final List<FeatureContainer> containers = ((FeatureContainerActivity)activity).getFeatureContainers();
+        if (activity instanceof FeatureContainerProvider) {
+            final List<FeatureContainer> containers = ((FeatureContainerProvider)activity).getFeatureContainers();
 
             for (final FeatureContainer container : containers) {
                 final Feature feature = mCurrentFeatures.get(container.getContainerViewId());
@@ -329,8 +343,8 @@ public abstract class AbstractFeatureManager extends AbstractManager
             mLastStoppedActivity = null;
         }
 
-        if (activity instanceof FeatureContainerActivity) {
-            final List<FeatureContainer> containers = ((FeatureContainerActivity)activity).getFeatureContainers();
+        if (activity instanceof FeatureContainerProvider) {
+            final List<FeatureContainer> containers = ((FeatureContainerProvider)activity).getFeatureContainers();
 
             for (final FeatureContainer container : containers) {
                 final Feature feature = mCurrentFeatures.get(container.getContainerViewId());
@@ -349,8 +363,8 @@ public abstract class AbstractFeatureManager extends AbstractManager
         }
         mLastPausedActivity = activity;
 
-        if (activity instanceof FeatureContainerActivity) {
-            final List<FeatureContainer> containers = ((FeatureContainerActivity)activity).getFeatureContainers();
+        if (activity instanceof FeatureContainerProvider) {
+            final List<FeatureContainer> containers = ((FeatureContainerProvider)activity).getFeatureContainers();
 
             final boolean finishing = activity.isFinishing();
 
@@ -371,8 +385,8 @@ public abstract class AbstractFeatureManager extends AbstractManager
         }
         mLastStoppedActivity = activity;
 
-        if (activity instanceof FeatureContainerActivity) {
-            final List<FeatureContainer> containers = ((FeatureContainerActivity)activity).getFeatureContainers();
+        if (activity instanceof FeatureContainerProvider) {
+            final List<FeatureContainer> containers = ((FeatureContainerProvider)activity).getFeatureContainers();
 
             final boolean finishing = activity.isFinishing();
 

@@ -42,7 +42,7 @@ public abstract class DependencyScope {
     /*
      * A cache of created and provided dependencies.
      */
-    protected final HashMap<Class, Object> mDependencies;
+    protected final HashMap<Class<?>, Object> mDependencies;
 
     /**
      * A reference to an optional overriding {@link DependencyScope} used providing mock dependencies.
@@ -75,7 +75,7 @@ public abstract class DependencyScope {
     /*
      * A helper field for storing the currently requested type of dependency.
      */
-    private Class mDependencyType;
+    private Class<?> mDependencyType;
 
     protected DependencyScope() {
         mDependencies = new HashMap<>();
@@ -275,7 +275,7 @@ public abstract class DependencyScope {
     @SuppressWarnings("unchecked")
     protected <T> T getDependency(final Class<T> dependencyType, final Object dependant, final boolean createNew) {
 
-        final Class savedDependencyType = mDependencyType;
+        final Class<?> savedDependencyType = mDependencyType;
 
         mDependencyType = dependencyType;
 
@@ -284,6 +284,14 @@ public abstract class DependencyScope {
         }
 
         T dependency = (T) mDependencies.get(dependencyType);
+
+        if (dependency == null) {
+            for (final Class<?> key : mDependencies.keySet()) {
+                if (dependencyType.isAssignableFrom(key)) {
+                    dependency = (T) mDependencies.get(key);
+                }
+            }
+        }
 
         if (dependency == null) {
             dependency = lookDependencyAmongDependants(dependencyType);

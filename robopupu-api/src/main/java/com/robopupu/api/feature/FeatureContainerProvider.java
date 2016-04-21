@@ -5,10 +5,10 @@ import android.app.Activity;
 import java.util.List;
 
 /**
- * {@link FeatureContainerActivity} in an interface for an {@link Activity} that provides one
+ * {@link FeatureContainerProvider} in an interface for an {@link Activity} that provides one
  * of more {@link FeatureContainer}s. Typically the {@link Activity} itself is a {@link FeatureContainer}.
  */
-public interface FeatureContainerActivity {
+public interface FeatureContainerProvider {
 
     List<FeatureContainer> getFeatureContainers();
 }
