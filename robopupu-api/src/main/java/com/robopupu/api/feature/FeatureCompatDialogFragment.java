@@ -17,22 +17,22 @@ package com.robopupu.api.feature;
 
 import com.robopupu.api.dependency.DependencyScope;
 import com.robopupu.api.mvp.Presenter;
-import com.robopupu.api.mvp.ViewFragment;
+import com.robopupu.api.mvp.ViewCompatDialogFragment;
 
-public abstract class FeatureFragment<T_Presenter extends Presenter> extends ViewFragment<T_Presenter>
+public abstract class FeatureCompatDialogFragment<T_Presenter extends Presenter> extends ViewCompatDialogFragment<T_Presenter>
     implements FeatureView {
 
     private Feature mFeature;
     private DependencyScope mScope;
 
-    protected FeatureFragment() {
+    protected FeatureCompatDialogFragment() {
     }
 
     @Override
     public void setFeature(final Feature feature) {
         mFeature = feature;
     }
-    
+
     @Override
     public DependencyScope getScope() {
         return mScope;
@@ -45,7 +45,7 @@ public abstract class FeatureFragment<T_Presenter extends Presenter> extends Vie
 
     @Override
     public boolean isDialog() {
-        return false;
+        return true;
     }
 
     @Override

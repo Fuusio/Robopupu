@@ -16,7 +16,6 @@
 package com.robopupu.api.feature;
 
 import android.support.annotation.CallSuper;
-import android.support.v4.app.FragmentManager;
 
 import com.robopupu.api.dependency.D;
 import com.robopupu.api.dependency.Dependency;
@@ -92,7 +91,8 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
         return mActiveViews;
     }
 
-    protected final View addActiveView(final View view) {
+    @Override
+    public final View addActiveView(final View view) {
         if (!mActiveViews.contains(view)) {
             mActiveViews.add(view);
             return view;
@@ -100,7 +100,8 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
         return null;
     }
 
-    protected final View removeActiveView(final View view) {
+    @Override
+    public final View removeActiveView(final View view) {
         if (mActiveViews.contains(view)) {
             mActiveViews.remove(view);
             return view;
@@ -190,15 +191,13 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
         final View view = presenter.getView();
         boolean isAddedToBackStack = false;
 
-        if (view instanceof FeatureFragment) {
-            final FeatureFragment fragment = (FeatureFragment) view;
-            fragment.setFeature(this);
-            transitionManager.showFragment(fragment, addToBackStack, null);
-            isAddedToBackStack = addToBackStack;
-        } else if (view instanceof FeatureDialogFragment) {
-            final FeatureDialogFragment dialogFragment = (FeatureDialogFragment) view;
-            dialogFragment.setFeature(this);
-            transitionManager.showDialogFragment(dialogFragment, addToBackStack, null);
+        if (view instanceof FeatureView) {
+            final FeatureView featureView = (FeatureView) view;
+            featureView.setFeature(this);
+            transitionManager.showView(featureView, addToBackStack, null);
+            isAddedToBackStack = featureView.isDialog();
+        } else {
+            throw new RuntimeException("Class " + view.getClass().getName() + " is not a FeatureView");
         }
 
         if (isAddedToBackStack) {
@@ -210,21 +209,16 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
 
     @Override
     public void clearBackStack() {
-        if (getFeatureContainer() != null) {
-            final FragmentManager manager = getFeatureContainer().getSupportFragmentManager();
-            manager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        final FeatureContainer container = getFeatureContainer();
+        if (container != null) {
+            container.clearBackStack();
         }
     }
 
     @Override
     @SuppressWarnings("uncheckked")
     public void goBack() {
-        final FragmentManager fragmentManager = getFeatureContainer().getSupportFragmentManager();
-        final int count = fragmentManager.getBackStackEntryCount();
-
-        if (count > 0) {
-            fragmentManager.popBackStack();
-        }
+        getFeatureContainer().goBack();
     }
 
     @SuppressWarnings("unchecked")
@@ -258,9 +252,12 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
 
     @Override
     public boolean canGoBack() {
+        return getFeatureContainer().canGoBack();
+
+        /* COPY
         final FragmentManager fragmentManager = getFeatureContainer().getSupportFragmentManager();
         final int count = fragmentManager.getBackStackEntryCount();
-        return (count > 0);
+        return (count > 0); */
     }
 
     /**

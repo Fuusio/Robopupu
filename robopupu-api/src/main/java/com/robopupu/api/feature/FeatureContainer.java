@@ -20,19 +20,17 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.view.ViewGroup;
 
 /**
  * {@link FeatureContainer} extends {@link FeatureTransitionManager} to define
- * an interface for objects that can be used to show {@link FeatureFragment}s. Typically a such
+ * an interface for objects that can be used to show {@link FeatureCompatFragment}s. Typically a such
  * object is an {@link android.app.Activity}.
  */
 public interface FeatureContainer extends FeatureTransitionManager {
 
     /**
-     * Gets the {@link Context} available for  {@link FeatureFragment}s
+     * Gets the {@link Context} available for  {@link FeatureCompatFragment}s
      *
      * @return A {@link Context}.
      */
@@ -45,25 +43,42 @@ public interface FeatureContainer extends FeatureTransitionManager {
     @IdRes int getContainerViewId();
 
     /**
-     * Gets the {@link Resources} available for {@link FeatureFragment}s
+     * Gets the {@link Resources} available for {@link FeatureCompatFragment}s
      *
      * @return A {@link Resources}.
      */
     Resources getResources();
 
     /**
-     * Gets the {@link FragmentManager} that manages {@link android.app.Fragment}s.
+     * Gets the {@ode FragmentManager} that manages {@link android.app.Fragment}s.
      *
-     * @return A {@link FragmentManager}.
-     */
-    FragmentManager getSupportFragmentManager();
+     * @return A {@code FragmentManager}.
+     *
+    FragmentManager getSupportFragmentManager(); */
 
     /**
-     * Tests if a {@link Fragment} can be committed. A {@link Fragment} cannot be committed
+     * Tests if a {@code Fragment} can be committed. A {@code Fragment} cannot be committed
      * using {@link FragmentTransaction#commit()} after method {@link android.app.Activity#onSaveInstanceState(Bundle)}
      * has been invoked.
      *
      * @return A {@code boolean} value.
      */
     boolean canCommitFragment();
+
+    /**
+     * Clears {@code Fragment}s of contained {@link Feature} from the back stack.
+     */
+    void clearBackStack();
+
+    /**
+     * Tests if the previous {@code Fragment} can be popped from the back stack.
+     *
+     * @return A {@code boolean} value.
+     */
+    boolean canGoBack();
+
+    /**
+     * Pops the previous {@code Fragment} from the back stack.
+     */
+    void goBack();
 }

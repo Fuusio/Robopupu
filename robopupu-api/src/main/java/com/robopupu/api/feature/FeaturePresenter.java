@@ -4,7 +4,8 @@ import com.robopupu.api.dependency.Scopeable;
 import com.robopupu.api.mvp.Presenter;
 
 /**
- * {@link FeaturePresenter} ...
+ * {@link FeaturePresenter} extends {@link Presenter} interface for Presenters that used with
+ * {@link Feature}s.
  */
 public interface FeaturePresenter extends Presenter, Scopeable {
 

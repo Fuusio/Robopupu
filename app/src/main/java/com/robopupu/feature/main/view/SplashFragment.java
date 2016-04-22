@@ -25,7 +25,7 @@ import com.robopupu.R;
 import com.robopupu.feature.main.presenter.SplashPresenter;
 
 import com.robopupu.api.dependency.Provides;
-import com.robopupu.api.feature.FeatureFragment;
+import com.robopupu.api.feature.FeatureCompatFragment;
 import com.robopupu.api.plugin.Plug;
 import com.robopupu.api.plugin.Plugin;
 
@@ -33,7 +33,7 @@ import com.robopupu.api.plugin.Plugin;
  * A simple {@link Fragment} subclass.
  */
 @Plugin
-public class SplashFragment extends FeatureFragment<SplashPresenter> implements SplashView {
+public class SplashFragment extends FeatureCompatFragment<SplashPresenter> implements SplashView {
 
     @Plug SplashPresenter mPresenter;
 

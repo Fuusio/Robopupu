@@ -108,7 +108,7 @@ public interface FeatureManager extends Manager  {
     Feature createFeature(Class<? extends Feature> featureClass);
 
     /**
-     * Creates and starts the specified {@link Feature} whose {@link FeatureFragment}s are hosted by
+     * Creates and starts the specified {@link Feature} whose {@link FeatureCompatFragment}s are hosted by
      * the given {@link FeatureContainer}.
      *
      * @param featureContainer A {@link FeatureContainer}.
@@ -118,7 +118,7 @@ public interface FeatureManager extends Manager  {
     Feature startFeature(FeatureContainer featureContainer, Class<? extends Feature> featureClass);
 
     /**
-     * Creates and starts the specified {@link Feature} whose {@link FeatureFragment}s are hosted by
+     * Creates and starts the specified {@link Feature} whose {@link FeatureCompatFragment}s are hosted by
      * the given {@link FeatureContainer}.
      *
      * @param featureContainer A {@link FeatureContainer}.
@@ -129,7 +129,7 @@ public interface FeatureManager extends Manager  {
     Feature startFeature(FeatureContainer featureContainer, Class<? extends Feature> featureClass, Params params);
 
     /**
-     * Starts the given {@link Feature} whose {@link FeatureFragment}s are hosted by
+     * Starts the given {@link Feature} whose {@link FeatureCompatFragment}s are hosted by
      * the given {@link FeatureContainer}.
      *
      * @param featureContainer A {@link FeatureContainer}.
@@ -139,7 +139,7 @@ public interface FeatureManager extends Manager  {
     Feature startFeature(FeatureContainer featureContainer, Feature feature);
 
     /**
-     * Starts the given {@link Feature} whose {@link FeatureFragment}s are hosted by
+     * Starts the given {@link Feature} whose {@link FeatureCompatFragment}s are hosted by
      * the given {@link FeatureContainer}.
      *
      * @param featureContainer A {@link FeatureContainer}.

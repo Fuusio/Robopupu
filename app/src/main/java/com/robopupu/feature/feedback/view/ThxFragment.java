@@ -25,7 +25,7 @@ import com.robopupu.R;
 import com.robopupu.feature.feedback.presenter.ThxPresenter;
 
 import com.robopupu.api.dependency.Provides;
-import com.robopupu.api.feature.FeatureFragment;
+import com.robopupu.api.feature.FeatureCompatFragment;
 import com.robopupu.api.plugin.Plug;
 import com.robopupu.api.plugin.Plugin;
 
@@ -34,7 +34,7 @@ import com.robopupu.api.plugin.Plugin;
  */
 @Plugin
 @Provides(ThxView.class)
-public class ThxFragment extends FeatureFragment<ThxPresenter> implements ThxView {
+public class ThxFragment extends FeatureCompatFragment<ThxPresenter> implements ThxView {
 
     @Plug ThxPresenter mPresenter;
 

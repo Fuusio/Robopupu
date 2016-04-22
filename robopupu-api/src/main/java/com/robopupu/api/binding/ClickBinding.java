@@ -19,8 +19,8 @@ import android.support.annotation.IdRes;
 import android.view.View;
 
 import com.robopupu.api.mvp.Presenter;
-import com.robopupu.api.mvp.ViewDialogFragment;
-import com.robopupu.api.mvp.ViewFragment;
+import com.robopupu.api.mvp.ViewCompatDialogFragment;
+import com.robopupu.api.mvp.ViewCompatFragment;
 
 /**
  * {@link ClickBinding} can be establishing bindings from
@@ -35,7 +35,7 @@ public class ClickBinding implements View.OnClickListener {
     private ClickBinding() {
     }
 
-    public ClickBinding(final ViewFragment fragment, final View... views) {
+    public ClickBinding(final ViewCompatFragment fragment, final View... views) {
         final int count = views.length;
         mViews = new View[count];
 
@@ -45,7 +45,7 @@ public class ClickBinding implements View.OnClickListener {
         }
     }
 
-    public ClickBinding(final ViewDialogFragment dialogFragment, final View... views) {
+    public ClickBinding(final ViewCompatDialogFragment dialogFragment, final View... views) {
         final int count = views.length;
         mViews = new View[count];
 
@@ -55,7 +55,7 @@ public class ClickBinding implements View.OnClickListener {
         }
     }
 
-    public ClickBinding(final ViewFragment fragment, @IdRes final int... viewIds) {
+    public ClickBinding(final ViewCompatFragment fragment, @IdRes final int... viewIds) {
         final int count = viewIds.length;
         mViews = new  View[count];
 
@@ -65,7 +65,7 @@ public class ClickBinding implements View.OnClickListener {
         }
     }
 
-    public ClickBinding(final ViewDialogFragment dialogFragment, @IdRes final int... viewIds) {
+    public ClickBinding(final ViewCompatDialogFragment dialogFragment, @IdRes final int... viewIds) {
         final int count = viewIds.length;
         mViews = new  View[count];
 

@@ -19,12 +19,12 @@ import android.support.annotation.IdRes;
 import android.view.View;
 import android.widget.TextView;
 
-import com.robopupu.api.mvp.ViewDialogFragment;
-import com.robopupu.api.mvp.ViewFragment;
+import com.robopupu.api.mvp.ViewCompatDialogFragment;
+import com.robopupu.api.mvp.ViewCompatFragment;
 
 /**
  * {@link Binding} provides a convenience class for writing bindings for {@link View}s extending
- * {@link TextView} in {@link ViewFragment#onCreateBindings()} method.
+ * {@link TextView} in {@link ViewCompatFragment#onCreateBindings()} method.
  */
 public class Binding extends TextViewBinding {
 
@@ -37,12 +37,12 @@ public class Binding extends TextViewBinding {
     }
 
     @SuppressWarnings("unchecked")
-    public Binding(final ViewFragment fragment, @IdRes final int viewId) {
+    public Binding(final ViewCompatFragment fragment, @IdRes final int viewId) {
         super((TextView) fragment.getView(viewId));
     }
 
     @SuppressWarnings("unchecked")
-    public Binding(final ViewDialogFragment fragment, @IdRes final int viewId) {
+    public Binding(final ViewCompatDialogFragment fragment, @IdRes final int viewId) {
         super((TextView) fragment.getView(viewId));
     }
 }

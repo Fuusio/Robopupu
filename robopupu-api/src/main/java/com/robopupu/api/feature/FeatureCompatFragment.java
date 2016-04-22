@@ -17,15 +17,15 @@ package com.robopupu.api.feature;
 
 import com.robopupu.api.dependency.DependencyScope;
 import com.robopupu.api.mvp.Presenter;
-import com.robopupu.api.mvp.ViewFragment;
+import com.robopupu.api.mvp.ViewCompatFragment;
 
-public abstract class FeatureFragment<T_Presenter extends Presenter> extends ViewFragment<T_Presenter>
+public abstract class FeatureCompatFragment<T_Presenter extends Presenter> extends ViewCompatFragment<T_Presenter>
     implements FeatureView {
 
     private Feature mFeature;
     private DependencyScope mScope;
 
-    protected FeatureFragment() {
+    protected FeatureCompatFragment() {
     }
 
     @Override

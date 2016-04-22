@@ -15,12 +15,15 @@
  */
 package com.robopupu.api.mvp;
 
-import android.app.Activity;
+import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
+import android.support.v4.app.DialogFragment;
 import android.util.Log;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 
 import com.robopupu.api.binding.AdapterViewBinding;
@@ -32,53 +35,60 @@ import com.robopupu.api.dependency.DependencyMap;
 import com.robopupu.api.dependency.DependencyScope;
 import com.robopupu.api.dependency.DependencyScopeOwner;
 import com.robopupu.api.dependency.Scopeable;
-import com.robopupu.api.feature.FeatureContainerProvider;
-import com.robopupu.api.feature.FeatureManager;
 import com.robopupu.api.plugin.PluginBus;
 import com.robopupu.api.util.Converter;
-import com.robopupu.api.util.PermissionRequestManager;
 
 /**
- * {@link ViewActivity} provides an abstract base class for concrete {@link Activity}
+ * {@link ViewCompatDialogFragment} provides an abstract base class for concrete {@link DialogFragment}
  * implementations that implement {@link View} components for a MVP architectural pattern
  * implementation.
  *
  * @param <T_Presenter> The type of the {@link Presenter}.
  */
-public abstract class ViewActivity<T_Presenter extends Presenter> extends Activity
+public abstract class ViewCompatDialogFragment<T_Presenter extends Presenter> extends DialogFragment
         implements View, PresentedView<T_Presenter>, Scopeable {
 
     private static String TAG = ViewCompatDialogFragment.class.getSimpleName();
 
-    protected final ViewBinder mBinder;
-    protected final ViewState mState;
+    private final ViewBinder mBinder;
+    private final ViewState mState;
 
-    protected DependencyScope mScope;
+    protected ViewGroup mDialogView;
 
-    protected ViewActivity() {
+    private DependencyScope mScope;
+
+    protected ViewCompatDialogFragment() {
         mBinder = new ViewBinder(this);
         mState = new ViewState(this);
     }
 
-    /**
-     * Gets the {@link Presenter} assigned for this {@link ViewActivity}.
-     *
-     * @return A {@link Presenter}.
-     */
+    @NonNull
     @Override
-    public abstract T_Presenter getPresenter();
+    public Dialog onCreateDialog(final Bundle inState) {
+        final Dialog dialog = createDialog(inState);
+        final Window window = dialog.getWindow();
 
-    @Override
-    public String getViewTag() {
-        return getClass().getName();
+        window.requestFeature(Window.FEATURE_NO_TITLE);
+        return dialog;
+    }
+
+    @NonNull
+    protected Dialog createDialog(final Bundle inState) {
+        return super.onCreateDialog(inState);
     }
 
     /**
-     * Resolves the {@link Presenter} assigned for this {@link ViewActivity}.
+     * Gets the {@link Presenter} assigned for this {@link ViewCompatActivity}.
      *
      * @return A {@link Presenter}.
      */
-    @SuppressWarnings("unchecked")
+    public abstract T_Presenter getPresenter();
+
+    /**
+     * Resolves the {@link Presenter} assigned for this {@link ViewCompatActivity}.
+     *
+     * @return A {@link Presenter}.
+     */
     protected T_Presenter resolvePresenter() {
         T_Presenter presenter = getPresenter();
 
@@ -91,9 +101,16 @@ public abstract class ViewActivity<T_Presenter extends Presenter> extends Activi
         return presenter;
     }
 
+    public String getViewTag() {
+        return getClass().getName();
+    }
+
+    @SuppressWarnings("unchecked")
     @Override
-    protected void onCreate(final Bundle inState) {
-        super.onCreate(inState);
+    public void onViewCreated(final android.view.View view, final Bundle inState) {
+        super.onViewCreated(view, inState);
+        mState.onCreate();
+        mDialogView = (ViewGroup) view;
 
         final T_Presenter presenter = resolvePresenter();
         if (presenter != null) {
@@ -101,93 +118,114 @@ public abstract class ViewActivity<T_Presenter extends Presenter> extends Activi
         } else {
             Log.d(TAG, "onViewCreated(...) : Presenter == null");
         }
-
-        mBinder.setActivity(this);
     }
 
     @Override
-    protected void onPostCreate(final Bundle inState) {
-        super.onPostCreate(inState);
+    public void onActivityCreated(final Bundle inState) {
+        super.onActivityCreated(inState);
+
+        mBinder.setContentView(mDialogView);
         onCreateBindings();
+
+        if (inState != null) {
+            onRestoreState(inState);
+
+            final DependenciesCache cache = D.get(DependenciesCache.class);
+            final DependencyMap dependencies = cache.getDependencies(this);
+
+            if (dependencies != null) {
+
+                final DependencyScope scope = dependencies.getDependency(KEY_DEPENDENCY_SCOPE);
+
+                if (scope != null) {
+                    mScope = scope;
+                }
+                onRestoreDependencies(dependencies);
+            }
+        }
     }
 
-
     @Override
-    protected void onStart() {
+    public void onStart() {
         super.onStart();
         mState.onStart();
 
-        if (!mState.isRestarted()) {
-            onCreateBindings();
+        final Dialog dialog = getDialog();
+
+        if (dialog != null) {
+            final Window window = dialog.getWindow();
+            setupWindowLayout(window);
+            setupWindowParams(window);
         }
-
-        final DependenciesCache cache = D.get(DependenciesCache.class);
-        final DependencyMap dependencies = cache.getDependencies(this);
-
-        if (dependencies != null) {
-            onRestoreDependencies(dependencies);
-        }
-
-        // Presenter as dependency is automatically saved into DependenciesCache so that it can be
-        // restored when and if the View resumes. Invoking getPresenter method takes care of restoring
-        // the reference to Presenter
 
         final T_Presenter presenter = resolvePresenter();
         if (presenter != null) {
             presenter.onViewStart(this);
             mBinder.initialise();
         }
-
-        // If this Activity is a FeatureContainerProvider, it needs to be registered to
-        // FeatureManager
-        if (this instanceof FeatureContainerProvider) {
-            final FeatureContainerProvider provider = (FeatureContainerProvider)this;
-            final FeatureManager featureManager = D.get(FeatureManager.class);
-            featureManager.registerFeatureContainerProvider(provider);
-        }
     }
 
+    protected void setupWindowLayout(final Window window) {
+        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+    }
+
+    protected void setupWindowParams(final Window window) {
+        // By default do nothing
+    }
+
+    /**
+     * Invoked to bind {@link ViewBinding}s to {@link View}s. This method has to be overridden in
+     * classes extended from {@link ViewCompatDialogFragment}.
+     */
+    @CallSuper
+    protected void onCreateBindings() {
+        // Do nothing by default
+    }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
         mState.onResume();
-
-        final DependenciesCache cache = D.get(DependenciesCache.class);
-        cache.removeDependencies(this);
 
         final T_Presenter presenter = resolvePresenter();
         if (presenter != null) {
             presenter.onViewResume(this);
         }
+
+        final DependenciesCache cache = D.get(DependenciesCache.class);
+        cache.removeDependencies(this);
     }
 
+
     @Override
-    protected void onStop() {
+    public void onStop() {
         super.onStop();
         mState.onStop();
 
         final T_Presenter presenter = resolvePresenter();
+
         if (presenter != null) {
             presenter.onViewStop(this);
         }
     }
 
     @Override
-    protected void onPause() {
+    public void onPause() {
         super.onPause();
         mState.onPause();
 
         final T_Presenter presenter = resolvePresenter();
+
         if (presenter != null) {
             presenter.onViewPause(this);
         }
     }
 
     @Override
-    protected void onDestroy() {
+    public void onDestroy() {
         super.onDestroy();
         mState.onDestroy();
+
         mBinder.dispose();
 
         if (this instanceof DependencyScopeOwner) {
@@ -199,31 +237,27 @@ public abstract class ViewActivity<T_Presenter extends Presenter> extends Activi
             cache.removeDependencyScope(owner);
         }
 
+        final T_Presenter presenter = resolvePresenter();
+
+        if (presenter != null) {
+            presenter.onViewDestroy(this);
+        }
+
         if (PluginBus.isPlugged(this)) {
+            Log.d(TAG, "onDestroy() : Unplugged from PluginBus");
             PluginBus.unplug(this);
         }
-
-        if (this instanceof FeatureContainerProvider) {
-            final FeatureContainerProvider provider = (FeatureContainerProvider)this;
-            final FeatureManager featureManager = D.get(FeatureManager.class);
-            featureManager.unregisterFeatureContainerProvider(provider);
-        }
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        mState.onRestart();
     }
 
     @Override
     public void onSaveInstanceState(final Bundle outState) {
         super.onSaveInstanceState(outState);
-        mState.setInstanceStateSaved(true);
-
         onSaveState(outState);
 
         final DependenciesCache cache = D.get(DependenciesCache.class);
+
+        // Save a reference to the Presenter
+
         final DependencyMap dependencies = cache.getDependencies(this, true);
         dependencies.addDependency(KEY_DEPENDENCY_SCOPE, mScope);
 
@@ -240,7 +274,7 @@ public abstract class ViewActivity<T_Presenter extends Presenter> extends Activi
     }
 
     /**
-     * This method can be overridden to save state of this {@link ViewActivity} to the given
+     * This method can be overridden to save state of this {@link ViewCompatDialogFragment} to the given
      * {@link Bundle}.
      * @param outState A {@link Bundle}.
      */
@@ -248,30 +282,8 @@ public abstract class ViewActivity<T_Presenter extends Presenter> extends Activi
         // By default do nothing
     }
 
-    @Override
-    public void onRestoreInstanceState(final Bundle inState) {
-        super.onRestoreInstanceState(inState);
-        mState.setInstanceStateSaved(false);
-
-        onRestoreState(inState);
-
-        final DependenciesCache cache = D.get(DependenciesCache.class);
-        final DependencyMap dependencies = cache.getDependencies(this);
-
-        if (dependencies != null) {
-
-            final DependencyScope scope = dependencies.getDependency(KEY_DEPENDENCY_SCOPE);
-
-            if (scope != null) {
-                mScope = scope;
-            }
-
-            onRestoreDependencies(dependencies);
-        }
-    }
-
     /**
-     * This method can be overridden to restore state of this {@link ViewActivity} from the given
+     * This method can be overridden to restore state of this {@link ViewCompatDialogFragment} from the given
      * {@link Bundle}.
      * @param inState A {@link Bundle}.
      */
@@ -280,7 +292,7 @@ public abstract class ViewActivity<T_Presenter extends Presenter> extends Activi
     }
 
     /**
-     * This method can be overridden to save dependencies after the {@link ViewCompatFragment} is
+     * This method can be overridden to save dependencies after the {@link ViewCompatDialogFragment} is
      * restored, for instance, after recreating it.
      *
      * @param dependencies A {@link DependencyMap} for saving the dependencies.
@@ -290,7 +302,7 @@ public abstract class ViewActivity<T_Presenter extends Presenter> extends Activi
     }
 
     /**
-     * This method can be overridden to restore dependencies after the {@link ViewCompatFragment} is
+     * This method can be overridden to restore dependencies after the {@link ViewCompatDialogFragment} is
      * restored, for instance, after recreating it.
      *
      * @param dependencies A {@link DependencyMap} for restoring the dependencies.
@@ -299,28 +311,10 @@ public abstract class ViewActivity<T_Presenter extends Presenter> extends Activi
         // By default do nothing
     }
 
-    @Override
-    public void onRequestPermissionsResult(final int requestCode, @NonNull final String[] permissions, @NonNull final int[] grantResults) {
-        final PermissionRequestManager manager = D.get(PermissionRequestManager.class);
-        manager.onRequestPermissionsResult(requestCode, permissions, grantResults);
-    }
-
+    @NonNull
     @Override
     public ViewState getState() {
         return mState;
-    }
-
-    public boolean canCommitFragment() {
-        return mState.canCommitFragment();
-    }
-
-    /**
-     * Invoked to bind {@link ViewBinding}s to {@link View}s. This method has to be overridden in
-     * classes extended from {@link ViewCompatFragment}.
-     */
-    @CallSuper
-    protected void onCreateBindings() {
-        // Do nothing by default
     }
 
     /**
@@ -331,7 +325,7 @@ public abstract class ViewActivity<T_Presenter extends Presenter> extends Activi
      */
     @SuppressWarnings("unchecked")
     public <T extends android.view.View> T getView(@IdRes final int viewId) {
-        return (T) findViewById(viewId);
+        return (T) mDialogView.findViewById(viewId);
     }
 
     /**

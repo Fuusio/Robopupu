@@ -16,11 +16,11 @@
 package com.robopupu.api.mvp;
 
 import android.app.Dialog;
+import android.app.DialogFragment;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -78,14 +78,14 @@ public abstract class ViewDialogFragment<T_Presenter extends Presenter> extends 
     }
 
     /**
-     * Gets the {@link Presenter} assigned for this {@link ViewActivity}.
+     * Gets the {@link Presenter} assigned for this {@link ViewCompatActivity}.
      *
      * @return A {@link Presenter}.
      */
     public abstract T_Presenter getPresenter();
 
     /**
-     * Resolves the {@link Presenter} assigned for this {@link ViewActivity}.
+     * Resolves the {@link Presenter} assigned for this {@link ViewCompatActivity}.
      *
      * @return A {@link Presenter}.
      */

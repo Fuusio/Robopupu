@@ -29,12 +29,12 @@ import com.robopupu.feature.about.presenter.LicensesInfoPresenter;
 
 import com.robopupu.api.binding.ClickBinding;
 import com.robopupu.api.dependency.Provides;
-import com.robopupu.api.feature.FeatureDialogFragment;
+import com.robopupu.api.feature.FeatureCompatDialogFragment;
 import com.robopupu.api.plugin.Plug;
 import com.robopupu.api.plugin.Plugin;
 
 @Plugin
-public class LicensesInfoFragment extends FeatureDialogFragment<LicensesInfoPresenter>
+public class LicensesInfoFragment extends FeatureCompatDialogFragment<LicensesInfoPresenter>
         implements LicensesInfoView {
 
     private WebView mWebView;

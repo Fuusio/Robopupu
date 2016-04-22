@@ -19,7 +19,7 @@ import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
+import android.app.Fragment;
 import android.util.Log;
 import android.widget.AdapterView;
 
@@ -57,7 +57,7 @@ public abstract class ViewFragment<T_Presenter extends Presenter> extends Fragme
     }
 
     /**
-     * Gets the {@link Presenter} assigned for this {@link ViewActivity}.
+     * Gets the {@link Presenter} assigned for this {@link ViewCompatActivity}.
      *
      * @return A {@link Presenter}.
      */
@@ -70,7 +70,7 @@ public abstract class ViewFragment<T_Presenter extends Presenter> extends Fragme
     }
 
     /**
-     * Resolves the {@link Presenter} assigned for this {@link ViewActivity}.
+     * Resolves the {@link Presenter} assigned for this {@link ViewCompatActivity}.
      *
      * @return A {@link Presenter}.
      */

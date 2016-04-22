@@ -1,10 +1,10 @@
 package com.robopupu.api.mvp;
 
-import android.app.DialogFragment;
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Context;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 
 import com.robopupu.api.feature.FeatureContainer;
 import com.robopupu.api.feature.FeatureContainerProvider;
@@ -16,15 +16,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * {@link PluginActivity} extends {@link ViewCompatActivity} to provide an abstract base class for
+ * {@link PluginCompatActivity} extends {@link ViewCompatActivity} to provide an abstract base class for
  * implementing {@code Activities} that utilise Robopupu.Plugin library.
  */
-public abstract class PluginActivity<T_Presenter extends Presenter>
-        extends ViewActivity<T_Presenter> implements FeatureContainer, FeatureContainerProvider, PluginComponent {
+public abstract class PluginCompatActivity<T_Presenter extends Presenter>
+        extends ViewCompatActivity<T_Presenter> implements FeatureContainer, FeatureContainerProvider, PluginComponent {
 
     private final List<FeatureContainer> mFeatureContainers;
 
-    protected PluginActivity() {
+    protected PluginCompatActivity() {
         mFeatureContainers = new ArrayList<>();
         mFeatureContainers.add(this);
     }
@@ -41,7 +41,7 @@ public abstract class PluginActivity<T_Presenter extends Presenter>
 
     @Override
     public boolean canGoBack() {
-        final FragmentManager fragmentManager = getFragmentManager();
+        final android.app.FragmentManager fragmentManager = getFragmentManager();
         final int count = fragmentManager.getBackStackEntryCount();
 
         return (count > 0);
@@ -60,7 +60,7 @@ public abstract class PluginActivity<T_Presenter extends Presenter>
             tag = featureView.getViewTag();
         }
 
-        final FragmentManager manager = getFragmentManager();
+        final FragmentManager manager = getSupportFragmentManager();
         final FragmentTransaction transaction = manager.beginTransaction();
 
         if (featureView instanceof DialogFragment) {
@@ -84,13 +84,13 @@ public abstract class PluginActivity<T_Presenter extends Presenter>
 
     @Override
     public void clearBackStack() {
-        final FragmentManager manager = getFragmentManager();
+        final FragmentManager manager = getSupportFragmentManager();
         manager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
     }
 
     @Override
     public void goBack() {
-        final FragmentManager fragmentManager = getFragmentManager();
+        final FragmentManager fragmentManager = getSupportFragmentManager();
         final int count = fragmentManager.getBackStackEntryCount();
 
         if (count > 0) {

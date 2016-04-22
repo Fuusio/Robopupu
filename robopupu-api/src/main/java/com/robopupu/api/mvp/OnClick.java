@@ -1,8 +1,5 @@
 package com.robopupu.api.mvp;
 
-import com.robopupu.api.dependency.DependencyProvider;
-import com.robopupu.api.dependency.DependencyScope;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Target;
 

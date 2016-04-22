@@ -20,6 +20,7 @@ import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.AdapterView;
 
@@ -39,13 +40,13 @@ import com.robopupu.api.util.Converter;
 import com.robopupu.api.util.PermissionRequestManager;
 
 /**
- * {@link ViewActivity} provides an abstract base class for concrete {@link Activity}
+ * {@link ViewCompatActivity} provides an abstract base class for concrete {@link Activity}
  * implementations that implement {@link View} components for a MVP architectural pattern
  * implementation.
  *
  * @param <T_Presenter> The type of the {@link Presenter}.
  */
-public abstract class ViewActivity<T_Presenter extends Presenter> extends Activity
+public abstract class ViewCompatActivity<T_Presenter extends Presenter> extends AppCompatActivity
         implements View, PresentedView<T_Presenter>, Scopeable {
 
     private static String TAG = ViewCompatDialogFragment.class.getSimpleName();
@@ -55,13 +56,13 @@ public abstract class ViewActivity<T_Presenter extends Presenter> extends Activi
 
     protected DependencyScope mScope;
 
-    protected ViewActivity() {
+    protected ViewCompatActivity() {
         mBinder = new ViewBinder(this);
         mState = new ViewState(this);
     }
 
     /**
-     * Gets the {@link Presenter} assigned for this {@link ViewActivity}.
+     * Gets the {@link Presenter} assigned for this {@link ViewCompatActivity}.
      *
      * @return A {@link Presenter}.
      */
@@ -74,7 +75,7 @@ public abstract class ViewActivity<T_Presenter extends Presenter> extends Activi
     }
 
     /**
-     * Resolves the {@link Presenter} assigned for this {@link ViewActivity}.
+     * Resolves the {@link Presenter} assigned for this {@link ViewCompatActivity}.
      *
      * @return A {@link Presenter}.
      */
@@ -240,7 +241,7 @@ public abstract class ViewActivity<T_Presenter extends Presenter> extends Activi
     }
 
     /**
-     * This method can be overridden to save state of this {@link ViewActivity} to the given
+     * This method can be overridden to save state of this {@link ViewCompatActivity} to the given
      * {@link Bundle}.
      * @param outState A {@link Bundle}.
      */
@@ -271,7 +272,7 @@ public abstract class ViewActivity<T_Presenter extends Presenter> extends Activi
     }
 
     /**
-     * This method can be overridden to restore state of this {@link ViewActivity} from the given
+     * This method can be overridden to restore state of this {@link ViewCompatActivity} from the given
      * {@link Bundle}.
      * @param inState A {@link Bundle}.
      */

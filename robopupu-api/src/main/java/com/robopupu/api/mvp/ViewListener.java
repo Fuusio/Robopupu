@@ -17,7 +17,7 @@ public interface ViewListener {
 
     /**
      * Invoked by a {@link View} implementation when it is resumed,
-     * e.g. on {@link ViewFragment#onResume()}.
+     * e.g. on {@link ViewCompatFragment#onResume()}.
      *
      * @param view A {@link View}
      */
@@ -25,7 +25,7 @@ public interface ViewListener {
 
     /**
      * Invoked by a {@link View} implementation when it is paused,
-     * e.g. on {@link ViewFragment#onPause()}.
+     * e.g. on {@link ViewCompatFragment#onPause()}.
      *
      * @param view A {@link View}
      */
@@ -33,7 +33,7 @@ public interface ViewListener {
 
     /**
      * Invoked by a {@link View} implementation when it is started,
-     * e.g. on {@link ViewFragment#onStart()}.
+     * e.g. on {@link ViewCompatFragment#onStart()}.
      *
      * @param view A {@link View}
      */
@@ -41,7 +41,7 @@ public interface ViewListener {
 
     /**
      * Invoked by a {@link View} implementation when it is stopped,
-     * e.g. on {@link ViewFragment#onStop()}.
+     * e.g. on {@link ViewCompatFragment#onStop()}.
      *
      * @param view A {@link View}
      */
@@ -49,7 +49,7 @@ public interface ViewListener {
 
     /**
      * Invoked by a {@link View} implementation when it is destroyed,
-     * e.g. on {@link ViewFragment#onDestroy()}.
+     * e.g. on {@link ViewCompatFragment#onDestroy()}.
      *
      * @param view A {@link View}
      */

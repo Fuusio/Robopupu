@@ -55,8 +55,6 @@ public class FeatureTest {
         mFragmentManager = Mockito.mock(FragmentManager.class);
         mFeatureManager = new TestFeatureManager();
         mFeatureContainer = Mockito.mock(FeatureContainer.class);
-
-        when(mFeatureContainer.getSupportFragmentManager()).thenReturn(mFragmentManager);
     }
 
     @Test

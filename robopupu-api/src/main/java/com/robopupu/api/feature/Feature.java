@@ -16,7 +16,6 @@
 package com.robopupu.api.feature;
 
 import android.app.Activity;
-import android.support.v4.app.FragmentManager;
 
 import com.robopupu.api.dependency.DependencyScope;
 import com.robopupu.api.dependency.DependencyScopeOwner;
@@ -52,6 +51,22 @@ public interface Feature extends PresenterListener, PluginStateComponent {
     boolean isActiveView(View view);
 
     /**
+     * Adds the given {@link View} to the set of currently active {@link View}s of this
+     * {@link Feature}.
+     * @param view A {@link View} to be added.
+     * @return The {@link View} if it was added as a new active {@link View}.
+     */
+    View addActiveView(View view);
+
+    /**
+     * Removes the given {@link View} from the set of currently active {@link View}s of this
+     * {@link Feature}.
+     * @param view A {@link View} to be removed.
+     * @return The {@link View} if it was removed from being an active {@link View}.
+     */
+    View removeActiveView(View view);
+
+    /**
      * Sets the {@link FeatureManager} that started this {@link Feature}.
      *
      * @param manager A {@link FeatureManager}.
@@ -59,7 +74,7 @@ public interface Feature extends PresenterListener, PluginStateComponent {
     void setFeatureManager(FeatureManager manager);
 
     /**
-     * Gets the {@link FeatureContainer} that hosts the {@link FeatureFragment}s of this
+     * Gets the {@link FeatureContainer} that hosts the {@link FeatureCompatFragment}s of this
      * {@link Feature}.
      *
      * @return A {@link FeatureContainer}.
@@ -67,7 +82,7 @@ public interface Feature extends PresenterListener, PluginStateComponent {
     FeatureContainer getFeatureContainer();
 
     /**
-     * Sets the the {@link FeatureContainer} that hosts the {@link FeatureFragment}s of this
+     * Sets the the {@link FeatureContainer} that hosts the {@link FeatureCompatFragment}s of this
      * {@link Feature}.
      *
      * @param container A {@link FeatureContainer}.
@@ -110,7 +125,7 @@ public interface Feature extends PresenterListener, PluginStateComponent {
     boolean hasBackStackViews();
 
     /**
-     * Clears the back stack managed by {@link FragmentManager}.
+     * Clears the back stack managed by {@code FragmentManager}.
      */
     void clearBackStack();
 

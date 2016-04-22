@@ -34,15 +34,15 @@ import com.robopupu.component.AppManager;
 import com.squareup.picasso.Picasso;
 
 import com.robopupu.api.dependency.D;
-import com.robopupu.api.feature.FeatureFragment;
+import com.robopupu.api.feature.FeatureCompatFragment;
 import com.robopupu.api.feature.FeaturePresenter;
 
 /**
  * {@link CoordinatorLayoutFragment} provides an abstract base class for implementing
- * {@link FeatureFragment}s that use {@link android.support.design.widget.CoordinatorLayout}.
+ * {@link FeatureCompatFragment}s that use {@link android.support.design.widget.CoordinatorLayout}.
  */
 public abstract class CoordinatorLayoutFragment<T_Presenter extends FeaturePresenter>
-        extends FeatureFragment<T_Presenter> {
+        extends FeatureCompatFragment<T_Presenter> {
 
     protected final @StringRes int mTitleResId;
 

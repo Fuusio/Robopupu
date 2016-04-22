@@ -36,13 +36,13 @@ import com.robopupu.feature.main.MainFeatureScope;
 import com.robopupu.feature.main.presenter.MainPresenter;
 
 import com.robopupu.api.feature.FeatureContainer;
-import com.robopupu.api.feature.FeatureFragment;
-import com.robopupu.api.mvp.PluginActivity;
+import com.robopupu.api.feature.FeatureCompatFragment;
+import com.robopupu.api.mvp.PluginCompatActivity;
 import com.robopupu.api.plugin.Plug;
 import com.robopupu.api.plugin.Plugin;
 
 @Plugin
-public class MainActivity extends PluginActivity<MainPresenter>
+public class MainActivity extends PluginCompatActivity<MainPresenter>
         implements MainView, NavigationView.OnNavigationItemSelectedListener,
         DrawerLayoutContainer {
 
@@ -111,20 +111,6 @@ public class MainActivity extends PluginActivity<MainPresenter>
         final DrawerLayout drawer = getView(R.id.drawer_layout_navigation);
         drawer.closeDrawer(GravityCompat.START);
         return wasHandled;
-    }
-
-    @Override
-    public void showFragment(final FeatureFragment fragment, final boolean addToBackStack, final String fragmentTag) {
-        final String tag = (fragmentTag != null) ? fragmentTag : fragment.getViewTag();
-        final FragmentManager manager = getSupportFragmentManager();
-        final FragmentTransaction transaction = manager.beginTransaction();
-
-        transaction.replace(getContainerViewId(), fragment, tag);
-
-        if (addToBackStack) {
-            transaction.addToBackStack(tag);
-        }
-        transaction.commit();
     }
 
     @Override

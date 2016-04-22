@@ -66,7 +66,6 @@ public class FeatureManagerTest {
     public void test() {
 
         mFragmentContainer = Mockito.mock(FeatureContainer.class);
-        when(mFragmentContainer.getSupportFragmentManager()).thenReturn(mFragmentManager);
         assertNotNull(mFeatureManager);
 
         final Params params = new Params("Foo", "Bar");

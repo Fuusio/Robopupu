@@ -1,9 +1,8 @@
 package com.robopupu.api.feature;
 
-import com.robopupu.api.mvp.View;
-
 /**
- * {@link FeatureTransitionManagerAdapter} is an adapter for implementing {@link FeatureTransitionManager}.
+ * {@link FeatureTransitionManagerAdapter} is an adapter for implementing
+ * {@link FeatureTransitionManager}.
  */
 public abstract class FeatureTransitionManagerAdapter implements FeatureTransitionManager {
 
@@ -24,12 +23,12 @@ public abstract class FeatureTransitionManagerAdapter implements FeatureTransiti
     }
 
     @Override
-    public boolean canShowView(final View view) {
+    public boolean canShowView(final FeatureView view) {
         return true;
     }
 
     @Override
-    public void showFragment(FeatureFragment fragment, boolean addToBackStack, String fragmentTag) {
+    public void showView(FeatureView featureView, boolean addToBackStack, String fragmentTag) {
         // Do nothing
     }
 }
