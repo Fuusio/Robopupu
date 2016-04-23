@@ -23,5 +23,7 @@ public interface MainFeature extends Feature {
 
     void openNavigationDrawer();
 
+    void onHideSplashView();
+
     void onMainPresenterStarted();
 }

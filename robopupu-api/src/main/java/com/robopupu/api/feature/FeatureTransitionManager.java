@@ -15,10 +15,16 @@
  */
 package com.robopupu.api.feature;
 
+import android.app.Activity;
+
+import com.robopupu.api.mvp.View;
+
 /**
  * {@link FeatureTransitionManager} defines an interface for objects that can be used to show
- * {@link FeatureCompatFragment}s and {@link FeatureCompatDialogFragment}s. Typically a such object is
- * an {@link android.app.Activity}.
+ * {@link FeatureView}s. A typically class implementing {@link FeatureTransitionManager} is
+ * an {@link Activity}. It is recommended to use either {@link com.robopupu.api.mvp.PluginActivity}
+ * or {@link com.robopupu.api.mvp.PluginCompatActivity} as a base class for implementing
+ * applications Activities.
  */
 public interface FeatureTransitionManager {
 
@@ -31,18 +37,24 @@ public interface FeatureTransitionManager {
     boolean canShowView(FeatureView view);
 
     /**
-     * Shows the given {@link FeatureView}. Each shown {@link FeatureView} instance has to
-     * be supplied with a tag that can be used to retrieve the instance later on. If parameter
-     * {@code fragmentTag} is given {@code null} value, the tag is set to be the class name of
-     * the {@link FeatureView}.
+     * Shows the given {@link FeatureView}. If parameter {@code fragmentTag} is given {@code null}
+     * value, method {@link View#getViewTag()} should be used to obtain the tag.
      *
-     * @param featureView    A {@link FeatureView}. May not be {@code null}.
+     * @param featureView A {@link FeatureView}. May not be {@code null}.
      * @param addToBackStack A {@code boolean} value specifying if the {@link FeatureView} is added
      *                       to back stack.
-     * @param fragmentTag If the {@link FeatureView} is to be added to back stack then
-     *                    a {@link String} used as a tag to identify the {@link FeatureView}
-     *                    has to be given. In most cases tag can be simply the class name of
-     *                    the {@link FeatureView}.
+     * @param fragmentTag A tag for the {@code Fragment}. May be {@code null}.
      */
     void showView(FeatureView featureView, boolean addToBackStack, String fragmentTag);
+
+    /**
+     * Hides the given {@link FeatureView} from showing.
+     *
+     * @param featureView A {@link FeatureView}. May not be {@code null}.
+     * @param addedToBackstack A {@code boolean} value specifying if the {@link FeatureView} was
+     *                            added to back stack.
+     * @param fragmentTag The tag that was used in adding the {@code Fragment}. May be {@code null},
+     *                    if no tag was given when adding the {@code Fragment}.
+     */
+    void hideView(FeatureView featureView, boolean addedToBackstack, String fragmentTag);
 }

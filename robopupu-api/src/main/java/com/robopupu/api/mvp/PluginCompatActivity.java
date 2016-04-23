@@ -5,6 +5,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 
 import com.robopupu.api.feature.FeatureContainer;
 import com.robopupu.api.feature.FeatureContainerProvider;
@@ -21,6 +22,8 @@ import java.util.List;
  */
 public abstract class PluginCompatActivity<T_Presenter extends Presenter>
         extends ViewCompatActivity<T_Presenter> implements FeatureContainer, FeatureContainerProvider, PluginComponent {
+
+    private final static String TAG = PluginCompatActivity.class.getSimpleName();
 
     private final List<FeatureContainer> mFeatureContainers;
 
@@ -61,26 +64,57 @@ public abstract class PluginCompatActivity<T_Presenter extends Presenter>
         }
 
         final FragmentManager manager = getSupportFragmentManager();
-        final FragmentTransaction transaction = manager.beginTransaction();
 
-        if (featureView instanceof DialogFragment) {
-            final DialogFragment dialogFragment = (DialogFragment)featureView;
-            transaction.add(dialogFragment, tag);
+        if (manager.findFragmentByTag(tag) == null) {
+            final FragmentTransaction transaction = manager.beginTransaction();
 
-            if (addToBackStack) {
-                transaction.addToBackStack(tag);
+            if (featureView instanceof DialogFragment) {
+                final DialogFragment dialogFragment = (DialogFragment) featureView;
+                transaction.add(dialogFragment, tag);
+
+                if (addToBackStack) {
+                    transaction.addToBackStack(tag);
+                }
+                transaction.commitAllowingStateLoss();
+            } else if (featureView instanceof Fragment) {
+                final Fragment fragment = (Fragment) featureView;
+                transaction.replace(getContainerViewId(), fragment, tag);
+
+                if (addToBackStack) {
+                    transaction.addToBackStack(tag);
+                }
+                transaction.commit();
             }
-            transaction.commitAllowingStateLoss();
-        } else if (featureView instanceof Fragment) {
-            final Fragment fragment = (Fragment)featureView;
-            transaction.replace(getContainerViewId(), fragment, tag);
-
-            if (addToBackStack) {
-                transaction.addToBackStack(tag);
-            }
-            transaction.commit();
+        } else {
+            Log.d(TAG, "showView(...) : A FeatureView with tag '" + tag + "' already exists in backstack");
         }
     }
+
+    @Override
+    public void hideView(final FeatureView featureView, final boolean addedToBackstack, final String fragmentTag) {
+        if (featureView instanceof DialogFragment) {
+            final DialogFragment dialogFragment = (DialogFragment)featureView;
+            dialogFragment.dismiss();
+        } else if (featureView instanceof Fragment) {
+            final Fragment fragment = (Fragment)featureView;
+            final FragmentManager manager = getSupportFragmentManager();
+
+            String tag = (fragmentTag != null) ? fragmentTag : featureView.getViewTag();
+
+            if (manager.findFragmentByTag(tag) != null) {
+                final FragmentTransaction transaction = manager.beginTransaction();
+                transaction.remove(fragment);
+                transaction.commit();
+
+                if (addedToBackstack) {
+                    manager.popBackStack();
+                }
+            } else {
+                Log.d(TAG, "hideView(...) : A FeatureView with tag '" + tag + "' was not found.");
+            }
+        }
+    }
+
 
     @Override
     public void clearBackStack() {

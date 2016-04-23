@@ -115,6 +115,10 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
         }
     }
 
+    protected final void removeBackStackView(final View view) {
+        mBackStackViews.remove(view);
+    }
+
     @Override
     public boolean hasForegroundView() {
         return !mActiveViews.isEmpty();
@@ -162,7 +166,7 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
     protected View showView(final Class<? extends Presenter> presenterClass,
                             final boolean addToBackStack,
                             final Params... params) {
-        return showView(getFeatureContainer(), presenterClass, addToBackStack, params);
+        return showView(getFeatureContainer(), presenterClass, addToBackStack, null, params);
     }
 
     /**
@@ -171,8 +175,10 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
      *
      * @param transitionManager A {@link FeatureTransitionManager}.
      * @param presenterClass A {@link Class} specifying the {@link Presenter}.
-     * @param addToBackStack A {@code boolean} value specifying if the {@link View} is added to back
-     *                   stack.
+     * @param addToBackStack A {@code boolean} value specifying if the {@link View} is to be added
+     *                       to back stack.
+     * @param tag A tag for the {@link FeatureView} used for {@code FragmentTransaction}.
+     *            May be {@code null}.
      * @param params Optional {@link Params}.
      * @return A reference to {@link View}. May be {@link PlugInvoker}.
      */
@@ -180,6 +186,7 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
     protected View showView(final FeatureTransitionManager transitionManager,
                             final Class<? extends Presenter> presenterClass,
                             final boolean addToBackStack,
+                            final String tag,
                             final Params... params) {
         final Presenter presenter = plug(presenterClass);
 
@@ -194,7 +201,7 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
         if (view instanceof FeatureView) {
             final FeatureView featureView = (FeatureView) view;
             featureView.setFeature(this);
-            transitionManager.showView(featureView, addToBackStack, null);
+            transitionManager.showView(featureView, addToBackStack, tag);
             isAddedToBackStack = featureView.isDialog();
         } else {
             throw new RuntimeException("Class " + view.getClass().getName() + " is not a FeatureView");
@@ -206,6 +213,37 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
         return view;
     }
 
+    /**
+     * Hides the {@link View} attached to the given {@link Presenter}.
+     * @param presenterClass A {@link Presenter}.
+     * @param addedToBackStack A {@code boolean} value specifying if the {@link View} was
+     *                  added to backstack.
+     * @param tag A tag for the {@link FeatureView} used for {@code FragmentTransaction}.
+     *            May be {@code null}.
+     */
+    @SuppressWarnings("unchecked")
+    protected void hideView(final Class<? extends Presenter> presenterClass,
+                            final boolean addedToBackStack,
+                            final String tag) {
+        final FeaturePresenter presenter = plug(presenterClass);
+        hideView(presenter, addedToBackStack, tag);
+    }
+
+    /**
+     * Hides the {@link View} attached to the given {@link Presenter}.
+     * @param presenter A {@link Presenter}.
+     * @param addedToBackStack A {@code boolean} value specifying if the {@link View} was
+     *                  added to backstack.
+     * @param tag A tag for the {@link FeatureView} used for {@code FragmentTransaction}.
+     *            May be {@code null}.
+     */
+    @SuppressWarnings("unchecked")
+    protected void hideView(final FeaturePresenter presenter,
+                            final boolean addedToBackStack,
+                            final String tag) {
+        final FeatureView view = (FeatureView)presenter.getView();
+        getFeatureContainer().hideView(view, addedToBackStack, tag);
+    }
 
     @Override
     public void clearBackStack() {

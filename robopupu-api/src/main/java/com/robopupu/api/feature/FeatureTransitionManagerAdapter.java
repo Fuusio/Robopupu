@@ -31,4 +31,9 @@ public abstract class FeatureTransitionManagerAdapter implements FeatureTransiti
     public void showView(FeatureView featureView, boolean addToBackStack, String fragmentTag) {
         // Do nothing
     }
+
+    @Override
+    public void hideView(FeatureView featureView, boolean addedToBackStack, String fragmentTag) {
+        // Do nothing
+    }
 }

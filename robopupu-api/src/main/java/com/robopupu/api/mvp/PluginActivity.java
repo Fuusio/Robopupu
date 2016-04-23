@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.util.Log;
 
 import com.robopupu.api.feature.FeatureContainer;
 import com.robopupu.api.feature.FeatureContainerProvider;
@@ -21,6 +22,8 @@ import java.util.List;
  */
 public abstract class PluginActivity<T_Presenter extends Presenter>
         extends ViewActivity<T_Presenter> implements FeatureContainer, FeatureContainerProvider, PluginComponent {
+
+    private final static String TAG = PluginActivity.class.getSimpleName();
 
     private final List<FeatureContainer> mFeatureContainers;
 
@@ -61,24 +64,54 @@ public abstract class PluginActivity<T_Presenter extends Presenter>
         }
 
         final FragmentManager manager = getFragmentManager();
-        final FragmentTransaction transaction = manager.beginTransaction();
 
+        if (manager.findFragmentByTag(tag) == null) {
+            final FragmentTransaction transaction = manager.beginTransaction();
+
+            if (featureView instanceof DialogFragment) {
+                final DialogFragment dialogFragment = (DialogFragment)featureView;
+                transaction.add(dialogFragment, tag);
+
+                if (addToBackStack) {
+                    transaction.addToBackStack(tag);
+                }
+                transaction.commitAllowingStateLoss();
+            } else if (featureView instanceof Fragment) {
+                final Fragment fragment = (Fragment)featureView;
+                transaction.replace(getContainerViewId(), fragment, tag);
+
+                if (addToBackStack) {
+                    transaction.addToBackStack(tag);
+                }
+                transaction.commit();
+            }
+        } else {
+            Log.d(TAG, "showView(...) : A FeatureView with tag '" + tag + "' already exists in backstack");
+        }
+    }
+
+    @Override
+    public void hideView(final FeatureView featureView, final boolean addedToBackstack, final String fragmentTag) {
         if (featureView instanceof DialogFragment) {
             final DialogFragment dialogFragment = (DialogFragment)featureView;
-            transaction.add(dialogFragment, tag);
-
-            if (addToBackStack) {
-                transaction.addToBackStack(tag);
-            }
-            transaction.commitAllowingStateLoss();
+            dialogFragment.dismiss();
         } else if (featureView instanceof Fragment) {
             final Fragment fragment = (Fragment)featureView;
-            transaction.replace(getContainerViewId(), fragment, tag);
+            final FragmentManager manager = getFragmentManager();
 
-            if (addToBackStack) {
-                transaction.addToBackStack(tag);
+            String tag = (fragmentTag != null) ? fragmentTag : featureView.getViewTag();
+
+            if (manager.findFragmentByTag(tag) != null) {
+                final FragmentTransaction transaction = manager.beginTransaction();
+                transaction.remove(fragment);
+                transaction.commit();
+
+                if (addedToBackstack) {
+                    manager.popBackStack();
+                }
+            } else {
+                Log.d(TAG, "hideView(...) : A FeatureView with tag '" + tag + "' was not found.");
             }
-            transaction.commit();
         }
     }
 
