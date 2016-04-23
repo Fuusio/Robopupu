@@ -91,7 +91,7 @@ public abstract class PluginCompatActivity<T_Presenter extends Presenter>
     }
 
     @Override
-    public void hideView(final FeatureView featureView, final boolean addedToBackstack, final String fragmentTag) {
+    public void removeView(final FeatureView featureView, final boolean addedToBackstack, final String fragmentTag) {
         if (featureView instanceof DialogFragment) {
             final DialogFragment dialogFragment = (DialogFragment)featureView;
             dialogFragment.dismiss();

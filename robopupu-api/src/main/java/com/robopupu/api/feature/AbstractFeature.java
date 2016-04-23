@@ -242,7 +242,7 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
                             final boolean addedToBackStack,
                             final String tag) {
         final FeatureView view = (FeatureView)presenter.getView();
-        getFeatureContainer().hideView(view, addedToBackStack, tag);
+        getFeatureContainer().removeView(view, addedToBackStack, tag);
     }
 
     @Override

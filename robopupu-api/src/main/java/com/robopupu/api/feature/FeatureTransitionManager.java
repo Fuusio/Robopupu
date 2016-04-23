@@ -38,7 +38,8 @@ public interface FeatureTransitionManager {
 
     /**
      * Shows the given {@link FeatureView}. If parameter {@code fragmentTag} is given {@code null}
-     * value, method {@link View#getViewTag()} should be used to obtain the tag.
+     * value, implementation of this method should use the {@link View#getViewTag()} method
+     * to obtain the tag.
      *
      * @param featureView A {@link FeatureView}. May not be {@code null}.
      * @param addToBackStack A {@code boolean} value specifying if the {@link FeatureView} is added
@@ -48,7 +49,7 @@ public interface FeatureTransitionManager {
     void showView(FeatureView featureView, boolean addToBackStack, String fragmentTag);
 
     /**
-     * Hides the given {@link FeatureView} from showing.
+     * Removes the given {@link FeatureView} from its container.
      *
      * @param featureView A {@link FeatureView}. May not be {@code null}.
      * @param addedToBackstack A {@code boolean} value specifying if the {@link FeatureView} was
@@ -56,5 +57,5 @@ public interface FeatureTransitionManager {
      * @param fragmentTag The tag that was used in adding the {@code Fragment}. May be {@code null},
      *                    if no tag was given when adding the {@code Fragment}.
      */
-    void hideView(FeatureView featureView, boolean addedToBackstack, String fragmentTag);
+    void removeView(FeatureView featureView, boolean addedToBackstack, String fragmentTag);
 }

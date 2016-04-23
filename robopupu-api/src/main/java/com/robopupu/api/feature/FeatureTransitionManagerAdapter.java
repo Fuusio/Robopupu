@@ -33,7 +33,7 @@ public abstract class FeatureTransitionManagerAdapter implements FeatureTransiti
     }
 
     @Override
-    public void hideView(FeatureView featureView, boolean addedToBackStack, String fragmentTag) {
+    public void removeView(FeatureView featureView, boolean addedToBackStack, String fragmentTag) {
         // Do nothing
     }
 }
