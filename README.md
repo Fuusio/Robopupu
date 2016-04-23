@@ -30,8 +30,8 @@ Use the following dependencies into your application module's ```build.gradle```
 
 ```groovy
 dependencies {
-	compile 'com.robopupu:robopupu:0.4.1'
-	apt 'com.robopupu:robopupu-compiler:0.4.0'	
+	compile 'com.robopupu:robopupu:0.4.2'
+	apt 'com.robopupu:robopupu-compiler:0.4.2'	
 	apt 'com.squareup:javapoet:1.5.1' 
 }
 ```
@@ -56,6 +56,11 @@ buildscript {
 ```
 
 ## Changelog
+
+### 0.4.2
+* Added support for using non-compatibility Activities and Fragments.
+* Improvements for Feature API, e.g., support for removing Views. 
+* Minor fixes.
 
 ### 0.4.1
 * Added basic threading support to [Functional Reactive Programming (FRP) API](https://robopupu.com/robopupu-frp/)
