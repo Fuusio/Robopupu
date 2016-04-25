@@ -129,22 +129,21 @@ public abstract class ViewCompatActivity<T_Presenter extends Presenter> extends 
             onRestoreDependencies(dependencies);
         }
 
-        // Presenter as dependency is automatically saved into DependenciesCache so that it can be
-        // restored when and if the View resumes. Invoking getPresenter method takes care of restoring
-        // the reference to Presenter
-
-        final T_Presenter presenter = resolvePresenter();
-        if (presenter != null) {
-            presenter.onViewStart(this);
-            mBinder.initialise();
-        }
-
         // If this Activity is a FeatureContainerProvider, it needs to be registered to
         // FeatureManager
         if (this instanceof FeatureContainerProvider) {
             final FeatureContainerProvider provider = (FeatureContainerProvider)this;
             final FeatureManager featureManager = D.get(FeatureManager.class);
             featureManager.registerFeatureContainerProvider(provider);
+        }
+
+        // Presenter as dependency is automatically saved into DependenciesCache so that it can be
+        // restored when and if the View resumes. Invoking getPresenter method takes care of restoring
+        // the reference to Presenter
+        final T_Presenter presenter = resolvePresenter();
+        if (presenter != null) {
+            presenter.onViewStart(this);
+            mBinder.initialise();
         }
     }
 
