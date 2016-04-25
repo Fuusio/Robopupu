@@ -57,7 +57,7 @@ buildscript {
 
 ## Changelog
 
-### 0.4.2
+### 0.4.3
 * A fix for [issue #8](https://github.com/Fuusio/Robopupu/issues/8)
 
 ### 0.4.2
