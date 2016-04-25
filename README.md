@@ -30,7 +30,7 @@ Use the following dependencies into your application module's ```build.gradle```
 
 ```groovy
 dependencies {
-	compile 'com.robopupu:robopupu:0.4.2'
+	compile 'com.robopupu:robopupu:0.4.3'
 	apt 'com.robopupu:robopupu-compiler:0.4.2'	
 	apt 'com.squareup:javapoet:1.5.1' 
 }
@@ -56,6 +56,9 @@ buildscript {
 ```
 
 ## Changelog
+
+### 0.4.2
+* A fix for [issue #8](https://github.com/Fuusio/Robopupu/issues/8)
 
 ### 0.4.2
 * Added support for using non-compatibility Activities and Fragments.
