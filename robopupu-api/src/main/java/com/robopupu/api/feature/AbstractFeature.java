@@ -27,8 +27,10 @@ import com.robopupu.api.plugin.AbstractPluginStateComponent;
 import com.robopupu.api.plugin.PlugInvoker;
 import com.robopupu.api.plugin.PluginBus;
 import com.robopupu.api.util.Params;
+import com.robopupu.api.util.StringToolkit;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -38,7 +40,7 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
         implements Feature, DependencyScopeOwner {
 
     protected final ArrayList<View> mActiveViews;
-    protected final ArrayList<View> mBackStackViews;
+    protected final HashMap<String, View> mBackStackViews;
 
     protected int mFeatureContainerId;
     protected FeatureManager mFeatureManager;
@@ -66,7 +68,7 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
         mScopeClass = scopeClass;
         mIsActivityFeature = isActivityFeature;
         mActiveViews = new ArrayList<>();
-        mBackStackViews = new ArrayList<>();
+        mBackStackViews = new HashMap<>();
     }
 
     @Override
@@ -97,6 +99,7 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
             mActiveViews.add(view);
             return view;
         }
+        resume();
         return null;
     }
 
@@ -109,14 +112,14 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
         return null;
     }
 
-    protected final void addBackStackView(final View view) {
-        if (!mBackStackViews.contains(view)) {
-            mBackStackViews.add(view);
+    protected final void addBackStackView(final String tag, final View view) {
+        if (!mBackStackViews.containsKey(tag)) {
+            mBackStackViews.put(tag, view);
         }
     }
 
-    protected final void removeBackStackView(final View view) {
-        mBackStackViews.remove(view);
+    protected final void removeBackStackView(final String tag) {
+        mBackStackViews.remove(tag);
     }
 
     @Override
@@ -208,7 +211,7 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
         }
 
         if (isAddedToBackStack) {
-            addBackStackView(view);
+            addBackStackView(tag, view);
         }
         return view;
     }
@@ -243,6 +246,7 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
                             final String tag) {
         final FeatureView view = (FeatureView)presenter.getView();
         getFeatureContainer().removeView(view, addedToBackStack, tag);
+        removeBackStackView(tag);
     }
 
     @Override
@@ -256,7 +260,11 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
     @Override
     @SuppressWarnings("uncheckked")
     public void goBack() {
-        getFeatureContainer().goBack();
+        final String tag = getFeatureContainer().goBack();
+
+        if (StringToolkit.isNotEmpty(tag)) {
+            mBackStackViews.remove(tag);
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -291,11 +299,6 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
     @Override
     public boolean canGoBack() {
         return getFeatureContainer().canGoBack();
-
-        /* COPY
-        final FragmentManager fragmentManager = getFeatureContainer().getSupportFragmentManager();
-        final int count = fragmentManager.getBackStackEntryCount();
-        return (count > 0); */
     }
 
     /**

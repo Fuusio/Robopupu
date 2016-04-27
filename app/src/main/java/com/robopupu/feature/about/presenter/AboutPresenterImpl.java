@@ -16,6 +16,7 @@
 package com.robopupu.feature.about.presenter;
 
 import com.robopupu.component.AppManager;
+import com.robopupu.feature.about.AboutFeature;
 import com.robopupu.feature.about.view.AboutView;
 
 import com.robopupu.api.dependency.Provides;
@@ -31,7 +32,7 @@ public class AboutPresenterImpl extends AbstractFeaturePresenter<AboutView>
         implements AboutPresenter {
 
     @Plug AppManager mAppManager;
-    @Plug AboutPresenterListener mListener;
+    @Plug AboutFeature mFeature;
     @Plug AboutView mView;
 
     public AboutPresenterImpl() {
@@ -56,16 +57,16 @@ public class AboutPresenterImpl extends AbstractFeaturePresenter<AboutView>
 
     @Override
     public void onViewLicenseClick() {
-        mListener.onShowLicenseInfo();
+        mFeature.onShowLicenseInfo();
     }
 
     @Override
     public void onViewOssLicensesClick() {
-        mListener.onShowOssLicensesInfo();
+        mFeature.onShowOssLicensesInfo();
     }
 
     @Override
     public void onViewSourcesClick() {
-        mListener.onOpenSourcesWebPage();
+        mFeature.onOpenSourcesWebPage();
     }
 }

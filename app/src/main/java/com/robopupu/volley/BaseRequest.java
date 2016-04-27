@@ -43,7 +43,6 @@ public abstract class BaseRequest<T_Response> extends Request<T_Response> {
     private HttpHeaders mHeaders;
     private ErrorListener mErrorListener;
     private Listener<T_Response> mResponseListener;
-    private String mRedirectUrl;
     private String mUrl;
 
     protected BaseRequest() {
@@ -130,11 +129,6 @@ public abstract class BaseRequest<T_Response> extends Request<T_Response> {
         mBuild = build;
     }
 
-    @Override
-    public String getUrl() {
-        return (mRedirectUrl != null) ? mRedirectUrl : mUrl;
-    }
-
     /**
      * Sets the URL.
      * @param url An url as a {@link String}. May not be {@code null}.
@@ -173,13 +167,8 @@ public abstract class BaseRequest<T_Response> extends Request<T_Response> {
     }
 
     @Override
-    public String getOriginUrl() {
+    public String getUrl() {
         return mUrl;
-    }
-
-    @Override
-    public void setRedirectUrl(final String redirectUrl) {
-        mRedirectUrl = redirectUrl;
     }
 
     @Override
@@ -213,10 +202,4 @@ public abstract class BaseRequest<T_Response> extends Request<T_Response> {
     }
 
     public abstract void setBody(Object body);
-
-    @Override
-    protected void onFinish() {
-        super.onFinish();
-        mErrorListener = null;
-    }
 }

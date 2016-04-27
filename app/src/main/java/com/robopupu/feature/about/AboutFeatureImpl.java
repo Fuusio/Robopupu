@@ -16,22 +16,19 @@
 package com.robopupu.feature.about;
 
 import com.robopupu.R;
-import com.robopupu.app.RobopupuAppScope;
-import com.robopupu.component.PlatformManager;
-import com.robopupu.feature.about.presenter.AboutPresenter;
-import com.robopupu.feature.about.presenter.AboutPresenterListener;
-import com.robopupu.feature.about.presenter.LicensesInfoPresenter;
-
 import com.robopupu.api.dependency.Provides;
 import com.robopupu.api.dependency.Scope;
 import com.robopupu.api.feature.AbstractFeature;
-import com.robopupu.api.mvp.Presenter;
 import com.robopupu.api.plugin.Plug;
 import com.robopupu.api.plugin.Plugin;
 import com.robopupu.api.util.Params;
+import com.robopupu.app.RobopupuAppScope;
+import com.robopupu.component.PlatformManager;
+import com.robopupu.feature.about.presenter.AboutPresenter;
+import com.robopupu.feature.about.presenter.LicensesInfoPresenter;
 
 @Plugin
-public class AboutFeatureImpl extends AbstractFeature implements AboutFeature, AboutPresenterListener {
+public class AboutFeatureImpl extends AbstractFeature implements AboutFeature {
 
     @Plug PlatformManager mPlatformManager;
 

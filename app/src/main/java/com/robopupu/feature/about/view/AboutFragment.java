@@ -61,5 +61,4 @@ public class AboutFragment extends CoordinatorLayoutFragment<AboutPresenter> imp
         super.onCreateBindings();
         mVersionTextBinding = bind(R.id.text_view_version);
     }
-
 }

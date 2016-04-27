@@ -66,19 +66,21 @@ public interface FeatureContainer extends FeatureTransitionManager {
     boolean canCommitFragment();
 
     /**
-     * Clears {@code Fragment}s of contained {@link Feature} from the back stack.
+     * Clears {@link FeatureView}s of contained {@link Feature} from the back stack.
      */
     void clearBackStack();
 
     /**
-     * Tests if the previous {@code Fragment} can be popped from the back stack.
+     * Tests if the previous {@link FeatureView} can be popped from the back stack.
      *
      * @return A {@code boolean} value.
      */
     boolean canGoBack();
 
     /**
-     * Pops the previous {@code Fragment} from the back stack.
+     * Pops the previous {@link FeatureView} from the back stack.
+     *
+     * @return The tag of the removed {@link FeatureView}. May return {@code null}.
      */
-    void goBack();
+    String goBack();
 }

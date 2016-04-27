@@ -122,13 +122,17 @@ public abstract class PluginActivity<T_Presenter extends Presenter>
     }
 
     @Override
-    public void goBack() {
+    public String goBack() {
         final FragmentManager fragmentManager = getFragmentManager();
         final int count = fragmentManager.getBackStackEntryCount();
+        String tag = null;
 
         if (count > 0) {
+            final FragmentManager.BackStackEntry entry = fragmentManager.getBackStackEntryAt(count - 1);
+            tag = entry.getName();
             fragmentManager.popBackStack();
         }
+        return tag;
     }
 
     @Override

@@ -6,17 +6,17 @@ import android.view.View;
 import android.widget.CompoundButton;
 
 /**
- * {@link ViewListenersDelegate} implements various event listener interfaces from Android
- * {@link View} and widgets. It delegate event invocation received via those interfaces to
- * a wrapped {@link PresenterDelegate}.
+ * {@link ViewEventsDelegate} implements selected event listener interfaces of {@link View}-based widgets.
+ * It delegates the event invocations received via those interfaces to a assigned
+ * {@link PresenterDelegate}.
  */
-public class ViewListenersDelegate
+public class ViewEventsDelegate
         implements View.OnClickListener, CompoundButton.OnCheckedChangeListener, TextWatcher {
 
     private PresenterDelegate mDelegate;
     private View mView;
 
-    public ViewListenersDelegate(final View view, final PresenterDelegate delegate) {
+    public ViewEventsDelegate(final View view, final PresenterDelegate delegate) {
         mView = view;
         mDelegate = delegate;
 

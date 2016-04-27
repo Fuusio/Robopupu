@@ -35,6 +35,7 @@ public class FeedbackFeatureImpl extends AbstractFeature implements FeedbackFeat
 
     @Override
     protected void onStart() {
+        super.onStart();
         showView(FeedbackPresenter.class, false);
     }
 

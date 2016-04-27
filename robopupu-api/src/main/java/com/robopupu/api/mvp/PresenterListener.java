@@ -6,7 +6,7 @@ package com.robopupu.api.mvp;
 public interface PresenterListener {
 
     /**
-     * Invoked by a {@link Presenter} when it is finished by invoking {@link Presenter#finish()}.
+     * Invoked by a {@link Presenter} when it has been finished by invoking {@link Presenter#finish()}.
      *
      * @param presenter The finished {@link Presenter}.
      */

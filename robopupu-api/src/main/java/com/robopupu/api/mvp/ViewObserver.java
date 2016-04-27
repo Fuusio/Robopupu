@@ -3,10 +3,10 @@ package com.robopupu.api.mvp;
 import com.robopupu.api.util.Params;
 
 /**
- * {@link com.robopupu.api.mvp.ViewListener} a listener interface for receiving lifecycle events
+ * {@link ViewObserver} a listener interface for receiving lifecycle events
  * from a {@link View}. This interface is mainly intended to be used by an attached {@link Presenter}.
  */
-public interface ViewListener {
+public interface ViewObserver {
     /**
      * Invoked by a {@link View} implementation when it is created-
      *

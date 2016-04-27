@@ -27,7 +27,7 @@ import android.widget.TextView;
 import com.robopupu.api.mvp.AbstractPresenter;
 import com.robopupu.api.mvp.OnClick;
 import com.robopupu.api.mvp.OnTextChanged;
-import com.robopupu.api.mvp.ViewListenersDelegate;
+import com.robopupu.api.mvp.ViewEventsDelegate;
 import com.robopupu.api.mvp.PresenterDelegate;
 import com.robopupu.api.mvp.Presenter;
 import com.robopupu.api.mvp.PresentedView;
@@ -105,15 +105,15 @@ public class ViewBinder {
                 final Object tag = view.getTag();
 
                 if (tag instanceof String && ((String) tag).length() > 0) {
-                    final ViewListenersDelegate listenersDelegate = new ViewListenersDelegate(view, mPresenterDelegate);
-                    view.setOnClickListener(listenersDelegate);
+                    final ViewEventsDelegate delegate = new ViewEventsDelegate(view, mPresenterDelegate);
+                    view.setOnClickListener(delegate);
 
                     if (view instanceof CompoundButton) {
                         final CompoundButton compoundButton = (CompoundButton)view;
-                        compoundButton.setOnCheckedChangeListener(listenersDelegate);
+                        compoundButton.setOnCheckedChangeListener(delegate);
                     } else if (view instanceof TextView) {
                         final TextView textView = (TextView)view;
-                        textView.addTextChangedListener(listenersDelegate);
+                        textView.addTextChangedListener(delegate);
                     }
                 }
             }
