@@ -30,9 +30,9 @@ Use the following dependencies into your application module's ```build.gradle```
 
 ```groovy
 dependencies {
-	compile 'com.robopupu:robopupu:0.4.3'
-	apt 'com.robopupu:robopupu-compiler:0.4.2'	
-	apt 'com.squareup:javapoet:1.5.1' 
+	compile 'com.robopupu:robopupu:0.4.4'
+	apt 'com.robopupu:robopupu-compiler:0.4.4'	
+	apt 'com.squareup:javapoet:1.6.1' 
 }
 ```
 In addition, since the Robopupu Compiler utilises annotation processing we need to use [android-apt plugin](https://bitbucket.org/hvisser/android-apt). For this reason, you need to declare the plugin in your into your application module's ```build.gradle```file:
@@ -49,13 +49,19 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:1.5.0'
+        classpath 'com.android.tools.build:gradle:2.0.0'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
     }
 }
 ```
 
 ## Changelog
+
+### 0.4.4
+* Fixed a bug in StateEngine class.
+* Improvements on Feature API
+* Elaborated Javadoc comments
+* Updated some libraries versions and took Google Volley 1.0.0 via JCenter into use (in demo app).
 
 ### 0.4.3
 * A fix for [issue #8](https://github.com/Fuusio/Robopupu/issues/8)
