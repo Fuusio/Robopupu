@@ -25,12 +25,15 @@ import com.robopupu.component.TimerManager;
 import com.robopupu.api.app.BaseApplication;
 import com.robopupu.api.dependency.AppDependencyScope;
 import com.robopupu.api.plugin.PluginBus;
+import com.squareup.leakcanary.LeakCanary;
+import com.squareup.leakcanary.RefWatcher;
 
 public class RobopupuApplication extends BaseApplication {
 
     // Google Analytics Property ID
     public final static int PROPERTY_ID = 0;
 
+    private RefWatcher mRefWatcher;
     private Robopupu mRobopupu;
 
     public RobopupuApplication() {
@@ -40,6 +43,7 @@ public class RobopupuApplication extends BaseApplication {
     @Override
     public void onCreate() {
         super.onCreate();
+        mRefWatcher = LeakCanary.install(this);
         RobopupuAppError.setContext(getApplicationContext());
     }
 

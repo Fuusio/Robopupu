@@ -14,6 +14,7 @@ import com.robopupu.api.plugin.PluginBus;
 import com.robopupu.api.plugin.PluginComponent;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -117,9 +118,13 @@ public abstract class PluginCompatActivity<T_Presenter extends Presenter>
 
 
     @Override
-    public void clearBackStack() {
+    public void clearBackStack(final HashMap<String, FeatureView> backStackViews) {
         final FragmentManager manager = getSupportFragmentManager();
-        manager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
+        for (final String tag : backStackViews.keySet()) {
+            manager.popBackStack(tag, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        }
+        //manager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
     }
 
     @Override

@@ -57,7 +57,7 @@ public abstract class StateMachine implements StateEngineObserver {
 
     @SuppressWarnings("unchecked")
     private <T extends StateEngine> T getCurrentState(T state) {
-        final T currentState =(T)state.getCurrentState();
+        final T currentState = (T)state.getCurrentState();
 
         if (currentState != null) {
             return (T)getCurrentState(currentState);

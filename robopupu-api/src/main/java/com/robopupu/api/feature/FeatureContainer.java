@@ -22,6 +22,8 @@ import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.view.ViewGroup;
 
+import java.util.HashMap;
+
 /**
  * {@link FeatureContainer} extends {@link FeatureTransitionManager} to define
  * an interface for objects that can be used to show {@link FeatureCompatFragment}s. Typically a such
@@ -48,14 +50,7 @@ public interface FeatureContainer extends FeatureTransitionManager {
      * @return A {@link Resources}.
      */
     Resources getResources();
-
-    /**
-     * Gets the {@ode FragmentManager} that manages {@link android.app.Fragment}s.
-     *
-     * @return A {@code FragmentManager}.
-     *
-    FragmentManager getSupportFragmentManager(); */
-
+    
     /**
      * Tests if a {@code Fragment} can be committed. A {@code Fragment} cannot be committed
      * using {@link FragmentTransaction#commit()} after method {@link android.app.Activity#onSaveInstanceState(Bundle)}
@@ -63,12 +58,15 @@ public interface FeatureContainer extends FeatureTransitionManager {
      *
      * @return A {@code boolean} value.
      */
+    @SuppressWarnings("unused")
     boolean canCommitFragment();
 
     /**
      * Clears {@link FeatureView}s of contained {@link Feature} from the back stack.
+     *
+     * @param backStackViews A {@link HashMap} containing the back
      */
-    void clearBackStack();
+    void clearBackStack(HashMap<String, FeatureView> backStackViews);
 
     /**
      * Tests if the previous {@link FeatureView} can be popped from the back stack.

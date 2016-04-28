@@ -4,7 +4,7 @@ apply plugin: 'me.tatarka.retrolambda'
 ext {
     PUBLISH_GROUP_ID = 'com.robopupu'
     PUBLISH_ARTIFACT_ID = 'robopupu'
-    PUBLISH_VERSION = '0.4.3'
+    PUBLISH_VERSION = '0.4.4'
 }
 
 android {
@@ -14,7 +14,7 @@ android {
         minSdkVersion 16
         targetSdkVersion 23
         versionCode 2
-        versionName '0.4.3'
+        versionName '0.4.4'
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8

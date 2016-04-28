@@ -22,7 +22,6 @@ import com.robopupu.api.dependency.Dependency;
 import com.robopupu.api.dependency.DependencyScope;
 import com.robopupu.api.dependency.DependencyScopeOwner;
 import com.robopupu.api.mvp.Presenter;
-import com.robopupu.api.mvp.View;
 import com.robopupu.api.plugin.AbstractPluginStateComponent;
 import com.robopupu.api.plugin.PlugInvoker;
 import com.robopupu.api.plugin.PluginBus;
@@ -39,8 +38,8 @@ import java.util.List;
 public abstract class AbstractFeature extends AbstractPluginStateComponent
         implements Feature, DependencyScopeOwner {
 
-    protected final ArrayList<View> mActiveViews;
-    protected final HashMap<String, View> mBackStackViews;
+    protected final ArrayList<FeatureView> mActiveViews;
+    protected final HashMap<String, FeatureView> mBackStackViews;
 
     protected int mFeatureContainerId;
     protected FeatureManager mFeatureManager;
@@ -89,22 +88,23 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
     }
 
     @Override
-    public final List<View> getActiveViews() {
+    public final List<FeatureView> getActiveViews() {
         return mActiveViews;
     }
 
     @Override
-    public final View addActiveView(final View view) {
+    public final FeatureView addActiveView(final FeatureView view) {
         if (!mActiveViews.contains(view)) {
             mActiveViews.add(view);
             return view;
         }
+        // Adding an active View implies that this Feature has resumed.
         resume();
         return null;
     }
 
     @Override
-    public final View removeActiveView(final View view) {
+    public final FeatureView removeActiveView(final FeatureView view) {
         if (mActiveViews.contains(view)) {
             mActiveViews.remove(view);
             return view;
@@ -112,12 +112,23 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
         return null;
     }
 
-    protected final void addBackStackView(final String tag, final View view) {
+    /**
+     * Adds the given {@link FeatureView} to the {@link HashMap} that contains all
+     * the {@link FeatureView}s of this {@link Feature} that has been added to back stack.
+     * @param tag The tag of the added {@link FeatureView}.
+     * @param view The {@link FeatureView} that has been added.
+     */
+    protected final void addBackStackView(final String tag, final FeatureView view) {
         if (!mBackStackViews.containsKey(tag)) {
             mBackStackViews.put(tag, view);
         }
     }
 
+    /**
+     * Removes the specified {@link FeatureView} from the {@link HashMap} that contains all the
+     * {@link FeatureView}s of this {@link Feature} that has been added to back stack.
+     * @param tag The tag specifying the {@link FeatureView} to be removed.
+     */
     protected final void removeBackStackView(final String tag) {
         mBackStackViews.remove(tag);
     }
@@ -138,7 +149,7 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
     }
 
     @Override
-    public boolean isActiveView(final View view) {
+    public boolean isActiveView(final FeatureView view) {
         return mActiveViews.contains(view);
     }
 
@@ -158,35 +169,35 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
     }
 
     /**
-     * Shows the {@link View} attached to the specified {@link Presenter}.
+     * Shows the {@link FeatureView} attached to the specified {@link Presenter}.
      * @param presenterClass A {@link Class} specifying the {@link Presenter}.
-     * @param addToBackStack A {@code boolean} value specifying if the {@link View} is added to back
-     *                   stack.
+     * @param addToBackStack A {@code boolean} value specifying if the {@link FeatureView} is added
+     *                       to back stack.
      * @param params Optional {@link Params}.
-     * @return A reference to {@link View}. May be {@link PlugInvoker}.
+     * @return A {@link FeatureView}. May be {@link PlugInvoker}.
      */
     @SuppressWarnings("unchecked")
-    protected View showView(final Class<? extends Presenter> presenterClass,
+    protected FeatureView showView(final Class<? extends Presenter> presenterClass,
                             final boolean addToBackStack,
                             final Params... params) {
         return showView(getFeatureContainer(), presenterClass, addToBackStack, null, params);
     }
 
     /**
-     * Shows the {@link View} attached to the specified {@link Presenter}. The {@link View} is
-     * shown using the given {@link FeatureTransitionManager}.
+     * Shows the {@link FeatureView} attached to the specified {@link Presenter}.
+     * The {@link FeatureView} is shown using the given {@link FeatureTransitionManager}.
      *
      * @param transitionManager A {@link FeatureTransitionManager}.
      * @param presenterClass A {@link Class} specifying the {@link Presenter}.
-     * @param addToBackStack A {@code boolean} value specifying if the {@link View} is to be added
-     *                       to back stack.
+     * @param addToBackStack A {@code boolean} value specifying if the {@link FeatureView} is to
+     *                       be added to back stack.
      * @param tag A tag for the {@link FeatureView} used for {@code FragmentTransaction}.
      *            May be {@code null}.
      * @param params Optional {@link Params}.
-     * @return A reference to {@link View}. May be {@link PlugInvoker}.
+     * @return A {@link FeatureView}. May be {@link PlugInvoker}.
      */
     @SuppressWarnings("unchecked")
-    protected View showView(final FeatureTransitionManager transitionManager,
+    protected FeatureView showView(final FeatureTransitionManager transitionManager,
                             final Class<? extends Presenter> presenterClass,
                             final boolean addToBackStack,
                             final String tag,
@@ -198,28 +209,20 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
             presenter.setParams(presenterParams);
         }
 
-        final View view = presenter.getView();
-        boolean isAddedToBackStack = false;
+        final FeatureView view = (FeatureView)presenter.getView();
+        view.setFeature(this);
+        transitionManager.showView(view, addToBackStack, tag);
 
-        if (view instanceof FeatureView) {
-            final FeatureView featureView = (FeatureView) view;
-            featureView.setFeature(this);
-            transitionManager.showView(featureView, addToBackStack, tag);
-            isAddedToBackStack = featureView.isDialog();
-        } else {
-            throw new RuntimeException("Class " + view.getClass().getName() + " is not a FeatureView");
-        }
-
-        if (isAddedToBackStack) {
+        if (!view.isDialog()) {
             addBackStackView(tag, view);
         }
         return view;
     }
 
     /**
-     * Hides the {@link View} attached to the given {@link Presenter}.
+     * Hides the {@link FeatureView} attached to the given {@link Presenter}.
      * @param presenterClass A {@link Presenter}.
-     * @param addedToBackStack A {@code boolean} value specifying if the {@link View} was
+     * @param addedToBackStack A {@code boolean} value specifying if the {@link FeatureView} was
      *                  added to backstack.
      * @param tag A tag for the {@link FeatureView} used for {@code FragmentTransaction}.
      *            May be {@code null}.
@@ -233,9 +236,9 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
     }
 
     /**
-     * Hides the {@link View} attached to the given {@link Presenter}.
+     * Hides the {@link FeatureView} attached to the given {@link Presenter}.
      * @param presenter A {@link Presenter}.
-     * @param addedToBackStack A {@code boolean} value specifying if the {@link View} was
+     * @param addedToBackStack A {@code boolean} value specifying if the {@link FeatureView} was
      *                  added to backstack.
      * @param tag A tag for the {@link FeatureView} used for {@code FragmentTransaction}.
      *            May be {@code null}.
@@ -253,7 +256,10 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
     public void clearBackStack() {
         final FeatureContainer container = getFeatureContainer();
         if (container != null) {
-            container.clearBackStack();
+
+            if (!mBackStackViews.isEmpty()) {
+                container.clearBackStack(mBackStackViews);
+            }
         }
     }
 
@@ -268,19 +274,19 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
     }
 
     @SuppressWarnings("unchecked")
-    protected static Class<? extends View> getClass(final View view) {
+    protected static Class<? extends FeatureView> getClass(final FeatureView view) {
 
         final Class viewClass = view.getClass();
 
-        if (viewClass.isInterface() && View.class.isAssignableFrom(viewClass)) {
-            return (Class<? extends View>)viewClass;
+        if (viewClass.isInterface() && FeatureView.class.isAssignableFrom(viewClass)) {
+            return (Class<? extends FeatureView>)viewClass;
         }
 
         final Class[] interfaceClasses = viewClass.getInterfaces();
 
         for (Class interfaceClass : interfaceClasses) {
-            if (View.class.isAssignableFrom(interfaceClass)) {
-                return (Class<? extends View>)interfaceClass;
+            if (FeatureView.class.isAssignableFrom(interfaceClass)) {
+                return (Class<? extends FeatureView>)interfaceClass;
             }
         }
         return null;
@@ -407,6 +413,7 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
      * @param finishing A {@code boolean} value indicating if the {@link Feature} is
      *                  going to be finished i.e. it is not resumed nor restarted anymore.
      */
+    @SuppressWarnings("unused")
     protected void onPause(boolean finishing) {
         // By default do nothing
     }

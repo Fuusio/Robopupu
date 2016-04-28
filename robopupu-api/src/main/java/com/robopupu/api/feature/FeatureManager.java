@@ -17,7 +17,6 @@ package com.robopupu.api.feature;
 
 import android.app.Activity;
 import android.app.Application;
-import android.support.annotation.NonNull;
 
 import com.robopupu.api.component.Manager;
 import com.robopupu.api.dependency.DependencyScope;
@@ -71,7 +70,6 @@ public interface FeatureManager extends Manager  {
      *
      * @return A {@link List} of {@link Feature}s.
      */
-    @NonNull
     List<Feature> getActiveFeatures();
 
     /**
@@ -79,7 +77,6 @@ public interface FeatureManager extends Manager  {
      *
      * @return A {@link List} of {@link Feature}s.
      */
-    @NonNull
     List<Feature> getPausedFeatures();
 
     /**
@@ -87,7 +84,6 @@ public interface FeatureManager extends Manager  {
      *
      * @return A {@link List} of {@link Feature}s.
      */
-    @NonNull
     List<Feature> getForegroundFeatures();
 
     /**

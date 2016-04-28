@@ -15,12 +15,9 @@
  */
 package com.robopupu.api.feature;
 
-import android.app.Activity;
-
 import com.robopupu.api.dependency.DependencyScope;
 import com.robopupu.api.dependency.DependencyScopeOwner;
 import com.robopupu.api.mvp.PresenterListener;
-import com.robopupu.api.mvp.View;
 import com.robopupu.api.plugin.PluginBus;
 import com.robopupu.api.plugin.PluginComponent;
 import com.robopupu.api.plugin.PluginStateComponent;
@@ -36,35 +33,35 @@ import java.util.List;
 public interface Feature extends PresenterListener, PluginStateComponent {
 
     /**
-     * Gets the currently active {@link View}s.
+     * Gets the currently active {@link FeatureView}s.
      *
-     * @return A {@link List} containing the currently active views as {@link View}s.
+     * @return A {@link List} containing the currently active views as {@link FeatureView}s.
      */
-    List<View> getActiveViews();
+    List<FeatureView> getActiveViews();
 
     /**
-     * Tests if the given {@link View} is currently active one.
+     * Tests if the given {@link FeatureView} is currently active one.
      *
-     * @param view A {@link View}.
+     * @param view A {@link FeatureView}.
      * @return A {@code boolean} value.
      */
-    boolean isActiveView(View view);
+    boolean isActiveView(FeatureView view);
 
     /**
-     * Adds the given {@link View} to the set of currently active {@link View}s of this
-     * {@link Feature}.
-     * @param view A {@link View} to be added.
-     * @return The {@link View} if it was added as a new active {@link View}.
+     * Adds the given {@link FeatureView} to the set of currently active {@link FeatureView}s of
+     * this {@link Feature}.
+     * @param view A {@link FeatureView} to be added.
+     * @return The {@link FeatureView} if it was added as a new active {@link FeatureView}.
      */
-    View addActiveView(View view);
+    FeatureView addActiveView(FeatureView view);
 
     /**
-     * Removes the given {@link View} from the set of currently active {@link View}s of this
-     * {@link Feature}.
-     * @param view A {@link View} to be removed.
-     * @return The {@link View} if it was removed from being an active {@link View}.
+     * Removes the given {@link FeatureView} from the set of currently active {@link FeatureView}s
+     * of this {@link Feature}.
+     * @param view A {@link FeatureView} to be removed.
+     * @return The {@link FeatureView} if it was removed from being an active {@link FeatureView}.
      */
-    View removeActiveView(View view);
+    FeatureView removeActiveView(FeatureView view);
 
     /**
      * Sets the {@link FeatureManager} that started this {@link Feature}.
@@ -91,21 +88,21 @@ public interface Feature extends PresenterListener, PluginStateComponent {
 
     /**
      * Sets this {@link Feature} to be an Activity Feature that is owned and controlled by
-     * an {@link Activity}.
+     * an {@code Activity}.
      * @param isActivityFeature A {@code boolean} value.
      */
     void setActivityFeature(boolean isActivityFeature);
 
     /**
      * Tests if this {@link Feature} is set to be an Activity Feature that is owned and controlled
-     * by an {@link Activity}.
+     * by an {@code Activity}.
      * @return  A {@code boolean} value.
      */
     boolean isActivityFeature();
 
     /**
      * Tests if this {@link Feature} is in foreground i.e. it has at least one visible
-     * {@link View}.
+     * {@link FeatureView}.
      *
      * @return A {@code boolean} value.
      */
@@ -119,7 +116,7 @@ public interface Feature extends PresenterListener, PluginStateComponent {
     boolean isBackPressedEventHandler();
 
     /**
-     * Tests if this {@link Feature} has any {@link View}s in back stack.
+     * Tests if this {@link Feature} has any {@link FeatureView}s in back stack.
      * @return A {@code boolean} value.
      */
     boolean hasBackStackViews();
@@ -130,14 +127,14 @@ public interface Feature extends PresenterListener, PluginStateComponent {
     void clearBackStack();
 
     /**
-     * Tests if the previous {@link View} can be navigated back to.
+     * Tests if the previous {@link FeatureView} can be navigated back to.
      *
      * @return A {@code boolean} value.
      */
     boolean canGoBack();
 
     /**
-     * Goes back to previous {@link View}.
+     * Goes back to previous {@link FeatureView}.
      */
     void goBack();
 

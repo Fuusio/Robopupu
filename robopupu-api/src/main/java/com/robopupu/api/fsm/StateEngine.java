@@ -26,8 +26,6 @@ import java.util.HashSet;
  */
 public abstract class StateEngine<T_State extends StateEngine> {
 
-    private static final String TAG = StateEngine.class.getSimpleName();
-
     /**
      * {@link Error} defines error types and messages for {@link StateEngine}.
      */
@@ -95,7 +93,7 @@ public abstract class StateEngine<T_State extends StateEngine> {
     protected T_State mSuperState;
 
     /**
-     * The {@link StateEngineObserver} that receives events from this {@linn StateEngine}.
+     * The {@link StateEngineObserver} that receives events from this {@link StateEngine}.
      */
     private StateEngineObserver mObserver;
 
@@ -180,7 +178,7 @@ public abstract class StateEngine<T_State extends StateEngine> {
      * @return A state object.
      */
     @SuppressWarnings("unchecked")
-    public final <T extends T_State> T getCurrentState() {
+    public final <T extends StateEngine> T getCurrentState() {
         return (T) mCurrentState;
     }
 
