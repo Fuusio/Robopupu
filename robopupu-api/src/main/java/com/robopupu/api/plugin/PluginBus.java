@@ -53,8 +53,8 @@ public class PluginBus {
      * @return A {@link List} containing the plugins.
      */
     @SuppressWarnings({"unused", "unchecked"})
-    public <T> List<T> getPlugins(final Class<T> plugInterface) {
-        final PlugInvoker plug = mInvocationPlugs.get(plugInterface);
+    public static <T> List<T> getPlugins(final Class<T> plugInterface) {
+        final PlugInvoker plug = getInstance().mInvocationPlugs.get(plugInterface);
 
         if (plug != null) {
             return plug.getPlugins();
@@ -65,13 +65,27 @@ public class PluginBus {
 
     /**
      * Gets the plugs (i.e. {@link PlugInvoker}s) having exactly the specified plug interface.
+     * Extended interfaces are included.
+     * @param plugInterface A {@link Class} specifying the plug interface.
+     * @return A {@link List} containing the plugs (i.e. {@link PlugInvoker}s) .
+     */
+    public static <T> List<T> getPlugs(final Class<T> plugInterface) {
+        return getInstance().doGetPlugs(plugInterface, true);
+    }
+
+    /**
+     * Gets the plugs (i.e. {@link PlugInvoker}s) having exactly the specified plug interface.
      * @param plugInterface A {@link Class} specifying the plug interface.
      * @param includeExtendedInterfaces A {@link boolean} flag specifying if the extended interfaces
      *                                  are included.
      * @return A {@link List} containing the plugs (i.e. {@link PlugInvoker}s) .
      */
+    public static <T> List<T> getPlugs(final Class<T> plugInterface, final boolean includeExtendedInterfaces) {
+        return getInstance().doGetPlugs(plugInterface, includeExtendedInterfaces);
+    }
+
     @SuppressWarnings("unchecked")
-    public <T> List<T> getPlugs(final Class<T> plugInterface, final boolean includeExtendedInterfaces) {
+    protected <T> List<T> doGetPlugs(final Class<T> plugInterface, final boolean includeExtendedInterfaces) {
         final ArrayList<T> plugs = new ArrayList<>();
 
         if (includeExtendedInterfaces) {
@@ -91,18 +105,18 @@ public class PluginBus {
     }
     
     @SuppressWarnings({"unused", "unchecked"})
-    public <T> T getPlug(final Class<?> plugInterface) {
-        return (T) mInvocationPlugs.get(plugInterface);
+    public static <T> T getPlug(final Class<?> plugInterface) {
+        return (T) getInstance().mInvocationPlugs.get(plugInterface);
     }
 
     @SuppressWarnings("unused")
-    public boolean hasPlug(final Class<?> plugInterface) {
-        return mInvocationPlugs.containsKey(plugInterface);
+    public static boolean hasPlug(final Class<?> plugInterface) {
+        return getInstance().mInvocationPlugs.containsKey(plugInterface);
     }
 
     @SuppressWarnings("unused")
-    public List<PluginComponent> getPluginComponents() {
-        return mPluginComponents;
+    public static List<PluginComponent> getPluginComponents() {
+        return getInstance().mPluginComponents;
     }
 
     public synchronized static PluginBus getInstance() {
@@ -112,17 +126,17 @@ public class PluginBus {
         return sInstance;
     }
 
-    public void addPlugInvoker(final Class<?> plugInterface, PlugInvoker<?> plugInvoker) {
-        mInvocationPlugs.put(plugInterface, plugInvoker);
+    public static void addPlugInvoker(final Class<?> plugInterface, PlugInvoker<?> plugInvoker) {
+        getInstance().mInvocationPlugs.put(plugInterface, plugInvoker);
     }
 
-    public boolean hasPlugInvoker(final Class<?> plugInterface) {
-        return mInvocationPlugs.containsKey(plugInterface);
+    public static boolean hasPlugInvoker(final Class<?> plugInterface) {
+        return getInstance().mInvocationPlugs.containsKey(plugInterface);
     }
 
     @SuppressWarnings("unchecked")
-    public <T extends PlugInvoker<?>> T getPlugInvoker(final Class<?> plugInterface) {
-        return (T)mInvocationPlugs.get(plugInterface);
+    public static <T extends PlugInvoker<?>> T getPlugInvoker(final Class<?> plugInterface) {
+        return (T)getInstance().mInvocationPlugs.get(plugInterface);
     }
 
     /**
@@ -157,6 +171,26 @@ public class PluginBus {
      */
     public static void plug(final Object plugin) {
         plug(plugin, false);
+    }
+
+    /**
+     * Plugs the the given plugin {@link Object}s to this {@link PluginBus}.
+     * @param plugins A variable length list plugin {@link Object}s.
+     */
+    public static void plug(final Object... plugins) {
+        for (final Object plugin : plugins) {
+            plug(plugin, false);
+        }
+    }
+
+    /**
+     * Plugs the the given plugin {@link Object}s to this {@link PluginBus}.
+     * @param plugins A {@link List} containing  the plugin {@link Object}s to be plugged.
+     */
+    public static void plug(final List<Object> plugins) {
+        for (final Object plugin : plugins) {
+            plug(plugin, false);
+        }
     }
 
     public static void plug(final Object plugin, final boolean useHandler) {

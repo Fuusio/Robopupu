@@ -200,7 +200,7 @@ public abstract class AbstractPresenter<T_View extends View> extends AbstractPlu
     }
 
     protected void updateListeners(final PluginBus bus) {
-        final List<PresenterListener> plugins = bus.getPlugs(PresenterListener.class, true);
+        final List<PresenterListener> plugins = PluginBus.getPlugs(PresenterListener.class, true);
         mListeners.clear();
         mListeners.addAll(plugins);
     }
