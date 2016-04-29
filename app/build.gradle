@@ -35,12 +35,15 @@ repositories {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile project(':robopupu-api')
+
     // LIBRARY DEV
-    apt files('libs/robopupu-compiler.jar')
-    // LIBRARY DEV
-    //compile 'com.robopupu:robopupu:0.4.4'
-    //apt 'com.robopupu:robopupu-compiler:0.4.4'
+    //compile project(':robopupu-api')
+    //apt files('libs/robopupu-compiler.jar')
+
+    // JCEnter TESTING
+    compile 'com.robopupu:robopupu:0.4.4'
+    apt 'com.robopupu:robopupu-compiler:0.4.4'
+
     apt 'com.squareup:javapoet:1.6.1'
     testCompile 'junit:junit:4.12'
     androidTestCompile('com.android.support.test:runner:0.4.1') {

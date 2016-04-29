@@ -15,7 +15,7 @@ An Android library that provides a set of APIs for architecting and developing A
 Check out the [Robopupu project website](http://robopupu.com/) for further information.
 
 ## Robopupu Compiler
-To minimize writing of boiler plate code, **Robopupu** utilises declarative annotations and annotation processing that generates code for using the libraries. The source codes for Robopupu Compiler and the instructions for getting started are available in Github : [https://github.com/Fuusio/Robopupu-Compiler](https://github.com/Fuusio/Robopupu-Compiler).
+To minimize writing of any boiler plate code, **Robopupu** utilises declarative annotations and a set of API specific annotation processors which generate code for using the APIs. The source codes for Robopupu Compiler and the instructions for getting started are available in Github : [https://github.com/Fuusio/Robopupu-Compiler](https://github.com/Fuusio/Robopupu-Compiler).
 
 ## Documentation
 
