@@ -30,8 +30,8 @@ Use the following dependencies into your application module's ```build.gradle```
 
 ```groovy
 dependencies {
-	compile 'com.robopupu:robopupu:0.4.4'
-	apt 'com.robopupu:robopupu-compiler:0.4.4'	
+	compile 'com.robopupu:robopupu:0.4.5'
+	apt 'com.robopupu:robopupu-compiler:0.4.5'	
 	apt 'com.squareup:javapoet:1.6.1' 
 }
 ```
@@ -56,6 +56,11 @@ buildscript {
 ```
 
 ## Changelog
+
+### 0.4.5
+* Streamlined PluginBus class: Now all methods are static.
+* Extended Dependency class with new getAll(...) methods that can be used to request all dependencies of specified type.
+* Updated Javadocs
 
 ### 0.4.4
 * Fixed a bug in StateEngine class.
