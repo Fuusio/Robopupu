@@ -21,6 +21,7 @@ import com.robopupu.api.plugin.PluginBus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -235,6 +236,15 @@ public abstract class DependencyScope {
     protected <T> T cache(final Class<T> dependencyType, final Object dependency) {
         if (dependency != null) {
             mDependencies.put(dependencyType, dependency);
+
+            if (dependency instanceof Scopeable) {
+                ((Scopeable) dependency).setScope(this);
+            }
+
+            if (dependency instanceof DependencyScopeOwner && mOwner == null) {
+                setOwner((DependencyScopeOwner) dependency);
+            }
+
             return (T) dependency;
         } else {
             throw new IllegalArgumentException("Parameter 'dependency' may not be null");
@@ -274,7 +284,6 @@ public abstract class DependencyScope {
      */
     @SuppressWarnings("unchecked")
     protected <T> T getDependency(final Class<T> dependencyType, final Object dependant, final boolean createNew) {
-
         final Class<?> savedDependencyType = mDependencyType;
 
         mDependencyType = dependencyType;
@@ -306,20 +315,17 @@ public abstract class DependencyScope {
 
                     if (dependency == null) {
                         if (getDependencyProvider() != null) {
-                            dependency = mDependencyProvider.getDependency(dependencyType);
+                            final DependencyQuery<T> query = DependencyQuery.find(dependencyType);
+                            mDependencyProvider.getDependencies(query);
+
+                            if (query.foundDependencies()) {
+                                dependency = query.getFoundDependency();
+                            }
                         }
                     }
 
                     if (dependency != null) {
                         cache(dependencyType, dependency);
-
-                        if (dependency instanceof Scopeable) {
-                            ((Scopeable) dependency).setScope(this);
-                        }
-
-                        if (dependency instanceof DependencyScopeOwner && mOwner == null) {
-                            setOwner((DependencyScopeOwner) dependency);
-                        }
                     }
                 }
 
@@ -344,14 +350,6 @@ public abstract class DependencyScope {
 
                         if (dependency != null) {
                             cache(dependencyType, dependency);
-
-                            if (dependency instanceof Scopeable) {
-                                ((Scopeable) dependency).setScope(this);
-                            }
-
-                            if (dependency instanceof DependencyScopeOwner && mOwner == null) {
-                                setOwner((DependencyScopeOwner) dependency);
-                            }
                         }
                     }
                 }
@@ -361,6 +359,79 @@ public abstract class DependencyScope {
         return dependency;
     }
 
+    /**
+     * Gets an dependency instance of the specified type. The requested dependency is first searched
+     * from the currently active {@link DependencyScope}. If a requested instance is not found the search
+     * is delegated to parent {@link DependencyScope}. As a last attempt,
+     * the {@code AppDependencyScope} is searched.
+     *
+     * @param dependencies A {@link HashSet} for storing found dependencies.
+     * @param dependencyType A {@link Class} specifying the type of the requested instance.
+     * @param dependant      The requesting object. This parameter is required when the requesting dependant
+     *                       is also a requested within the object graph represented by a {@link DependencyScope}.
+     * @param <T>            A type parameter for casting the requested instance to expected type.
+     */
+    @SuppressWarnings("unchecked")
+    protected <T> void getDependencies(final HashSet<T> dependencies, final Class<T> dependencyType, final Object dependant) {
+
+        final Class<?> savedDependencyType = mDependencyType;
+
+        mDependencyType = dependencyType;
+
+        if (dependant != null) {
+            mDependants.add(dependant);
+        }
+
+        for (final Class<?> key : mDependencies.keySet()) {
+            if (dependencyType.isAssignableFrom(key)) {
+                final T dependency = (T) mDependencies.get(key);
+
+                if (dependency != null) {
+                    dependencies.add(dependency);
+                }
+            }
+        }
+
+        lookDependenciesAmongDependants(dependencies, dependencyType);
+
+        if (mMockScope != null) {
+            mMockScope.getDependencies(dependencies, dependencyType, dependant);
+        } else {
+            final T dependency = getDependency();
+
+            if (dependency == null) {
+                dependencies.add(dependency);
+            }
+
+            if (getDependencyProvider() != null) {
+                final DependencyQuery<T> query = DependencyQuery.find(dependencyType);
+                mDependencyProvider.getDependencies(query);
+
+                if (query.foundDependencies()) {
+                    dependencies.addAll(query.getFoundDependencies());
+                }
+            }
+
+            if (!dependencies.isEmpty()) {
+                for (final T foundDependency : dependencies) {
+                    cache(dependencyType, foundDependency);
+                }
+            }
+
+            if (mParentScope != null) {
+                final HashSet<T> parentScopeDependencies = new HashSet<>();
+                mParentScope.getDependencies(parentScopeDependencies, dependencyType, null);
+                dependencies.addAll(parentScopeDependencies);
+            }
+
+            if (!isAppScope()) {
+                final HashSet<T> appScopeDependencies = new HashSet<>();
+                Dependency.getAppScope().getDependencies(appScopeDependencies, dependencyType, dependant);
+                dependencies.addAll(appScopeDependencies);
+            }
+        }
+        mDependencyType = savedDependencyType;
+    }
 
     /**
      * Checks it the requested dependency is one of the cached dependent instances.
@@ -369,6 +440,7 @@ public abstract class DependencyScope {
      * @param <T>            A type parameter for casting the requested dependency to expected type.
      * @return The found requested instance or {@code null}.
      */
+    @SuppressWarnings("unchecked")
     private <T> T lookDependencyAmongDependants(final Class<T> dependencyType) {
 
         for (int i = mDependants.size() - 1; i >= 0; i--) {
@@ -376,6 +448,29 @@ public abstract class DependencyScope {
 
             if (dependencyType.isAssignableFrom(dependant.getClass())) {
                 mDependants.remove(dependant);
+                return cache(dependencyType, dependant);
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Checks it the requested dependency is one of the cached dependent instances.
+     *
+     * @param dependencies A {@link HashSet} for storing found dependencies.
+     * @param dependencyType A {@link Class} specifying the type of the requested dependency.
+     * @param <T>            A type parameter for casting the requested dependency to expected type.
+     * @return The found requested instance or {@code null}.
+     */
+    @SuppressWarnings("unchecked")
+    private <T> T lookDependenciesAmongDependants(final HashSet<T> dependencies, final Class<T> dependencyType) {
+
+        for (int i = mDependants.size() - 1; i >= 0; i--) {
+            final Object dependant = mDependants.get(i);
+
+            if (dependencyType.isAssignableFrom(dependant.getClass())) {
+                mDependants.remove(dependant);
+                dependencies.add((T) dependant);
                 return cache(dependencyType, dependant);
             }
         }

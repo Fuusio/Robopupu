@@ -19,7 +19,9 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -289,7 +291,7 @@ public class Dependency {
     }
 
     /**
-     * Gets a requested dependency of the specified type. The dependency is requested from
+     * Gets a dependency of the specified type. The dependency is requested from
      * the currently active {@link DependencyScope}.
      *
      * @param dependencyType A {@link Class} specifying the type of the requested dependency.
@@ -302,7 +304,7 @@ public class Dependency {
     }
 
     /**
-     * Gets a requested dependency of the specified type. The dependency is requested from
+     * Gets a dependency of the specified type. The dependency is requested from
      * the given {@link DependencyScope}.
      *
      * @param scopeType A {@link Class} specifying {@link DependencyScope}.
@@ -316,7 +318,7 @@ public class Dependency {
     }
 
     /**
-     * Gets a requested dependency of the specified type. The dependency is requested from
+     * Gets a dependency of the specified type. The dependency is requested from
      * the specified {@link DependencyScope}.
      *
      * @param scopeClass A {@link Class} specifying {@link DependencyScope}.
@@ -337,7 +339,7 @@ public class Dependency {
     }
 
     /**
-     * Gets a requested dependency of the specified type. The dependency is requested from
+     * Gets a dependency of the specified type. The dependency is requested from
      * the given {@link DependencyScope}.
      *
      * @param scope A {@link DependencyScope}.
@@ -351,7 +353,7 @@ public class Dependency {
     }
 
     /**
-     * Gets a requested dependency of the specified type. The dependency is requested from
+     * Gets a dependency of the specified type. The dependency is requested from
      * the currently active {@link DependencyScope}.
      *
      * @param dependencyType A {@link Class} specifying the type of the requested dependency.
@@ -366,7 +368,7 @@ public class Dependency {
     }
 
     /**
-     * Gets a requested dependency of the specified type. The dependency is requested from
+     * Gets a dependency of the specified type. The dependency is requested from
      * the currently active {@link DependencyScope}.
      *
      * @param scope A {@link DependencyScope}.
@@ -379,6 +381,110 @@ public class Dependency {
      */
     public static <T> T get(final DependencyScope scope, final Class<T> dependencyType, final Object dependant) {
         return scope.getDependency(dependencyType, dependant, false);
+    }
+
+////////////////
+
+    /**
+     * Gets all dependencies of the specified type. The dependencies are requested from
+     * the currently active {@link DependencyScope}.
+     *
+     * @param dependencyType A {@link Class} specifying the type of the requested dependency.
+     * @param <T>            A type parameter for casting the requested dependency to expected type.
+     * @return A {@link Collection} containing the found dependencies. If an empty {@link Collection} is returned,
+     * it indicates an error in an {@link DependencyScope} implementation or configuration.
+     */
+    public static <T> Collection<T> getAll(final Class<T> dependencyType) {
+        final HashSet<T> dependencies = new HashSet<>();
+        getActiveScope().getDependencies(dependencies, dependencyType, null);
+        return dependencies;
+    }
+
+    /**
+     * Gets all dependency of the specified type. The dependencies are requested from
+     * the given {@link DependencyScope}.
+     *
+     * @param scopeType A {@link Class} specifying {@link DependencyScope}.
+     * @param dependencyType A {@link Class} specifying the type of the requested dependency.
+     * @param <T>            A type parameter for casting the requested dependency to expected type.
+     * @return A {@link Collection} containing the found dependencies. If an empty {@link Collection} is returned,
+     * it indicates an error in an {@link DependencyScope} implementation or configuration.
+     */
+    public static <T> Collection<T> getAll(final Class<? extends DependencyScope> scopeType, final Class<T> dependencyType) {
+        return getAll(scopeType, dependencyType, null);
+    }
+
+    /**
+     * Gets all dependencies of the specified type. The dependencies are requested from
+     * the specified {@link DependencyScope}.
+     *
+     * @param scopeClass A {@link Class} specifying {@link DependencyScope}.
+     * @param dependencyType A {@link Class} specifying the type of the requested dependency.
+     * @param dependant      The object requesting the requested. This parameter is required when the requesting object
+     *                       is also a requested within the object graph represented by the active {@link Dependency}.
+     * @param <T>            A type parameter for casting the requested dependency to expected type.
+     * @return A {@link Collection} containing the found dependencies. If an empty {@link Collection} is returned,
+     * it indicates an error in an {@link DependencyScope} implementation or configuration.
+     */
+    public static <T> Collection<T> getAll(final Class<? extends DependencyScope> scopeClass, final Class<T> dependencyType, final Object dependant) {
+        DependencyScope scope = getScope(scopeClass, true);
+        final HashSet<T> dependencies = new HashSet<>();
+
+        if (scope != null) {
+            scope.getDependencies(dependencies, dependencyType, dependant);
+        }
+        return dependencies;
+    }
+
+    /**
+     * Gets all dependencies of the specified type. The dependencies are requested from
+     * the given {@link DependencyScope}.
+     *
+     * @param scope A {@link DependencyScope}.
+     * @param dependencyType A {@link Class} specifying the type of the requested dependency.
+     * @param <T>            A type parameter for casting the requested dependency to expected type.
+     * @return A {@link Collection} containing the found dependencies. If an empty {@link Collection} is returned,
+     * it indicates an error in an {@link DependencyScope} implementation or configuration.
+     */
+    public static <T> Collection<T> getAll(final DependencyScope scope, final Class<T> dependencyType) {
+        final HashSet<T> dependencies = new HashSet<>();
+        scope.getDependencies(dependencies, dependencyType, null);
+        return dependencies;
+    }
+
+    /**
+     * Gets all dependencies of the specified type. The dependencies are requested from
+     * the currently active {@link DependencyScope}.
+     *
+     * @param dependencyType A {@link Class} specifying the type of the requested dependency.
+     * @param dependant      The object requesting the requested. This parameter is required when the requesting object
+     *                       is also a requested within the object graph represented by the active {@link Dependency}.
+     * @param <T>            A type parameter for casting the requested dependency to expected type.
+     * @return A {@link Collection} containing the found dependencies. If an empty {@link Collection} is returned,
+     * it indicates an error in an {@link DependencyScope} implementation or configuration.
+     */
+    public static <T> Collection<T> getAll(final Class<T> dependencyType, final Object dependant) {
+        final HashSet<T> dependencies = new HashSet<>();
+        getActiveScope().getDependencies(dependencies, dependencyType, dependant);
+        return dependencies;
+    }
+
+    /**
+     * Gets all dependencies of the specified type. The dependencies are requested from
+     * the currently active {@link DependencyScope}.
+     *
+     * @param scope A {@link DependencyScope}.
+     * @param dependencyType A {@link Class} specifying the type of the requested dependency.
+     * @param dependant      The object requesting the requested. This parameter is required when the requesting object
+     *                       is also a requested within the object graph represented by the active {@link Dependency}.
+     * @param <T>            A type parameter for casting the requested dependency to expected type.
+     * @return A {@link Collection} containing the found dependencies. If an empty {@link Collection} is returned,
+     * it indicates an error in an {@link DependencyScope} implementation or configuration.
+     */
+    public static <T> Collection<T> getAll(final DependencyScope scope, final Class<T> dependencyType, final Object dependant) {
+        final HashSet<T> dependencies = new HashSet<>();
+        scope.getDependencies(dependencies, dependencyType, dependant);
+        return dependencies;
     }
 
     /**

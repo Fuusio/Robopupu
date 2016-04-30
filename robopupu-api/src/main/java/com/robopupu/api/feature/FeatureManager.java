@@ -28,7 +28,7 @@ import com.robopupu.api.util.Params;
 import java.util.List;
 
 /**
- * {@link FeatureManager} defines an interface for {@link Manager} object that provides an API
+ * {@link FeatureManager} defines an interface for {@link Manager} component that provides an API
  * for managing {@link Feature}s.
  */
 public interface FeatureManager extends Manager  {

@@ -37,12 +37,12 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
 
     // LIBRARY DEV
-    //compile project(':robopupu-api')
-    //apt files('libs/robopupu-compiler.jar')
+    compile project(':robopupu-api')
+    apt files('libs/robopupu-compiler.jar')
 
-    // JCEnter TESTING
-    compile 'com.robopupu:robopupu:0.4.4'
-    apt 'com.robopupu:robopupu-compiler:0.4.4'
+    // JCENTER TESTING
+    //compile 'com.robopupu:robopupu:0.4.4'
+    //apt 'com.robopupu:robopupu-compiler:0.4.4'
 
     apt 'com.squareup:javapoet:1.6.1'
     testCompile 'junit:junit:4.12'
