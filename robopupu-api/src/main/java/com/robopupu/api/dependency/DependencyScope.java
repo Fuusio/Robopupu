@@ -399,12 +399,12 @@ public abstract class DependencyScope {
         } else {
             final T dependency = getDependency();
 
-            if (dependency == null) {
+            if (dependency != null) {
                 dependencies.add(dependency);
             }
 
             if (getDependencyProvider() != null) {
-                final DependencyQuery<T> query = DependencyQuery.find(dependencyType);
+                final DependencyQuery<T> query = DependencyQuery.findAll(dependencyType);
                 mDependencyProvider.getDependencies(query);
 
                 if (query.foundDependencies()) {
