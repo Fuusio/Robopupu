@@ -17,8 +17,8 @@ package com.robopupu.api.mvp;
 
 import android.support.v7.widget.RecyclerView;
 
-public interface ListModel<T_EventType, T_Listener extends Model.Listener>
-        extends Model<T_EventType, T_Listener>  {
+public interface ListModel<T_ModelEvent extends ModelEvent, T_ModelListener extends ModelListener<T_ModelEvent>>
+        extends Model<T_ModelEvent, T_ModelListener>  {
 
     int getItemCount();
 

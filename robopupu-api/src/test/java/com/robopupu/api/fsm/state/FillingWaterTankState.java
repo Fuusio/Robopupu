@@ -36,6 +36,6 @@ public class FillingWaterTankState extends State {
 
     @Override
     public void waterTankFull() {
-        toState(FilteringCoffeeState.class);
+        transitTo(FilteringCoffeeState.class);
     }
 }

@@ -21,18 +21,9 @@ import com.robopupu.api.util.Listenable;
 /**
  * {@link Model} is interface for Model components in a MVP architectural pattern implementation.
  *
- * @param <T_EventType> The parametrised model event type.
+ * @param <T_ModelEvent> The parametrised {@link ModelEvent} type.
+ * @param <T_ModelListener> The parametrised {@link ModelListener} type.
  */
-public interface Model<T_EventType, T_Listener extends Model.Listener>
-        extends Listenable<T_Listener>, Gsonable {
-
-    interface Listener {
-
-        /**
-         * Invoked when the {@link Model} has changed as specified by the given {@link ModelEvent}.
-         *
-         * @param event A {@link ModelEvent}.
-         */
-        void onModelChanged(ModelEvent event);
-    }
+public interface Model<T_ModelEvent extends ModelEvent, T_ModelListener extends ModelListener<T_ModelEvent>>
+        extends Listenable<T_ModelListener>, Gsonable {
 }
