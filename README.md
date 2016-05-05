@@ -30,8 +30,8 @@ Use the following dependencies into your application module's ```build.gradle```
 
 ```groovy
 dependencies {
-	compile 'com.robopupu:robopupu:0.4.5'
-	apt 'com.robopupu:robopupu-compiler:0.4.5'	
+	compile 'com.robopupu:robopupu:0.4.6'
+	apt 'com.robopupu:robopupu-compiler:0.4.6'	
 	apt 'com.squareup:javapoet:1.6.1' 
 }
 ```
@@ -56,6 +56,9 @@ buildscript {
 ```
 
 ## Changelog
+
+### 0.4.6
+* Bux fixes in DependencyScope.
 
 ### 0.4.5
 * Streamlined PluginBus class: Now all methods are static.
