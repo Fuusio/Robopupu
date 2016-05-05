@@ -1,8 +1,8 @@
 package com.robopupu.api.mvp;
 
 /**
- * {@link ModelEventType} implements an enumerated type for defining various
- * {@link ModelEvent} types.
+ * {@link ModelEventType} implements an enumerated type for defining various generic model event
+ * types.
  */
 public enum ModelEventType {
 

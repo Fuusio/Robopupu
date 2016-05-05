@@ -21,18 +21,12 @@ import com.google.gson.JsonParser;
 
 import com.robopupu.api.util.AbstractListenable;
 
-public class AbstractModel<T_EventType, T_Listener extends Model.Listener>
-        extends AbstractListenable<T_Listener> implements Model<T_EventType, T_Listener> {
+public class AbstractModel<T_ModelEvent extends ModelEvent, T_ModelListener extends ModelListener<T_ModelEvent>>
+        extends AbstractListenable<T_ModelListener> implements Model<T_ModelEvent, T_ModelListener> {
 
-    protected ModelEvent createEvent(final T_EventType type) {
-        return null;
-    }
-
-    protected void notifyModelChanged(final T_EventType type) {
-        final ModelEvent event = createEvent(type);
-
+    protected void notifyModelChanged(final T_ModelEvent event) {
         if (event != null) {
-            for (final Listener listener : getListeners()) {
+            for (final T_ModelListener listener : getListeners()) {
                 listener.onModelChanged(event);
             }
         }

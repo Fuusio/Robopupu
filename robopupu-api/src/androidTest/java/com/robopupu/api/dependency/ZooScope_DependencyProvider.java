@@ -4,16 +4,26 @@ public class ZooScope_DependencyProvider extends DependencyProvider {
 
     @SuppressWarnings("unchecked")
     @Override
-    protected <T> T getDependency(final Class<T> dependencyType) {
-        if (type(Elephant.class, dependencyType)) {
-            return (T)new Elephant();
-        } else if (type(Lion.class, dependencyType)) {
-            return (T)new Lion();
-        } else if (type(Monkey.class, dependencyType)) {
-            final Banana banana = D.get(Banana.class);
-            return (T)new Monkey(banana);
+    protected <T> void getDependencies(final DependencyQuery<T> query) {
+
+        if (query.matches(Elephant.class)) {
+            if (query.add((T)new Elephant())) {
+                return;
+            }
         }
-        return null;
+
+        if (query.matches(Lion.class)) {
+            if (query.add((T)new Lion())) {
+                return;
+            }
+        }
+
+        if (query.matches(Monkey.class)) {
+            final Banana banana = D.get(Banana.class);
+            if (query.add((T)new Monkey(banana))) {
+                return;
+            }
+        }
     }
 
     private final boolean type(Class<?> providedClass, final Class<?> dependencyType) {

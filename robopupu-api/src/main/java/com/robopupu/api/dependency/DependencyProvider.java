@@ -11,7 +11,7 @@ public abstract class DependencyProvider {
 
     protected DependencyScope mScope;
 
-    protected abstract <T> void getDependencies(final DependencyQuery<T> query);
+    protected abstract <T> void getDependencies(DependencyQuery<T> query);
 
     public void setScope(final DependencyScope scope) {
         mScope = scope;

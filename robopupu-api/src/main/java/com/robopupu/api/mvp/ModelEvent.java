@@ -11,13 +11,11 @@ import java.util.EventObject;
  */
 public abstract class ModelEvent<T_Model extends Model, T_Type> extends EventObject {
 
-    private final long mTimeStamp;
     private final T_Type mType;
 
     protected ModelEvent(final T_Model model, final T_Type type) {
         super(model);
         mType = type;
-        mTimeStamp = System.currentTimeMillis();
     }
 
     @SuppressWarnings("unchecked")
@@ -27,9 +25,5 @@ public abstract class ModelEvent<T_Model extends Model, T_Type> extends EventObj
 
     public final T_Type getType() {
         return mType;
-    }
-
-    public final long getTimeStamp() {
-        return mTimeStamp;
     }
 }

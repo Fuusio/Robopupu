@@ -6,9 +6,9 @@ import android.support.v7.widget.RecyclerView;
  * {@link AbstractListModel} extends {@link AbstractModel} to provide an abstract base class
  * for implementing {@link ListModel}s for {@link RecyclerViewAdapter}s.
  */
-public abstract class AbstractListModel<T_EventType, T_Listener extends Model.Listener>
-        extends AbstractModel<T_EventType, T_Listener>
-        implements ListModel<T_EventType, T_Listener> {
+public abstract class AbstractListModel<T_ModelEvent extends ModelEvent, T_ModelListener extends ModelListener<T_ModelEvent>>
+        extends AbstractModel<T_ModelEvent, T_ModelListener>
+        implements ListModel<T_ModelEvent, T_ModelListener> {
 
     private RecyclerView.AdapterDataObserver mObserver;
 
