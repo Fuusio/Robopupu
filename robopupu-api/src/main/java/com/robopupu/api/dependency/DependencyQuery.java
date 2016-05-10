@@ -1,7 +1,8 @@
 package com.robopupu.api.dependency;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
 
 /**
  * {@link DependencyQuery} is an object used for query one or more dependencies from
@@ -15,7 +16,7 @@ public class DependencyQuery<T> {
     }
 
     private final Class<T> mDependencyType;
-    private final List<T> mFoundDependencies;
+    private final HashMap<Class<?>, T> mFoundDependencies;
     private final Mode mMode;
 
     public DependencyQuery(final Class<T> dependencyType) {
@@ -24,7 +25,7 @@ public class DependencyQuery<T> {
 
     public DependencyQuery(final Class<T> dependencyType, final Mode mode) {
         mDependencyType = dependencyType;
-        mFoundDependencies = new ArrayList<>();
+        mFoundDependencies = new HashMap<>();
         mMode = mode;
     }
 
@@ -38,15 +39,43 @@ public class DependencyQuery<T> {
         return new DependencyQuery(dependencyType, Mode.ALL_MATCHING_DEPENDENCIES);
     }
 
-    public List<T> getFoundDependencies() {
-        return mFoundDependencies;
+    public Class<T> getDependencyType() {
+        return mDependencyType;
     }
 
-    @SuppressWarnings("unchecked")
-    public <T> T getFoundDependency() {
-        return (T) mFoundDependencies.get(0);
+    public Collection<T> getFoundDependencies() {
+        return mFoundDependencies.values();
     }
 
+    /**
+     * Adds the found dependencies to the given {@link HashSet}.
+     * param cache A {@link HashSet} for adding the found dependencies.
+     * REMOVE
+    public void getFoundDependencies(final HashSet<T> cache) {
+        for (final T foundDependency : mFoundDependencies) {
+            if (!containsInstanceOf(cache, foundDependency)) {
+                cache.add(foundDependency);
+            }
+        }
+    }
+
+    private boolean containsInstanceOf(final HashSet<T> objects, final T object) {
+        final Class<?> objectClass = object.getClass();
+
+        for (final T existingObject : objects) {
+            if (objectClass.equals(existingObject.getClass())) {
+                return true;
+            }
+        }
+        return false;
+    }*/
+
+    public T getFoundDependency() {
+        final Collection<T> dependencies = mFoundDependencies.values();
+        return dependencies.iterator().next();
+    }
+
+    @SuppressWarnings("unused")
     public Mode getMode() {
         return mMode;
     }
@@ -56,11 +85,15 @@ public class DependencyQuery<T> {
     }
 
     public boolean add(final T dependency) {
-        mFoundDependencies.add(dependency);
+        mFoundDependencies.put(dependency.getClass(), dependency);
         return (mMode == Mode.FIRST_MATCHING_DEPENDENCY);
     }
 
-    public boolean matches(final Class<?> providedType) {
-        return mDependencyType.isAssignableFrom(providedType);
+    public boolean isMatchingType(Class<?> type) {
+        return mDependencyType.isAssignableFrom(type);
+    }
+
+    public boolean matches(final Class<?> providedType, final Class<?> concreteType) {
+        return mDependencyType.isAssignableFrom(providedType) && !mFoundDependencies.containsKey(concreteType);
     }
 }

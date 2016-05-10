@@ -41,8 +41,8 @@ dependencies {
     apt files('libs/robopupu-compiler.jar')
 
     // JCENTER TESTING
-    //compile 'com.robopupu:robopupu:0.4.6'
-    //apt 'com.robopupu:robopupu-compiler:0.4.6'
+    //compile 'com.robopupu:robopupu:0.4.8'
+    //apt 'com.robopupu:robopupu-compiler:0.4.8'
 
     apt 'com.squareup:javapoet:1.6.1'
     testCompile 'junit:junit:4.12'
