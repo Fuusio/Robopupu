@@ -36,10 +36,6 @@ public class RobopupuApplication extends BaseApplication {
     private RefWatcher mRefWatcher;
     private Robopupu mRobopupu;
 
-    public RobopupuApplication() {
-        super();
-    }
-
     @Override
     public void onCreate() {
         super.onCreate();

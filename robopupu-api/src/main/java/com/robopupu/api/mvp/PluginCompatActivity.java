@@ -103,9 +103,11 @@ public abstract class PluginCompatActivity<T_Presenter extends Presenter>
             String tag = (fragmentTag != null) ? fragmentTag : featureView.getViewTag();
 
             if (manager.findFragmentByTag(tag) != null) {
-                final FragmentTransaction transaction = manager.beginTransaction();
-                transaction.remove(fragment);
-                transaction.commit();
+                if (getState().isStarted()) {
+                    final FragmentTransaction transaction = manager.beginTransaction();
+                    transaction.remove(fragment);
+                    transaction.commit();
+                }
 
                 if (addedToBackstack) {
                     manager.popBackStack();
