@@ -58,8 +58,8 @@ buildscript {
 ## Changelog
 
 ### 0.4.9
-* Extensions in Feature API. Added new API methods for opening Views and starting Features in ```FeatureContainer```s.
-* Added a sample feature Multiple Views for demonstrating how to use ```FeatureContainer```s to show multiple ```View```s (```Fragment```s) in a single ```Activity```.
+* Extensions in Feature API. Added new API methods for opening Views and starting Features in FeatureContainers.
+* Added a sample feature Multiple Views for demonstrating how to use FeatureContainers to show multiple Views (i.e. Fragments) in a single Activity.
 * Updated Javadocs
 
 ### 0.4.8
