@@ -30,8 +30,8 @@ Use the following dependencies into your application module's ```build.gradle```
 
 ```groovy
 dependencies {
-	compile 'com.robopupu:robopupu:0.4.8'
-	apt 'com.robopupu:robopupu-compiler:0.4.8'	
+	compile 'com.robopupu:robopupu:0.4.9'
+	apt 'com.robopupu:robopupu-compiler:0.4.9'	
 	apt 'com.squareup:javapoet:1.6.1' 
 }
 ```
@@ -49,13 +49,18 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.0.0'
+        classpath 'com.android.tools.build:gradle:2.1.0'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
     }
 }
 ```
 
 ## Changelog
+
+### 0.4.9
+* Extensions in Feature API. Added new API methods for opening Views and starting Features in ```FeatureContainer```s.
+* Added a sample feature Multiple Views for demonstrating how to use ```FeatureContainer```s to show multiple ```View```s (```Fragment```s) in a single ```Activity```.
+* Updated Javadocs
 
 ### 0.4.8
 * Bug fix in Dependency API.
