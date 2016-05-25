@@ -16,6 +16,7 @@
 package com.robopupu.api.feature;
 
 import android.support.annotation.CallSuper;
+import android.support.annotation.IdRes;
 
 import com.robopupu.api.dependency.D;
 import com.robopupu.api.dependency.Dependency;
@@ -177,10 +178,49 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
      * @return A {@link FeatureView}. May be {@link PlugInvoker}.
      */
     @SuppressWarnings("unchecked")
-    protected FeatureView showView(final Class<? extends Presenter> presenterClass,
+    @Override
+    public FeatureView showView(final Class<? extends Presenter> presenterClass,
                             final boolean addToBackStack,
                             final Params... params) {
         return showView(getFeatureContainer(), presenterClass, addToBackStack, null, params);
+    }
+
+    /**
+     * Shows the {@link FeatureView} attached to the specified {@link Presenter}.
+     * The {@link FeatureView} is shown using the specified {@link FeatureContainer}.
+     *
+     * @param featureContainerId An id of the {@link FeatureContainer}.
+     * @param presenterClass A {@link Class} specifying the {@link Presenter}.
+     * @param addToBackStack A {@code boolean} value specifying if the {@link FeatureView} is to
+     *                       be added to back stack.
+     * @param tag A tag for the {@link FeatureView} used for {@code FragmentTransaction}.
+     *            May be {@code null}.
+     * @param params Optional {@link Params}.
+     * @return A {@link FeatureView}. May be {@link PlugInvoker}.
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public FeatureView showView(final @IdRes int featureContainerId,
+                            final Class<? extends Presenter> presenterClass,
+                            final boolean addToBackStack,
+                            final String tag,
+                            final Params... params) {
+        final FeatureContainer featureContainer = mFeatureManager.getFeatureContainer(featureContainerId);
+        final Presenter presenter = plug(presenterClass);
+
+        if (Params.containsValues(params)) {
+            final Params presenterParams = Params.merge(params);
+            presenter.setParams(presenterParams);
+        }
+
+        final FeatureView view = (FeatureView)presenter.getView();
+        view.setFeature(this);
+        featureContainer.showView(view, addToBackStack, tag);
+
+        if (!view.isDialog()) {
+            addBackStackView(tag, view);
+        }
+        return view;
     }
 
     /**
@@ -197,11 +237,12 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
      * @return A {@link FeatureView}. May be {@link PlugInvoker}.
      */
     @SuppressWarnings("unchecked")
-    protected FeatureView showView(final FeatureTransitionManager transitionManager,
-                            final Class<? extends Presenter> presenterClass,
-                            final boolean addToBackStack,
-                            final String tag,
-                            final Params... params) {
+    @Override
+    public FeatureView showView(final FeatureTransitionManager transitionManager,
+                                   final Class<? extends Presenter> presenterClass,
+                                   final boolean addToBackStack,
+                                   final String tag,
+                                   final Params... params) {
         final Presenter presenter = plug(presenterClass);
 
         if (Params.containsValues(params)) {
@@ -228,7 +269,8 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
      *            May be {@code null}.
      */
     @SuppressWarnings("unchecked")
-    protected void hideView(final Class<? extends Presenter> presenterClass,
+    @Override
+    public void hideView(final Class<? extends Presenter> presenterClass,
                             final boolean addedToBackStack,
                             final String tag) {
         final FeaturePresenter presenter = plug(presenterClass);
@@ -244,7 +286,8 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
      *            May be {@code null}.
      */
     @SuppressWarnings("unchecked")
-    protected void hideView(final FeaturePresenter presenter,
+    @Override
+    public void hideView(final FeaturePresenter presenter,
                             final boolean addedToBackStack,
                             final String tag) {
         final FeatureView view = (FeatureView)presenter.getView();

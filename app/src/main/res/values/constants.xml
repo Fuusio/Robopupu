@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <integer name="disabled_unlocked">0</integer>
+    <integer name="enabled_unlocked">1</integer>
+    <integer name="disabled_locked">2</integer>
+    <integer name="enabled_locked">3</integer>
+
     <string name="oss_licenses_file">file:///android_asset/html/oss_licenses.html</string>
     <string name="robopupu_license_file">file:///android_asset/html/robopupu_license.html</string>
     <string name="robopupu_email_address">robopupu@gmail.com</string>

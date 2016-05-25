@@ -56,11 +56,6 @@ public class FeedbackPresenterImpl extends AbstractFeaturePresenter<FeedbackView
     }
 
     @Override
-    public void onViewStart(final View view) {
-        super.onViewStart(view);
-    }
-
-    @Override
     public void onViewResume(final View view) {
         super.onViewResume(view);
 

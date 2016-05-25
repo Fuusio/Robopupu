@@ -15,11 +15,13 @@
  */
 package com.robopupu.component;
 
+import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.StringRes;
 
+import com.robopupu.api.feature.PluginFeatureManager;
 import com.robopupu.app.RobopupuAppScope;
 
 import com.robopupu.api.component.AbstractManager;
@@ -34,6 +36,8 @@ public class PlatformManagerImpl extends AbstractManager implements PlatformMana
     private static final String TAG = PlatformManagerImpl.class.getSimpleName();
 
     @Plug AppManager mAppManager;
+    @Plug
+    PluginFeatureManager mFeatureManager;
 
     @Scope(RobopupuAppScope.class)
     @Provides(PlatformManager.class)
@@ -49,7 +53,7 @@ public class PlatformManagerImpl extends AbstractManager implements PlatformMana
     public void openWebPage(final String url) {
         final Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setData(Uri.parse(url));
-        mAppManager.startActivity(intent);
+        startActivity(intent);
     }
 
     @Override
@@ -66,10 +70,23 @@ public class PlatformManagerImpl extends AbstractManager implements PlatformMana
         sendIntent.setData(Uri.parse(uri.toString()));
 
         try {
-            mAppManager.startActivity(Intent.createChooser(sendIntent, chooserTitle));
+            startActivity(Intent.createChooser(sendIntent, chooserTitle));
             return true;
         } catch (ActivityNotFoundException e) {
             return false;
         }
+    }
+
+    @Override
+    public void startActivity(final Intent intent) {
+        final Activity activity = mFeatureManager.getForegroundActivity();
+        activity.startActivity(intent);
+    }
+
+    @Override
+    public void startActivity(final Class<? extends Activity> activityClass) {
+        final Activity activity = mFeatureManager.getForegroundActivity();
+        final Intent intent = new Intent(activity, activityClass);
+        startActivity(intent);
     }
 }

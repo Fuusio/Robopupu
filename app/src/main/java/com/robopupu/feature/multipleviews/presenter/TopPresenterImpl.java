@@ -13,33 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.robopupu.feature.feedback.view;
+package com.robopupu.feature.multipleviews.presenter;
 
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
-import com.robopupu.R;
 import com.robopupu.api.dependency.Provides;
-import com.robopupu.api.feature.FeatureCompatFragment;
+import com.robopupu.api.feature.AbstractFeaturePresenter;
 import com.robopupu.api.plugin.Plug;
 import com.robopupu.api.plugin.Plugin;
-import com.robopupu.feature.feedback.presenter.ThxPresenter;
+import com.robopupu.api.plugin.PluginBus;
+import com.robopupu.feature.multipleviews.view.TopView;
 
 @Plugin
-@Provides(ThxView.class)
-public class ThxFragment extends FeatureCompatFragment<ThxPresenter> implements ThxView {
+@Provides(TopPresenter.class)
+public class TopPresenterImpl extends AbstractFeaturePresenter<TopView>
+        implements TopPresenter {
 
-    @Plug ThxPresenter mPresenter;
+    @Plug TopView mView;
 
     @Override
-    public ThxPresenter getPresenter() {
-        return mPresenter;
+    public TopView getViewPlug() {
+        return mView;
     }
 
     @Override
-    public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle inState) {
-        return inflater.inflate(R.layout.fragment_thx, container, false);
+    public void onPlugged(final PluginBus bus) {
+        super.onPlugged(bus);
+        plug(TopView.class);
     }
 }

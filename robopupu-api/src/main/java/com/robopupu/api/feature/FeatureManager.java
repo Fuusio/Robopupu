@@ -17,6 +17,8 @@ package com.robopupu.api.feature;
 
 import android.app.Activity;
 import android.app.Application;
+import android.support.annotation.IdRes;
+import android.view.ViewGroup;
 
 import com.robopupu.api.component.Manager;
 import com.robopupu.api.dependency.DependencyScope;
@@ -114,8 +116,20 @@ public interface FeatureManager extends Manager  {
     Feature startFeature(FeatureContainer featureContainer, Class<? extends Feature> featureClass);
 
     /**
-     * Creates and starts the specified {@link Feature} whose {@link FeatureCompatFragment}s are hosted by
-     * the given {@link FeatureContainer}.
+     * Creates and starts the specified {@link Feature} whose {@link FeatureCompatFragment}s are
+     * shown using the specified {@link FeatureContainer}.
+     *
+     * @param featureContainerId An ID of the {@link FeatureContainer}. In practice the ID is
+     *                           the layout view ID of the {@link ViewGroup} that contains the {@link View}.
+     * @param featureClass A {@link Class} specifying the {@link Feature} to be created and started.
+     * @param params    A {@link Params} containing parameters for the created and started {@link Feature}.
+     * @return A {@link Feature}.
+     */
+    Feature startFeature(@IdRes int featureContainerId, Class<? extends Feature> featureClass, Params params);
+
+    /**
+     * Creates and starts the specified {@link Feature} whose {@link FeatureCompatFragment}s are
+     * shown using the given {@link FeatureContainer}.
      *
      * @param featureContainer A {@link FeatureContainer}.
      * @param featureClass A {@link Class} specifying the {@link Feature} to be created and started.
@@ -125,7 +139,7 @@ public interface FeatureManager extends Manager  {
     Feature startFeature(FeatureContainer featureContainer, Class<? extends Feature> featureClass, Params params);
 
     /**
-     * Starts the given {@link Feature} whose {@link FeatureCompatFragment}s are hosted by
+     * Starts the given {@link Feature} whose {@link View}s are shown using
      * the given {@link FeatureContainer}.
      *
      * @param featureContainer A {@link FeatureContainer}.
@@ -135,7 +149,7 @@ public interface FeatureManager extends Manager  {
     Feature startFeature(FeatureContainer featureContainer, Feature feature);
 
     /**
-     * Starts the given {@link Feature} whose {@link FeatureCompatFragment}s are hosted by
+     * Starts the given {@link Feature} whose {@link View}s are shown using
      * the given {@link FeatureContainer}.
      *
      * @param featureContainer A {@link FeatureContainer}.
@@ -144,6 +158,18 @@ public interface FeatureManager extends Manager  {
      * @return A {@link Feature}.
      */
     Feature startFeature(FeatureContainer featureContainer, Feature feature, Params params);
+
+    /**
+     * Starts the given {@link Feature} whose {@link View}s are shown using
+     * the specified {@link FeatureContainer}.
+     *
+     * @param featureContainerId An ID of the {@link FeatureContainer}. In practice the ID is
+     *                           the layout view ID of the {@link ViewGroup} that contains the {@link View}.
+     * @param feature   {The {@link Feature} to be started.
+     * @param params A {@link Params} containing parameters for the started {@link Feature}.
+     * @return A {@link Feature}.
+     */
+    Feature startFeature(@IdRes int featureContainerId, Feature feature, Params params);
 
     /**
      * Invoked to handle Back Pressed event received by the {@link FeatureContainer}.

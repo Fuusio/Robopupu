@@ -15,12 +15,17 @@
  */
 package com.robopupu.api.feature;
 
+import android.support.annotation.IdRes;
+
 import com.robopupu.api.dependency.DependencyScope;
 import com.robopupu.api.dependency.DependencyScopeOwner;
+import com.robopupu.api.mvp.Presenter;
 import com.robopupu.api.mvp.PresenterListener;
+import com.robopupu.api.plugin.PlugInvoker;
 import com.robopupu.api.plugin.PluginBus;
 import com.robopupu.api.plugin.PluginComponent;
 import com.robopupu.api.plugin.PluginStateComponent;
+import com.robopupu.api.util.Params;
 
 import java.util.List;
 
@@ -152,6 +157,76 @@ public interface Feature extends PresenterListener, PluginStateComponent {
      * unplugged from a {@link PluginBus}.
      */
     void finish();
+
+    /**
+     * Shows the {@link FeatureView} attached to the specified {@link Presenter}.
+     * @param presenterClass A {@link Class} specifying the {@link Presenter}.
+     * @param addToBackStack A {@code boolean} value specifying if the {@link FeatureView} is added
+     *                       to back stack.
+     * @param params Optional {@link Params}.
+     * @return A {@link FeatureView}. May be {@link PlugInvoker}.
+     */
+    FeatureView showView(Class<? extends Presenter> presenterClass,
+                         boolean addToBackStack,
+                         Params... params);
+
+    /**
+     * Shows the {@link FeatureView} attached to the specified {@link Presenter}.
+     * The {@link FeatureView} is shown using the specified {@link FeatureContainer}.
+     *
+     * @param featureContainerId An id of the {@link FeatureContainer}.
+     * @param presenterClass A {@link Class} specifying the {@link Presenter}.
+     * @param addToBackStack A {@code boolean} value specifying if the {@link FeatureView} is to
+     *                       be added to back stack.
+     * @param tag A tag for the {@link FeatureView} used for {@code FragmentTransaction}.
+     *            May be {@code null}.
+     * @param params Optional {@link Params}.
+     * @return A {@link FeatureView}. May be {@link PlugInvoker}.
+     */
+    FeatureView showView(@IdRes int featureContainerId,
+                         Class<? extends Presenter> presenterClass,
+                         boolean addToBackStack,
+                         String tag,
+                         Params... params);
+
+    /**
+     * Shows the {@link FeatureView} attached to the specified {@link Presenter}.
+     * The {@link FeatureView} is shown using the given {@link FeatureTransitionManager}.
+     *
+     * @param transitionManager A {@link FeatureTransitionManager}.
+     * @param presenterClass A {@link Class} specifying the {@link Presenter}.
+     * @param addToBackStack A {@code boolean} value specifying if the {@link FeatureView} is to
+     *                       be added to back stack.
+     * @param tag A tag for the {@link FeatureView} used for {@code FragmentTransaction}.
+     *            May be {@code null}.
+     * @param params Optional {@link Params}.
+     * @return A {@link FeatureView}. May be {@link PlugInvoker}.
+     */
+    FeatureView showView(FeatureTransitionManager transitionManager,
+                         Class<? extends Presenter> presenterClass,
+                         boolean addToBackStack,
+                         String tag,
+                         Params... params);
+
+    /**
+     * Hides the {@link FeatureView} attached to the given {@link Presenter}.
+     * @param presenterClass A {@link Presenter}.
+     * @param addedToBackStack A {@code boolean} value specifying if the {@link FeatureView} was
+     *                  added to backstack.
+     * @param tag A tag for the {@link FeatureView} used for {@code FragmentTransaction}.
+     *            May be {@code null}.
+     */
+    void hideView(Class<? extends Presenter> presenterClass, boolean addedToBackStack, String tag);
+
+    /**
+     * Hides the {@link FeatureView} attached to the given {@link Presenter}.
+     * @param presenter A {@link Presenter}.
+     * @param addedToBackStack A {@code boolean} value specifying if the {@link FeatureView} was
+     *                  added to backstack.
+     * @param tag A tag for the {@link FeatureView} used for {@code FragmentTransaction}.
+     *            May be {@code null}.
+     */
+    void hideView(FeaturePresenter presenter, boolean addedToBackStack, String tag);
 
     /**
      * Invoked when a {@link FeatureContainer} has been started.

@@ -13,33 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.robopupu.feature.feedback.view;
+package com.robopupu.feature.multipleviews;
 
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
-import com.robopupu.R;
 import com.robopupu.api.dependency.Provides;
-import com.robopupu.api.feature.FeatureCompatFragment;
+import com.robopupu.api.dependency.Scope;
+import com.robopupu.api.feature.AbstractFeature;
 import com.robopupu.api.plugin.Plug;
 import com.robopupu.api.plugin.Plugin;
-import com.robopupu.feature.feedback.presenter.ThxPresenter;
+import com.robopupu.app.RobopupuAppScope;
+import com.robopupu.component.PlatformManager;
+import com.robopupu.feature.multipleviews.view.MultipleViewsActivity;
+
 
 @Plugin
-@Provides(ThxView.class)
-public class ThxFragment extends FeatureCompatFragment<ThxPresenter> implements ThxView {
+public class MultipleViewsFeatureImpl extends AbstractFeature implements MultipleViewsFeature {
 
-    @Plug ThxPresenter mPresenter;
+    @Plug PlatformManager mPlatformManager;
 
-    @Override
-    public ThxPresenter getPresenter() {
-        return mPresenter;
+    @Scope(RobopupuAppScope.class)
+    @Provides(MultipleViewsFeature.class)
+    public MultipleViewsFeatureImpl() {
+        super(MultipleViewsFeatureScope.class);
     }
 
     @Override
-    public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle inState) {
-        return inflater.inflate(R.layout.fragment_thx, container, false);
+    protected void onStart() {
+        super.onStart();
+
+        mPlatformManager.startActivity(MultipleViewsActivity.class);
     }
 }

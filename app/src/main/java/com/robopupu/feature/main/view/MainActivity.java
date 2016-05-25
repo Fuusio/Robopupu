@@ -18,8 +18,6 @@ package com.robopupu.feature.main.view;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -28,6 +26,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.robopupu.R;
+import com.robopupu.api.app.AppConfig;
 import com.robopupu.api.feature.PluginFeatureManager;
 import com.robopupu.app.RobopupuAppScope;
 import com.robopupu.app.view.DrawerLayoutContainer;
@@ -36,7 +35,6 @@ import com.robopupu.feature.main.MainFeatureScope;
 import com.robopupu.feature.main.presenter.MainPresenter;
 
 import com.robopupu.api.feature.FeatureContainer;
-import com.robopupu.api.feature.FeatureCompatFragment;
 import com.robopupu.api.mvp.PluginCompatActivity;
 import com.robopupu.api.plugin.Plug;
 import com.robopupu.api.plugin.Plugin;
@@ -73,8 +71,15 @@ public class MainActivity extends PluginCompatActivity<MainPresenter>
 
         setContentView(R.layout.activity_main);
         mDrawerLayout = getView(R.id.drawer_layout_navigation);
-        final NavigationView navigationView = getView(R.id.nav_view);
+        final NavigationView navigationView = getView(R.id.navigation_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        // Demo about using AppConfig
+
+        if (!AppConfig.isEnabled(R.integer.config_feature_multiple_views)) {
+            final Menu menu = navigationView.getMenu();
+            menu.findItem(R.id.navigation_multiple_views).setVisible(false);
+        }
     }
 
     @Override
@@ -90,8 +95,12 @@ public class MainActivity extends PluginCompatActivity<MainPresenter>
     public void onBackPressed() {
         final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_navigation);
 
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
+        if (drawer != null) {
+            if (drawer.isDrawerOpen(GravityCompat.START)) {
+                drawer.closeDrawer(GravityCompat.START);
+            } else {
+                mPresenter.onBackPressed();
+            }
         } else {
             mPresenter.onBackPressed();
         }
@@ -117,7 +126,7 @@ public class MainActivity extends PluginCompatActivity<MainPresenter>
     public void updateForToolbar(final Toolbar toolbar) {
         final ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, mDrawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        mDrawerLayout.setDrawerListener(toggle);
+        mDrawerLayout.addDrawerListener(toggle);
         toggle.syncState();
     }
 

@@ -128,7 +128,7 @@ public abstract class ViewActivity<T_Presenter extends Presenter> extends Activi
             onRestoreDependencies(dependencies);
         }
 
-        // If this Activity is a FeatureContainerProvider, it needs to be registered to
+        // If this ViewActivity is a FeatureContainerProvider, it needs to be registered to
         // FeatureManager
         if (this instanceof FeatureContainerProvider) {
             final FeatureContainerProvider provider = (FeatureContainerProvider)this;

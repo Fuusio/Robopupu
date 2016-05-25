@@ -129,7 +129,7 @@ public abstract class ViewCompatActivity<T_Presenter extends Presenter> extends 
             onRestoreDependencies(dependencies);
         }
 
-        // If this Activity is a FeatureContainerProvider, it needs to be registered to
+        // If this ViewCompatActivity is a FeatureContainerProvider, it needs to be registered to
         // FeatureManager
         if (this instanceof FeatureContainerProvider) {
             final FeatureContainerProvider provider = (FeatureContainerProvider)this;

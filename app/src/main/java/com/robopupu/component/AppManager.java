@@ -102,13 +102,13 @@ public interface AppManager extends Manager {
      * Tests if network is available.
      * @return A {@code boolean} value.
      */
-    boolean isNetworkAvailable();
+    // boolean isNetworkAvailable();
 
     /**
      * Gets a list of available networks.
      * @return A {@link List} of {@link Network}s.
      */
-    List<Network> getAvailableNetworks();
+    // List<Network> getAvailableNetworks();
 
     /**
      * Gets the specified color value.
@@ -136,10 +136,4 @@ public interface AppManager extends Manager {
      * Exists the application.
      */
     void exitApplication();
-
-    /**
-     * Starts the specified {@link Activity}.
-     * @param intent An {@link Intent} specifying the {@link Activity} to be started.
-     */
-    void startActivity(Intent intent);
 }

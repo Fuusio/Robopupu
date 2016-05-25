@@ -15,6 +15,9 @@
  */
 package com.robopupu.component;
 
+import android.app.Activity;
+import android.content.Intent;
+
 import com.robopupu.api.component.Manager;
 import com.robopupu.api.plugin.PlugInterface;
 
@@ -45,4 +48,16 @@ public interface PlatformManager extends Manager {
      * @return A {@code boolean} value indicating if an email client was found for sending the email.
      */
     boolean sendEmail(String address, String subject, String body, String chooserTitle);
+
+    /**
+     * Starts the specified {@link Activity}.
+     * @param activityClass A {@link Class} specifying the {@link Activity} to be started.
+     */
+    void startActivity(Class<? extends Activity> activityClass);
+
+    /**
+     * Starts the specified {@link Activity}.
+     * @param intent An {@link Intent} specifying the {@link Activity} to be started.
+     */
+    void startActivity(Intent intent);
 }

@@ -5,9 +5,12 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.util.Log;
 
 import com.robopupu.api.feature.FeatureContainer;
+import com.robopupu.api.feature.FeatureContainerAdapter;
 import com.robopupu.api.feature.FeatureContainerProvider;
 import com.robopupu.api.feature.FeatureView;
 import com.robopupu.api.plugin.PluginBus;
@@ -30,7 +33,14 @@ public abstract class PluginActivity<T_Presenter extends Presenter>
 
     protected PluginActivity() {
         mFeatureContainers = new ArrayList<>();
-        mFeatureContainers.add(this);
+    }
+
+    protected void createFeatureContainers(final List<FeatureContainer> containers) {
+        containers.add(this);
+    }
+
+    protected FeatureContainer createFeatureContainer(final @IdRes int containerViewId) {
+        return FeatureContainerAdapter.create(this, containerViewId);
     }
 
     @Override
@@ -41,6 +51,16 @@ public abstract class PluginActivity<T_Presenter extends Presenter>
     @Override
     public List<FeatureContainer> getFeatureContainers() {
         return mFeatureContainers;
+    }
+
+    /**
+     * Note: This method has to be overridden in extended classes which act as FeatureContainers
+     * themselves.
+     * @return Dummy container view id -1.
+     */
+    @Override
+    public @IdRes int getContainerViewId() {
+        return -1;
     }
 
     @Override
@@ -58,6 +78,11 @@ public abstract class PluginActivity<T_Presenter extends Presenter>
 
     @Override
     public void showView(final FeatureView featureView, final boolean addToBackStack, final String fragmentTag) {
+        showView(featureView, getContainerViewId(), addToBackStack, fragmentTag);
+    }
+
+    @Override
+    public void showView(final FeatureView featureView, final @IdRes int containerViewId, final boolean addToBackStack, final String fragmentTag) {
         String tag = fragmentTag;
 
         if (fragmentTag == null) {
@@ -79,7 +104,7 @@ public abstract class PluginActivity<T_Presenter extends Presenter>
                 transaction.commitAllowingStateLoss();
             } else if (featureView instanceof Fragment) {
                 final Fragment fragment = (Fragment)featureView;
-                transaction.replace(getContainerViewId(), fragment, tag);
+                transaction.replace(containerViewId, fragment, tag);
 
                 if (addToBackStack) {
                     transaction.addToBackStack(tag);
@@ -141,6 +166,7 @@ public abstract class PluginActivity<T_Presenter extends Presenter>
 
     @Override
     protected void onStart() {
+        createFeatureContainers(mFeatureContainers);
         PluginBus.plug(this);
         super.onStart();
     }
@@ -150,6 +176,8 @@ public abstract class PluginActivity<T_Presenter extends Presenter>
         super.onStop();
         PluginBus.unplug(this);
     }
+
+
 
     @Override
     public void onPlugged(final PluginBus bus) {

@@ -32,6 +32,8 @@ import com.robopupu.api.dependency.DependencyMap;
 import com.robopupu.api.dependency.DependencyScope;
 import com.robopupu.api.dependency.DependencyScopeOwner;
 import com.robopupu.api.dependency.Scopeable;
+import com.robopupu.api.feature.FeatureContainerProvider;
+import com.robopupu.api.feature.FeatureManager;
 import com.robopupu.api.plugin.PluginBus;
 import com.robopupu.api.util.Converter;
 
@@ -130,6 +132,14 @@ public abstract class ViewCompatFragment<T_Presenter extends Presenter> extends 
         Log.d(TAG, "onStart()");
         super.onStart();
         mState.onStart();
+
+        // If this ViewCompatFragment is a FeatureContainerProvider, it needs to be registered to
+        // FeatureManager
+        if (this instanceof FeatureContainerProvider) {
+            final FeatureContainerProvider provider = (FeatureContainerProvider)this;
+            final FeatureManager featureManager = D.get(FeatureManager.class);
+            featureManager.registerFeatureContainerProvider(provider);
+        }
 
         final T_Presenter presenter = resolvePresenter();
         if (presenter != null) {

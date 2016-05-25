@@ -10,6 +10,11 @@
             android:id="@+id/navigation_jokes"
             android:icon="@drawable/ic_chuck_norris_black_36dp"
             android:title="@string/ft_main_navigation_item_jokes" />
+
+        <item
+            android:id="@+id/navigation_multiple_views"
+            android:icon="@drawable/ic_multiple_views_36dp"
+            android:title="@string/ft_main_navigation_item_multiple_views" />
     </group>
 
     <group android:id="@+id/group_social_media">

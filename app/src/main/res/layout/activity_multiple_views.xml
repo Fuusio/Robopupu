@@ -1,0 +1,27 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/color_blue_gray_200"
+    tools:context=".feature.multipleviews.view.MultipleViewsActivity">
+
+    <LinearLayout
+        android:id="@+id/fragment_container_top"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:background="@color/color_blue_gray_100">
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/fragment_container_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:background="@color/color_blue_gray_50">
+    </LinearLayout>
+
+</LinearLayout>

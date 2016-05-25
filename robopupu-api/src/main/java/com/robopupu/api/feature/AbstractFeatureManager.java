@@ -19,6 +19,7 @@ import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
+import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -205,6 +206,12 @@ public abstract class AbstractFeatureManager extends AbstractManager
         return startFeature(featureContainer, featureClass, null);
     }
 
+    @Override
+    public Feature startFeature(final @IdRes int featureContainerId, final Class<? extends Feature> featureClass, final Params params) {
+        final FeatureContainer featureContainer = getFeatureContainer(featureContainerId);
+        return startFeature(featureContainer, featureClass, params);
+    }
+
     @SuppressWarnings("unchecked")
     @Override
     public Feature startFeature(final FeatureContainer featureContainer, final Class<? extends Feature> featureClass, final Params params) {
@@ -246,6 +253,12 @@ public abstract class AbstractFeatureManager extends AbstractManager
             Dependency.activateScope((DependencyScopeOwner)feature);
         }
         return feature;
+    }
+
+    @Override
+    public Feature startFeature(final @IdRes int featureContainerId, final Feature feature, final Params params) {
+        final FeatureContainer featureContainer = getFeatureContainer(featureContainerId);
+        return startFeature(featureContainer, feature, params);
     }
 
     @Override

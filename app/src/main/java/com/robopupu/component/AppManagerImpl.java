@@ -18,13 +18,9 @@ package com.robopupu.component;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.net.ConnectivityManager;
-import android.net.Network;
-import android.net.NetworkInfo;
 import android.nfc.NfcAdapter;
 import android.nfc.NfcManager;
 import android.os.Build;
@@ -37,20 +33,18 @@ import android.support.v7.app.AlertDialog;
 import android.util.Log;
 
 import com.robopupu.R;
-import com.robopupu.api.feature.PluginFeatureManager;
-import com.robopupu.api.util.AppToolkit;
-import com.robopupu.app.RobopupuAppScope;
-import com.robopupu.app.RobopupuApplication;
-
 import com.robopupu.api.component.AbstractManager;
 import com.robopupu.api.dependency.D;
 import com.robopupu.api.dependency.Provides;
 import com.robopupu.api.dependency.Scope;
+import com.robopupu.api.feature.PluginFeatureManager;
 import com.robopupu.api.plugin.Plug;
 import com.robopupu.api.plugin.Plugin;
+import com.robopupu.api.util.AppToolkit;
+import com.robopupu.app.RobopupuAppScope;
+import com.robopupu.app.RobopupuApplication;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 @Plugin
@@ -138,6 +132,7 @@ public class AppManagerImpl extends AbstractManager implements AppManager {
         return false;
     }
 
+    /*
     @Override
     public boolean isNetworkAvailable() {
         final ConnectivityManager manager = D.get(ConnectivityManager.class);
@@ -179,7 +174,7 @@ public class AppManagerImpl extends AbstractManager implements AppManager {
             }
         }
         return availableNetworks;
-    }
+    }*/
 
     @Override
     public File getApplicationDirectory() {
@@ -228,11 +223,5 @@ public class AppManagerImpl extends AbstractManager implements AppManager {
                     }
                 });
         alertDialog.show();
-    }
-
-    @Override
-    public void startActivity(final Intent intent) {
-        final Activity activity = mFeatureManager.getForegroundActivity();
-        activity.startActivity(intent);
     }
 }

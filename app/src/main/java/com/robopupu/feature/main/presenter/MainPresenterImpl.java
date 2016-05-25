@@ -31,16 +31,23 @@ import com.robopupu.api.feature.FeatureContainer;
 import com.robopupu.api.mvp.AbstractPresenter;
 import com.robopupu.api.plugin.Plug;
 import com.robopupu.api.plugin.Plugin;
+import com.robopupu.feature.multipleviews.MultipleViewsFeature;
 
 @Plugin
-@Provides(MainPresenter.class)
 public class MainPresenterImpl extends AbstractPresenter<MainView>
         implements MainPresenter {
+
+    private boolean mWasPaused;
 
     @Plug AppManager mAppManager;
     @Plug PluginFeatureManager mFeatureManager;
     @Plug MainFeature mMainFeature;
     @Plug MainView mView;
+
+    @Provides(MainPresenter.class)
+    public MainPresenterImpl() {
+        mWasPaused = false;
+    }
 
     @Override
     public MainView getViewPlug() {
@@ -70,6 +77,8 @@ public class MainPresenterImpl extends AbstractPresenter<MainView>
             mFeatureManager.startFeature(container, JokesFeature.class);
         } else if (itemId == R.id.navigation_settings) {
             //mFeatureManager.startFeature(container, SettingsFeature.class);
+        } else if (itemId == R.id.navigation_multiple_views) {
+            mFeatureManager.startFeature(container, MultipleViewsFeature.class);
         } else if (itemId == R.id.navigation_exit) {
             mAppManager.exitApplication();
         }else {
@@ -83,5 +92,21 @@ public class MainPresenterImpl extends AbstractPresenter<MainView>
     public void onViewStart(final View view) {
         super.onViewStart(view);
         mMainFeature.onMainPresenterStarted();
+    }
+
+    @Override
+    public void onViewResume(final View view) {
+        super.onViewResume(view);
+
+        if (mWasPaused) {
+            mWasPaused = false;
+            mView.openNavigationDrawer();
+        }
+    }
+
+    @Override
+    public void onViewPause(final View view) {
+        super.onViewPause(view);
+        mWasPaused = true;
     }
 }
