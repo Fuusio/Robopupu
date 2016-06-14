@@ -23,6 +23,7 @@ import android.util.Log;
 import com.robopupu.api.dependency.D;
 import com.robopupu.api.util.AppToolkit;
 import com.robopupu.api.util.StringToolkit;
+import com.robopupu.api.util.Utils;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -30,7 +31,7 @@ import java.util.HashMap;
 
 public class BitmapManagerImpl implements BitmapManager {
 
-    private static final String TAG = BitmapManagerImpl.class.getSimpleName();
+    private static final String TAG = Utils.tag(BitmapManagerImpl.class);
 
     private static final int DEFAULT_CACHE_SIZE = 50;
     private static final String NAME_DEFAULT_CACHE = "_DefaultCache";

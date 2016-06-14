@@ -37,6 +37,7 @@ import com.robopupu.api.dependency.DependencyScopeOwner;
 import com.robopupu.api.dependency.Scopeable;
 import com.robopupu.api.plugin.PluginBus;
 import com.robopupu.api.util.Converter;
+import com.robopupu.api.util.Utils;
 
 /**
  * {@link ViewCompatDialogFragment} provides an abstract base class for concrete {@link DialogFragment}
@@ -48,7 +49,7 @@ import com.robopupu.api.util.Converter;
 public abstract class ViewCompatDialogFragment<T_Presenter extends Presenter> extends DialogFragment
         implements View, PresentedView<T_Presenter>, Scopeable {
 
-    private static String TAG = ViewCompatDialogFragment.class.getSimpleName();
+    private static String TAG = Utils.tag(ViewCompatDialogFragment.class);
 
     private final ViewBinder mBinder;
     private final ViewState mState;

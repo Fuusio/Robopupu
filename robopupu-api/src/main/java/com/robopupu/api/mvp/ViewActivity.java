@@ -37,6 +37,7 @@ import com.robopupu.api.feature.FeatureManager;
 import com.robopupu.api.plugin.PluginBus;
 import com.robopupu.api.util.Converter;
 import com.robopupu.api.util.PermissionRequestManager;
+import com.robopupu.api.util.Utils;
 
 /**
  * {@link ViewActivity} provides an abstract base class for concrete {@link Activity}
@@ -48,7 +49,7 @@ import com.robopupu.api.util.PermissionRequestManager;
 public abstract class ViewActivity<T_Presenter extends Presenter> extends Activity
         implements View, PresentedView<T_Presenter>, Scopeable {
 
-    private static String TAG = ViewCompatDialogFragment.class.getSimpleName();
+    private static String TAG = Utils.tag(ViewCompatDialogFragment.class);
 
     protected final ViewBinder mBinder;
     protected final ViewState mState;

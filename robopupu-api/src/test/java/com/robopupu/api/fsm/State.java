@@ -19,7 +19,7 @@ public class State extends StateEngine<State>
         implements BrewCoffeeButtonEvents, PowerSwitchEvents, WaterTankSensorEvents {
 
     private CoffeeMaker mCoffeeMaker;
-    private boolean mDisposed;
+    private boolean mDisposed; // For testing
 
     private State(final Class<? extends State> initialStateClass) {
         super(initialStateClass);
@@ -48,57 +48,27 @@ public class State extends StateEngine<State>
 
     @Override
     public void makeButtonPressed() {
-        if (isStateEngine()) {
-            mCurrentState.makeButtonPressed();
-        } else if (mSuperState != getStateEngine()) {
-            mSuperState.makeButtonPressed();
-        } else {
-            onError(this, Error.ERROR_UNHANDLED_EVENT, "makeButtonPressed");
-        }
+        dispatch().makeButtonPressed();
     }
 
     @Override
     public void switchPowerOn() {
-        if (isStateEngine()) {
-            mCurrentState.switchPowerOn();
-        } else if (mSuperState != getStateEngine()) {
-            mSuperState.switchPowerOn();
-        } else {
-            onError(this, Error.ERROR_UNHANDLED_EVENT, "switchPowerOn");
-        }
+        dispatch().switchPowerOn();
     }
 
     @Override
     public void switchPowerOff() {
-        if (isStateEngine()) {
-            mCurrentState.switchPowerOff();
-        } else if (mSuperState != getStateEngine()) {
-            mSuperState.switchPowerOff();
-        } else {
-            onError(this, Error.ERROR_UNHANDLED_EVENT, "switchPowerOff");
-        }
+        dispatch().switchPowerOff();
     }
 
     @Override
     public void waterTankFull() {
-        if (isStateEngine()) {
-            mCurrentState.waterTankFull();
-        } else if (mSuperState != getStateEngine()) {
-            mSuperState.waterTankFull();
-        } else {
-            onError(this, Error.ERROR_UNHANDLED_EVENT, "waterTankFull");
-        }
+        dispatch().waterTankFull();
     }
 
     @Override
     public void waterTankEmpty() {
-        if (isStateEngine()) {
-            mCurrentState.waterTankEmpty();
-        } else if (mSuperState != getStateEngine()) {
-            mSuperState.waterTankEmpty();
-        } else {
-            onError(this, Error.ERROR_UNHANDLED_EVENT, "waterTankEmpty");
-        }
+        dispatch().waterTankEmpty();
     }
 
     // The following methods are test utilities

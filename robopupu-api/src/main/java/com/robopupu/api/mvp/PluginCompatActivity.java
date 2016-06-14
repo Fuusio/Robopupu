@@ -15,6 +15,7 @@ import com.robopupu.api.feature.FeatureContainerProvider;
 import com.robopupu.api.feature.FeatureView;
 import com.robopupu.api.plugin.PluginBus;
 import com.robopupu.api.plugin.PluginComponent;
+import com.robopupu.api.util.Utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,7 +28,7 @@ import java.util.List;
 public abstract class PluginCompatActivity<T_Presenter extends Presenter>
         extends ViewCompatActivity<T_Presenter> implements FeatureContainer, FeatureContainerProvider, PluginComponent {
 
-    private final static String TAG = PluginCompatActivity.class.getSimpleName();
+    private final static String TAG = Utils.tag(PluginCompatActivity.class);
 
     private final List<FeatureContainer> mFeatureContainers;
 

@@ -21,10 +21,11 @@ import com.robopupu.api.dependency.AppDependencyScope;
 import com.robopupu.api.dependency.DependenciesCache;
 import com.robopupu.api.dependency.Dependency;
 import com.robopupu.api.util.UIToolkit;
+import com.robopupu.api.util.Utils;
 
 public class Robopupu {
 
-    private static final String TAG = Robopupu.class.getSimpleName();
+    private static final String TAG = Utils.tag(Robopupu.class);
 
     private static Robopupu sInstance = null;
 

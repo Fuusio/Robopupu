@@ -18,6 +18,7 @@ package com.robopupu.api.dependency;
 import android.util.Log;
 
 import com.robopupu.api.plugin.PluginBus;
+import com.robopupu.api.util.Utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,7 +32,7 @@ import java.util.List;
  */
 public abstract class DependencyScope {
 
-    private static final String TAG = DependencyScope.class.getSimpleName();
+    private static final String TAG = Utils.tag(DependencyScope.class);
 
     /*
      * A cache of dependants that have request dependencies. These dependants are temporarily

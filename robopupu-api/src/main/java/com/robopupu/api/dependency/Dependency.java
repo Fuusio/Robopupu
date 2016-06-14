@@ -18,6 +18,8 @@ package com.robopupu.api.dependency;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.robopupu.api.util.Utils;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -30,7 +32,7 @@ import java.util.List;
  */
 public class Dependency {
 
-    private final static String TAG = Dependency.class.getSimpleName();
+    private final static String TAG = Utils.tag(Dependency.class);
 
     /**
      * A {@link DependencyScope} that has the same lifecycle as the application.

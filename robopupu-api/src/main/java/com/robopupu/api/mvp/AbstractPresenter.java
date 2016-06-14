@@ -26,6 +26,7 @@ import com.robopupu.api.plugin.PlugInvoker;
 import com.robopupu.api.plugin.PluginBus;
 import com.robopupu.api.util.AbstractListenable;
 import com.robopupu.api.util.Params;
+import com.robopupu.api.util.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +38,7 @@ import java.util.List;
 public abstract class AbstractPresenter<T_View extends View> extends AbstractPluginStateComponent
         implements Presenter, Scopeable {
 
-    private static final String TAG = AbstractPresenter.class.getSimpleName();
+    private static final String TAG = Utils.tag(AbstractPresenter.class);
 
     protected final List<PresenterListener> mListeners;
 

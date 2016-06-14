@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2000-2014 Marko Salmela.
+ * Copyright (C) 2000-2016 Marko Salmela.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -243,10 +243,24 @@ public abstract class StateEngine<T_State extends StateEngine> {
     }
 
     /**
+     * Selects a state that should receive the trigger event.
+     * @return A state as {@code T_State}.
+     */
+    protected T_State dispatch() {
+        if (isStateEngine()) {
+            return mCurrentState;
+        } else if (hasSuperState()) {
+            return mSuperState;
+        } else {
+            throw new IllegalStateException("Unhandled event detected.");
+        }
+    }
+
+    /**
      * Causes transition from the current state to the specified state.
      *
      * @param stateClass A {@link Class} specifying the target state for the state transition.
-     * @return The current state.
+     * @return The current state as {@code T_State}.
      */
     protected final T_State transitTo(final Class<? extends T_State> stateClass) {
         return transitTo(stateClass, 0);
@@ -469,6 +483,11 @@ public abstract class StateEngine<T_State extends StateEngine> {
         getObserver().onError(this, error, message);
     }
 
+    @SuppressWarnings({"unchecked", "unused"})
+    protected void onUnhandledEvent(final String eventName) {
+        onError((T_State) this, Error.ERROR_UNHANDLED_EVENT, eventName);
+    }
+
     /**
      * Invoked by {@link StateEngine#dispose()} for an instance of {@link StateEngine} that
      * represents a state machine.
@@ -539,6 +558,31 @@ public abstract class StateEngine<T_State extends StateEngine> {
     public synchronized final void stop() {
         getObserver().onStop(this);
         dispose();
+    }
+
+    /**
+     * Tests if this the state represented by this instance of {@link StateEngine} has a super state
+     * that is not  {@link StateEngine}.
+     * @return A {@code boolean} value.
+     */
+    public boolean hasSuperState() {
+        return !isStateEngine() &&  mSuperState != getStateEngine();
+    }
+
+    /**
+     * Tests if this state is the same state or a direct or
+     * an indirect substate state of the specified state.
+     * @param stateClass A {@link Class} specifying the state.
+     * @return A {@code boolean value}.
+     */
+    @SuppressWarnings("unchecked")
+    public boolean hasSuperState(Class<? extends StateEngine<?>> stateClass) {
+        if (stateClass.equals(getClass())){
+            return true;
+        }
+
+        final T_State state = getState((Class<? extends T_State>) stateClass);
+        return state.isSuperStateFor(this);
     }
 
     /**

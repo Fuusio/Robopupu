@@ -18,9 +18,11 @@ package com.robopupu.api.app;
 import android.app.Application;
 import android.content.res.Resources;
 
+import com.robopupu.api.util.Utils;
+
 public abstract class BaseApplication extends Application {
 
-    private static final String TAG = BaseApplication.class.getSimpleName();
+    private static final String TAG = Utils.tag(BaseApplication.class);
 
     private static BaseApplication sInstance = null;
 

@@ -31,6 +31,7 @@ import com.robopupu.api.dependency.DependencyScope;
 import com.robopupu.api.dependency.DependencyScopeOwner;
 import com.robopupu.api.mvp.View;
 import com.robopupu.api.util.Params;
+import com.robopupu.api.util.Utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,7 +44,7 @@ import java.util.List;
 public abstract class AbstractFeatureManager extends AbstractManager
         implements FeatureManager, Application.ActivityLifecycleCallbacks {
 
-    private static final String TAG = AbstractFeatureManager.class.getSimpleName();
+    private static final String TAG = Utils.tag(AbstractFeatureManager.class);
     private static final String SUFFIX_IMPL = "Impl";
 
     private static DependencyScopeOwner sMockScopeOwner = null;

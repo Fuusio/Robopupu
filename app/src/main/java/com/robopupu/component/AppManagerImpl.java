@@ -41,6 +41,7 @@ import com.robopupu.api.feature.PluginFeatureManager;
 import com.robopupu.api.plugin.Plug;
 import com.robopupu.api.plugin.Plugin;
 import com.robopupu.api.util.AppToolkit;
+import com.robopupu.api.util.Utils;
 import com.robopupu.app.RobopupuAppScope;
 import com.robopupu.app.RobopupuApplication;
 
@@ -50,7 +51,7 @@ import java.util.List;
 @Plugin
 public class AppManagerImpl extends AbstractManager implements AppManager {
 
-    private static final String TAG = AppManagerImpl.class.getSimpleName();
+    private static final String TAG = Utils.tag(AppManagerImpl.class);
 
     private final RobopupuApplication mApplication;
 

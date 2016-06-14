@@ -22,6 +22,7 @@ import android.net.Uri;
 import android.support.annotation.StringRes;
 
 import com.robopupu.api.feature.PluginFeatureManager;
+import com.robopupu.api.util.Utils;
 import com.robopupu.app.RobopupuAppScope;
 
 import com.robopupu.api.component.AbstractManager;
@@ -33,7 +34,7 @@ import com.robopupu.api.plugin.Plugin;
 @Plugin
 public class PlatformManagerImpl extends AbstractManager implements PlatformManager {
 
-    private static final String TAG = PlatformManagerImpl.class.getSimpleName();
+    private static final String TAG = Utils.tag(PlatformManagerImpl.class);
 
     @Plug AppManager mAppManager;
     @Plug

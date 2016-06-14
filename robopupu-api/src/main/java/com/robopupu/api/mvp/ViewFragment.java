@@ -36,6 +36,7 @@ import com.robopupu.api.feature.FeatureContainerProvider;
 import com.robopupu.api.feature.FeatureManager;
 import com.robopupu.api.plugin.PluginBus;
 import com.robopupu.api.util.Converter;
+import com.robopupu.api.util.Utils;
 
 /**
  * {@link ViewFragment} provides an abstract base class for concrete {@link Fragment} implementations
@@ -46,7 +47,7 @@ import com.robopupu.api.util.Converter;
 public abstract class ViewFragment<T_Presenter extends Presenter> extends Fragment
         implements View, PresentedView<T_Presenter>, Scopeable {
 
-    private static String TAG = ViewFragment.class.getSimpleName();
+    private static String TAG = Utils.tag(ViewFragment.class);
 
     private final ViewBinder mBinder;
     private final ViewState mState;

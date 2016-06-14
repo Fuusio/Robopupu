@@ -24,7 +24,7 @@ public interface StateEngineObserver {
      * Invoked when the observed {@link StateEngine} is being disposed.
      * @param stateEngine The observed {@link StateEngine}.
      */
-    void onDispose(StateEngine stateEngine);
+    void onDispose(StateEngine<?> stateEngine);
 
     /**
      * Invoked when the specified error is deteceted in the observed {@link StateEngine}.
@@ -32,24 +32,24 @@ public interface StateEngineObserver {
      * @param error An {@link Error}.
      * @param message A error message.
      */
-    void onError(StateEngine stateEngine, StateEngine.Error error, String message);
+    void onError(StateEngine<?> stateEngine, StateEngine.Error error, String message);
 
     /**
      * Invoked when the observed {@link StateEngine} is resetted.
      * @param stateEngine The observed {@link StateEngine}.
      */
-    void onReset(StateEngine stateEngine);
+    void onReset(StateEngine<?> stateEngine);
 
     /**
      * Invoked when the observed {@link StateEngine} is started.
      * @param stateEngine The observed {@link StateEngine}.
      */
-    void onStart(StateEngine stateEngine);
+    void onStart(StateEngine<?> stateEngine);
 
     /**
      * Invoked when the observed {@link StateEngine} is stopped.
      * @param stateEngine The observed {@link StateEngine}.
      */
-    void onStop(StateEngine stateEngine);
+    void onStop(StateEngine<?> stateEngine);
 
 }

@@ -21,6 +21,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.robopupu.api.mvp.Presenter;
+import com.robopupu.api.util.Utils;
 
 /**
  * {@link DelegatedWebViewClient} extends {@link WebViewClient} to provide support
@@ -30,7 +31,7 @@ import com.robopupu.api.mvp.Presenter;
  */
 public class DelegatedWebViewClient extends WebViewClient {
 
-    private static final String TAG = DelegatedWebViewClient.class.getSimpleName();
+    private static final String TAG = Utils.tag(DelegatedWebViewClient.class);
 
     private Delegate mDelegate;
     private String mFailingUrl;

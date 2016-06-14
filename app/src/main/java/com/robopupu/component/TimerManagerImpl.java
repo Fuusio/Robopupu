@@ -15,6 +15,7 @@
  */
 package com.robopupu.component;
 
+import com.robopupu.api.util.Utils;
 import com.robopupu.app.RobopupuAppScope;
 
 import com.robopupu.api.component.AbstractManager;
@@ -29,7 +30,7 @@ import java.util.HashMap;
 public class TimerManagerImpl extends AbstractManager
         implements TimerManager, ExitObserver {
 
-    private static final String TAG = TimerManagerImpl.class.getSimpleName();
+    private static final String TAG = Utils.tag(TimerManagerImpl.class);
 
     private final HashMap<Long, TimerHandle> mTimerHandles;
 

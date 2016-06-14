@@ -23,7 +23,7 @@ import java.net.URLEncoder;
 import java.nio.charset.Charset;
 
 public class URLToolkit {
-    private final static String TAG = URLToolkit.class.getSimpleName();
+    private final static String TAG = Utils.tag(URLToolkit.class);
     private final static Charset DEFAULT_CHARSET = Charset.forName("UTF-8");
 
     public static String encode(final String format, final Charset charset, final Object... args) {

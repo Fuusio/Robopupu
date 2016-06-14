@@ -24,12 +24,13 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.google.gson.Gson;
 import com.robopupu.api.network.RequestCallback;
+import com.robopupu.api.util.Utils;
 
 import java.io.UnsupportedEncodingException;
 
 public class GsonRequest<T> extends BaseRequest<T> {
 
-    private final static String TAG = GsonRequest.class.getSimpleName();
+    private final static String TAG = Utils.tag(GsonRequest.class);
 
     private final Gson mGson;
     private final Class<T> mResponseClass;

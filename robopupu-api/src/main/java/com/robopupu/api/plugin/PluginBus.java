@@ -22,6 +22,7 @@ import com.robopupu.api.dependency.Dependency;
 import com.robopupu.api.dependency.DependencyScope;
 import com.robopupu.api.dependency.DependencyScopeOwner;
 import com.robopupu.api.dependency.Scopeable;
+import com.robopupu.api.util.Utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,7 +30,7 @@ import java.util.List;
 
 public class PluginBus {
 
-    private static final String TAG = PluginBus.class.getSimpleName();
+    private static final String TAG = Utils.tag(PluginBus.class);
 
     private static final String SUFFIX_PLUGGER = "_Plugger";
 
