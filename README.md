@@ -30,8 +30,8 @@ Use the following dependencies into your application module's ```build.gradle```
 
 ```groovy
 dependencies {
-	compile 'com.robopupu:robopupu:0.4.10'
-	apt 'com.robopupu:robopupu-compiler:0.4.10'	
+	compile 'com.robopupu:robopupu:0.5.0'
+	apt 'com.robopupu:robopupu-compiler:0.5.0'	
 	apt 'com.squareup:javapoet:1.6.1' 
 }
 ```
@@ -57,6 +57,9 @@ buildscript {
 
 ## Changelog
 
+### 0.5.0
+* Implemented the first version of the support to use Fragment classes (e.g. MapFragment) as Views using delegate classes ViewFragmentDelegate, ViewCompatFragmentDelegate, FeatureViewFragmentDelagate, and FeatureViewCompatFragmentDelagate.
+ 
 ### 0.4.10
 * Fixed the class FeatureDialogFragment to be extended from ViewDialogFragment instead of ViewCompatDialogFragment.
 * Added initial support to use Fragment classes (e.g. MapFragment) as Views using delegate classes ViewFragmentDelegate and FeatureViewFragmentDelagate.
