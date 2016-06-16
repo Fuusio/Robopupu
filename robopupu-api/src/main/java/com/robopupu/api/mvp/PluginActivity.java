@@ -5,7 +5,6 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
-import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.util.Log;
 
@@ -13,6 +12,7 @@ import com.robopupu.api.feature.FeatureContainer;
 import com.robopupu.api.feature.FeatureContainerAdapter;
 import com.robopupu.api.feature.FeatureContainerProvider;
 import com.robopupu.api.feature.FeatureView;
+import com.robopupu.api.feature.FeatureViewFragmentDelegate;
 import com.robopupu.api.plugin.PluginBus;
 import com.robopupu.api.plugin.PluginComponent;
 import com.robopupu.api.util.Utils;
@@ -105,6 +105,14 @@ public abstract class PluginActivity<T_Presenter extends Presenter>
                 transaction.commitAllowingStateLoss();
             } else if (featureView instanceof Fragment) {
                 final Fragment fragment = (Fragment)featureView;
+                transaction.replace(containerViewId, fragment, tag);
+
+                if (addToBackStack) {
+                    transaction.addToBackStack(tag);
+                }
+                transaction.commit();
+            } else if (featureView instanceof FeatureViewFragmentDelegate) {
+                final Fragment fragment = ((FeatureViewFragmentDelegate)featureView).getFragment();
                 transaction.replace(containerViewId, fragment, tag);
 
                 if (addToBackStack) {

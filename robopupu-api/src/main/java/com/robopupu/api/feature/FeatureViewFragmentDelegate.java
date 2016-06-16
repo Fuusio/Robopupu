@@ -15,24 +15,28 @@
  */
 package com.robopupu.api.feature;
 
+import android.app.Fragment;
+
 import com.robopupu.api.dependency.DependencyScope;
 import com.robopupu.api.mvp.Presenter;
-import com.robopupu.api.mvp.ViewDialogFragment;
+import com.robopupu.api.mvp.ViewFragmentDelegate;
 
-public abstract class FeatureDialogFragment<T_Presenter extends Presenter> extends ViewDialogFragment<T_Presenter>
+public abstract class FeatureViewFragmentDelegate<T_Presenter extends Presenter, T_Fragment extends Fragment>
+        extends ViewFragmentDelegate<T_Presenter, T_Fragment>
     implements FeatureView {
 
     private Feature mFeature;
     private DependencyScope mScope;
 
-    protected FeatureDialogFragment() {
+    protected FeatureViewFragmentDelegate(final T_Fragment fragment) {
+        super(fragment);
     }
 
     @Override
     public void setFeature(final Feature feature) {
         mFeature = feature;
     }
-
+    
     @Override
     public DependencyScope getScope() {
         return mScope;
@@ -45,7 +49,7 @@ public abstract class FeatureDialogFragment<T_Presenter extends Presenter> exten
 
     @Override
     public boolean isDialog() {
-        return true;
+        return false;
     }
 
     @Override

@@ -594,9 +594,7 @@ public abstract class StateEngine<T_State extends StateEngine> {
      */
     @SuppressWarnings("unchecked")
     public final boolean isSuperState(final T_State state) {
-
         if (state != null) {
-
             if (state == this) {
                 return false;
             }

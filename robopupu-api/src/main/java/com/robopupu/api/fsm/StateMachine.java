@@ -79,7 +79,8 @@ public abstract class StateMachine implements StateEngineObserver {
      */
     @SuppressWarnings("unused")
     public boolean isCurrentSuperState(final Class<? extends StateEngine<?>> superStateClass) {
-        return mStateEngine.hasSuperState(superStateClass);
+        StateEngine<?> currentState = mStateEngine.getCurrentState();
+        return currentState.hasSuperState(superStateClass);
     }
 
     /**
