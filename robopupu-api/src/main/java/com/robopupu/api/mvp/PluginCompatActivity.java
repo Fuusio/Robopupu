@@ -13,6 +13,7 @@ import com.robopupu.api.feature.FeatureContainer;
 import com.robopupu.api.feature.FeatureContainerAdapter;
 import com.robopupu.api.feature.FeatureContainerProvider;
 import com.robopupu.api.feature.FeatureView;
+import com.robopupu.api.feature.FeatureViewCompatFragmentDelegate;
 import com.robopupu.api.plugin.PluginBus;
 import com.robopupu.api.plugin.PluginComponent;
 import com.robopupu.api.util.Utils;
@@ -104,6 +105,14 @@ public abstract class PluginCompatActivity<T_Presenter extends Presenter>
                 transaction.commitAllowingStateLoss();
             } else if (featureView instanceof Fragment) {
                 final Fragment fragment = (Fragment) featureView;
+                transaction.replace(containerViewId, fragment, tag);
+
+                if (addToBackStack) {
+                    transaction.addToBackStack(tag);
+                }
+                transaction.commit();
+            } else if (featureView instanceof FeatureViewCompatFragmentDelegate) {
+                final Fragment fragment = ((FeatureViewCompatFragmentDelegate)featureView).getFragment();
                 transaction.replace(containerViewId, fragment, tag);
 
                 if (addToBackStack) {

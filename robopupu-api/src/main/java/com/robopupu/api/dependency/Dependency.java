@@ -307,14 +307,14 @@ public class Dependency {
      * Gets a dependency of the specified type. The dependency is requested from
      * the given {@link DependencyScope}.
      *
-     * @param scopeType A {@link Class} specifying {@link DependencyScope}.
+     * @param scopeClass A {@link Class} specifying {@link DependencyScope}.
      * @param dependencyType A {@link Class} specifying the type of the requested dependency.
      * @param <T>            A type parameter for casting the requested dependency to expected type.
      * @return The requested dependency. If {@code null} is returned, it indicates an error in
      * an {@link DependencyScope} implementation.
      */
-    public static <T> T get(final Class<? extends DependencyScope> scopeType, final Class<T> dependencyType) {
-        return get(scopeType, dependencyType, null);
+    public static <T> T get(final Class<? extends DependencyScope> scopeClass, final Class<T> dependencyType) {
+        return get(scopeClass, dependencyType, null);
     }
 
     /**

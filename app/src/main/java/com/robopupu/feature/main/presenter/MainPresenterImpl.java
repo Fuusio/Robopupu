@@ -32,6 +32,7 @@ import com.robopupu.api.mvp.AbstractPresenter;
 import com.robopupu.api.plugin.Plug;
 import com.robopupu.api.plugin.Plugin;
 import com.robopupu.feature.multipleviews.MultipleViewsFeature;
+import com.robopupu.feature.viewdelegate.ViewDelegateFeature;
 
 @Plugin
 public class MainPresenterImpl extends AbstractPresenter<MainView>
@@ -79,6 +80,8 @@ public class MainPresenterImpl extends AbstractPresenter<MainView>
             //mFeatureManager.startFeature(container, SettingsFeature.class);
         } else if (itemId == R.id.navigation_multiple_views) {
             mFeatureManager.startFeature(container, MultipleViewsFeature.class);
+        } else if (itemId == R.id.navigation_view_delegate) {
+            mFeatureManager.startFeature(container, ViewDelegateFeature.class);
         } else if (itemId == R.id.navigation_exit) {
             mAppManager.exitApplication();
         }else {

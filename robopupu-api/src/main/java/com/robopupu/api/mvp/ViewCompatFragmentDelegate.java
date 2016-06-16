@@ -16,11 +16,11 @@
 package com.robopupu.api.mvp;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.widget.AdapterView;
 
@@ -40,15 +40,15 @@ import com.robopupu.api.util.Converter;
 import com.robopupu.api.util.Utils;
 
 /**
- * {@link ViewFragmentDelegate} provides an delegate class that can be used by concrete
+ * {@link ViewCompatFragmentDelegate} provides an delegate class that can be used by concrete
  * {@link Fragment} implementations which are not derived from {@link ViewFragment}.
  *
  * @param <T_Presenter> The parametrised type of the {@link Presenter}.
  */
-public abstract class ViewFragmentDelegate<T_Presenter extends Presenter, T_Fragment extends Fragment>
+public abstract class ViewCompatFragmentDelegate<T_Presenter extends Presenter, T_Fragment extends Fragment>
         implements View, PresentedView<T_Presenter>, Scopeable {
 
-    private static String TAG = Utils.tag(ViewFragmentDelegate.class);
+    private static String TAG = Utils.tag(ViewCompatFragmentDelegate.class);
 
     protected final ViewBinder mBinder;
     protected final T_Fragment mFragment;
@@ -56,7 +56,7 @@ public abstract class ViewFragmentDelegate<T_Presenter extends Presenter, T_Frag
 
     protected DependencyScope mScope;
 
-    protected ViewFragmentDelegate(final T_Fragment fragment) {
+    protected ViewCompatFragmentDelegate(final T_Fragment fragment) {
         mFragment = fragment;
         mBinder = new ViewBinder(this);
         mState = new ViewState(this);
@@ -160,7 +160,7 @@ public abstract class ViewFragmentDelegate<T_Presenter extends Presenter, T_Frag
 
     /**
      * Invoked to bind {@link ViewBinding}s to {@link View}s. This method has to be overridden in
-     * classes extended from {@link ViewFragmentDelegate}.
+     * classes extended from {@link ViewCompatFragmentDelegate}.
      */
     protected void onCreateBindings() {
         // Do nothing by default
@@ -248,7 +248,7 @@ public abstract class ViewFragmentDelegate<T_Presenter extends Presenter, T_Frag
     }
 
     /**
-     * This method can be overridden to save state of this {@link ViewFragmentDelegate} to the given
+     * This method can be overridden to save state of this {@link ViewCompatFragmentDelegate} to the given
      * {@link Bundle}.
      * @param outState A {@link Bundle}.
      */
@@ -257,7 +257,7 @@ public abstract class ViewFragmentDelegate<T_Presenter extends Presenter, T_Frag
     }
 
     /**
-     * This method can be overridden to restore state of this {@link ViewFragmentDelegate} from the given
+     * This method can be overridden to restore state of this {@link ViewCompatFragmentDelegate} from the given
      * {@link Bundle}.
      * @param inState A {@link Bundle}.
      */
@@ -266,7 +266,7 @@ public abstract class ViewFragmentDelegate<T_Presenter extends Presenter, T_Frag
     }
 
     /**
-     * This method can be overridden to save dependencies after the {@link ViewFragmentDelegate} is
+     * This method can be overridden to save dependencies after the {@link ViewCompatFragmentDelegate} is
      * restored, for instance, after recreating it.
      *
      * @param dependencies A {@link DependencyMap} for saving the dependencies.
@@ -276,7 +276,7 @@ public abstract class ViewFragmentDelegate<T_Presenter extends Presenter, T_Frag
     }
 
     /**
-     * This method can be overridden to restore dependencies after the {@link ViewFragmentDelegate} is
+     * This method can be overridden to restore dependencies after the {@link ViewCompatFragmentDelegate} is
      * restored, for instance, after recreating it.
      *
      * @param dependencies A {@link DependencyMap} for restoring the dependencies.
