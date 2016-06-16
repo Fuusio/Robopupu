@@ -30,8 +30,8 @@ Use the following dependencies into your application module's ```build.gradle```
 
 ```groovy
 dependencies {
-	compile 'com.robopupu:robopupu:0.4.9'
-	apt 'com.robopupu:robopupu-compiler:0.4.9'	
+	compile 'com.robopupu:robopupu:0.4.10'
+	apt 'com.robopupu:robopupu-compiler:0.4.10'	
 	apt 'com.squareup:javapoet:1.6.1' 
 }
 ```
@@ -56,6 +56,11 @@ buildscript {
 ```
 
 ## Changelog
+
+### 0.4.10
+* Fixed the class FeatureDialogFragment to be extended from ViewDialogFragment instead of ViewCompatDialogFragment.
+* Added initial support to use Fragment classes (e.g. MapFragment) as Views using delegate classes ViewFragmentDelegate and FeatureViewFragmentDelagate.
+* Updated Javadocs
 
 ### 0.4.9
 * Extensions in Feature API. Added new API methods for opening Views and starting Features in FeatureContainers.
