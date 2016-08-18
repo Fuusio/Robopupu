@@ -26,12 +26,12 @@ import java.lang.reflect.Method;
 public abstract class StateMachine implements StateEngineObserver {
 
     private LifecycleState lifecycleState;
-    private boolean resetted;
+    private boolean isResetted;
     private StateEngine<?> stateEngine;
 
     protected StateMachine() {
         lifecycleState = LifecycleState.DORMANT;
-        resetted = false;
+        isResetted = false;
     }
 
     /**
@@ -145,13 +145,13 @@ public abstract class StateMachine implements StateEngineObserver {
             initialize(initialStateClass);
         }
 
-        if (lifecycleState.isCreated() || lifecycleState.isStopped() && resetted) {
+        if (lifecycleState.isCreated() || lifecycleState.isStopped() && isResetted) {
             stateEngine.start();
-            resetted = false;
+            isResetted = false;
             lifecycleState = LifecycleState.STARTED;
             return getCurrentState();
         } else {
-            throw new IllegalStateException("A stopped StateMachine has to be resetted before restarting");
+            throw new IllegalStateException("A stopped StateMachine has to be isResetted before restarting");
         }
     }
 
@@ -180,7 +180,7 @@ public abstract class StateMachine implements StateEngineObserver {
                 stop();
             }
             stateEngine.reset();
-            resetted = true;
+            isResetted = true;
         }
     }
 

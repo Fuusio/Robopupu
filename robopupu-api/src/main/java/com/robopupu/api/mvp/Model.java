@@ -15,7 +15,6 @@
  */
 package com.robopupu.api.mvp;
 
-import com.robopupu.api.util.Gsonable;
 import com.robopupu.api.util.Listenable;
 
 /**
@@ -25,5 +24,5 @@ import com.robopupu.api.util.Listenable;
  * @param <T_ModelListener> The parametrised {@link ModelListener} type.
  */
 public interface Model<T_ModelEvent extends ModelEvent, T_ModelListener extends ModelListener<T_ModelEvent>>
-        extends Listenable<T_ModelListener>, Gsonable {
+        extends Listenable<T_ModelListener> {
 }

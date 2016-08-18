@@ -23,11 +23,11 @@ import com.robopupu.api.util.LifecycleState;
 public class PluginState {
 
     private LifecycleState lifecycleState;
-    private boolean restarted;
+    private boolean isRestarted;
 
     public PluginState() {
         lifecycleState = LifecycleState.DORMANT;
-        restarted = false;
+        isRestarted = false;
     }
 
     /**
@@ -87,13 +87,13 @@ public class PluginState {
     }
 
     /**
-     * Tests if the {@link LifecycleState} is restarted. In restarted state the method
+     * Tests if the {@link LifecycleState} is isRestarted. In isRestarted state the method
      * {@link PluginStateComponent#start()} and possibly {@link PluginStateComponent#resume()}
      * have been invoked.
      * @return A {@code boolean} value.
      */
     public boolean isRestarted() {
-        return isStarted() && restarted;
+        return isStarted() && isRestarted;
     }
 
     /**
@@ -130,10 +130,10 @@ public class PluginState {
     }
 
     /**
-     * Invoked the {@link PluginComponent} is restarted.
+     * Invoked the {@link PluginComponent} is isRestarted.
      */
     public void onRestart() {
-        restarted = true;
+        isRestarted = true;
     }
 
     /**

@@ -6,9 +6,9 @@ package com.robopupu.api.mvp;
 public interface ModelListener<T_ModelEvent extends ModelEvent> {
 
     /**
-     * Invoked when the {@link Model} has changed as specified by the given {@link T_ModelEvent}.
+     * Invoked when the observer {@link Model} has changed as specified by the given {@code ModelEvent}.
      *
-     * @param event A {@code T_ModelEvent}.
+     * @param event A {@code ModelEvent}.
      */
     void onModelChanged(T_ModelEvent event);
 }

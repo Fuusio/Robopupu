@@ -30,15 +30,15 @@ public class ViewState {
 
     private boolean instanceStateSaved;
     private LifecycleState lifecycleState;
-    private boolean movedToBackground;
-    private boolean restarted;
+    private boolean isMovedToBackground;
+    private boolean isRestarted;
 
     public ViewState(final View view) {
         this.view = view;
         instanceStateSaved = false;
         lifecycleState = LifecycleState.DORMANT;
-        movedToBackground = false;
-        restarted = false;
+        isMovedToBackground = false;
+        isRestarted = false;
     }
 
     @SuppressWarnings("unchecked")
@@ -109,12 +109,12 @@ public class ViewState {
     }
 
     /**
-     * Tests if the {@link LifecycleState} is restarted. In restarted state the method
+     * Tests if the {@link LifecycleState} is isRestarted. In isRestarted state the method
      * {@link Activity#onRestart()} has been invoked.
      * @return A {@code boolean} value.
      */
     public boolean isRestarted() {
-        return isStarted() && restarted;
+        return isStarted() && isRestarted;
     }
 
     /**
@@ -150,10 +150,10 @@ public class ViewState {
     }
 
     /**
-     * Invoked when the {@link View} is restarted.
+     * Invoked when the {@link View} is isRestarted.
      */
     public void onRestart() {
-        restarted = true;
+        isRestarted = true;
     }
 
     /**
@@ -161,7 +161,7 @@ public class ViewState {
      */
     public void onPause() {
         lifecycleState = LifecycleState.PAUSED;
-        movedToBackground = true;
+        isMovedToBackground = true;
     }
 
     /**
@@ -170,7 +170,7 @@ public class ViewState {
     public void onResume() {
         lifecycleState = LifecycleState.RESUMED;
         instanceStateSaved = false;
-        movedToBackground = false;
+        isMovedToBackground = false;
     }
 
     /**
@@ -192,6 +192,6 @@ public class ViewState {
     }
 
     public boolean isMovedToBackground() {
-        return movedToBackground;
+        return isMovedToBackground;
     }
 }

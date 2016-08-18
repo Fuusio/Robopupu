@@ -17,6 +17,10 @@ package com.robopupu.api.util;
 
 import com.google.gson.JsonObject;
 
+/**
+ * {@link Gsonable} defines an interface for objects that can be serialized to {@link JsonObject}
+ * using Gson.
+ */
 public interface Gsonable {
 
     JsonObject toJsonObject();

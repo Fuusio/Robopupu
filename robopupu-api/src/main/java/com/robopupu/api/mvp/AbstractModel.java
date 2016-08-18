@@ -32,15 +32,28 @@ public class AbstractModel<T_ModelEvent extends ModelEvent, T_ModelListener exte
         }
     }
 
-    @Override
-    public JsonObject toJsonObject() {
-        final JsonParser jsonParser = new JsonParser();
-        return (JsonObject) jsonParser.parse(toJsonString());
+    protected JsonParser getJsonParser() {
+        return createJsonParser();
     }
 
-    @Override
+    protected JsonParser createJsonParser() {
+        return new JsonParser();
+    }
+
+    protected Gson getGson() {
+        return createGson();
+    }
+
+    protected Gson createGson() {
+        return new Gson();
+    }
+
+    @SuppressWarnings("unchecked")
+    public JsonObject toJsonObject() {
+        return (JsonObject) getJsonParser().parse(toJsonString());
+    }
+
     public String toJsonString() {
-        final Gson gson = new Gson();
-        return gson.toJson(this);
+        return getGson().toJson(this);
     }
 }

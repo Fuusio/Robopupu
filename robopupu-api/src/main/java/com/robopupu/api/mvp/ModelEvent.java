@@ -4,18 +4,18 @@ import java.util.EventObject;
 
 /**
  * {@link ModelEvent} extends {@link  EventObject} to provide an abstract base class for implementing
- * {@link Model} events.
+ * {@link Model} related events.
  *
- * @param <T_Model> The parametrised type extending {@link Model}.
- * @param <T_Type>  The parametrised type (e.g. enum type) representing Model event types.
+ * @param <T_Model> The parametrised eventType extending {@link Model}.
+ * @param <T_EventType>  The parametrised eventType (e.g. enum eventType) representing Model event types.
  */
-public abstract class ModelEvent<T_Model extends Model, T_Type> extends EventObject {
+public abstract class ModelEvent<T_Model extends Model, T_EventType> extends EventObject {
 
-    private final T_Type type;
+    private final T_EventType eventType;
 
-    protected ModelEvent(final T_Model model, final T_Type type) {
+    protected ModelEvent(final T_Model model, final T_EventType eventType) {
         super(model);
-        this.type = type;
+        this.eventType = eventType;
     }
 
     @SuppressWarnings("unchecked")
@@ -23,7 +23,7 @@ public abstract class ModelEvent<T_Model extends Model, T_Type> extends EventObj
         return (T) getSource();
     }
 
-    public final T_Type getType() {
-        return type;
+    public final T_EventType getEventType() {
+        return eventType;
     }
 }
