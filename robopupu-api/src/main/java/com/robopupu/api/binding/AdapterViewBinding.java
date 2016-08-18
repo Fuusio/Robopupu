@@ -26,7 +26,7 @@ import java.util.List;
 public class AdapterViewBinding<T_Item> extends ViewBinding<AdapterView>
         implements AdapterView.OnItemClickListener, AdapterView.OnItemSelectedListener {
 
-    private Adapter mAdapter;
+    private Adapter adapter;
 
     public AdapterViewBinding(final Adapter<T_Item> adapter) {
         setAdapter(adapter);
@@ -42,9 +42,9 @@ public class AdapterViewBinding<T_Item> extends ViewBinding<AdapterView>
     public final void setView(final AdapterView view) {
         super.setView(view);
 
-        if (mAdapter != null) {
-            mView.setAdapter(mAdapter);
-            mAdapter.setView(mView);
+        if (adapter != null) {
+            this.view.setAdapter(adapter);
+            adapter.setView(this.view);
         }
     }
 
@@ -55,7 +55,7 @@ public class AdapterViewBinding<T_Item> extends ViewBinding<AdapterView>
      */
     @SuppressWarnings("unchecked")
     public final void setItems(final List<T_Item> items) {
-        mAdapter.setItems(items);
+        adapter.setItems(items);
     }
 
     /**
@@ -65,11 +65,11 @@ public class AdapterViewBinding<T_Item> extends ViewBinding<AdapterView>
      */
     @SuppressWarnings("unchecked")
     public final void setAdapter(final Adapter<?> adapter) {
-        mAdapter = adapter;
+        this.adapter = adapter;
 
-        if (mAdapter != null && mView != null) {
-            mAdapter.setView(mView);
-            mView.setAdapter(mAdapter);
+        if (this.adapter != null && view != null) {
+            this.adapter.setView(view);
+            view.setAdapter(this.adapter);
         }
     }
 
@@ -80,10 +80,10 @@ public class AdapterViewBinding<T_Item> extends ViewBinding<AdapterView>
      */
     @SuppressWarnings("unchecked")
     public final T_Item getSelectedItem() {
-        final int index = mView.getSelectedItemPosition();
+        final int index = view.getSelectedItemPosition();
 
         if (index >= 0) {
-            return (T_Item) mAdapter.getItem(index);
+            return (T_Item) adapter.getItem(index);
         }
         return null;
     }

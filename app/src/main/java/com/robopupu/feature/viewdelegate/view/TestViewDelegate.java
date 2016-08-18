@@ -13,7 +13,7 @@ import com.robopupu.feature.viewdelegate.presenter.TestPresenter;
 public class TestViewDelegate extends FeatureViewCompatFragmentDelegate<TestPresenter, TestFragment>
     implements TestView {
 
-    @Plug TestPresenter mPresenter;
+    @Plug TestPresenter presenter;
 
     @Provides(TestView.class)
     public TestViewDelegate() {
@@ -22,13 +22,13 @@ public class TestViewDelegate extends FeatureViewCompatFragmentDelegate<TestPres
 
     @Override
     public TestPresenter getPresenter() {
-        return mPresenter;
+        return presenter;
     }
 
     @Override
     protected void onCreateBindings() {
         super.onCreateBindings();
-        getFragment().onCreateBindings(mBinder);
+        getFragment().onCreateBindings(binder);
     }
 
     @Override

@@ -9,10 +9,10 @@ import com.robopupu.api.fsm.StateMachine;
 public abstract class StateMachineInteractor<T_StateMachine extends StateMachine>
         extends AbstractInteractor {
 
-    private T_StateMachine mStateMachine;
+    private T_StateMachine stateMachine;
 
     protected StateMachineInteractor() {
-        mStateMachine = createStateMachine();
+        stateMachine = createStateMachine();
     }
 
     protected abstract T_StateMachine createStateMachine();

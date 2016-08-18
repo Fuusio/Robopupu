@@ -33,30 +33,30 @@ public class DelegatedWebViewClient extends WebViewClient {
 
     private static final String TAG = Utils.tag(DelegatedWebViewClient.class);
 
-    private Delegate mDelegate;
-    private String mFailingUrl;
-    private boolean mLoadingFailed;
-    private boolean mLoadingFinished;
-    private boolean mRetryingLoading;
+    private Delegate delegate;
+    private String failingUrl;
+    private boolean loadingFailed;
+    private boolean loadingFinished;
+    private boolean retryingLoading;
 
     public DelegatedWebViewClient(final Delegate delegate) {
         if (delegate == null) {
             throw new IllegalArgumentException("A Delegate may not be null");
         }
-        mDelegate = delegate;
+        this.delegate = delegate;
     }
 
     public final boolean isRetryingLoading() {
-        return mRetryingLoading;
+        return retryingLoading;
     }
 
     public void setRetryingLoading(final boolean retrying) {
-        mRetryingLoading = retrying;
+        retryingLoading = retrying;
     }
 
     @Override
     public boolean shouldOverrideUrlLoading(final WebView webView, final String url) {
-        if (mDelegate.shouldLoadUrl(webView, url)) {
+        if (delegate.shouldLoadUrl(webView, url)) {
             webView.loadUrl(url);
         }
         return true;
@@ -69,22 +69,22 @@ public class DelegatedWebViewClient extends WebViewClient {
 
         Log.d(TAG, "onReceivedError(...) : Failed to load URL : " + failingUrl + ". Reason: " + description + " Error code: " + errorCode);
 
-        mFailingUrl = failingUrl;
-        mLoadingFailed = true;
+        this.failingUrl = failingUrl;
+        loadingFailed = true;
 
         switch (errorCode) {
             case WebViewClient.ERROR_CONNECT:
             case WebViewClient.ERROR_HOST_LOOKUP: {
-                mDelegate.onUrlLoadingFailed(webView, mFailingUrl, errorCode);
+                delegate.onUrlLoadingFailed(webView, this.failingUrl, errorCode);
                 break;
             }
             case WebViewClient.ERROR_UNSUPPORTED_SCHEME:
             case WebViewClient.ERROR_BAD_URL: {
-                mDelegate.onUrlLoadingFailed(webView, mFailingUrl, errorCode);
+                delegate.onUrlLoadingFailed(webView, this.failingUrl, errorCode);
                 break;
             }
             default: {
-                mDelegate.onUrlLoadingFailed(webView, mFailingUrl, errorCode);
+                delegate.onUrlLoadingFailed(webView, this.failingUrl, errorCode);
                 break;
             }
         }
@@ -95,31 +95,31 @@ public class DelegatedWebViewClient extends WebViewClient {
     public void onPageFinished(final WebView webView, final String url) {
         super.onPageFinished(webView, url);
 
-        mLoadingFinished = true;
+        loadingFinished = true;
 
-        if (!mLoadingFailed && mRetryingLoading) {
-            if (mFailingUrl != null) {
-                if (mFailingUrl.contentEquals(url)) {
-                    mDelegate.onUrlReloadingSucceeded(webView, url);
-                    mFailingUrl = null;
+        if (!loadingFailed && retryingLoading) {
+            if (failingUrl != null) {
+                if (failingUrl.contentEquals(url)) {
+                    delegate.onUrlReloadingSucceeded(webView, url);
+                    failingUrl = null;
                 }
             }
         } else {
-            mDelegate.onUrlLoadingSucceeded(webView, url);
+            delegate.onUrlLoadingSucceeded(webView, url);
         }
     }
 
     @Override
     public void onPageStarted(final WebView webView, final String url, final Bitmap favicon) {
         
-        if (mRetryingLoading) {
-            if (mFailingUrl != null) {
-                if (mFailingUrl.equalsIgnoreCase(url) && mLoadingFinished) {
-                    mLoadingFailed = false;
+        if (retryingLoading) {
+            if (failingUrl != null) {
+                if (failingUrl.equalsIgnoreCase(url) && loadingFinished) {
+                    loadingFailed = false;
                 }
             }
         }
-        mLoadingFinished = false;
+        loadingFinished = false;
 
         super.onPageStarted(webView, url, favicon);
     }

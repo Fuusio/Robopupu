@@ -36,11 +36,11 @@ public class BitmapManagerImpl implements BitmapManager {
     private static final int DEFAULT_CACHE_SIZE = 50;
     private static final String NAME_DEFAULT_CACHE = "_DefaultCache";
 
-    private HashMap<String, LruCache<String, Bitmap>> mBitmapCaches;
+    private HashMap<String, LruCache<String, Bitmap>> bitmapCaches;
 
     public BitmapManagerImpl() {
         addCache(NAME_DEFAULT_CACHE);
-        mBitmapCaches = new HashMap<>();
+        bitmapCaches = new HashMap<>();
     }
 
     public Bitmap getBitmap(final int resId) {
@@ -48,13 +48,13 @@ public class BitmapManagerImpl implements BitmapManager {
     }
 
     public Bitmap getBitmap(final String cacheName, final int resId) {
-        final LruCache<String, Bitmap> cache = mBitmapCaches.get(cacheName);
+        final LruCache<String, Bitmap> cache = bitmapCaches.get(cacheName);
         final String key = Integer.toString(resId);
         return cache.get(key);
     }
 
     public Bitmap getBitmap(final String key) {
-        final LruCache<String, Bitmap> cache = mBitmapCaches.get(NAME_DEFAULT_CACHE);
+        final LruCache<String, Bitmap> cache = bitmapCaches.get(NAME_DEFAULT_CACHE);
         return cache.get(key);
     }
 
@@ -63,12 +63,12 @@ public class BitmapManagerImpl implements BitmapManager {
     }
 
     public LruCache<String, Bitmap> addCache(final String cacheName, final int cacheSize) {
-        LruCache<String, Bitmap> cache = mBitmapCaches.get(cacheName);
+        LruCache<String, Bitmap> cache = bitmapCaches.get(cacheName);
 
         assert (cache == null);
 
         cache = new LruCache<>(cacheSize);
-        mBitmapCaches.put(cacheName, cache);
+        bitmapCaches.put(cacheName, cache);
         return cache;
     }
 
@@ -77,7 +77,7 @@ public class BitmapManagerImpl implements BitmapManager {
     }
 
     public void clearCache(final String cacheName) {
-        final LruCache<String, Bitmap> cache = mBitmapCaches.get(cacheName);
+        final LruCache<String, Bitmap> cache = bitmapCaches.get(cacheName);
         final int cacheSize = cache.maxSize();
         cache.trimToSize(0);
         cache.trimToSize(cacheSize);
@@ -88,28 +88,28 @@ public class BitmapManagerImpl implements BitmapManager {
     }
 
     public int getCacheSize(final String cacheName) {
-        final LruCache<String, Bitmap> cache = mBitmapCaches.get(cacheName);
+        final LruCache<String, Bitmap> cache = bitmapCaches.get(cacheName);
         return cache.maxSize();
     }
 
     public void resizeCache(final String cacheName, final int newSize) {
-        final LruCache<String, Bitmap> cache = mBitmapCaches.get(cacheName);
+        final LruCache<String, Bitmap> cache = bitmapCaches.get(cacheName);
         cache.trimToSize(newSize);
     }
 
     public void removeCache(final String cacheName) {
-        mBitmapCaches.remove(cacheName);
+        bitmapCaches.remove(cacheName);
     }
 
     public void clearAllCaches() {
-        for (final String key : mBitmapCaches.keySet()) {
+        for (final String key : bitmapCaches.keySet()) {
             clearCache(key);
         }
     }
 
     public void dispose() {
         clearAllCaches();
-        mBitmapCaches.clear();
+        bitmapCaches.clear();
     }
 
     public void addBitmap(final int resId, final Bitmap bitmap) {
@@ -130,7 +130,7 @@ public class BitmapManagerImpl implements BitmapManager {
     }
 
     private void addBitmap(final String key, final String cacheName, final Bitmap bitmap, final boolean useFileCaching) {
-        LruCache<String, Bitmap> cache = mBitmapCaches.get(cacheName);
+        LruCache<String, Bitmap> cache = bitmapCaches.get(cacheName);
 
         if (cache == null) {
             cache = addCache(cacheName);

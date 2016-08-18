@@ -56,13 +56,13 @@ public class StateMachineTest {
             "ENTER: " + PowerOffState.class.getSimpleName(),
     };
 
-    private TestStateMachine mStateMachine;
+    private TestStateMachine stateMachine;
 
 
     @Before
     public void beforeTests() {
         final CoffeeMaker coffeeMaker = new CoffeeMaker();
-        mStateMachine = new TestStateMachine(coffeeMaker);
+        stateMachine = new TestStateMachine(coffeeMaker);
     }
 
     @Test
@@ -70,11 +70,11 @@ public class StateMachineTest {
 
         // Start the state machine
 
-        mStateMachine.start();
+        stateMachine.start();
 
-        final State stateEngine = mStateMachine.getStateEngine();
+        final State stateEngine = stateMachine.getStateEngine();
 
-        assertEquals(PowerOffState.class, mStateMachine.getCurrentState().getClass());
+        assertEquals(PowerOffState.class, stateMachine.getCurrentState().getClass());
 
         stateEngine.switchPowerOn();
         stateEngine.makeButtonPressed();

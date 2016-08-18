@@ -8,26 +8,26 @@ import com.robopupu.api.graph.OutputNode;
  */
 public class ZipInputNode<IN, OUT>  extends Node<IN, OUT> {
 
-    private final int mIndex;
-    private final ZipNode<OUT> mZipNode;
+    private final int index;
+    private final ZipNode<OUT> zipNode;
 
     public ZipInputNode(final ZipNode<OUT> zipNode, final int index) {
-        mZipNode = zipNode;
-        mIndex = index;
-        mZipNode.addZipInputNode(this, index);
+        this.zipNode = zipNode;
+        this.index = index;
+        this.zipNode.addZipInputNode(this, index);
     }
 
     public int getIndex() {
-        return mIndex;
+        return index;
     }
 
     public ZipNode<OUT> getZipNode() {
-        return mZipNode;
+        return zipNode;
     }
 
     @Override
     protected OUT processInput(final OutputNode<IN> source, final IN input) {
-        mZipNode.onInput(this, input);
+        zipNode.onInput(this, input);
         return null;
     }
 }

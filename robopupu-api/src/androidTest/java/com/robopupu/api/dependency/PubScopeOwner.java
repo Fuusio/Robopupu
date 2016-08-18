@@ -2,18 +2,18 @@ package com.robopupu.api.dependency;
 
 public class PubScopeOwner implements DependencyScopeOwner {
 
-    private DependencyScope mScope;
+    private DependencyScope scope;
 
     public PubScopeOwner() {
     }
 
     @Override
     public DependencyScope getOwnedScope() {
-        return mScope;
+        return scope;
     }
 
     public void setOwnedScope(DependencyScope scope) {
-        mScope = scope;
+        this.scope = scope;
     }
 
     @Override

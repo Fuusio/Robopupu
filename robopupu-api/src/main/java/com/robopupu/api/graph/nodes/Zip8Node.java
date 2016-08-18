@@ -34,14 +34,14 @@ public class Zip8Node<IN1, IN2, IN3, IN4, IN5, IN6, IN7, IN8, OUT> extends ZipNo
     @SuppressWarnings("unchecked")
     @Override
     protected OUT zip() {
-        final IN1 in1 = (IN1)mBuffers[0].remove(0);
-        final IN2 in2 = (IN2)mBuffers[1].remove(0);
-        final IN3 in3 = (IN3)mBuffers[2].remove(0);
-        final IN4 in4 = (IN4)mBuffers[3].remove(0);
-        final IN5 in5 = (IN5)mBuffers[4].remove(0);
-        final IN6 in6 = (IN6)mBuffers[5].remove(0);
-        final IN7 in7 = (IN7)mBuffers[6].remove(0);
-        final IN8 in8 = (IN8)mBuffers[7].remove(0);
+        final IN1 in1 = (IN1) buffers[0].remove(0);
+        final IN2 in2 = (IN2) buffers[1].remove(0);
+        final IN3 in3 = (IN3) buffers[2].remove(0);
+        final IN4 in4 = (IN4) buffers[3].remove(0);
+        final IN5 in5 = (IN5) buffers[4].remove(0);
+        final IN6 in6 = (IN6) buffers[5].remove(0);
+        final IN7 in7 = (IN7) buffers[6].remove(0);
+        final IN8 in8 = (IN8) buffers[7].remove(0);
         return mCombineFunction.eval(in1, in2, in3, in4, in5, in6, in7, in8);
     }
 }

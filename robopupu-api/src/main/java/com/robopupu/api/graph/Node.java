@@ -54,17 +54,17 @@ import java.util.ArrayList;
  */
 public class Node<IN, OUT> implements InputNode<IN>, OutputNode<OUT> {
 
-    protected final ArrayList<InputNode<OUT>> mInputNodes;
+    protected final ArrayList<InputNode<OUT>> inputNodes;
 
-    protected boolean mErrorReceived;
-    protected Graph<?> mGraph;
+    protected boolean errorReceived;
+    protected Graph<?> graph;
 
     /**
      * Constructs a new instance of {@link Node}.
      */
     protected Node() {
-        mErrorReceived = false;
-        mInputNodes = new ArrayList<>();
+        errorReceived = false;
+        inputNodes = new ArrayList<>();
     }
 
     /**
@@ -130,7 +130,7 @@ public class Node<IN, OUT> implements InputNode<IN>, OutputNode<OUT> {
      * @return A {@code boolean}.
      */
     public boolean isErrorReceived() {
-        return mErrorReceived;
+        return errorReceived;
     }
 
     /**
@@ -138,12 +138,12 @@ public class Node<IN, OUT> implements InputNode<IN>, OutputNode<OUT> {
      * @return A {@code boolean}.
      */
     protected void setErrorReceived(boolean mErrorReceived) {
-        this.mErrorReceived = mErrorReceived;
+        this.errorReceived = mErrorReceived;
     }
 
     @Override
     public void setGraph(final Graph<?> graph) {
-        mGraph = graph;
+        this.graph = graph;
     }
 
     /**
@@ -151,8 +151,8 @@ public class Node<IN, OUT> implements InputNode<IN>, OutputNode<OUT> {
      * @param output The outbut {@link Object}.
      */
     protected void emitOutput(final OUT output) {
-        if (!mErrorReceived && output != null) {
-            for (final InputNode<OUT> inputNode : mInputNodes) {
+        if (!errorReceived && output != null) {
+            for (final InputNode<OUT> inputNode : inputNodes) {
                 inputNode.onInput(this, output);
             }
         }
@@ -163,7 +163,7 @@ public class Node<IN, OUT> implements InputNode<IN>, OutputNode<OUT> {
      * @param source The completed {@link OutputNode}.
      */
     protected void completed(final OutputNode<?> source) {
-        for (final InputNode<OUT> inputNode : mInputNodes) {
+        for (final InputNode<OUT> inputNode : inputNodes) {
             inputNode.onCompleted(source);
         }
     }
@@ -174,9 +174,9 @@ public class Node<IN, OUT> implements InputNode<IN>, OutputNode<OUT> {
      * @param throwable A {@link Throwable} representing the error.
      */
     protected void dispatchError(final OutputNode<?> source, final Throwable throwable) {
-        mErrorReceived = true;
+        errorReceived = true;
 
-        for (final InputNode<OUT> inputNode : mInputNodes) {
+        for (final InputNode<OUT> inputNode : inputNodes) {
             inputNode.onError(source, throwable);
         }
     }
@@ -191,8 +191,8 @@ public class Node<IN, OUT> implements InputNode<IN>, OutputNode<OUT> {
      * @param inputNode A {@link InputNode}.
      */
     protected void addInputNode(final InputNode<OUT> inputNode) {
-        if (!mInputNodes.contains(inputNode)) {
-            mInputNodes.add(inputNode);
+        if (!inputNodes.contains(inputNode)) {
+            inputNodes.add(inputNode);
             onAttached(inputNode);
         }
     }
@@ -216,7 +216,7 @@ public class Node<IN, OUT> implements InputNode<IN>, OutputNode<OUT> {
      * @param inputNode A {@link InputNode}.
      */
     protected void removeInputNode(final InputNode<OUT> inputNode) {
-        if (mInputNodes.remove(inputNode)) {
+        if (inputNodes.remove(inputNode)) {
             onDetached(inputNode);
         }
     }
@@ -236,7 +236,7 @@ public class Node<IN, OUT> implements InputNode<IN>, OutputNode<OUT> {
      * @return A {@code boolean} value.
      */
     public boolean hasInputNodes() {
-        return !mInputNodes.isEmpty();
+        return !inputNodes.isEmpty();
     }
 
     @Override
@@ -250,7 +250,7 @@ public class Node<IN, OUT> implements InputNode<IN>, OutputNode<OUT> {
     @CallSuper
     @Override
     public void onReset() {
-        mErrorReceived = false;
+        errorReceived = false;
         dispatchReset();
     }
 
@@ -260,7 +260,7 @@ public class Node<IN, OUT> implements InputNode<IN>, OutputNode<OUT> {
     protected void dispatchReset() {
         doOnReset();
 
-        for (final InputNode<OUT> inputNode : mInputNodes) {
+        for (final InputNode<OUT> inputNode : inputNodes) {
             inputNode.onReset();
         }
     }
@@ -276,7 +276,7 @@ public class Node<IN, OUT> implements InputNode<IN>, OutputNode<OUT> {
     @CallSuper
     @Override
     public void onInput(final OutputNode<IN> source, final IN input) {
-        if (!mErrorReceived) {
+        if (!errorReceived) {
             doOnInput(source, input);
             emitOutput(processInput(source, input));
         }
@@ -315,7 +315,7 @@ public class Node<IN, OUT> implements InputNode<IN>, OutputNode<OUT> {
     public void onCompleted(final OutputNode<?> source) {
         doOnCompleted(source);
 
-        for (final InputNode<OUT> inputNode : mInputNodes) {
+        for (final InputNode<OUT> inputNode : inputNodes) {
             inputNode.onCompleted(source);
         }
     }

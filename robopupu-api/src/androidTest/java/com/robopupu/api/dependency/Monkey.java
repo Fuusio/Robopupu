@@ -2,13 +2,13 @@ package com.robopupu.api.dependency;
 
 public class Monkey {
 
-    private final Banana mBanana;
+    private final Banana banana;
 
     public Monkey(Banana banana) {
-        mBanana = banana;
+        this.banana = banana;
     }
 
     public Banana getBanana() {
-        return mBanana;
+        return banana;
     }
 }

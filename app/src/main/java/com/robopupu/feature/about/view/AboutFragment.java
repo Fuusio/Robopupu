@@ -32,9 +32,9 @@ import com.robopupu.api.plugin.Plugin;
 @Plugin
 public class AboutFragment extends CoordinatorLayoutFragment<AboutPresenter> implements AboutView {
 
-    @Plug AboutPresenter mPresenter;
+    @Plug AboutPresenter presenter;
 
-    private Binding mVersionTextBinding;
+    private Binding versionTextBinding;
 
     @Provides(AboutView.class)
     public AboutFragment() {
@@ -43,12 +43,12 @@ public class AboutFragment extends CoordinatorLayoutFragment<AboutPresenter> imp
 
     @Override
     public AboutPresenter getPresenter() {
-        return mPresenter;
+        return presenter;
     }
 
     @Override
     public void setVersionText(final String text) {
-        mVersionTextBinding.setText(text);
+        versionTextBinding.setText(text);
     }
 
     @Override
@@ -59,6 +59,6 @@ public class AboutFragment extends CoordinatorLayoutFragment<AboutPresenter> imp
     @Override
     protected void onCreateBindings() {
         super.onCreateBindings();
-        mVersionTextBinding = bind(R.id.text_view_version);
+        versionTextBinding = bind(R.id.text_view_version);
     }
 }

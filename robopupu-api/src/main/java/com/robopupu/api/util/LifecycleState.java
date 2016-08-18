@@ -25,14 +25,14 @@ public enum LifecycleState {
     STOPPED("Stopped"), //
     DESTROYED("Destroyed");
 
-    private final String mLabel;
+    private final String label;
 
     LifecycleState(final String label) {
-        mLabel = label;
+        this.label = label;
     }
 
     public String getLabel() {
-        return mLabel;
+        return label;
     }
 
     public final boolean isDormant() {

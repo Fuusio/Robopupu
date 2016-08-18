@@ -53,25 +53,25 @@ public class AppManagerImpl extends AbstractManager implements AppManager {
 
     private static final String TAG = Utils.tag(AppManagerImpl.class);
 
-    private final RobopupuApplication mApplication;
+    private final RobopupuApplication application;
 
-    @Plug ExitObserver mExitObserver;
-    @Plug PluginFeatureManager mFeatureManager;
+    @Plug ExitObserver exitObserver;
+    @Plug PluginFeatureManager featureManager;
 
     @Scope(RobopupuAppScope.class)
     @Provides(AppManager.class)
     public AppManagerImpl(final RobopupuApplication application) {
-        mApplication = application;
+        this.application = application;
     }
 
     @Override
     public RobopupuApplication getApplication() {
-        return mApplication;
+        return application;
     }
 
     @Override
     public Context getAppContext() {
-        return mApplication.getApplicationContext();
+        return application.getApplicationContext();
     }
 
     @Override
@@ -98,7 +98,7 @@ public class AppManagerImpl extends AbstractManager implements AppManager {
 
     @Override
     public PackageInfo getPackageInfo() {
-        final Context context = mApplication.getApplicationContext();
+        final Context context = application.getApplicationContext();
         final PackageManager manager = context.getPackageManager();
         try {
             final String packageName = context.getPackageName();
@@ -111,7 +111,7 @@ public class AppManagerImpl extends AbstractManager implements AppManager {
 
     @Override
     public boolean isPackageInstalled(final String packageName) {
-        final Context context = mApplication.getApplicationContext();
+        final Context context = application.getApplicationContext();
         final PackageManager manager = context.getPackageManager();
         final List<ApplicationInfo> infos = manager.getInstalledApplications(PackageManager.GET_META_DATA);
 
@@ -189,22 +189,22 @@ public class AppManagerImpl extends AbstractManager implements AppManager {
 
     @Override
     public @ColorInt int getColor(@ColorRes int colorResId) {
-        return ContextCompat.getColor(mApplication, colorResId);
+        return ContextCompat.getColor(application, colorResId);
     }
 
     @Override
     public int getInteger(@IntegerRes int intResId) {
-        return mApplication.getResources().getInteger(intResId);
+        return application.getResources().getInteger(intResId);
     }
 
     @Override
     public String getString(final @StringRes int stringResId, final Object... formatArgs) {
-        return mApplication.getString(stringResId, formatArgs);
+        return application.getString(stringResId, formatArgs);
     }
 
     @Override
     public void exitApplication() {
-        final Activity activity = mFeatureManager.getForegroundActivity();
+        final Activity activity = featureManager.getForegroundActivity();
         final AlertDialog alertDialog = new AlertDialog.Builder(activity).create();
         alertDialog.setTitle(R.string.ft_main_dialog_title_exit_confirmation);
         alertDialog.setMessage(getString(R.string.ft_main_dialog_prompt_exit_app));
@@ -212,7 +212,7 @@ public class AppManagerImpl extends AbstractManager implements AppManager {
                 new DialogInterface.OnClickListener() {
                     public void onClick(final DialogInterface dialog, final int which) {
                         dialog.dismiss();
-                        mExitObserver.onAppExit();
+                        exitObserver.onAppExit();
                         activity.finish();
                     }
                 });

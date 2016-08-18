@@ -27,35 +27,35 @@ public class Robopupu {
 
     private static final String TAG = Utils.tag(Robopupu.class);
 
-    private static Robopupu sInstance = null;
+    private static Robopupu instance = null;
 
-    protected final Application mApplication;
-    protected final AppDependencyScope mAppScope;
-    protected final DependenciesCache mDependenciesCache;
+    protected final Application application;
+    protected final AppDependencyScope appScope;
+    protected final DependenciesCache dependenciesCache;
 
     public Robopupu(final AppDependencyScope appScope) {
-        mApplication = appScope.getApplication();
-        mDependenciesCache = createDependencyScopeCache();
-        mAppScope = appScope;
-        mAppScope.initialize();
+        application = appScope.getApplication();
+        dependenciesCache = createDependencyScopeCache();
+        this.appScope = appScope;
+        this.appScope.initialize();
 
         setInstance(this);
 
-        UIToolkit.setApplication(mApplication);
-        Dependency.setAppScope(mAppScope);
+        UIToolkit.setApplication(application);
+        Dependency.setAppScope(this.appScope);
     }
 
     public DependenciesCache getDependenciesCache() {
-        return mDependenciesCache;
+        return dependenciesCache;
     }
 
     @SuppressWarnings("unchecked")
     public static <T extends Robopupu> T getInstance() {
-        return (T) sInstance;
+        return (T) instance;
     }
 
     private static void setInstance(final Robopupu instance) {
-        sInstance = instance;
+        Robopupu.instance = instance;
     }
 
     protected DependenciesCache createDependencyScopeCache() {

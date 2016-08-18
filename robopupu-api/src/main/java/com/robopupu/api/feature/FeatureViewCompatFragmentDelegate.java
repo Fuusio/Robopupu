@@ -25,8 +25,7 @@ public abstract class FeatureViewCompatFragmentDelegate<T_Presenter extends Pres
         extends ViewCompatFragmentDelegate<T_Presenter, T_Fragment>
     implements FeatureView {
 
-    private Feature mFeature;
-    private DependencyScope mScope;
+    private Feature feature;
 
     protected FeatureViewCompatFragmentDelegate(final T_Fragment fragment) {
         super(fragment);
@@ -34,19 +33,9 @@ public abstract class FeatureViewCompatFragmentDelegate<T_Presenter extends Pres
 
     @Override
     public void setFeature(final Feature feature) {
-        mFeature = feature;
+        this.feature = feature;
     }
     
-    @Override
-    public DependencyScope getScope() {
-        return mScope;
-    }
-
-    @Override
-    public void setScope(final DependencyScope scope) {
-        mScope = scope;
-    }
-
     @Override
     public boolean isDialog() {
         return false;
@@ -56,8 +45,8 @@ public abstract class FeatureViewCompatFragmentDelegate<T_Presenter extends Pres
     public void onResume() {
         super.onResume();
 
-        if (mFeature != null) {
-            mFeature.addActiveView(this);
+        if (feature != null) {
+            feature.addActiveView(this);
         }
     }
 
@@ -65,8 +54,8 @@ public abstract class FeatureViewCompatFragmentDelegate<T_Presenter extends Pres
     public void onPause() {
         super.onPause();
 
-        if (mFeature != null) {
-            mFeature.removeActiveView(this);
+        if (feature != null) {
+            feature.removeActiveView(this);
         }
     }
 }

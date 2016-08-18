@@ -26,9 +26,9 @@ import com.robopupu.api.util.MessageContext;
  */
 public abstract class ViewBinding<T_View extends View> implements View.OnClickListener {
 
-    protected ClickListener mClickListener;
-    protected MessageContext mErrorMessage;
-    protected T_View mView;
+    protected ClickListener clickListener;
+    protected MessageContext errorMessage;
+    protected T_View view;
 
     protected ViewBinding() {
     }
@@ -37,16 +37,16 @@ public abstract class ViewBinding<T_View extends View> implements View.OnClickLi
         if (view != null) {
             setView(view);
         } else {
-            mView = null;
+            this.view = null;
         }
     }
 
     public ClickListener getClickListener() {
-        return mClickListener;
+        return clickListener;
     }
 
     public void setClickListener(ClickListener listener) {
-        mClickListener = listener;
+        clickListener = listener;
     }
 
     /**
@@ -55,29 +55,29 @@ public abstract class ViewBinding<T_View extends View> implements View.OnClickLi
      * @return A {@link boolean}.
      */
     public final boolean isViewEnabled() {
-        return mView.isEnabled();
+        return view.isEnabled();
     }
 
     public final void setViewEnabled(final boolean enabled) {
-        mView.setEnabled(enabled);
+        view.setEnabled(enabled);
     }
 
     @SuppressWarnings("unchecked")
     public final <T> T getViewTag() {
-        return (T) mView.getTag();
+        return (T) view.getTag();
     }
 
     @SuppressWarnings("unchecked")
     public final <T> T getViewTag(final int key) {
-        return (T) mView.getTag(key);
+        return (T) view.getTag(key);
     }
 
     public void setViewTag(final Object tag) {
-        mView.setTag(tag);
+        view.setTag(tag);
     }
 
     public void setViewTag(final int key, final Object tag) {
-        mView.setTag(key, tag);
+        view.setTag(key, tag);
     }
 
     /**
@@ -86,7 +86,7 @@ public abstract class ViewBinding<T_View extends View> implements View.OnClickLi
      * @return A {@link View}.
      */
     public final T_View getView() {
-        return mView;
+        return view;
     }
 
     /**
@@ -97,21 +97,21 @@ public abstract class ViewBinding<T_View extends View> implements View.OnClickLi
     public void setView(final T_View view) {
 
         if (view != null) {
-            mView = view;
-            mErrorMessage = new MessageContext(view.getContext());
-            attachListeners(mView);
-        } else if (mView != null) {
-            detachListeners(mView);
-            mView = null;
+            this.view = view;
+            errorMessage = new MessageContext(view.getContext());
+            attachListeners(this.view);
+        } else if (this.view != null) {
+            detachListeners(this.view);
+            this.view = null;
         }
     }
 
     public final int getViewVisibility() {
-        return mView.getVisibility();
+        return view.getVisibility();
     }
 
     public final void setViewVisibility(final int visibility) {
-        mView.setVisibility(visibility);
+        view.setVisibility(visibility);
     }
 
     /**
@@ -144,8 +144,8 @@ public abstract class ViewBinding<T_View extends View> implements View.OnClickLi
 
     @Override
     public void onClick(final View view) {
-        if (mClickListener != null) {
-            mClickListener.onClicked(view);
+        if (clickListener != null) {
+            clickListener.onClicked(view);
         }
         clicked();
     }
@@ -160,21 +160,21 @@ public abstract class ViewBinding<T_View extends View> implements View.OnClickLi
      * Requests focus for thw bound {@link View}.
      */
     public void requestFocus() {
-        mView.requestFocus();
+        view.requestFocus();
     }
 
     public void setErrorMessage(final String message, final Object... args) {
-        mErrorMessage.setMessage(message);
-        mErrorMessage.setMessageArgs(args);
+        errorMessage.setMessage(message);
+        errorMessage.setMessageArgs(args);
     }
 
     public void setErrorMessage(final int messageResId, final Object... args) {
-        mErrorMessage.setMessage(messageResId);
-        mErrorMessage.setMessageArgs(args);
+        errorMessage.setMessage(messageResId);
+        errorMessage.setMessageArgs(args);
     }
 
     public void clearErrorMessage() {
-        mErrorMessage.clear();
+        errorMessage.clear();
     }
 
     public interface ClickListener {

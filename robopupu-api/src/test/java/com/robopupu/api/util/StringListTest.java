@@ -33,14 +33,14 @@ public class StringListTest {
     private String STRING_2_ELEMENTS = "A1;A2";
     private String STRING_3_ELEMENTS = "A1;A2;A3";
 
-    StringList mStringList;
+    StringList stringList;
 
     @Before
     public void beforeTests() {
-        mStringList = new StringList();
-        mStringList.add(STRING_A1);
-        mStringList.add(STRING_A2);
-        mStringList.add(STRING_A3);
+        stringList = new StringList();
+        stringList.add(STRING_A1);
+        stringList.add(STRING_A2);
+        stringList.add(STRING_A3);
     }
 
     @Test
@@ -48,39 +48,39 @@ public class StringListTest {
 
         // Test null String
 
-        mStringList.readFromString(null);
+        stringList.readFromString(null);
 
-        assertEquals(0, mStringList.size());
+        assertEquals(0, stringList.size());
 
         // Test empty String
 
-        mStringList.readFromString("");
+        stringList.readFromString("");
 
-        assertEquals(0, mStringList.size());
+        assertEquals(0, stringList.size());
 
         // Test String containing just one element
 
-        mStringList.readFromString(STRING_1_ELEMENT);
+        stringList.readFromString(STRING_1_ELEMENT);
 
-        assertEquals(1, mStringList.size());
-        assertEquals(STRING_A1, mStringList.get(0));
+        assertEquals(1, stringList.size());
+        assertEquals(STRING_A1, stringList.get(0));
 
         // Test String containing two elements
 
-        mStringList.readFromString(STRING_2_ELEMENTS);
+        stringList.readFromString(STRING_2_ELEMENTS);
 
-        assertEquals(2, mStringList.size());
-        assertEquals(STRING_A1, mStringList.get(0));
-        assertEquals(STRING_A2, mStringList.get(1));
+        assertEquals(2, stringList.size());
+        assertEquals(STRING_A1, stringList.get(0));
+        assertEquals(STRING_A2, stringList.get(1));
 
         // Test String containing three elements
 
-        mStringList.readFromString(STRING_3_ELEMENTS);
+        stringList.readFromString(STRING_3_ELEMENTS);
 
-        assertEquals(3, mStringList.size());
-        assertEquals(STRING_A1, mStringList.get(0));
-        assertEquals(STRING_A2, mStringList.get(1));
-        assertEquals(STRING_A3, mStringList.get(2));
+        assertEquals(3, stringList.size());
+        assertEquals(STRING_A1, stringList.get(0));
+        assertEquals(STRING_A2, stringList.get(1));
+        assertEquals(STRING_A3, stringList.get(2));
     }
 
     @Test
@@ -90,37 +90,37 @@ public class StringListTest {
 
         // Test null String
 
-        mStringList.readFromString(null);
+        stringList.readFromString(null);
 
-        result = mStringList.writeToString();
+        result = stringList.writeToString();
         assertEquals("", result);
 
         // Test empty String
 
-        mStringList.readFromString("");
+        stringList.readFromString("");
 
-        result = mStringList.writeToString();
+        result = stringList.writeToString();
         assertEquals("", result);
 
         // Test String containing just one element
 
-        mStringList.readFromString(STRING_1_ELEMENT);
+        stringList.readFromString(STRING_1_ELEMENT);
 
-        result = mStringList.writeToString();
+        result = stringList.writeToString();
         assertEquals(STRING_1_ELEMENT, result);
 
         // Test String containing two elements
 
-        mStringList.readFromString(STRING_2_ELEMENTS);
+        stringList.readFromString(STRING_2_ELEMENTS);
 
-        result = mStringList.writeToString();
+        result = stringList.writeToString();
         assertEquals(STRING_2_ELEMENTS, result);
 
         // Test String containing three elements
 
-        mStringList.readFromString(STRING_3_ELEMENTS);
+        stringList.readFromString(STRING_3_ELEMENTS);
 
-        result = mStringList.writeToString();
+        result = stringList.writeToString();
         assertEquals(STRING_3_ELEMENTS, result);
 
         int a = 0;
@@ -128,6 +128,6 @@ public class StringListTest {
 
     @After
     public void afterTests() {
-        mStringList.clear();
+        stringList.clear();
     }
 }

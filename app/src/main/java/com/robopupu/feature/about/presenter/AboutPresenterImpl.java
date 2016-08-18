@@ -31,16 +31,16 @@ import com.robopupu.api.plugin.PluginBus;
 public class AboutPresenterImpl extends AbstractFeaturePresenter<AboutView>
         implements AboutPresenter {
 
-    @Plug AppManager mAppManager;
-    @Plug AboutFeature mFeature;
-    @Plug AboutView mView;
+    @Plug AppManager appManager;
+    @Plug AboutFeature feature;
+    @Plug AboutView view;
 
     public AboutPresenterImpl() {
     }
 
     @Override
     public AboutView getViewPlug() {
-        return mView;
+        return view;
     }
 
     @Override
@@ -52,21 +52,21 @@ public class AboutPresenterImpl extends AbstractFeaturePresenter<AboutView>
     @Override
     public void onViewResume(final View view) {
         super.onViewResume(view);
-        mView.setVersionText(mAppManager.getAppVersionName());
+        this.view.setVersionText(appManager.getAppVersionName());
     }
 
     @Override
     public void onViewLicenseClick() {
-        mFeature.onShowLicenseInfo();
+        feature.onShowLicenseInfo();
     }
 
     @Override
     public void onViewOssLicensesClick() {
-        mFeature.onShowOssLicensesInfo();
+        feature.onShowOssLicensesInfo();
     }
 
     @Override
     public void onViewSourcesClick() {
-        mFeature.onOpenSourcesWebPage();
+        feature.onOpenSourcesWebPage();
     }
 }

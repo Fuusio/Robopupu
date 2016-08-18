@@ -35,9 +35,9 @@ import com.robopupu.api.plugin.Plugin;
 public class FeedbackFragment extends CoordinatorLayoutFragment<FeedbackPresenter>
         implements FeedbackView {
 
-    private Binding mFeedbackTextBinding;
+    private Binding feedbackTextBinding;
 
-    @Plug FeedbackPresenter mPresenter;
+    @Plug FeedbackPresenter presenter;
 
     @Provides(FeedbackView.class)
     public FeedbackFragment() {
@@ -46,7 +46,7 @@ public class FeedbackFragment extends CoordinatorLayoutFragment<FeedbackPresente
 
     @Override
     public FeedbackPresenter getPresenter() {
-        return mPresenter;
+        return presenter;
     }
 
     @Override
@@ -57,14 +57,14 @@ public class FeedbackFragment extends CoordinatorLayoutFragment<FeedbackPresente
     @Override
     public void onStart() {
         super.onStart();
-        mFeedbackTextBinding.requestFocus();
+        feedbackTextBinding.requestFocus();
     }
 
     @Override
     protected void onCreateBindings() {
         super.onCreateBindings();
 
-        mFeedbackTextBinding = new Binding(this, R.id.edit_text_feedback);
+        feedbackTextBinding = new Binding(this, R.id.edit_text_feedback);
     }
 
     @Override
@@ -72,13 +72,13 @@ public class FeedbackFragment extends CoordinatorLayoutFragment<FeedbackPresente
         new ClickBinding(this, fab) {
             @Override
             protected void clicked() {
-                mPresenter.onSendClicked(mFeedbackTextBinding.getText());
+                presenter.onSendClicked(feedbackTextBinding.getText());
             }
         };
     }
 
     @Override
     public void clearFeedbackText() {
-        mFeedbackTextBinding.setText("");
+        feedbackTextBinding.setText("");
     }
 }

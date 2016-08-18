@@ -37,11 +37,11 @@ import com.robopupu.api.plugin.Plugin;
 public class LicensesInfoFragment extends FeatureCompatDialogFragment<LicensesInfoPresenter>
         implements LicensesInfoView {
 
-    private WebView mWebView;
-    private DelegatedWebViewClient mWebViewClient;
-    private RelativeLayout mWebViewRelativeLayout;
+    private WebView webView;
+    private DelegatedWebViewClient webViewClient;
+    private RelativeLayout webViewRelativeLayout;
 
-    @Plug LicensesInfoPresenter mPresenter;
+    @Plug LicensesInfoPresenter presenter;
 
     @Provides(LicensesInfoView.class)
     public LicensesInfoFragment() {
@@ -50,7 +50,7 @@ public class LicensesInfoFragment extends FeatureCompatDialogFragment<LicensesIn
 
     @Override
     public LicensesInfoPresenter getPresenter() {
-        return mPresenter;
+        return presenter;
     }
 
     @Override
@@ -62,34 +62,34 @@ public class LicensesInfoFragment extends FeatureCompatDialogFragment<LicensesIn
     protected void onCreateBindings() {
         super.onCreateBindings();
 
-        mWebView = new WebView(getActivity());
+        webView = new WebView(getActivity());
 
-        mWebViewRelativeLayout = getView(R.id.relative_layout_web_view);
-        mWebViewClient = new DelegatedWebViewClient(mPresenter);
-        mWebView.setWebViewClient(mWebViewClient);
+        webViewRelativeLayout = getView(R.id.relative_layout_web_view);
+        webViewClient = new DelegatedWebViewClient(presenter);
+        webView.setWebViewClient(webViewClient);
 
         final RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         params.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
         params.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
         params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE);
         params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
-        mWebViewRelativeLayout.addView(mWebView, params);
+        webViewRelativeLayout.addView(webView, params);
 
         new ClickBinding(this, R.id.button_ok) {
             @Override
             protected void clicked() {
-                mPresenter.onOkButtonClicked();
+                // REMOVE presenter.onOkButtonClick();
             }
         };
     }
 
     @Override
     public void loadUrl(final String url) {
-        mWebView.post(new Runnable() {
+        webView.post(new Runnable() {
 
             @Override
             public void run() {
-                mWebView.loadUrl(url);
+                webView.loadUrl(url);
             }
         });
     }

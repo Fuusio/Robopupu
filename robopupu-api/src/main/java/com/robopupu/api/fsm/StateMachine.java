@@ -25,13 +25,13 @@ import java.lang.reflect.Method;
  */
 public abstract class StateMachine implements StateEngineObserver {
 
-    private LifecycleState mLifecycleState;
-    private boolean mResetted;
-    private StateEngine<?> mStateEngine;
+    private LifecycleState lifecycleState;
+    private boolean resetted;
+    private StateEngine<?> stateEngine;
 
     protected StateMachine() {
-        mLifecycleState = LifecycleState.DORMANT;
-        mResetted = false;
+        lifecycleState = LifecycleState.DORMANT;
+        resetted = false;
     }
 
     /**
@@ -41,7 +41,7 @@ public abstract class StateMachine implements StateEngineObserver {
      */
     @SuppressWarnings({"unchecked", "unused"})
     public final <T extends StateEngine<?>> T getStateEngine() {
-        return (T) mStateEngine;
+        return (T) stateEngine;
     }
 
     /**
@@ -51,7 +51,7 @@ public abstract class StateMachine implements StateEngineObserver {
      */
     @SuppressWarnings("unchecked")
     public final <T extends StateEngine<?>> T getCurrentState() {
-        return (T) getCurrentState(mStateEngine.getCurrentState());
+        return (T) getCurrentState(stateEngine.getCurrentState());
     }
 
     @SuppressWarnings("unchecked")
@@ -69,7 +69,7 @@ public abstract class StateMachine implements StateEngineObserver {
      * @return A {@code boolean} value.
      */
     public boolean isStarted() {
-        return mLifecycleState.isStarted();
+        return lifecycleState.isStarted();
     }
 
     /**
@@ -79,7 +79,7 @@ public abstract class StateMachine implements StateEngineObserver {
      */
     @SuppressWarnings("unused")
     public boolean isCurrentSuperState(final Class<? extends StateEngine<?>> superStateClass) {
-        StateEngine<?> currentState = mStateEngine.getCurrentState();
+        StateEngine<?> currentState = stateEngine.getCurrentState();
         return currentState.hasSuperState(superStateClass);
     }
 
@@ -90,7 +90,7 @@ public abstract class StateMachine implements StateEngineObserver {
      */
     @SuppressWarnings("unused")
     public boolean isCurrentState(final Class<? extends StateEngine<?>> stateClass) {
-        return stateClass.equals(mStateEngine.getCurrentState().getClass());
+        return stateClass.equals(stateEngine.getCurrentState().getClass());
     }
 
     /**
@@ -100,24 +100,24 @@ public abstract class StateMachine implements StateEngineObserver {
     @SuppressWarnings("unchecked")
     private void initialize(final Class<? extends StateEngine<?>> initialStateClass) {
 
-        mStateEngine = createStateEngine();
+        stateEngine = createStateEngine();
 
-        if (mStateEngine == null) {
+        if (stateEngine == null) {
             final String stateEngineClassName = getClass().getPackage().getName() + ".State";
 
             try {
                 final Class<? extends StateEngine> stateEngineClass = (Class<? extends StateEngine>) Class.forName(stateEngineClassName);
                 final Method method = stateEngineClass.getMethod("create", initialStateClass.getClass());
-                mStateEngine = (StateEngine)method.invoke(null, initialStateClass);
+                stateEngine = (StateEngine)method.invoke(null, initialStateClass);
             } catch (Exception e) {
                 throw new RuntimeException("Failed to instantiate StateEngine class: " + stateEngineClassName);
             }
         }
 
-        onStateEngineCreated(mStateEngine);
+        onStateEngineCreated(stateEngine);
 
-        mLifecycleState = LifecycleState.CREATED;
-        mStateEngine.setObserver(this);
+        lifecycleState = LifecycleState.CREATED;
+        stateEngine.setObserver(this);
     }
 
     protected void onStateEngineCreated(StateEngine<?> stateEngine) {
@@ -141,14 +141,14 @@ public abstract class StateMachine implements StateEngineObserver {
     @SuppressWarnings("unchecked")
     protected final <T extends StateEngine<?>> T start(final Class<T> initialStateClass) {
 
-        if (mLifecycleState.isDormant()) {
+        if (lifecycleState.isDormant()) {
             initialize(initialStateClass);
         }
 
-        if (mLifecycleState.isCreated() || mLifecycleState.isStopped() && mResetted) {
-            mStateEngine.start();
-            mResetted = false;
-            mLifecycleState = LifecycleState.STARTED;
+        if (lifecycleState.isCreated() || lifecycleState.isStopped() && resetted) {
+            stateEngine.start();
+            resetted = false;
+            lifecycleState = LifecycleState.STARTED;
             return getCurrentState();
         } else {
             throw new IllegalStateException("A stopped StateMachine has to be resetted before restarting");
@@ -167,19 +167,21 @@ public abstract class StateMachine implements StateEngineObserver {
      * it.
      */
     public final void stop() {
-        mLifecycleState = LifecycleState.STOPPED;
-        mStateEngine.stop();
+        lifecycleState = LifecycleState.STOPPED;
+        stateEngine.stop();
     }
 
     /**
      * Reset this {@link StateMachine}. A {@link StateMachine} can be restarted after resetting.
      */
     public final void reset() {
-        if (mLifecycleState.isStarted()) {
-            stop();
+        if (stateEngine != null) {
+            if (lifecycleState.isStarted()) {
+                stop();
+            }
+            stateEngine.reset();
+            resetted = true;
         }
-        mStateEngine.reset();
-        mResetted = true;
     }
 
     @Override

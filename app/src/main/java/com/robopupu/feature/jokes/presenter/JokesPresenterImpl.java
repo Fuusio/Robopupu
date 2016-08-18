@@ -15,10 +15,8 @@
  */
 package com.robopupu.feature.jokes.presenter;
 
-import com.robopupu.R;
 import com.robopupu.api.dependency.Provides;
 import com.robopupu.api.feature.AbstractFeaturePresenter;
-import com.robopupu.api.graph.NodeObserver;
 import com.robopupu.api.graph.NodeObserverAdapter;
 import com.robopupu.api.graph.OutputNode;
 import com.robopupu.api.plugin.Plug;
@@ -33,9 +31,9 @@ import com.robopupu.feature.jokes.view.JokesView;
 public class JokesPresenterImpl extends AbstractFeaturePresenter<JokesView>
         implements JokesPresenter {
 
-    @Plug AppManager mAppManager;
-    @Plug JokesInteractor mInteractor;
-    @Plug JokesView mView;
+    @Plug AppManager appManager;
+    @Plug JokesInteractor interactor;
+    @Plug JokesView view;
 
     @Provides(JokesPresenter.class)
     public JokesPresenterImpl() {
@@ -43,7 +41,7 @@ public class JokesPresenterImpl extends AbstractFeaturePresenter<JokesView>
 
     @Override
     public JokesView getViewPlug() {
-        return mView;
+        return view;
     }
 
     @Override
@@ -55,12 +53,12 @@ public class JokesPresenterImpl extends AbstractFeaturePresenter<JokesView>
     private void displayJoke(final JokeResponse response) {
         final String joke = response.getValue().getJoke();
         final String formattedJoke = joke.replace("&quot;", "\"");
-        mView.displayJoke(formattedJoke);
+        view.displayJoke(formattedJoke);
     }
 
     @Override
     public void onRequestJokeClick() {
-        mInteractor.requestJoke(new NodeObserverAdapter<JokeResponse>() {
+        interactor.requestJoke(new NodeObserverAdapter<JokeResponse>() {
             @Override
             public void onInput(OutputNode<JokeResponse> node, JokeResponse response) {
                 displayJoke(response);

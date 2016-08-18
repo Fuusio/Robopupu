@@ -33,15 +33,15 @@ public class AppConfig {
         }
     }
 
-    private static final HashMap<Integer, Flag> sFlags = new HashMap<>();
+    private static final HashMap<Integer, Flag> flags = new HashMap<>();
 
-    private static Context sAppContext = null;
+    private static Context appContext = null;
 
     private static Context getAppContext() {
-        if (sAppContext == null) {
-            sAppContext = D.get(Context.class);
+        if (appContext == null) {
+            appContext = D.get(Context.class);
         }
-        return sAppContext;
+        return appContext;
     }
 
     /**
@@ -61,12 +61,12 @@ public class AppConfig {
      * @return A {@code boolean} value.
      */
     public static boolean isEnabled(final Resources resources, final @IntegerRes int flagResId) {
-        Flag flag = sFlags.get(flagResId);
+        Flag flag = flags.get(flagResId);
 
         if (flag == null) {
             final int value = resources.getInteger(flagResId);
             flag = Flag.getValue(value);
-            sFlags.put(flagResId, flag);
+            flags.put(flagResId, flag);
         }
         return flag.isEnabled();
     }
@@ -92,7 +92,7 @@ public class AppConfig {
         final Flag flag = Flag.getValue(value);
 
         if (!flag.isLocked()) {
-            sFlags.put(flagResId, enabled ? Flag.ENABLED_UNLOCKED : Flag.DISABLED_UNLOCKED);
+            flags.put(flagResId, enabled ? Flag.ENABLED_UNLOCKED : Flag.DISABLED_UNLOCKED);
         }
     }
 }

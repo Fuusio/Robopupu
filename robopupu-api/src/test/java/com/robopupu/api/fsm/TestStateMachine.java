@@ -4,10 +4,10 @@ import com.robopupu.api.fsm.state.PowerOffState;
 
 public class TestStateMachine extends StateMachine {
 
-    private final CoffeeMaker mCoffeeMaker;
+    private final CoffeeMaker coffeeMaker;
 
     public TestStateMachine(final CoffeeMaker coffeeMaker) {
-        mCoffeeMaker = coffeeMaker;
+        this.coffeeMaker = coffeeMaker;
     }
 
     @Override
@@ -17,6 +17,6 @@ public class TestStateMachine extends StateMachine {
 
     @Override
     protected void onStateEngineCreated(final StateEngine stateEngine) {
-        ((State)stateEngine).setCoffeeMaker(mCoffeeMaker);
+        ((State)stateEngine).setCoffeeMaker(coffeeMaker);
     }
 }

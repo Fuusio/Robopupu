@@ -29,11 +29,11 @@ public class TestPresenterImpl extends AbstractFeaturePresenter<TestView>
         implements TestPresenter {
 
     @Plug
-    TestView mView;
+    TestView view;
 
     @Override
     public TestView getViewPlug() {
-        return mView;
+        return view;
     }
 
     @Override
@@ -45,11 +45,11 @@ public class TestPresenterImpl extends AbstractFeaturePresenter<TestView>
     @Override
     public void onViewResume(final View view) {
         super.onViewResume(view);
-        mView.setSayHelloText("");
+        this.view.setSayHelloText("");
     }
 
     @Override
     public void onSayHelloClick() {
-        mView.setSayHelloText("HELLO!");
+        view.setSayHelloText("HELLO!");
     }
 }

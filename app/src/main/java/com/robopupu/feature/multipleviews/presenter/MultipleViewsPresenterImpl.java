@@ -30,20 +30,20 @@ public class MultipleViewsPresenterImpl extends AbstractFeaturePresenter<Multipl
         implements MultipleViewsPresenter {
 
     @Plug
-    MultipleViewsView mView;
+    MultipleViewsView view;
     @Plug
-    MultipleViewsFeature mFeature;
+    MultipleViewsFeature feature;
 
     @Override
     public MultipleViewsView getViewPlug() {
-        return mView;
+        return view;
     }
 
     @Override
     public void onViewStart(final View view) {
         super.onViewStart(view);
 
-        mFeature.showView(R.id.fragment_container_top, TopPresenter.class,false, null);
-        mFeature.showView(R.id.fragment_container_bottom, BottomPresenter.class, false, null);
+        feature.showView(R.id.fragment_container_top, TopPresenter.class,false, null);
+        feature.showView(R.id.fragment_container_bottom, BottomPresenter.class, false, null);
     }
 }

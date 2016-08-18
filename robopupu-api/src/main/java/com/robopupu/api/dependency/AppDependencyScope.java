@@ -38,13 +38,13 @@ import android.view.inputmethod.InputMethodManager;
  */
 public abstract class AppDependencyScope<T_Application extends Application> extends DependencyScope {
 
-    private static AppDependencyScope sInstance = null;
+    private static AppDependencyScope instance = null;
 
-    private final T_Application mApplication;
+    private final T_Application application;
 
     protected AppDependencyScope(final T_Application application) {
-        mApplication = application;
-        sInstance = this;
+        this.application = application;
+        instance = this;
     }
 
     /**
@@ -57,16 +57,16 @@ public abstract class AppDependencyScope<T_Application extends Application> exte
      */
     @SuppressWarnings("unchecked")
     public static <T extends AppDependencyScope> T getInstance() {
-        return (T) sInstance;
+        return (T) instance;
     }
 
     @Override
     protected <T> T getDependency() {
 
         if (type(Application.class)) {
-            return dependency(mApplication);
+            return dependency(application);
         } else if (type(Context.class)) {
-            return dependency(mApplication.getApplicationContext());
+            return dependency(application.getApplicationContext());
         } else if (type(AccountManager.class)) {
             return dependency(getApplicationContext().getSystemService(Context.ACCOUNT_SERVICE));
         } else if (type(ActivityManager.class)) {
@@ -105,7 +105,7 @@ public abstract class AppDependencyScope<T_Application extends Application> exte
      * @return A {@link Context}.
      */
     public final Context getApplicationContext() {
-        return mApplication.getApplicationContext();
+        return application.getApplicationContext();
     }
 
     /**
@@ -115,7 +115,7 @@ public abstract class AppDependencyScope<T_Application extends Application> exte
      */
     @SuppressWarnings("unchecked")
     public final T_Application getApplication() {
-        return mApplication;
+        return application;
     }
 
     @Override

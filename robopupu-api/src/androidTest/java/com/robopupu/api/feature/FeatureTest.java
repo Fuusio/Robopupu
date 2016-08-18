@@ -39,55 +39,55 @@ import static org.mockito.Mockito.when;
 @SmallTest
 public class FeatureTest {
 
-    private FooApp mFooApp;
-    private Context mApplicationContext;
-    private FeatureContainer mFeatureContainer;
-    private TestFeatureManager mFeatureManager;
-    private FragmentManager mFragmentManager;
-    private TestFeature mTestFeature;
-    private TestView mTestView;
-    private TestPresenter mTestPresenter;
+    private FooApp fooApp;
+    private Context applicationContext;
+    private FeatureContainer featureContainer;
+    private TestFeatureManager featureManager;
+    private FragmentManager fragmentManager;
+    private TestFeature testFeature;
+    private TestView testView;
+    private TestPresenter testPresenter;
 
     @Before
     public void beforeTests() {
 
-        mApplicationContext = InstrumentationRegistry.getContext();
-        mFragmentManager = Mockito.mock(FragmentManager.class);
-        mFeatureManager = new TestFeatureManager();
-        mFeatureContainer = Mockito.mock(FeatureContainer.class);
+        applicationContext = InstrumentationRegistry.getContext();
+        fragmentManager = Mockito.mock(FragmentManager.class);
+        featureManager = new TestFeatureManager();
+        featureContainer = Mockito.mock(FeatureContainer.class);
     }
 
     @Test
     public void test() {
 
-        assertNotNull(mFeatureManager);
+        assertNotNull(featureManager);
 
         final Params params = new Params ("foo", "bar");
 
-        mTestFeature = (TestFeature)mFeatureManager.startFeature(mFeatureContainer, TestFeature.class, params);
-        assertNotNull(mTestFeature);
-        assertTrue(mTestFeature.isStarted());
-        assertNotNull(mTestFeature.getBar());
+        testFeature = (TestFeature) featureManager.startFeature(featureContainer, TestFeature.class, params);
+        assertNotNull(testFeature);
+        assertTrue(testFeature.isStarted());
+        assertNotNull(testFeature.getBar());
 
-        final DependencyScope scope = mTestFeature.getOwnedScope();
+        final DependencyScope scope = testFeature.getOwnedScope();
         assertNotNull(scope);
         assertEquals(D.getActiveScope(), scope);
 
-        mTestFeature.pause();
-        assertTrue(mTestFeature.isPaused());
-        assertTrue(mFeatureManager.mFeaturePaused);
+        testFeature.pause();
+        assertTrue(testFeature.isPaused());
+        assertTrue(featureManager.mFeaturePaused);
 
-        mTestFeature.resume();
-        assertTrue(mTestFeature.isResumed());
-        assertTrue(mFeatureManager.mFeatureResumed);
+        testFeature.resume();
+        assertTrue(testFeature.isResumed());
+        assertTrue(featureManager.mFeatureResumed);
 
-        mTestFeature.finish();
-        assertTrue(mTestFeature.isStopped());
-        assertTrue(mFeatureManager.mFeatureStopped);
+        testFeature.finish();
+        assertTrue(testFeature.isStopped());
+        assertTrue(featureManager.mFeatureStopped);
 
-        mTestFeature.destroy();
-        assertTrue(mTestFeature.isDestroyed());
-        assertTrue(mFeatureManager.mFeatureDestroyed);
+        testFeature.destroy();
+        assertTrue(testFeature.isDestroyed());
+        assertTrue(featureManager.mFeatureDestroyed);
     }
 
     @After

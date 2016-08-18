@@ -19,19 +19,19 @@ import com.robopupu.api.util.Params;
 
 public class TestFeature extends AbstractFeature {
 
-    private String mBar;
+    private String bar;
 
     public TestFeature() {
         super(TestFeatureScope.class);
     }
 
     public String getBar() {
-        return mBar;
+        return bar;
     }
 
     @Override
     protected void onCreate(Params params) {
         super.onCreate(params);
-        mBar = params.getString("foo");
+        bar = params.getString("foo");
     }
 }

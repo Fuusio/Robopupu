@@ -11,17 +11,17 @@ import com.robopupu.api.graph.OutputNode;
  */
 public class ConcatStringsNode<IN> extends Node<IN, String> {
 
-    private final StringBuilder mString;
+    private final StringBuilder string;
 
     public ConcatStringsNode() {
-        mString = new StringBuilder();
+        string = new StringBuilder();
     }
 
     @SuppressWarnings("unchecked")
     @Override
     protected String processInput(final OutputNode<IN> source, final IN input) {
         if (input != null) {
-            mString.append(input.toString());
+            string.append(input.toString());
         } else {
             dispatchError(this, new ClassCastException(createErrorMessage("Received an input value that cannot be converted to String")));
         }
@@ -30,6 +30,6 @@ public class ConcatStringsNode<IN> extends Node<IN, String> {
 
     @Override
     public void onCompleted(final OutputNode<?> outputNode) {
-        emitOutput(mString.toString());
+        emitOutput(string.toString());
     }
 }

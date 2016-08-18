@@ -22,11 +22,11 @@ import android.widget.TextView;
 
 public class TextViewBinding extends ViewBinding<TextView> implements TextWatcher {
 
-    private boolean mValidValue;
+    private boolean validValue;
 
     public TextViewBinding(final TextView view) {
         super(view);
-        mValidValue = true;
+        validValue = true;
     }
 
     protected TextViewBinding() {
@@ -38,7 +38,7 @@ public class TextViewBinding extends ViewBinding<TextView> implements TextWatche
      * @return The text as a {@link String}.
      */
     public String getText() {
-        return mView.getText().toString();
+        return view.getText().toString();
     }
 
     /**
@@ -47,7 +47,7 @@ public class TextViewBinding extends ViewBinding<TextView> implements TextWatche
      * @param text A {@link String} containing the text.
      */
     public void setText(final String text) {
-        mView.setText(text);
+        view.setText(text);
     }
 
     @Override
@@ -74,11 +74,11 @@ public class TextViewBinding extends ViewBinding<TextView> implements TextWatche
 
     @Override
     public final void onTextChanged(final CharSequence sequence, final int start, final int before, final int count) {
-        mErrorMessage.clear();
+        errorMessage.clear();
 
-        mValidValue = isValidValue(sequence.toString());
+        validValue = isValidValue(sequence.toString());
 
-        if (mValidValue) {
+        if (validValue) {
             textChanged(sequence.toString(), start, before, count);
         } else {
             invalidTextChanged(sequence.toString(), start, before, count);
@@ -89,9 +89,9 @@ public class TextViewBinding extends ViewBinding<TextView> implements TextWatche
     public final void afterTextChanged(final Editable editable) {
 
         final String text = editable.toString();
-        mValidValue = isValidValue(text);
+        validValue = isValidValue(text);
 
-        if (mValidValue) {
+        if (validValue) {
 
             setValue(text);
 

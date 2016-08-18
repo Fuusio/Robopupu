@@ -24,19 +24,19 @@ import java.util.List;
  */
 public abstract class AbstractListenable<T_Listener> implements Listenable<T_Listener> {
 
-    private final transient ArrayList<T_Listener> mListeners;
-    private final transient boolean mSingled;
+    private final transient ArrayList<T_Listener> listeners;
+    private final transient boolean singled;
 
     protected AbstractListenable() {
-        mListeners = new ArrayList<>();
-        mSingled = getClass().isAnnotationPresent(Singled.class);
+        listeners = new ArrayList<>();
+        singled = getClass().isAnnotationPresent(Singled.class);
     }
 
     @Override
     public T_Listener getSingleListener() {
-        if (mSingled) {
-            if (mListeners.size() == 1) {
-                return mListeners.get(0);
+        if (singled) {
+            if (listeners.size() == 1) {
+                return listeners.get(0);
             } else {
                 return null;
             }
@@ -47,22 +47,22 @@ public abstract class AbstractListenable<T_Listener> implements Listenable<T_Lis
 
     @Override
     public synchronized final List<T_Listener> getListeners() {
-        return new ArrayList<>(mListeners);
+        return new ArrayList<>(listeners);
     }
 
     @Override
     public synchronized int getListenerCount() {
-        return mListeners.size();
+        return listeners.size();
     }
 
     @Override
     public synchronized boolean addListener(final T_Listener listener) {
 
-        if (!mListeners.contains(listener)) {
-            if (mSingled && !mListeners.isEmpty()) {
+        if (!listeners.contains(listener)) {
+            if (singled && !listeners.isEmpty()) {
                 throw new IllegalStateException("This Listenable is annotated to allow only a single listener");
             }
-            mListeners.add(listener);
+            listeners.add(listener);
             return true;
         }
         return false;
@@ -70,21 +70,21 @@ public abstract class AbstractListenable<T_Listener> implements Listenable<T_Lis
 
     @Override
     public synchronized boolean removeListener(final T_Listener listener) {
-        return mListeners.remove(listener);
+        return listeners.remove(listener);
     }
 
     @Override
     public synchronized void removeAllListeners() {
-        mListeners.clear();
+        listeners.clear();
     }
 
     @Override
     public synchronized boolean hasAnyListeners() {
-        return !mListeners.isEmpty();
+        return !listeners.isEmpty();
     }
 
     @Override
     public boolean isSingled() {
-        return mSingled;
+        return singled;
     }
 }

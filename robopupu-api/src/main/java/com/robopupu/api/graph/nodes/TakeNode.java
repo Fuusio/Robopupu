@@ -9,28 +9,28 @@ import com.robopupu.api.graph.OutputNode;
  */
 public class TakeNode<IN> extends Node<IN, IN> {
 
-    private int mCounter;
-    private int mSteps;
+    private int counter;
+    private int steps;
 
     public TakeNode(final int steps) {
-        mSteps = steps;
-        mCounter = 0;
+        this.steps = steps;
+        counter = 0;
     }
 
     @SuppressWarnings("unchecked")
     @Override
     protected IN processInput(final OutputNode<IN> outputNode, final IN input) {
-        if (mCounter >= mSteps) {
+        if (counter >= steps) {
             onCompleted(this);
             return null;
         } else {
-            mCounter++;
+            counter++;
             return input;
         }
     }
 
     @Override
     public void doOnReset() {
-        mCounter = 0;
+        counter = 0;
     }
 }

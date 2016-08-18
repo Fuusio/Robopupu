@@ -21,13 +21,13 @@ import java.lang.Thread.UncaughtExceptionHandler;
 
 public abstract class AppExceptionHandler<T_ApplicationError extends AppError> implements UncaughtExceptionHandler {
 
-    private static AppExceptionHandler sInstance = null;
+    private static AppExceptionHandler instance = null;
 
-    private final Thread.UncaughtExceptionHandler mDefaultHandler;
+    private final Thread.UncaughtExceptionHandler defaultHandler;
 
     protected AppExceptionHandler(final Thread.UncaughtExceptionHandler defaultHandler) {
-        sInstance = this;
-        mDefaultHandler = defaultHandler;
+        instance = this;
+        this.defaultHandler = defaultHandler;
     }
 
     @Override
@@ -60,7 +60,7 @@ public abstract class AppExceptionHandler<T_ApplicationError extends AppError> i
     }
 
     protected static AppError getUnknownError() {
-        return sInstance.getAppSpecificUnknownError();
+        return instance.getAppSpecificUnknownError();
     }
 
     protected abstract T_ApplicationError getAppSpecificUnknownError();

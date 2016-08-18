@@ -3,7 +3,6 @@ package com.robopupu.api.graph.nodes;
 import com.robopupu.api.graph.Node;
 import com.robopupu.api.graph.OutputNode;
 import com.robopupu.api.graph.actions.Action;
-import com.robopupu.api.graph.actions.Action1;
 
 /**
  * {@link ActionNode} is a {@link Node} that can be used to execute a given {@link Action}
@@ -11,17 +10,17 @@ import com.robopupu.api.graph.actions.Action1;
  */
 public class ActionNode<IN, OUT> extends Node<IN, OUT> {
 
-    private final Action mAction;
+    private final Action action;
 
     public ActionNode(final Action action) {
-        mAction = action;
+        this.action = action;
     }
 
     @SuppressWarnings("unchecked")
     @Override
     protected OUT processInput(final OutputNode<IN> source, final IN input) {
-        if (mAction != null) {
-            mAction.execute();
+        if (action != null) {
+            action.execute();
         } else {
             execute();
         }

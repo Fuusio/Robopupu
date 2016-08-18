@@ -34,6 +34,7 @@ public class FsmDemoFeatureImpl extends AbstractFeature implements FsmDemoFeatur
 
     @Override
     protected void onStart() {
+        super.onStart();
         showView(FsmDemoPresenter.class, false);
     }
 }

@@ -10,13 +10,13 @@ import com.robopupu.api.graph.OutputNode;
  */
 public class SumNode<IN> extends Node<IN, Double> {
 
-    private double mSum;
+    private double sum;
 
     @SuppressWarnings("unchecked")
     @Override
     protected Double processInput(final OutputNode<IN> source, final IN input) {
         if (input instanceof Number) {
-            mSum += ((Number)input).doubleValue();
+            sum += ((Number)input).doubleValue();
         } else {
             dispatchError(this, new ClassCastException(createErrorMessage("Received an object that cannot be converted to Number")));
         }
@@ -25,11 +25,11 @@ public class SumNode<IN> extends Node<IN, Double> {
 
     @Override
     public void onCompleted(final OutputNode<?> outputNode) {
-        emitOutput(mSum);
+        emitOutput(sum);
     }
 
     @Override
     public void doOnReset() {
-        mSum = 0;
+        sum = 0;
     }
 }

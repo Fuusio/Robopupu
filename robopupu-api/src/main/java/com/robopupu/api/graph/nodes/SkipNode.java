@@ -9,27 +9,27 @@ import com.robopupu.api.graph.OutputNode;
  */
 public class SkipNode<IN> extends Node<IN, IN> {
 
-    private int mCounter;
-    private int mSteps;
+    private int counter;
+    private int steps;
 
     public SkipNode(final int steps) {
-        mSteps = steps;
-        mCounter = 0;
+        this.steps = steps;
+        counter = 0;
     }
 
     @SuppressWarnings("unchecked")
     @Override
     protected IN processInput(final OutputNode<IN> source, final IN input) {
-        if (mCounter >= mSteps) {
+        if (counter >= steps) {
             return input;
         } else {
-            mCounter++;
+            counter++;
             return null;
         }
     }
 
     @Override
     public void doOnReset() {
-        mCounter = 0;
+        counter = 0;
     }
 }

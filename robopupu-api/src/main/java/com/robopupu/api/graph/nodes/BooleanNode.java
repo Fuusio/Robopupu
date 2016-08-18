@@ -9,13 +9,13 @@ import com.robopupu.api.graph.OutputNode;
  */
 public class BooleanNode<IN> extends Node<IN, Boolean> {
 
-    private boolean mValue;
+    private boolean value;
 
     @Override
     protected Boolean processInput(final OutputNode<IN> source, final IN input) {
         if (input instanceof Boolean) {
-            mValue = (Boolean)input;
-            return mValue;
+            value = (Boolean)input;
+            return value;
         } else {
             dispatchError(this, new ClassCastException(createErrorMessage("Received an object that cannot be converted to Boolean")));
             return null;
@@ -23,6 +23,6 @@ public class BooleanNode<IN> extends Node<IN, Boolean> {
     }
 
     public boolean getValue() {
-        return mValue;
+        return value;
     }
 }

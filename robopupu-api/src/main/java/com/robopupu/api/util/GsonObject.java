@@ -21,22 +21,15 @@ import com.google.gson.JsonParser;
 
 public abstract class GsonObject<T> implements Gsonable {
 
-    private final Gson mGson;
-
     protected GsonObject() {
-        this(false);
-    }
-
-    protected GsonObject(final boolean createGson) {
-        if (createGson) {
-            mGson = createGson();
-        } else {
-            mGson = null;
-        }
     }
 
     protected Gson createGson() {
         return new Gson();
+    }
+
+    protected Gson getGson() {
+        return createGson();
     }
 
     protected JsonParser createJsonParser() {
@@ -52,7 +45,7 @@ public abstract class GsonObject<T> implements Gsonable {
 
     @Override
     public String toJsonString() {
-        final Gson gson = (mGson != null) ? mGson : createGson();
+        final Gson gson = getGson();
         return gson.toJson(this);
     }
 

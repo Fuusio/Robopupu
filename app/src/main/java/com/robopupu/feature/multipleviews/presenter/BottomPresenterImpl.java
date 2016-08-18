@@ -27,11 +27,11 @@ import com.robopupu.feature.multipleviews.view.BottomView;
 public class BottomPresenterImpl extends AbstractFeaturePresenter<BottomView>
         implements BottomPresenter {
 
-    @Plug BottomView mView;
+    @Plug BottomView view;
 
     @Override
     public BottomView getViewPlug() {
-        return mView;
+        return view;
     }
 
     @Override

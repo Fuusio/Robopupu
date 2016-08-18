@@ -38,14 +38,14 @@ public abstract class StateEngine<T_State extends StateEngine> {
         ERROR_UNHANDLED_DEEP_HISTORY("Unhandled deep history in State: %s"),
         ERROR_UNHANDLED_SHALLOW_HISTORY("Unhandled shallow history in State: %s");
 
-        private final String mDescription;
+        private final String description;
 
         Error(final String description) {
-            mDescription = description;
+            this.description = description;
         }
 
         public final String getDescription(final Object... args) {
-            return String.format(mDescription, args);
+            return String.format(description, args);
         }
     }
 
@@ -54,54 +54,54 @@ public abstract class StateEngine<T_State extends StateEngine> {
      * represents a state or 2) the top-level states if this instance of {@link StateEngine}
      * represents a state machine.
      */
-    protected final HashSet<T_State> mSubStates;
+    protected final HashSet<T_State> subStates;
 
     /**
      * The current state among the substates of this state.
      */
-    protected T_State mCurrentState;
+    protected T_State currentState;
 
     /**
      * A {@link Class} specifying the initial state among the substates of this state.
      */
-    protected Class<? extends T_State> mInitialStateClass;
+    protected Class<? extends T_State> initialStateClass;
 
     /**
      * A {@link HashMap} used for caching state instances. The {@link Class}es of states can be used
      * as keys to the {@link HashMap}, because each state object has its own {@link Class}.
      */
-    protected HashMap<Class<?>, T_State> mStateCache;
+    protected HashMap<Class<?>, T_State> stateCache;
 
     /**
      * The reference to an instance of {@link StateEngine} that represents a state machine. All
      * instances of concrete implementations of {@link StateEngine} that represent individual
      * states have a reference to the state machine.
      */
-    protected T_State mStateEngine;
+    protected T_State stateEngine;
 
     /**
      * The class of the super state of the state represented by this instance of {@link StateEngine}.
      * If this instance of {@link StateEngine} is a state machine, then this field has {@code null}
      * value.
      */
-    protected Class<? extends T_State> mSuperStateClass;
+    protected Class<? extends T_State> superStateClass;
 
     /**
      * The super state of the state represented by this instance of {@link StateEngine}. If this
      * instance of {@link StateEngine} is a state machine, then this field has {@code null} value.
      */
-    protected T_State mSuperState;
+    protected T_State superState;
 
     /**
      * The {@link StateEngineObserver} that receives events from this {@link StateEngine}.
      */
-    private StateEngineObserver mObserver;
+    private StateEngineObserver observer;
 
     /**
      * Private default constructor.
      */
     private StateEngine() {
-        mSubStates = new HashSet<>();
+        subStates = new HashSet<>();
     }
 
     /**
@@ -114,14 +114,14 @@ public abstract class StateEngine<T_State extends StateEngine> {
     protected StateEngine(final Class<? extends T_State> initialStateClass) {
         this();
 
-        mInitialStateClass = initialStateClass;
+        this.initialStateClass = initialStateClass;
 
         // The following two field are initialised only in this constructor
-        mStateEngine = (T_State) this;
-        mStateCache = new HashMap<>();
+        stateEngine = (T_State) this;
+        stateCache = new HashMap<>();
 
         // Store this state engine state to cache of state instances
-        mStateCache.put(getClass(), (T_State) this);
+        stateCache.put(getClass(), (T_State) this);
     }
 
     /**
@@ -136,8 +136,8 @@ public abstract class StateEngine<T_State extends StateEngine> {
     protected StateEngine(final Class<? extends T_State> superStateClass, final Class<? extends T_State> initialStateClass) {
         this();
 
-        mInitialStateClass = initialStateClass;
-        mSuperStateClass = superStateClass;
+        this.initialStateClass = initialStateClass;
+        this.superStateClass = superStateClass;
     }
 
     /**
@@ -146,7 +146,7 @@ public abstract class StateEngine<T_State extends StateEngine> {
      */
     public StateEngineObserver getObserver() {
         if (isStateEngine()) {
-            return mObserver;
+            return observer;
         } else {
             return getStateEngine().getObserver();
         }
@@ -157,7 +157,7 @@ public abstract class StateEngine<T_State extends StateEngine> {
      * @param observer A {@link StateEngineObserver}.
      */
     public final void setObserver(final StateEngineObserver observer) {
-        mObserver = observer;
+        this.observer = observer;
     }
 
     /**
@@ -168,7 +168,7 @@ public abstract class StateEngine<T_State extends StateEngine> {
      */
     @SuppressWarnings("unchecked")
     protected final <T extends T_State> T getSuperState() {
-        return (T) mSuperState;
+        return (T) superState;
     }
 
     /**
@@ -179,7 +179,7 @@ public abstract class StateEngine<T_State extends StateEngine> {
      */
     @SuppressWarnings("unchecked")
     public final <T extends StateEngine> T getCurrentState() {
-        return (T) mCurrentState;
+        return (T) currentState;
     }
 
     /**
@@ -188,7 +188,7 @@ public abstract class StateEngine<T_State extends StateEngine> {
      * @param state A state object representing the new current state.
      */
     protected final void setCurrentState(final T_State state) {
-        mCurrentState = state;
+        currentState = state;
     }
 
     /**
@@ -197,7 +197,7 @@ public abstract class StateEngine<T_State extends StateEngine> {
      * @return A {@link StateEngine}.
      */
     protected final T_State getStateEngine() {
-        return mStateEngine;
+        return stateEngine;
     }
 
     /**
@@ -220,17 +220,17 @@ public abstract class StateEngine<T_State extends StateEngine> {
     protected final T_State getState(final Class<? extends T_State> stateClass) {
 
         if (isStateEngine()) {
-            T_State state = mStateCache.get(stateClass);
+            T_State state = stateCache.get(stateClass);
 
             if (state == null) {
                 try {
                     state = stateClass.newInstance();
 
-                    state.mStateEngine = this.mStateEngine;
-                    state.mSuperState = getState(state.mSuperStateClass);
-                    state.mSuperState.mSubStates.add(state);
+                    state.stateEngine = this.stateEngine;
+                    state.superState = getState(state.superStateClass);
+                    state.superState.subStates.add(state);
 
-                    mStateCache.put(stateClass, state);
+                    stateCache.put(stateClass, state);
 
                 } catch (Exception e) {
                     // Do nothing
@@ -248,9 +248,9 @@ public abstract class StateEngine<T_State extends StateEngine> {
      */
     protected T_State dispatch() {
         if (isStateEngine()) {
-            return mCurrentState;
+            return currentState;
         } else if (hasSuperState()) {
-            return mSuperState;
+            return superState;
         } else {
             throw new IllegalStateException("Unhandled event detected.");
         }
@@ -295,8 +295,6 @@ public abstract class StateEngine<T_State extends StateEngine> {
                 currentState.exit(newState);
             }
 
-            // newState.onEnter();
-
             return (T_State) newState.enter(entryPoint);
         } else {
             return (T_State) getStateEngine().transitTo(stateClass, entryPoint);
@@ -340,9 +338,9 @@ public abstract class StateEngine<T_State extends StateEngine> {
                 newCurrentState = (T_State) newCurrentState.enterShallowHistory();
             }
 
-            mCurrentState = newCurrentState;
-            mCurrentState.onEnter();
-            return mCurrentState;
+            currentState = newCurrentState;
+            currentState.onEnter();
+            return currentState;
         } else {
             return (T_State) getStateEngine().toHistoryState(stateClass, deepHistory);
         }
@@ -361,8 +359,8 @@ public abstract class StateEngine<T_State extends StateEngine> {
         onEnter();
 
         if (entryPoint == 0) {
-            if (mInitialStateClass != null) {
-                return transitTo(mInitialStateClass);
+            if (initialStateClass != null) {
+                return transitTo(initialStateClass);
             } else {
                 return (T_State) this;
             }
@@ -403,11 +401,11 @@ public abstract class StateEngine<T_State extends StateEngine> {
      */
     @SuppressWarnings("unchecked")
     protected final T_State enterDeepHistory() {
-        if (mCurrentState != null) {
-            return (T_State) mCurrentState.enterDeepHistory();
+        if (currentState != null) {
+            return (T_State) currentState.enterDeepHistory();
         } else {
-            if (mInitialStateClass != null) {
-                return transitTo(mInitialStateClass);
+            if (initialStateClass != null) {
+                return transitTo(initialStateClass);
             } else {
                 return (T_State) this;
             }
@@ -421,11 +419,11 @@ public abstract class StateEngine<T_State extends StateEngine> {
      */
     @SuppressWarnings("unchecked")
     protected final T_State enterShallowHistory() {
-        if (mCurrentState != null) {
-            return mCurrentState;
+        if (currentState != null) {
+            return currentState;
         } else {
-            if (mInitialStateClass != null) {
-                return transitTo(mInitialStateClass);
+            if (initialStateClass != null) {
+                return transitTo(initialStateClass);
             } else {
                 return (T_State) this;
             }
@@ -444,13 +442,13 @@ public abstract class StateEngine<T_State extends StateEngine> {
         if (!isStateEngine()) {
             onExit();
 
-            if (mSuperState != null && mSuperState != getStateEngine()) {
-                mSuperState.mCurrentState = this;
+            if (superState != null && superState != getStateEngine()) {
+                superState.currentState = this;
             }
 
-            if (mSuperState != null && newState != mSuperState) {
-                if (!mSuperState.isStateEngine() && !mSuperState.isSuperStateFor(newState)) {
-                    mSuperState.exit(newState);
+            if (superState != null && newState != superState) {
+                if (!superState.isStateEngine() && !superState.isSuperStateFor(newState)) {
+                    superState.exit(newState);
                 }
             }
         }
@@ -516,14 +514,14 @@ public abstract class StateEngine<T_State extends StateEngine> {
             onDisposeState();
         }
 
-        for (final T_State state : mSubStates) {
+        for (final T_State state : subStates) {
             state.dispose();
         }
 
-        mSubStates.clear();
+        subStates.clear();
 
-        if (mStateCache != null) {
-            mStateCache.clear();
+        if (stateCache != null) {
+            stateCache.clear();
         }
     }
 
@@ -531,7 +529,7 @@ public abstract class StateEngine<T_State extends StateEngine> {
      * Starts this {@link StateEngine}. When started, the top-level initial state is entered.
      */
     public synchronized final void start() {
-        mCurrentState = transitTo(mInitialStateClass);
+        transitTo(initialStateClass);
         getObserver().onStart(this);
     }
 
@@ -543,8 +541,8 @@ public abstract class StateEngine<T_State extends StateEngine> {
         final T_State stateEngine = getStateEngine();
 
         if (isStateEngine()) {
-            mStateCache.clear();
-            mStateCache.put(stateEngine.getClass(), stateEngine);
+            stateCache.clear();
+            stateCache.put(stateEngine.getClass(), stateEngine);
             getObserver().onReset(this);
         } else {
             stateEngine.reset();
@@ -566,7 +564,7 @@ public abstract class StateEngine<T_State extends StateEngine> {
      * @return A {@code boolean} value.
      */
     public boolean hasSuperState() {
-        return !isStateEngine() &&  mSuperState != getStateEngine();
+        return !isStateEngine() &&  superState != getStateEngine();
     }
 
     /**
@@ -599,10 +597,10 @@ public abstract class StateEngine<T_State extends StateEngine> {
                 return false;
             }
 
-            if (state == mSuperState) {
+            if (state == superState) {
                 return true;
-            } else if (mSuperState != null) {
-                return mSuperState.isSuperState(state);
+            } else if (superState != null) {
+                return superState.isSuperState(state);
             }
         }
         return false;

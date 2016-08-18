@@ -37,16 +37,16 @@ import static org.junit.Assert.assertTrue;
 @SmallTest
 public class DependencyScopeTest {
 
-    private ZooApp mApp;
-    private ZooAppScope mAppScope;
-    private CityScope mParentScope;
+    private ZooApp app;
+    private ZooAppScope appScope;
+    private CityScope parentScope;
 
     @Before
     public void beforeTests() {
-        mApp = new ZooApp();
-        mAppScope = new ZooAppScope(mApp);
-        mParentScope = new CityScope();
-        Dependency.setAppScope(mAppScope);
+        app = new ZooApp();
+        appScope = new ZooAppScope(app);
+        parentScope = new CityScope();
+        Dependency.setAppScope(appScope);
     }
 
     @After
@@ -63,7 +63,7 @@ public class DependencyScopeTest {
 
         // Test isDisposable() method
 
-        assertFalse(mAppScope.isDisposable());
+        assertFalse(appScope.isDisposable());
         assertTrue(pubScope.isDisposable());
 
         // Test hasDependency(...) methods

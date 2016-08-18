@@ -36,9 +36,11 @@ public class PlatformManagerImpl extends AbstractManager implements PlatformMana
 
     private static final String TAG = Utils.tag(PlatformManagerImpl.class);
 
-    @Plug AppManager mAppManager;
     @Plug
-    PluginFeatureManager mFeatureManager;
+    AppManager appManager;
+
+    @Plug
+    PluginFeatureManager featureManager;
 
     @Scope(RobopupuAppScope.class)
     @Provides(PlatformManager.class)
@@ -47,7 +49,7 @@ public class PlatformManagerImpl extends AbstractManager implements PlatformMana
 
     @Override
     public String getString(final @StringRes int stringResId, final Object... formatArgs) {
-        return mAppManager.getString(stringResId, formatArgs);
+        return appManager.getString(stringResId, formatArgs);
     }
 
     @Override
@@ -80,13 +82,13 @@ public class PlatformManagerImpl extends AbstractManager implements PlatformMana
 
     @Override
     public void startActivity(final Intent intent) {
-        final Activity activity = mFeatureManager.getForegroundActivity();
+        final Activity activity = featureManager.getForegroundActivity();
         activity.startActivity(intent);
     }
 
     @Override
     public void startActivity(final Class<? extends Activity> activityClass) {
-        final Activity activity = mFeatureManager.getForegroundActivity();
+        final Activity activity = featureManager.getForegroundActivity();
         final Intent intent = new Intent(activity, activityClass);
         startActivity(intent);
     }

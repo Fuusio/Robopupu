@@ -24,111 +24,111 @@ import java.util.List;
 
 public class MessageContext {
 
-    private final Context mContext;
+    private final Context context;
 
-    protected final ArrayList<Object> mArgs;
+    protected final ArrayList<Object> args;
 
-    protected String mMessage;
-    protected int mMessageId;
+    protected String message;
+    protected @StringRes int messageStringResId;
 
     public MessageContext(final Context context) {
-        mContext = context;
-        mArgs = new ArrayList<>();
+        this.context = context;
+        args = new ArrayList<>();
         clear();
     }
 
     public String getFormattedMessage() {
 
-        final Resources resources = mContext.getResources();
+        final Resources resources = context.getResources();
 
-        if (mMessage != null) {
-            return StringToolkit.formatString(mMessage, mArgs);
+        if (message != null) {
+            return StringToolkit.formatString(message, args);
         } else {
-            final int length = mArgs.size();
+            final int length = args.size();
 
             if (length > 0) {
-                return resources.getString(mMessageId, mArgs);
+                return resources.getString(messageStringResId, args);
             } else {
-                return resources.getString(mMessageId);
+                return resources.getString(messageStringResId);
             }
         }
     }
 
 
     public void setMessage(final String message) {
-        mMessage = message;
+        this.message = message;
     }
 
     public void setMessage(@StringRes final int stringResId) {
-        mMessageId = stringResId;
+        messageStringResId = stringResId;
     }
 
     public void setMessage(@StringRes final int stringResId, final Object... args) {
-        mMessageId = stringResId;
+        messageStringResId = stringResId;
         setMessageArgs(args);
     }
 
 
     public void setMessageArgs(final Object... args) {
-        mArgs.clear();
+        this.args.clear();
 
         for (final Object arg : args) {
-            mArgs.add(arg);
+            this.args.add(arg);
         }
     }
 
     public void setMessageArgs(final List<Object> args) {
-        mArgs.clear();
-        mArgs.addAll(args);
+        this.args.clear();
+        this.args.addAll(args);
     }
 
     public MessageContext addMessageArg(final boolean arg) {
-        mArgs.add(arg);
+        args.add(arg);
         return this;
     }
 
     public MessageContext addMessageArg(final byte arg) {
-        mArgs.add(arg);
+        args.add(arg);
         return this;
     }
 
     public MessageContext addMessageArg(final char arg) {
-        mArgs.add(arg);
+        args.add(arg);
         return this;
     }
 
     public MessageContext addMessageArg(final double arg) {
-        mArgs.add(arg);
+        args.add(arg);
         return this;
     }
 
     public MessageContext addMessageArg(final float arg) {
-        mArgs.add(arg);
+        args.add(arg);
         return this;
     }
 
     public MessageContext addMessageArg(final int arg) {
-        mArgs.add(arg);
+        args.add(arg);
         return this;
     }
 
     public MessageContext addMessageArg(final Object arg) {
-        mArgs.add(arg);
+        args.add(arg);
         return this;
     }
 
     public MessageContext addMessageArg(final String arg) {
-        mArgs.add(arg);
+        args.add(arg);
         return this;
     }
 
     public void clear() {
-        mArgs.clear();
-        mMessage = null;
-        mMessageId = 0;
+        args.clear();
+        message = null;
+        messageStringResId = 0;
     }
 
     public boolean hasContent() {
-        return (mMessage != null || mMessageId > 0);
+        return (message != null || messageStringResId > 0);
     }
 }

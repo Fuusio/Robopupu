@@ -47,24 +47,24 @@ public abstract class AbstractFeatureManager extends AbstractManager
     private static final String TAG = Utils.tag(AbstractFeatureManager.class);
     private static final String SUFFIX_IMPL = "Impl";
 
-    private static DependencyScopeOwner sMockScopeOwner = null;
+    private static DependencyScopeOwner mockScopeOwner = null;
 
-    private final HashMap<Integer, Feature> mCurrentFeatures;
-    private final HashSet<Feature> mPausedFeatures;
-    private final HashSet<Feature> mResumedFeatures;
-    private final DependenciesCache mDependenciesCache;
-    private final HashMap<Integer, FeatureContainer> mFeatureContainers;
+    private final HashMap<Integer, Feature> currentFeatures;
+    private final DependenciesCache dependenciesCache;
+    private final HashMap<Integer, FeatureContainer> featureContainers;
+    private final HashSet<Feature> pausedFeatures;
+    private final HashSet<Feature> resumedFeatures;
 
-    private Activity mForegroundActivity;
-    private Activity mLastPausedActivity;
-    private Activity mLastStoppedActivity;
+    private Activity foregroundActivity;
+    private Activity lastPausedActivity;
+    private Activity lastStoppedActivity;
 
     public AbstractFeatureManager() {
-        mPausedFeatures = new HashSet<>();
-        mResumedFeatures = new HashSet<>();
-        mDependenciesCache = D.get(DependenciesCache.class);
-        mCurrentFeatures = new HashMap<>();
-        mFeatureContainers = new HashMap<>();
+        pausedFeatures = new HashSet<>();
+        resumedFeatures = new HashSet<>();
+        dependenciesCache = D.get(DependenciesCache.class);
+        currentFeatures = new HashMap<>();
+        featureContainers = new HashMap<>();
     }
 
     @Override
@@ -74,22 +74,22 @@ public abstract class AbstractFeatureManager extends AbstractManager
 
     @Override
     public Activity getForegroundActivity() {
-        return mForegroundActivity;
+        return foregroundActivity;
     }
 
     @Override
     public Activity getLastPausedActivity() {
-        return mLastPausedActivity;
+        return lastPausedActivity;
     }
 
     @Override
     public Activity getLastStoppedActivity() {
-        return mLastStoppedActivity;
+        return lastStoppedActivity;
     }
 
     @Override
     public void setMockScopeOwner(final DependencyScopeOwner owner) {
-        sMockScopeOwner = owner;
+        mockScopeOwner = owner;
     }
 
     /**
@@ -105,9 +105,9 @@ public abstract class AbstractFeatureManager extends AbstractManager
     private Feature getMockFeature(final Class<? extends Feature> featureClass) {
         Feature feature = null;
 
-        if (sMockScopeOwner != null) {
+        if (mockScopeOwner != null) {
             final DependencyScope savedScope = D.getActiveScope();
-            D.activateScope(sMockScopeOwner);
+            D.activateScope(mockScopeOwner);
 
             feature = D.get(featureClass);
 
@@ -121,7 +121,7 @@ public abstract class AbstractFeatureManager extends AbstractManager
                 }
             }
 
-            D.deactivateScope(sMockScopeOwner);
+            D.deactivateScope(mockScopeOwner);
             D.activateScope(savedScope.getOwner());
         }
         return feature;
@@ -131,7 +131,7 @@ public abstract class AbstractFeatureManager extends AbstractManager
     @NonNull
     public List<Feature> getActiveFeatures() {
         final ArrayList<Feature> activeFeatures = new ArrayList<>();
-        activeFeatures.addAll(mResumedFeatures);
+        activeFeatures.addAll(resumedFeatures);
         return activeFeatures;
     }
 
@@ -139,7 +139,7 @@ public abstract class AbstractFeatureManager extends AbstractManager
     @NonNull
     public List<Feature> getPausedFeatures() {
         final ArrayList<Feature> pausedFeatures = new ArrayList<>();
-        pausedFeatures.addAll(mPausedFeatures);
+        pausedFeatures.addAll(this.pausedFeatures);
         return pausedFeatures;
     }
 
@@ -148,7 +148,7 @@ public abstract class AbstractFeatureManager extends AbstractManager
     public List<Feature> getForegroundFeatures() {
         final List<Feature> foregroundFeatures = new ArrayList<>();
 
-        for (final Feature feature : mResumedFeatures) {
+        for (final Feature feature : resumedFeatures) {
 
             if (feature.hasForegroundView()) {
                 foregroundFeatures.add(feature);
@@ -159,7 +159,7 @@ public abstract class AbstractFeatureManager extends AbstractManager
 
     @Override
     public FeatureContainer getFeatureContainer(final int featureContainerId) {
-        return mFeatureContainers.get(featureContainerId);
+        return featureContainers.get(featureContainerId);
     }
 
     @SuppressWarnings("unchecked")
@@ -234,9 +234,9 @@ public abstract class AbstractFeatureManager extends AbstractManager
 
         if (featureContainer != null) {
             final int key = featureContainer.getContainerViewId();
-            final Feature previousFeature = mCurrentFeatures.get(key);
+            final Feature previousFeature = currentFeatures.get(key);
 
-            mCurrentFeatures.put(key, feature);
+            currentFeatures.put(key, feature);
 
             // Activity Features are finished by the Activities that own them.
             if (previousFeature != null && !previousFeature.isActivityFeature() && previousFeature != feature) {
@@ -247,8 +247,8 @@ public abstract class AbstractFeatureManager extends AbstractManager
         feature.setFeatureManager(this);
         feature.setFeatureContainer(featureContainer);
         feature.start(params);
-        mResumedFeatures.add(feature);
-        mPausedFeatures.remove(feature);
+        resumedFeatures.add(feature);
+        pausedFeatures.remove(feature);
 
         if (feature instanceof DependencyScopeOwner) {
             Dependency.activateScope((DependencyScopeOwner)feature);
@@ -265,14 +265,14 @@ public abstract class AbstractFeatureManager extends AbstractManager
     @Override
     public void registerFeatureContainerProvider(final FeatureContainerProvider provider) {
         for (final FeatureContainer container : provider.getFeatureContainers()) {
-            mFeatureContainers.put(container.getContainerViewId(), container);
+            featureContainers.put(container.getContainerViewId(), container);
         }
     }
 
     @Override
     public void unregisterFeatureContainerProvider(final FeatureContainerProvider provider) {
         for (final FeatureContainer container : provider.getFeatureContainers()) {
-            mFeatureContainers.remove(container.getContainerViewId());
+            featureContainers.remove(container.getContainerViewId());
         }
     }
 
@@ -302,22 +302,22 @@ public abstract class AbstractFeatureManager extends AbstractManager
     @CallSuper
     @Override
     public void onFeatureResumed(final Feature feature) {
-        mPausedFeatures.remove(feature);
-        mResumedFeatures.add(feature);
+        pausedFeatures.remove(feature);
+        resumedFeatures.add(feature);
     }
 
     @CallSuper
     @Override
     public void onFeaturePaused(final Feature feature, final boolean finishing) {
-        mPausedFeatures.add(feature);
-        mResumedFeatures.remove(feature);
+        pausedFeatures.add(feature);
+        resumedFeatures.remove(feature);
     }
 
     @CallSuper
     @Override
     public void onFeatureStopped(final Feature feature) {
-        mPausedFeatures.remove(feature);
-        mResumedFeatures.remove(feature);
+        pausedFeatures.remove(feature);
+        resumedFeatures.remove(feature);
     }
 
     @CallSuper
@@ -336,7 +336,7 @@ public abstract class AbstractFeatureManager extends AbstractManager
             final List<FeatureContainer> containers = ((FeatureContainerProvider)activity).getFeatureContainers();
 
             for (final FeatureContainer container : containers) {
-                final Feature feature = mCurrentFeatures.get(container.getContainerViewId());
+                final Feature feature = currentFeatures.get(container.getContainerViewId());
 
                 if (feature != null) {
                     feature.onFeatureContainerStarted(container);
@@ -347,21 +347,21 @@ public abstract class AbstractFeatureManager extends AbstractManager
 
     @Override
     public void onActivityResumed(final Activity activity) {
-        mForegroundActivity = activity;
+        foregroundActivity = activity;
 
-        if (activity == mLastPausedActivity) {
-            mLastPausedActivity = null;
+        if (activity == lastPausedActivity) {
+            lastPausedActivity = null;
         }
 
-        if (activity == mLastStoppedActivity) {
-            mLastStoppedActivity = null;
+        if (activity == lastStoppedActivity) {
+            lastStoppedActivity = null;
         }
 
         if (activity instanceof FeatureContainerProvider) {
             final List<FeatureContainer> containers = ((FeatureContainerProvider)activity).getFeatureContainers();
 
             for (final FeatureContainer container : containers) {
-                final Feature feature = mCurrentFeatures.get(container.getContainerViewId());
+                final Feature feature = currentFeatures.get(container.getContainerViewId());
 
                 if (feature != null) {
                     feature.onFeatureContainerResumed(container);
@@ -372,10 +372,10 @@ public abstract class AbstractFeatureManager extends AbstractManager
 
     @Override
     public void onActivityPaused(final Activity activity) {
-        if (activity == mForegroundActivity) {
-            mForegroundActivity = null;
+        if (activity == foregroundActivity) {
+            foregroundActivity = null;
         }
-        mLastPausedActivity = activity;
+        lastPausedActivity = activity;
 
         if (activity instanceof FeatureContainerProvider) {
             final List<FeatureContainer> containers = ((FeatureContainerProvider)activity).getFeatureContainers();
@@ -383,7 +383,7 @@ public abstract class AbstractFeatureManager extends AbstractManager
             final boolean finishing = activity.isFinishing();
 
             for (final FeatureContainer container : containers) {
-                final Feature feature = mCurrentFeatures.get(container.getContainerViewId());
+                final Feature feature = currentFeatures.get(container.getContainerViewId());
 
                 if (feature != null) {
                     feature.onFeatureContainerPaused(container, finishing);
@@ -394,10 +394,10 @@ public abstract class AbstractFeatureManager extends AbstractManager
 
     @Override
     public void onActivityStopped(final Activity activity) {
-        if (activity == mLastPausedActivity) {
-            mLastPausedActivity = null;
+        if (activity == lastPausedActivity) {
+            lastPausedActivity = null;
         }
-        mLastStoppedActivity = activity;
+        lastStoppedActivity = activity;
 
         if (activity instanceof FeatureContainerProvider) {
             final List<FeatureContainer> containers = ((FeatureContainerProvider)activity).getFeatureContainers();
@@ -405,7 +405,7 @@ public abstract class AbstractFeatureManager extends AbstractManager
             final boolean finishing = activity.isFinishing();
 
             for (final FeatureContainer container : containers) {
-                final Feature feature = mCurrentFeatures.get(container.getContainerViewId());
+                final Feature feature = currentFeatures.get(container.getContainerViewId());
 
                 if (feature != null) {
                     feature.onFeatureContainerStopped(container, finishing);
@@ -421,18 +421,18 @@ public abstract class AbstractFeatureManager extends AbstractManager
 
     @Override
     public void onActivityDestroyed(final Activity activity) {
-        if (activity == mLastStoppedActivity) {
-            mLastStoppedActivity = null;
+        if (activity == lastStoppedActivity) {
+            lastStoppedActivity = null;
         }
 
         // Clear up the DependenciesCache for the destroyed Activity
 
         if (activity instanceof DependencyScopeOwner) {
-            mDependenciesCache.onDependencyScopeOwnerDestroyed((DependencyScopeOwner) activity);
+            dependenciesCache.onDependencyScopeOwnerDestroyed((DependencyScopeOwner) activity);
         }
 
         if (activity instanceof View) {
-            mDependenciesCache.removeDependencies((View)activity);
+            dependenciesCache.removeDependencies((View)activity);
         }
     }
 }

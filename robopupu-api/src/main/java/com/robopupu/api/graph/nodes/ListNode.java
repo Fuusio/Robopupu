@@ -13,28 +13,28 @@ import java.util.List;
  */
 public class ListNode<IN> extends Node<IN, IN> {
 
-    protected ArrayList<IN> mList;
-    protected boolean mMutableList;
+    protected ArrayList<IN> list;
+    protected boolean mutableList;
 
     public ListNode() {
-        mList = new ArrayList<>();
-        mMutableList = true;
+        list = new ArrayList<>();
+        mutableList = true;
     }
 
     public ListNode(final List<IN> list) {
-        mList = new ArrayList<>();
-        mList.addAll(list);
-        mMutableList = list.isEmpty();
+        this.list = new ArrayList<>();
+        this.list.addAll(list);
+        mutableList = list.isEmpty();
     }
 
     public List<IN> getList() {
-        return mList;
+        return list;
     }
 
     @Override
     protected IN processInput(final OutputNode<IN> source, final IN input) {
-        if (mMutableList) {
-            mList.add(input);
+        if (mutableList) {
+            list.add(input);
         }
         return null;
     }
@@ -44,26 +44,26 @@ public class ListNode<IN> extends Node<IN, IN> {
      */
     @Override
     public void emitOutput() {
-        for (final IN output : mList) {
+        for (final IN output : list) {
             emitOutput(output);
         }
 
-        if (mMutableList) {
-            mList.clear();
+        if (mutableList) {
+            list.clear();
         }
         completed(this);
     }
 
     @Override
     protected void doOnReset() {
-        if (mMutableList) {
-            mList.clear();
+        if (mutableList) {
+            list.clear();
         }
     }
 
     @Override
     public void onCompleted(final OutputNode<?> source) {
-        for (final IN output : mList) {
+        for (final IN output : list) {
             emitOutput(output);
         }
     }

@@ -29,26 +29,26 @@ public enum RobopupuAppError implements AppError {
 
 	ERROR_UNKNOWN(Integer.MAX_VALUE, R.string.error_unknown_error);
 
-	private static Context sContext;
+	private static Context context;
 
-	private final int mCode;
-	private final int mMessageFormat;
+	private final int code;
+	private final int messageFormat;
 	
 	RobopupuAppError(final int code, final int messageFormat) {
-		mCode = code;
-		mMessageFormat = messageFormat;
+		this.code = code;
+		this.messageFormat = messageFormat;
 	}
 
 	public final int getCode() {
-		return mCode;
+		return code;
 	}
 
 	@Override
 	public String getMessage(final Object... args) {
-		return sContext.getString(mMessageFormat, args);
+		return context.getString(messageFormat, args);
 	}
 
 	public static void setContext(final Context context) {
-		sContext = context;
+		RobopupuAppError.context = context;
 	}
 }

@@ -22,8 +22,8 @@ public class Zip2Node<IN1, IN2, OUT> extends ZipNode<OUT> {
     @SuppressWarnings("unchecked")
     @Override
     protected OUT zip() {
-        final IN1 in1 = (IN1)mBuffers[0].remove(0);
-        final IN2 in2 = (IN2)mBuffers[1].remove(0);
+        final IN1 in1 = (IN1) buffers[0].remove(0);
+        final IN2 in2 = (IN2) buffers[1].remove(0);
         return mCombineFunction.eval(in1, in2);
     }
 }

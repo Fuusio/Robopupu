@@ -8,21 +8,21 @@ import com.robopupu.api.graph.OutputNode;
  */
 public class RepeatNode<IN> extends Node<IN, IN> {
 
-    private int mTimes;
+    private int times;
 
     public RepeatNode() {
-        mTimes = Integer.MAX_VALUE;
+        times = Integer.MAX_VALUE;
     }
 
     public RepeatNode(final int times) {
-        mTimes = times;
+        this.times = times;
     }
 
     @SuppressWarnings("unchecked")
     @Override
     protected IN processInput(final OutputNode<IN> source, final IN input) {
         if (input != null) {
-            for (int i = 0; i < mTimes; i++) {
+            for (int i = 0; i < times; i++) {
                 emitOutput(input);
             }
         }

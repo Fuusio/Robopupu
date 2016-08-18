@@ -22,25 +22,25 @@ import com.robopupu.api.mvp.ViewCompatFragment;
 public abstract class FeatureCompatFragment<T_Presenter extends Presenter> extends ViewCompatFragment<T_Presenter>
     implements FeatureView {
 
-    private Feature mFeature;
-    private DependencyScope mScope;
+    private Feature feature;
+    private DependencyScope scope;
 
     protected FeatureCompatFragment() {
     }
 
     @Override
     public void setFeature(final Feature feature) {
-        mFeature = feature;
+        this.feature = feature;
     }
     
     @Override
     public DependencyScope getScope() {
-        return mScope;
+        return scope;
     }
 
     @Override
     public void setScope(final DependencyScope scope) {
-        mScope = scope;
+        this.scope = scope;
     }
 
     @Override
@@ -52,8 +52,8 @@ public abstract class FeatureCompatFragment<T_Presenter extends Presenter> exten
     public void onResume() {
         super.onResume();
 
-        if (mFeature != null) {
-            mFeature.addActiveView(this);
+        if (feature != null) {
+            feature.addActiveView(this);
         }
     }
 
@@ -61,8 +61,8 @@ public abstract class FeatureCompatFragment<T_Presenter extends Presenter> exten
     public void onPause() {
         super.onPause();
 
-        if (mFeature != null) {
-            mFeature.removeActiveView(this);
+        if (feature != null) {
+            feature.removeActiveView(this);
         }
     }
 }

@@ -9,13 +9,13 @@ import com.robopupu.api.graph.OutputNode;
  */
 public class FloatNode<IN> extends Node<IN, Float> {
 
-    private float mValue;
+    private float value;
 
     @Override
     protected Float processInput(final OutputNode<IN> source, final IN input) {
         if (input instanceof Number) {
-            mValue = ((Number)input).floatValue();
-            return mValue;
+            value = ((Number)input).floatValue();
+            return value;
         } else {
             dispatchError(this, new ClassCastException(createErrorMessage("Received an object that cannot be converted to Float")));
             return null;
@@ -23,6 +23,6 @@ public class FloatNode<IN> extends Node<IN, Float> {
     }
 
     public float getValue() {
-        return mValue;
+        return value;
     }
 }

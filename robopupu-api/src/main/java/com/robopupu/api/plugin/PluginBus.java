@@ -34,18 +34,18 @@ public class PluginBus {
 
     private static final String SUFFIX_PLUGGER = "_Plugger";
 
-    private static PluginBus sInstance = null;
+    private static PluginBus instance = null;
 
-    private final HashMap<Class<?>, PlugInvoker> mInvocationPlugs;
-    private final HashMap<String, Plugger> mPluggers;
-    private final ArrayList<Object> mPlugins;
-    private final ArrayList<PluginComponent> mPluginComponents;
+    private final HashMap<Class<?>, PlugInvoker> invocationPlugs;
+    private final HashMap<String, Plugger> pluggers;
+    private final ArrayList<Object> plugins;
+    private final ArrayList<PluginComponent> pluginComponents;
 
     private PluginBus() {
-        mInvocationPlugs = new HashMap<>();
-        mPluggers = new HashMap<>();
-        mPluginComponents = new ArrayList<>();
-        mPlugins = new ArrayList<>();
+        invocationPlugs = new HashMap<>();
+        pluggers = new HashMap<>();
+        pluginComponents = new ArrayList<>();
+        plugins = new ArrayList<>();
     }
 
     /**
@@ -55,7 +55,7 @@ public class PluginBus {
      */
     @SuppressWarnings({"unused", "unchecked"})
     public static <T> List<T> getPlugins(final Class<T> plugInterface) {
-        final PlugInvoker plug = getInstance().mInvocationPlugs.get(plugInterface);
+        final PlugInvoker plug = getInstance().invocationPlugs.get(plugInterface);
 
         if (plug != null) {
             return plug.getPlugins();
@@ -90,13 +90,13 @@ public class PluginBus {
         final ArrayList<T> plugs = new ArrayList<>();
 
         if (includeExtendedInterfaces) {
-            for (final Class key : mInvocationPlugs.keySet()) {
+            for (final Class key : invocationPlugs.keySet()) {
                 if (plugInterface.isAssignableFrom(key)) {
-                    plugs.add((T)mInvocationPlugs.get(key));
+                    plugs.add((T) invocationPlugs.get(key));
                 }
             }
         } else {
-            final PlugInvoker plug = mInvocationPlugs.get(plugInterface);
+            final PlugInvoker plug = invocationPlugs.get(plugInterface);
 
             if (plug != null) {
                 plugs.add((T) plug);
@@ -107,37 +107,37 @@ public class PluginBus {
     
     @SuppressWarnings({"unused", "unchecked"})
     public static <T> T getPlug(final Class<?> plugInterface) {
-        return (T) getInstance().mInvocationPlugs.get(plugInterface);
+        return (T) getInstance().invocationPlugs.get(plugInterface);
     }
 
     @SuppressWarnings("unused")
     public static boolean hasPlug(final Class<?> plugInterface) {
-        return getInstance().mInvocationPlugs.containsKey(plugInterface);
+        return getInstance().invocationPlugs.containsKey(plugInterface);
     }
 
     @SuppressWarnings("unused")
     public static List<PluginComponent> getPluginComponents() {
-        return getInstance().mPluginComponents;
+        return getInstance().pluginComponents;
     }
 
     public synchronized static PluginBus getInstance() {
-        if (sInstance == null) {
-            sInstance = new PluginBus();
+        if (instance == null) {
+            instance = new PluginBus();
         }
-        return sInstance;
+        return instance;
     }
 
     public static void addPlugInvoker(final Class<?> plugInterface, PlugInvoker<?> plugInvoker) {
-        getInstance().mInvocationPlugs.put(plugInterface, plugInvoker);
+        getInstance().invocationPlugs.put(plugInterface, plugInvoker);
     }
 
     public static boolean hasPlugInvoker(final Class<?> plugInterface) {
-        return getInstance().mInvocationPlugs.containsKey(plugInterface);
+        return getInstance().invocationPlugs.containsKey(plugInterface);
     }
 
     @SuppressWarnings("unchecked")
     public static <T extends PlugInvoker<?>> T getPlugInvoker(final Class<?> plugInterface) {
-        return (T)getInstance().mInvocationPlugs.get(plugInterface);
+        return (T)getInstance().invocationPlugs.get(plugInterface);
     }
 
     /**
@@ -205,7 +205,7 @@ public class PluginBus {
             return;
         }
 
-        final boolean alreadyPlugged = mPlugins.contains(plugin);
+        final boolean alreadyPlugged = plugins.contains(plugin);
 
         if (alreadyPlugged) {
             Log.d(TAG, "doPlug(...) : PluginBus already contained: " + plugin);
@@ -216,19 +216,19 @@ public class PluginBus {
         plugger.plug(plugin, this, useHandler);
 
         if (!alreadyPlugged) {
-            mPlugins.add(plugin);
+            plugins.add(plugin);
         }
 
         if (plugin instanceof PluginComponent) {
             final PluginComponent component = (PluginComponent) plugin;
             component.onPlugged(this);
 
-            for (final PluginComponent pluggedComponent : mPluginComponents) {
+            for (final PluginComponent pluggedComponent : pluginComponents) {
                 pluggedComponent.onPluginPlugged(plugin);
             }
 
-            if (!mPluginComponents.contains(component)) {
-                mPluginComponents.add(component);
+            if (!pluginComponents.contains(component)) {
+                pluginComponents.add(component);
             }
         }
     }
@@ -255,13 +255,13 @@ public class PluginBus {
     @SuppressWarnings("unchecked")
     private Plugger getPlugger(final Class<?> pluginClass) {
         final String pluggerClassName = pluginClass.getName() + SUFFIX_PLUGGER;
-        Plugger plugger = mPluggers.get(pluggerClassName);
+        Plugger plugger = pluggers.get(pluggerClassName);
 
         if (plugger == null) {
             try {
                 final Class<? extends Plugger> pluggerClass = (Class<? extends Plugger>) Class.forName(pluggerClassName);
                 plugger = pluggerClass.newInstance();
-                mPluggers.put(pluggerClassName, plugger);
+                pluggers.put(pluggerClassName, plugger);
             } catch (Exception e) {
                 throw new IllegalStateException(e);
             }
@@ -283,9 +283,9 @@ public class PluginBus {
         PlugInvoker plug = plugInvoker;
 
         if (plugInvoker != null) {
-            mInvocationPlugs.put(plugInterface, plugInvoker);
+            invocationPlugs.put(plugInterface, plugInvoker);
         } else {
-            plug = mInvocationPlugs.get(plugInterface);
+            plug = invocationPlugs.get(plugInterface);
         }
 
         if (handlerInvoker != null) {
@@ -302,24 +302,24 @@ public class PluginBus {
     @SuppressWarnings("static-access")
     private void doUnplug(final Object plugin) {
 
-        if (!mPlugins.contains(plugin)) {
+        if (!plugins.contains(plugin)) {
             // The plugin is not plugged - just return
             return;
         }
 
         final String pluggerClassName = plugin.getClass().getName() + SUFFIX_PLUGGER;
-        final Plugger plugger = mPluggers.get(pluggerClassName);
+        final Plugger plugger = pluggers.get(pluggerClassName);
 
         plugger.unplug(plugin, this);
 
-        mPlugins.remove(plugin);
+        plugins.remove(plugin);
 
         if (plugin instanceof PluginComponent) {
             final PluginComponent component = (PluginComponent) plugin;
-            mPluginComponents.remove(component);
+            pluginComponents.remove(component);
             component.onUnplugged(this);
 
-            for (final PluginComponent pluggedComponent : mPluginComponents) {
+            for (final PluginComponent pluggedComponent : pluginComponents) {
                 pluggedComponent.onPluginUnplugged(plugin);
             }
 
@@ -350,7 +350,7 @@ public class PluginBus {
      * @return A {@code boolean} value.
      */
     public static boolean isPlugged(final Object object) {
-        return getInstance().mPlugins.contains(object);
+        return getInstance().plugins.contains(object);
     }
 
     /**

@@ -9,13 +9,13 @@ import com.robopupu.api.graph.OutputNode;
  */
 public class DoubleNode<IN> extends Node<IN, Double> {
 
-    private double mValue;
+    private double value;
 
     @Override
     protected Double processInput(final OutputNode<IN> source, final IN input) {
         if (input instanceof Number) {
-            mValue = ((Number)input).doubleValue();
-            return mValue;
+            value = ((Number)input).doubleValue();
+            return value;
         } else {
             dispatchError(this, new ClassCastException(createErrorMessage("Received an object that cannot be converted to Double")));
             return null;
@@ -23,6 +23,6 @@ public class DoubleNode<IN> extends Node<IN, Double> {
     }
 
     public double getValue() {
-        return mValue;
+        return value;
     }
 }

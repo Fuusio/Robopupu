@@ -19,60 +19,60 @@ import java.util.ArrayList;
 
 public class CoffeeMaker {
 
-    private final ArrayList<String> mTraces;
+    private final ArrayList<String> traces;
 
-    private boolean mHeaterOn;
-    private boolean mPowerOn;
-    private boolean mValveOpen;
+    private boolean heaterOn;
+    private boolean powerOn;
+    private boolean valveOpen;
 
     public CoffeeMaker() {
-        mTraces = new ArrayList<>();
-        mHeaterOn = false;
-        mPowerOn = false;
-        mValveOpen = false;
+        traces = new ArrayList<>();
+        heaterOn = false;
+        powerOn = false;
+        valveOpen = false;
     }
 
     public void powerOn() {
-        mPowerOn = true;
+        powerOn = true;
     }
 
     public void powerOff() {
-        mPowerOn = false;
+        powerOn = false;
     }
 
     public void openWaterValve() {
-        mValveOpen = true;
+        valveOpen = true;
     }
 
     public void closeWaterValve() {
-        mValveOpen = false;
+        valveOpen = false;
     }
 
     public void switchHeaterOn() {
-        mHeaterOn = true;
+        heaterOn = true;
     }
 
     public void switchHeaterOff() {
-        mHeaterOn = true;
+        heaterOn = true;
     }
 
     public void addTrace(final String trace) {
-        mTraces.add(trace);
+        traces.add(trace);
     }
 
     public ArrayList<String> getTraces() {
-        return mTraces;
+        return traces;
     }
 
     public boolean isHeaterOn() {
-        return mHeaterOn;
+        return heaterOn;
     }
 
     public boolean isPowerOn() {
-        return mPowerOn;
+        return powerOn;
     }
 
     public boolean isValveOpen() {
-        return mValveOpen;
+        return valveOpen;
     }
 }

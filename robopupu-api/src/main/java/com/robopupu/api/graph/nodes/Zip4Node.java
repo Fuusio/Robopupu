@@ -26,10 +26,10 @@ public class Zip4Node<IN1, IN2, IN3, IN4, OUT> extends ZipNode<OUT> {
     @SuppressWarnings("unchecked")
     @Override
     protected OUT zip() {
-        final IN1 in1 = (IN1)mBuffers[0].remove(0);
-        final IN2 in2 = (IN2)mBuffers[1].remove(0);
-        final IN3 in3 = (IN3)mBuffers[2].remove(0);
-        final IN4 in4 = (IN4)mBuffers[3].remove(0);
+        final IN1 in1 = (IN1) buffers[0].remove(0);
+        final IN2 in2 = (IN2) buffers[1].remove(0);
+        final IN3 in3 = (IN3) buffers[2].remove(0);
+        final IN4 in4 = (IN4) buffers[3].remove(0);
         return mCombineFunction.eval(in1, in2, in3, in4);
     }
 }

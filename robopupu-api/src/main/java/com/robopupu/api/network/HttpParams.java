@@ -29,41 +29,41 @@ public class HttpParams {
 
     public static final Charset DEFAULT_ENCODING = Charset.defaultCharset();
 
-    private final List<KeyValue<String, String>> mKeyValues;
-    private final Charset mParamsEncoding;
+    private final List<KeyValue<String, String>> keyValues;
+    private final Charset paramsEncoding;
 
     public HttpParams() {
         this(DEFAULT_ENCODING);
     }
 
     public HttpParams(final Charset paramsEncoding) {
-        mKeyValues = new ArrayList<>();
-        mParamsEncoding = paramsEncoding;
+        keyValues = new ArrayList<>();
+        this.paramsEncoding = paramsEncoding;
     }
 
     public List<KeyValue<String, String>> getKeyValues() {
-        return mKeyValues;
+        return keyValues;
     }
 
     public HttpParams add(final String key, final String value) {
-        mKeyValues.add(new KeyValue<>(key, value));
+        keyValues.add(new KeyValue<>(key, value));
         return this;
     }
 
     public void addAll(final HttpParams params) {
         if (params != null) {
-            mKeyValues.addAll(params.mKeyValues);
+            keyValues.addAll(params.keyValues);
         }
     }
 
     public void clear() {
-        mKeyValues.clear();
+        keyValues.clear();
     }
 
     public Map<String, String> getMap() {
         final Map<String, String> map = new HashMap<>();
 
-        for (final KeyValue<String, String> keyValue : mKeyValues) {
+        for (final KeyValue<String, String> keyValue : keyValues) {
             map.put(keyValue.getKey(), keyValue.getValue());
         }
 
@@ -71,11 +71,11 @@ public class HttpParams {
     }
 
     public final int getSize() {
-        return mKeyValues.size();
+        return keyValues.size();
     }
 
     public void encodeParameters(final StringBuilder encodedParams) {
-        encodeParameters(encodedParams, mParamsEncoding);
+        encodeParameters(encodedParams, paramsEncoding);
     }
 
     public void encodeParameters(final StringBuilder encodedParams, final Charset paramsEncoding) {
@@ -83,7 +83,7 @@ public class HttpParams {
         boolean firstParameter = true;
 
         try {
-            for (final KeyValue<String, String> keyValue : mKeyValues) {
+            for (final KeyValue<String, String> keyValue : keyValues) {
                 final String key = URLEncoder.encode(keyValue.getKey(), encoding);
                 final String value = URLEncoder.encode(keyValue.getValue(), encoding);
 
@@ -107,6 +107,6 @@ public class HttpParams {
      * @return A {@code boolean} value.
      */
     public boolean hasValues() {
-        return mKeyValues.size() > 0;
+        return keyValues.size() > 0;
     }
 }

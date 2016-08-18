@@ -20,23 +20,23 @@ import org.mockito.Mockito;
 
 public class TestFeatureScope extends DependencyScope {
 
-    private boolean mWasDisposed;
+    private boolean wasDisposed;
 
     public TestFeatureScope() {
     }
 
     public final boolean wasDisposed() {
-        return mWasDisposed;
+        return wasDisposed;
     }
 
     public void setWasDisposed(final boolean pDisposed) {
-        mWasDisposed = pDisposed;
+        wasDisposed = pDisposed;
     }
 
     @Override
     protected void dispose() {
         super.dispose();
-        mWasDisposed = true;
+        wasDisposed = true;
     }
 
     @Override

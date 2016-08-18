@@ -26,30 +26,30 @@ import android.view.View;
 public class AbstractViewHolder extends RecyclerView.ViewHolder
         implements ViewHolder, View.OnClickListener {
 
-    private final int mType;
+    private final int type;
 
-    private View mInflatedView;
-    private ViewHolderListener mItemListener;
-    private int mItemPosition;
+    private View inflatedView;
+    private ViewHolderListener itemListener;
+    private int itemPosition;
 
     protected AbstractViewHolder(final Context context, final int laytouResId, final int type) {
         super(inflateView(context, laytouResId));
 
-        mType = type;
+        this.type = type;
 
-        mInflatedView = itemView;
-        mInflatedView.setTag(this);
-        mInflatedView.setOnClickListener(this);
+        inflatedView = itemView;
+        inflatedView.setTag(this);
+        inflatedView.setOnClickListener(this);
     }
 
     public final View getInflatedView() {
-        return mInflatedView;
+        return inflatedView;
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public <T extends View> T getView(final int resId) {
-        return (T) mInflatedView.findViewById(resId);
+        return (T) inflatedView.findViewById(resId);
     }
 
     private static View inflateView(final Context context, final int laytouResId) {
@@ -59,28 +59,28 @@ public class AbstractViewHolder extends RecyclerView.ViewHolder
     }
 
     public ViewHolderListener getItemListener() {
-        return mItemListener;
+        return itemListener;
     }
 
     public void setListener(final ViewHolderListener listener) {
-        mItemListener = listener;
+        itemListener = listener;
     }
 
     public int getItemPosition() {
-        return mItemPosition;
+        return itemPosition;
     }
 
     public void setItemPosition(int position) {
-        mItemPosition = position;
+        itemPosition = position;
     }
 
     public int getType() {
-        return mType;
+        return type;
     }
 
     protected void notifyOnClicked() {
-        if (mItemListener != null) {
-            mItemListener.onViewClicked(this, mItemPosition);
+        if (itemListener != null) {
+            itemListener.onViewClicked(this, itemPosition);
         }
     }
 

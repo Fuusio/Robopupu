@@ -33,13 +33,13 @@ public class RobopupuApplication extends BaseApplication {
     // Google Analytics Property ID
     public final static int PROPERTY_ID = 0;
 
-    private RefWatcher mRefWatcher;
-    private Robopupu mRobopupu;
+    private RefWatcher refWatcher;
+    private Robopupu robopupu;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        mRefWatcher = LeakCanary.install(this);
+        refWatcher = LeakCanary.install(this);
         RobopupuAppError.setContext(getApplicationContext());
     }
 
@@ -52,7 +52,7 @@ public class RobopupuApplication extends BaseApplication {
     protected void configureApplication() {
         final AppDependencyScope appScope = new RobopupuAppScope(this);
 
-        mRobopupu = new Robopupu(appScope);
+        robopupu = new Robopupu(appScope);
 
         PluginBus.plug(AppManager.class);
         PluginBus.plug(PlatformManager.class);

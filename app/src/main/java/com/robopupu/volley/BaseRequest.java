@@ -39,11 +39,11 @@ public abstract class BaseRequest<T_Response> extends Request<T_Response> {
 
     protected static final String PROTOCOL_CHARSET = "utf-8";
 
-    private boolean mBuild;
-    private HttpHeaders mHeaders;
-    private ErrorListener mErrorListener;
-    private Listener<T_Response> mResponseListener;
-    private String mUrl;
+    private boolean isBuild;
+    private HttpHeaders headers;
+    private ErrorListener errorListener;
+    private Listener<T_Response> responseListener;
+    private String url;
 
     protected BaseRequest() {
         this(Method.GET);
@@ -67,7 +67,7 @@ public abstract class BaseRequest<T_Response> extends Request<T_Response> {
 
     protected BaseRequest(final int method, final Listener<T_Response> responseListener, final ErrorListener errorListener) {
         super(method, null, errorListener);
-        mResponseListener = responseListener;
+        this.responseListener = responseListener;
     }
 
     /**
@@ -118,7 +118,7 @@ public abstract class BaseRequest<T_Response> extends Request<T_Response> {
      * @return A {@code boolean} value.
      */
     public boolean isBuild() {
-        return mBuild;
+        return isBuild;
     }
 
     /**
@@ -126,7 +126,7 @@ public abstract class BaseRequest<T_Response> extends Request<T_Response> {
      * @param build A {@code boolean} value.
      */
     public void setBuild(final boolean build) {
-        mBuild = build;
+        isBuild = build;
     }
 
     /**
@@ -134,12 +134,12 @@ public abstract class BaseRequest<T_Response> extends Request<T_Response> {
      * @param url An url as a {@link String}. May not be {@code null}.
      */
     public void setUrl(@NonNull final String url) {
-        mUrl = url;
+        this.url = url;
     }
 
     @Override
     public ErrorListener getErrorListener() {
-        return mErrorListener;
+        return errorListener;
     }
 
     /**
@@ -147,7 +147,7 @@ public abstract class BaseRequest<T_Response> extends Request<T_Response> {
      * @param errorListener A {@link ErrorListener}.
      */
     public void setErrorListener(final ErrorListener errorListener) {
-        mErrorListener = errorListener;
+        this.errorListener = errorListener;
     }
 
     /**
@@ -155,7 +155,7 @@ public abstract class BaseRequest<T_Response> extends Request<T_Response> {
      * @return A {@link Listener}.
      */
     public Listener<T_Response> getResponseListener() {
-        return mResponseListener;
+        return responseListener;
     }
 
     /**
@@ -163,17 +163,17 @@ public abstract class BaseRequest<T_Response> extends Request<T_Response> {
      * @param listener A {@link Listener}.
      */
     public void setResponseListener(final Listener<T_Response> listener) {
-        mResponseListener = listener;
+        responseListener = listener;
     }
 
     @Override
     public String getUrl() {
-        return mUrl;
+        return url;
     }
 
     @Override
     public Map<String, String> getHeaders() throws AuthFailureError {
-        return (mHeaders != null) ? mHeaders.getMap() : super.getHeaders();
+        return (headers != null) ? headers.getMap() : super.getHeaders();
     }
 
     /**
@@ -181,7 +181,7 @@ public abstract class BaseRequest<T_Response> extends Request<T_Response> {
      * @param headers A {@link HttpHeaders} containing the headers.
      */
     public void setHeaders(final HttpHeaders headers) {
-        mHeaders = headers;
+        this.headers = headers;
     }
 
     @Override
@@ -189,15 +189,15 @@ public abstract class BaseRequest<T_Response> extends Request<T_Response> {
 
     @Override
     public void deliverError(final VolleyError error) {
-        if (mErrorListener != null) {
-            mErrorListener.onErrorResponse(error);
+        if (errorListener != null) {
+            errorListener.onErrorResponse(error);
         }
     }
 
     @Override
     protected void deliverResponse(final T_Response response) {
-        if (mResponseListener != null) {
-            mResponseListener.onResponse(response);
+        if (responseListener != null) {
+            responseListener.onResponse(response);
         }
     }
 

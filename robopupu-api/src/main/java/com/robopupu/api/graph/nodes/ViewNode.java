@@ -9,32 +9,32 @@ import com.robopupu.api.graph.Node;
  */
 public class ViewNode extends Node<View, View> implements View.OnClickListener {
 
-    protected boolean mEnabled;
-    protected View mView;
+    protected boolean enabled;
+    protected View view;
 
     public ViewNode(final View view) {
-        mView = view;
-        mView.setOnClickListener(this);
-        mEnabled = true;
+        this.view = view;
+        this.view.setOnClickListener(this);
+        enabled = true;
     }
 
     @SuppressWarnings("unchecked")
     public <T extends View>  T getView() {
-        return (T)mView;
+        return (T) view;
     }
 
     public boolean isEnabled() {
-        return mEnabled;
+        return enabled;
     }
 
     public void setEnabled(final boolean enabled) {
-        mEnabled = enabled;
+        this.enabled = enabled;
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public void onClick(final View view) {
-        if (mEnabled) {
+        if (enabled) {
             emitOutput(view);
         }
     }

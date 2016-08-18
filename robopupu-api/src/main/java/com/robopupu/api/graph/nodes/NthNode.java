@@ -9,21 +9,21 @@ import com.robopupu.api.graph.OutputNode;
  */
 public class NthNode<IN> extends Node<IN, IN> {
 
-    private int mCounter;
-    private int mIndex;
+    private int counter;
+    private int index;
 
     public NthNode(final int index) {
-        mIndex = index;
-        mCounter = 1;
+        this.index = index;
+        counter = 1;
     }
 
     @SuppressWarnings("unchecked")
     @Override
     protected IN processInput(final OutputNode<IN> source, final IN input) {
-        if (mCounter == mIndex) {
+        if (counter == index) {
             return input;
         } else {
-            mCounter++;
+            counter++;
             return null;
         }
     }

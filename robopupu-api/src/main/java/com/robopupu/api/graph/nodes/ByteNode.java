@@ -9,13 +9,13 @@ import com.robopupu.api.graph.OutputNode;
  */
 public class ByteNode<IN> extends Node<IN, Byte> {
 
-    private byte mValue;
+    private byte value;
 
     @Override
     protected Byte processInput(final OutputNode<IN> source, final IN input) {
         if (input instanceof Number) {
-            mValue = ((Number)input).byteValue();
-            return mValue;
+            value = ((Number)input).byteValue();
+            return value;
         } else {
             dispatchError(this, new ClassCastException(createErrorMessage("Received an object that cannot be converted to byte value")));
             return null;
@@ -23,6 +23,6 @@ public class ByteNode<IN> extends Node<IN, Byte> {
     }
 
     public byte getValue() {
-        return mValue;
+        return value;
     }
 }

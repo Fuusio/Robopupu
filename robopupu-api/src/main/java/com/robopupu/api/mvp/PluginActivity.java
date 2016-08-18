@@ -30,10 +30,10 @@ public abstract class PluginActivity<T_Presenter extends Presenter>
 
     private final static String TAG = Utils.tag(PluginActivity.class);
 
-    private final List<FeatureContainer> mFeatureContainers;
+    private final List<FeatureContainer> featureContainers;
 
     protected PluginActivity() {
-        mFeatureContainers = new ArrayList<>();
+        featureContainers = new ArrayList<>();
     }
 
     protected void createFeatureContainers(final List<FeatureContainer> containers) {
@@ -51,7 +51,7 @@ public abstract class PluginActivity<T_Presenter extends Presenter>
 
     @Override
     public List<FeatureContainer> getFeatureContainers() {
-        return mFeatureContainers;
+        return featureContainers;
     }
 
     /**
@@ -175,7 +175,7 @@ public abstract class PluginActivity<T_Presenter extends Presenter>
 
     @Override
     protected void onStart() {
-        createFeatureContainers(mFeatureContainers);
+        createFeatureContainers(featureContainers);
         PluginBus.plug(this);
         super.onStart();
     }

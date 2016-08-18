@@ -30,9 +30,9 @@ import com.robopupu.api.plugin.PluginBus;
 public class LicensesInfoPresenterImpl extends AbstractFeaturePresenter<LicensesInfoView>
         implements LicensesInfoPresenter {
 
-    private String mLicensesFileUrl;
+    private String licensesFileUrl;
 
-    @Plug LicensesInfoView mView;
+    @Plug LicensesInfoView view;
 
     @Provides(LicensesInfoPresenter.class)
     public LicensesInfoPresenterImpl() {
@@ -40,7 +40,7 @@ public class LicensesInfoPresenterImpl extends AbstractFeaturePresenter<Licenses
 
     @Override
     public LicensesInfoView getViewPlug() {
-        return mView;
+        return view;
     }
 
     @Override
@@ -52,13 +52,13 @@ public class LicensesInfoPresenterImpl extends AbstractFeaturePresenter<Licenses
     @Override
     public void onViewResume(final View view) {
         super.onViewResume(view);
-        mLicensesFileUrl = getParams().getString(KEY_PARAM_LICENSE_URL);
-        mView.loadUrl(mLicensesFileUrl);
+        licensesFileUrl = getParams().getString(KEY_PARAM_LICENSE_URL);
+        this.view.loadUrl(licensesFileUrl);
     }
 
     @Override
     public boolean shouldLoadUrl(final WebView webView, final String url) {
-        return mLicensesFileUrl.contentEquals(url);
+        return licensesFileUrl.contentEquals(url);
     }
 
     @Override
@@ -77,7 +77,7 @@ public class LicensesInfoPresenterImpl extends AbstractFeaturePresenter<Licenses
     }
 
     @Override
-    public void onOkButtonClicked() {
-        mView.dismiss();
+    public void onOkButtonClick() {
+        view.dismiss();
     }
 }

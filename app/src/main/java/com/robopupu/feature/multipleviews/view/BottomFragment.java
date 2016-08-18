@@ -17,11 +17,11 @@ import com.robopupu.feature.multipleviews.presenter.BottomPresenter;
 public class BottomFragment extends FeatureCompatFragment<BottomPresenter> implements BottomView {
 
     @Plug
-    BottomPresenter mPresenter;
+    BottomPresenter presenter;
 
     @Override
     public BottomPresenter getPresenter() {
-        return mPresenter;
+        return presenter;
     }
 
     @Override

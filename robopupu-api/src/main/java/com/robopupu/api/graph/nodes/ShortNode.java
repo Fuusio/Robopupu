@@ -9,13 +9,13 @@ import com.robopupu.api.graph.OutputNode;
  */
 public class ShortNode<IN> extends Node<IN, Short> {
 
-    private short mValue;
+    private short value;
 
     @Override
     protected Short processInput(final OutputNode<IN> source, final IN input) {
         if (input instanceof Number) {
-            mValue = ((Number)input).shortValue();
-            return mValue;
+            value = ((Number)input).shortValue();
+            return value;
         } else {
             dispatchError(this, new ClassCastException(createErrorMessage("Received an object that cannot be converted to short value")));
             return null;
@@ -23,6 +23,6 @@ public class ShortNode<IN> extends Node<IN, Short> {
     }
 
     public short getValue() {
-        return mValue;
+        return value;
     }
 }

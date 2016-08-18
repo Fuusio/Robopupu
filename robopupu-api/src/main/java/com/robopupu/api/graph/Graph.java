@@ -56,16 +56,16 @@ import java.util.List;
  */
 public class Graph<T> {
 
-    protected final HashMap<Tag, OutputNode<?>> mTaggedNodes;
-    protected final Tag<T> mBeginTag;
+    protected final HashMap<Tag, OutputNode<?>> taggedNodes;
+    protected final Tag<T> beginTag;
 
-    protected OutputNode<T> mBeginNode;
-    protected OutputNode<?> mCurrentNode;
-    protected Tag mPendingAttachTag;
+    protected OutputNode<T> beginNode;
+    protected OutputNode<?> currentNode;
+    protected Tag pendingAttachTag;
 
     protected Graph() {
-        mBeginTag = new Tag<>();
-        mTaggedNodes = new HashMap<>();
+        beginTag = new Tag<>();
+        taggedNodes = new HashMap<>();
     }
 
     /**
@@ -73,7 +73,7 @@ public class Graph<T> {
      * @return A {@link Tag}.
      */
     public Tag<T> getBeginTag() {
-        return mBeginTag;
+        return beginTag;
     }
 
     /**
@@ -82,7 +82,7 @@ public class Graph<T> {
      */
     @SuppressWarnings("unchecked")
     public <T_Node extends OutputNode<?>> T_Node getBeginNode() {
-        return (T_Node)mBeginNode;
+        return (T_Node) beginNode;
     }
 
     /**
@@ -90,14 +90,14 @@ public class Graph<T> {
      * @param outputNode A {@link OutputNode}.
      */
     protected void setBeginNode(final OutputNode<T> outputNode) {
-        if (mPendingAttachTag != null) {
-            mTaggedNodes.put(mPendingAttachTag, outputNode);
-            mPendingAttachTag = null;
+        if (pendingAttachTag != null) {
+            taggedNodes.put(pendingAttachTag, outputNode);
+            pendingAttachTag = null;
         } else {
-            mTaggedNodes.put(mBeginTag, outputNode);
+            taggedNodes.put(beginTag, outputNode);
         }
-        mBeginNode = outputNode;
-        mCurrentNode = outputNode;
+        beginNode = outputNode;
+        currentNode = outputNode;
     }
 
     /**
@@ -106,9 +106,9 @@ public class Graph<T> {
      * @param outputNode A {@link OutputNode}.
      */
     protected void setBeginNode(final Tag<T> tag, final OutputNode<T> outputNode) {
-        mTaggedNodes.put(tag, outputNode);
-        mBeginNode = outputNode;
-        mCurrentNode = outputNode;
+        taggedNodes.put(tag, outputNode);
+        beginNode = outputNode;
+        currentNode = outputNode;
     }
 
     /**
@@ -117,7 +117,7 @@ public class Graph<T> {
      */
     @SuppressWarnings("unchecked")
     public <T_Node> T_Node getCurrentNode() {
-        return (T_Node)mCurrentNode;
+        return (T_Node) currentNode;
     }
 
 
@@ -260,7 +260,7 @@ public class Graph<T> {
      */
     @SuppressWarnings("unchecked")
     public <OUT> Graph<OUT> node(final Tag<OUT> tag) {
-        mCurrentNode = mTaggedNodes.get(tag);
+        currentNode = taggedNodes.get(tag);
         return (Graph<OUT>)this;
     }
 
@@ -272,7 +272,7 @@ public class Graph<T> {
      */
     @SuppressWarnings("unchecked")
     public <OUT> OutputNode<OUT> findNode(final Tag<OUT> tag) {
-        return (OutputNode<OUT>)mTaggedNodes.get(tag);
+        return (OutputNode<OUT>) taggedNodes.get(tag);
     }
 
     /**
@@ -311,7 +311,7 @@ public class Graph<T> {
      */
     @SuppressWarnings("unchecked")
     public Graph<T> tag(final Tag<T> tag) {
-        mPendingAttachTag = tag;
+        pendingAttachTag = tag;
         return this;
     }
 
@@ -328,18 +328,18 @@ public class Graph<T> {
             nextNode = (Node<T, OUT>)((ZipInputNode)node).getZipNode();
         }
 
-        if (mPendingAttachTag != null) {
-            mTaggedNodes.put(mPendingAttachTag, nextNode);
-            mPendingAttachTag = null;
+        if (pendingAttachTag != null) {
+            taggedNodes.put(pendingAttachTag, nextNode);
+            pendingAttachTag = null;
         }
 
-        if (mCurrentNode != null) {
-            ((OutputNode<T>)mCurrentNode).attach(node);
+        if (currentNode != null) {
+            ((OutputNode<T>) currentNode).attach(node);
         }
-        mCurrentNode = nextNode;
+        currentNode = nextNode;
 
-        if (mBeginNode == null) {
-            mBeginNode = (OutputNode<T>)node;
+        if (beginNode == null) {
+            beginNode = (OutputNode<T>)node;
         }
         return (Graph<OUT>)this;
     }
@@ -735,7 +735,7 @@ public class Graph<T> {
      */
     @SuppressWarnings("unchecked")
     public <IN> Graph<IN> end(final InputNode<IN> inputNode) {
-        ((OutputNode<IN>)mCurrentNode).attach(inputNode);
+        ((OutputNode<IN>) currentNode).attach(inputNode);
         return (Graph<IN>)this;
     }
 
@@ -745,7 +745,7 @@ public class Graph<T> {
      */
     @SuppressWarnings("unchecked")
     public <IN> Graph<IN> end(final Action1<IN> action) {
-        ((OutputNode<IN>)mCurrentNode).attach(new Action1Node<>(action));
+        ((OutputNode<IN>) currentNode).attach(new Action1Node<>(action));
         return (Graph<IN>)this;
     }
 

@@ -30,7 +30,7 @@ import com.robopupu.feature.about.presenter.LicensesInfoPresenter;
 @Plugin
 public class AboutFeatureImpl extends AbstractFeature implements AboutFeature {
 
-    @Plug PlatformManager mPlatformManager;
+    @Plug PlatformManager platformManager;
 
     @Scope(RobopupuAppScope.class)
     @Provides(AboutFeature.class)
@@ -46,19 +46,19 @@ public class AboutFeatureImpl extends AbstractFeature implements AboutFeature {
 
     @Override
     public void onShowLicenseInfo() {
-        final Params params = new Params(LicensesInfoPresenter.KEY_PARAM_LICENSE_URL, mPlatformManager.getString(R.string.robopupu_license_file));
+        final Params params = new Params(LicensesInfoPresenter.KEY_PARAM_LICENSE_URL, platformManager.getString(R.string.robopupu_license_file));
         showView(LicensesInfoPresenter.class, false, params);
     }
 
     @Override
     public void onShowOssLicensesInfo() {
-        final Params params = new Params(LicensesInfoPresenter.KEY_PARAM_LICENSE_URL, mPlatformManager.getString(R.string.oss_licenses_file));
+        final Params params = new Params(LicensesInfoPresenter.KEY_PARAM_LICENSE_URL, platformManager.getString(R.string.oss_licenses_file));
         showView(LicensesInfoPresenter.class, false, params);
     }
 
     @Override
     public void onOpenSourcesWebPage() {
-        final String url = mPlatformManager.getString(R.string.ft_about_text_sources);
-        mPlatformManager.openWebPage(url);
+        final String url = platformManager.getString(R.string.ft_about_text_sources);
+        platformManager.openWebPage(url);
     }
 }

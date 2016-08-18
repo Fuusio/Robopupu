@@ -14,12 +14,12 @@ import java.util.HashMap;
  */
 public class TimerNode<IN> extends Node<IN, IN> {
 
-    private final HashMap<Long, TimerHandle> mTimerHandles;
-    private final long mDelay;
-    private final long mInterval;
-    private final int mRepeatCount;
+    private final HashMap<Long, TimerHandle> timerHandles;
+    private final long delay;
+    private final long interval;
+    private final int repeatCount;
 
-    private IN mInput;
+    private IN input;
 
     public TimerNode(final long delay) {
         this(null, delay, 0L, 0);
@@ -34,15 +34,15 @@ public class TimerNode<IN> extends Node<IN, IN> {
     }
 
     public TimerNode(final IN input, final long delay, final long interval, final int repeatCount) {
-        mInput = input;
-        mTimerHandles = new HashMap<>();
-        mDelay = delay;
-        mInterval = interval;
-        mRepeatCount = repeatCount;
+        this.input = input;
+        timerHandles = new HashMap<>();
+        this.delay = delay;
+        this.interval = interval;
+        this.repeatCount = repeatCount;
     }
 
     public void setInput(final IN input) {
-        mInput = input;
+        this.input = input;
     }
 
     @Override
@@ -53,14 +53,14 @@ public class TimerNode<IN> extends Node<IN, IN> {
 
     @Override
     public void emitOutput() {
-        start(mInput);
+        start(input);
     }
 
     /**
      * Stars a new timer.
      */
     public void start(final IN input) {
-        final TimerHandle handle = new TimerHandle(this, input, mDelay, mInterval, mRepeatCount);
+        final TimerHandle handle = new TimerHandle(this, input, delay, interval, repeatCount);
         handle.start();
     }
 
@@ -73,7 +73,7 @@ public class TimerNode<IN> extends Node<IN, IN> {
     }
 
     protected void remove(final TimerHandle handle) {
-        mTimerHandles.remove(handle.getId());
+        timerHandles.remove(handle.getId());
     }
 
     private class TimerHandle {

@@ -10,16 +10,16 @@ import com.robopupu.api.graph.OutputNode;
  */
 public class FunctionNode<IN, OUT> extends Node<IN, OUT> {
 
-    private final Function<IN,OUT> mFunction;
+    private final Function<IN,OUT> function;
 
     public FunctionNode(final Function<IN,OUT> function) {
-        mFunction = function;
+        this.function = function;
     }
 
     @Override
     protected OUT processInput(final OutputNode<IN> source, final IN input) {
-        if (mFunction != null) {
-            return mFunction.eval(input);
+        if (function != null) {
+            return function.eval(input);
         } else {
             return eval(input);
         }

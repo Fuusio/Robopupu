@@ -4,39 +4,36 @@ import com.google.gson.annotations.SerializedName;
 
 public class JokeValue {
 
-    @SerializedName("id")
-    private int mId;
+    private int id;
 
-    @SerializedName("joke")
-    private String mJoke;
-
-    @SerializedName("categories")
-    private String[] mCategories;
+    private String joke;
+    
+    private String[] categories;
 
     public JokeValue() {
     }
 
     public int getId() {
-        return mId;
+        return id;
     }
 
     public String getJoke() {
-        return mJoke;
+        return joke;
     }
 
     public void setId(final int id) {
-        mId = id;
+        this.id = id;
     }
 
     public void setJoke(final String joke) {
-        mJoke = joke;
+        this.joke = joke;
     }
 
     public String[] getCategories() {
-        return mCategories;
+        return categories;
     }
 
     public void setCategories(final String[] categories) {
-        mCategories = categories;
+        this.categories = categories;
     }
 }

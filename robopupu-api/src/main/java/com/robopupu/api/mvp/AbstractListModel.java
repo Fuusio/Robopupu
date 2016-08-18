@@ -10,7 +10,7 @@ public abstract class AbstractListModel<T_ModelEvent extends ModelEvent, T_Model
         extends AbstractModel<T_ModelEvent, T_ModelListener>
         implements ListModel<T_ModelEvent, T_ModelListener> {
 
-    private RecyclerView.AdapterDataObserver mObserver;
+    private RecyclerView.AdapterDataObserver observer;
 
     @Override
     public long getItemId(final int position) {
@@ -33,19 +33,19 @@ public abstract class AbstractListModel<T_ModelEvent extends ModelEvent, T_Model
 
     @Override
     public void registerAdapterDataObserver(final RecyclerView.AdapterDataObserver observer) {
-        mObserver = observer;
+        this.observer = observer;
     }
 
     @Override
     public void unregisterAdapterDataObserver(final RecyclerView.AdapterDataObserver observer) {
-        mObserver = null;
+        this.observer = null;
     }
 
     @Override
     public void notifyDataChanged() {
-        if (mObserver == null) {
-            throw new AssertionError("mObserver cannot be null.");
+        if (observer == null) {
+            throw new AssertionError("observer cannot be null.");
         }
-        mObserver.onChanged();
+        observer.onChanged();
     }
 }

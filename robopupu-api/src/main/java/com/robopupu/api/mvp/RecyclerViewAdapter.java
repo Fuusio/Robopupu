@@ -15,25 +15,25 @@ public abstract class RecyclerViewAdapter<T_ViewHolder extends RecyclerView.View
 
     public static final UndoItem UNDO_ITEM = new UndoItem();
 
-    private Context mContext;
-    private ListModel mListModel;
-    private RecyclerView.AdapterDataObserver mObserver;
-    private int mUndoPosition;
+    private Context context;
+    private ListModel listModel;
+    private RecyclerView.AdapterDataObserver observer;
+    private int undoPosition;
 
     protected RecyclerViewAdapter(final Context context) {
-        mContext = context;
-        mUndoPosition = -1;
+        this.context = context;
+        undoPosition = -1;
     }
 
     public final Context getContext() {
-        return mContext;
+        return context;
     }
 
     public void setListModel(final ListModel listModel) {
-        mListModel = listModel;
+        this.listModel = listModel;
 
-        if (mListModel != null && mObserver != null) {
-            mListModel.registerAdapterDataObserver(mObserver);
+        if (this.listModel != null && observer != null) {
+            this.listModel.registerAdapterDataObserver(observer);
         }
     }
 
@@ -44,10 +44,10 @@ public abstract class RecyclerViewAdapter<T_ViewHolder extends RecyclerView.View
         }
         super.registerAdapterDataObserver(observer);
 
-        mObserver = observer;
+        this.observer = observer;
 
-        if (mListModel != null) {
-            mListModel.registerAdapterDataObserver(observer);
+        if (listModel != null) {
+            listModel.registerAdapterDataObserver(observer);
         }
         notifyDataSetChanged();
     }
@@ -55,30 +55,30 @@ public abstract class RecyclerViewAdapter<T_ViewHolder extends RecyclerView.View
     @Override
     public void unregisterAdapterDataObserver(final RecyclerView.AdapterDataObserver observer) {
         super.unregisterAdapterDataObserver(observer);
-        mObserver = null;
+        this.observer = null;
 
-        if (mListModel != null) {
-            mListModel.unregisterAdapterDataObserver(observer);
+        if (listModel != null) {
+            listModel.unregisterAdapterDataObserver(observer);
         }
     }
 
     @Override
     public int getItemCount() {
-        return mListModel.getItemCount();
+        return listModel.getItemCount();
     }
 
     public Object getItem(final int position) {
 
-        if (position == mUndoPosition) {
+        if (position == undoPosition) {
             return UNDO_ITEM;
         } else {
-            return mListModel.getItem(position);
+            return listModel.getItem(position);
         }
     }
 
     @Override
     public long getItemId(final int position) {
-        return mListModel.getItemId(position);
+        return listModel.getItemId(position);
     }
 
     @Override
@@ -92,60 +92,60 @@ public abstract class RecyclerViewAdapter<T_ViewHolder extends RecyclerView.View
     @Override
     public void onBindViewHolder(final T_ViewHolder holder, final int position) {
         final ViewHolder viewHolder = (ViewHolder)holder;
-        mListModel.updateViewHolder(viewHolder, position);
+        listModel.updateViewHolder(viewHolder, position);
         viewHolder.setItemPosition(position);
         viewHolder.setListener(this);
     }
 
     public final int getUndoPosition() {
-        return mUndoPosition;
+        return undoPosition;
     }
 
     public void remove(final int position) {
 
         int newUndoPosition = position;
 
-        if (mUndoPosition >= 0) {
+        if (undoPosition >= 0) {
             commitRemove();
 
-            if (mUndoPosition < newUndoPosition) {
+            if (undoPosition < newUndoPosition) {
                 newUndoPosition--;
             }
         }
 
-        mUndoPosition = newUndoPosition;
+        undoPosition = newUndoPosition;
         notifyDataSetChanged();
     }
 
     public boolean canDismiss(final int position) {
-        return mListModel.canDismiss(position);
+        return listModel.canDismiss(position);
     }
 
     public void undoRemove() {
-        if (mUndoPosition >= 0) {
-            mUndoPosition = -1;
+        if (undoPosition >= 0) {
+            undoPosition = -1;
             notifyDataSetChanged();
         }
     }
 
     public void commitRemove() {
-        if (mUndoPosition >= 0) {
-            mListModel.remove(mUndoPosition);
-            mUndoPosition = -1;
+        if (undoPosition >= 0) {
+            listModel.remove(undoPosition);
+            undoPosition = -1;
             notifyDataSetChanged();
         }
     }
 
     @Override
     public void onScrollStateChanged(final AbsListView view, final int scrollState) {
-        if (mUndoPosition >= 0) {
+        if (undoPosition >= 0) {
             commitRemove();
         }
     }
 
     @Override
     public void onScroll(final AbsListView view, final int firstVisibleItem, final int visibleItemCount, final int totalItemCount) {
-        if (mUndoPosition >= 0) {
+        if (undoPosition >= 0) {
             commitRemove();
         }
     }

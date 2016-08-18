@@ -15,18 +15,18 @@ public class DependencyQuery<T> {
         ALL_MATCHING_DEPENDENCIES
     }
 
-    private final Class<T> mDependencyType;
-    private final HashMap<Class<?>, T> mFoundDependencies;
-    private final Mode mMode;
+    private final Class<T> dependencyType;
+    private final HashMap<Class<?>, T> foundDependencies;
+    private final Mode mode;
 
     public DependencyQuery(final Class<T> dependencyType) {
         this(dependencyType, Mode.FIRST_MATCHING_DEPENDENCY);
     }
 
     public DependencyQuery(final Class<T> dependencyType, final Mode mode) {
-        mDependencyType = dependencyType;
-        mFoundDependencies = new HashMap<>();
-        mMode = mode;
+        this.dependencyType = dependencyType;
+        foundDependencies = new HashMap<>();
+        this.mode = mode;
     }
 
     @SuppressWarnings("unchecked")
@@ -40,11 +40,11 @@ public class DependencyQuery<T> {
     }
 
     public Class<T> getDependencyType() {
-        return mDependencyType;
+        return dependencyType;
     }
 
     public Collection<T> getFoundDependencies() {
-        return mFoundDependencies.values();
+        return foundDependencies.values();
     }
 
     /**
@@ -52,7 +52,7 @@ public class DependencyQuery<T> {
      * param cache A {@link HashSet} for adding the found dependencies.
      * REMOVE
     public void getFoundDependencies(final HashSet<T> cache) {
-        for (final T foundDependency : mFoundDependencies) {
+        for (final T foundDependency : foundDependencies) {
             if (!containsInstanceOf(cache, foundDependency)) {
                 cache.add(foundDependency);
             }
@@ -71,29 +71,29 @@ public class DependencyQuery<T> {
     }*/
 
     public T getFoundDependency() {
-        final Collection<T> dependencies = mFoundDependencies.values();
+        final Collection<T> dependencies = foundDependencies.values();
         return dependencies.iterator().next();
     }
 
     @SuppressWarnings("unused")
     public Mode getMode() {
-        return mMode;
+        return mode;
     }
 
     public boolean foundDependencies() {
-        return !mFoundDependencies.isEmpty();
+        return !foundDependencies.isEmpty();
     }
 
     public boolean add(final T dependency) {
-        mFoundDependencies.put(dependency.getClass(), dependency);
-        return (mMode == Mode.FIRST_MATCHING_DEPENDENCY);
+        foundDependencies.put(dependency.getClass(), dependency);
+        return (mode == Mode.FIRST_MATCHING_DEPENDENCY);
     }
 
     public boolean isMatchingType(Class<?> type) {
-        return mDependencyType.isAssignableFrom(type);
+        return dependencyType.isAssignableFrom(type);
     }
 
     public boolean matches(final Class<?> providedType, final Class<?> concreteType) {
-        return mDependencyType.isAssignableFrom(providedType) && !mFoundDependencies.containsKey(concreteType);
+        return dependencyType.isAssignableFrom(providedType) && !foundDependencies.containsKey(concreteType);
     }
 }

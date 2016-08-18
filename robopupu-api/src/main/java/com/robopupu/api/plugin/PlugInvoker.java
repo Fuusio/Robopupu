@@ -23,56 +23,56 @@ import java.util.ArrayList;
  */
 public abstract class PlugInvoker<T> {
 
-    protected final ArrayList<T> mPlugins;
+    protected final ArrayList<T> plugins;
 
     protected PlugInvoker() {
-        mPlugins = new ArrayList<>();
+        plugins = new ArrayList<>();
     }
 
     public final T object() {
-        return mPlugins.get(0);
+        return plugins.get(0);
     }
 
     public final T get(final int index) {
-        return mPlugins.get(index);
+        return plugins.get(index);
     }
 
     public boolean hasPlugins() {
-        return !mPlugins.isEmpty();
+        return !plugins.isEmpty();
     }
 
     public ArrayList<T> getPlugins() {
-        return mPlugins;
+        return plugins;
     }
 
     public final int last() {
-        return mPlugins.size() - 1;
+        return plugins.size() - 1;
     }
 
     public int getPluginsCount() {
-        return mPlugins.size();
+        return plugins.size();
     }
 
     @SuppressWarnings("unchecked")
     public void addPlugin(final Object plugin) {
-        if (!mPlugins.contains((T)plugin)) {
-            mPlugins.add((T)plugin);
+        if (!plugins.contains((T)plugin)) {
+            plugins.add((T)plugin);
         }
     }
 
     @SuppressWarnings("unchecked")
     public void removePlugin(final Object plugin) {
-        if (mPlugins.contains((T)plugin)) {
-            mPlugins.remove((T)plugin);
+        if (plugins.contains((T)plugin)) {
+            plugins.remove((T)plugin);
         } else {
 
             HandlerInvoker<?> invokerToBeRemoved = null;
 
-            for (final Object pluggedPlugin : mPlugins) {
+            for (final Object pluggedPlugin : plugins) {
                 if (pluggedPlugin instanceof HandlerInvoker) {
                     final HandlerInvoker<?> invoker = (HandlerInvoker<?>)pluggedPlugin;
 
-                    if (plugin == invoker.mPlugin) {
+                    if (plugin == invoker.plugin) {
                         invokerToBeRemoved = invoker;
                         break;
                     }
@@ -80,8 +80,8 @@ public abstract class PlugInvoker<T> {
             }
 
             if (invokerToBeRemoved != null) {
-                invokerToBeRemoved.mPlugin = null;
-                mPlugins.remove((T)invokerToBeRemoved);
+                invokerToBeRemoved.plugin = null;
+                plugins.remove((T)invokerToBeRemoved);
             }
         }
     }

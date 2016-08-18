@@ -18,7 +18,6 @@ package com.robopupu.api.mvp;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
-import android.support.annotation.CallSuper;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -50,20 +49,20 @@ public abstract class ViewFragmentDelegate<T_Presenter extends Presenter, T_Frag
 
     private static String TAG = Utils.tag(ViewFragmentDelegate.class);
 
-    protected final ViewBinder mBinder;
-    protected final T_Fragment mFragment;
-    protected final ViewState mState;
+    protected final ViewBinder binder;
+    protected final T_Fragment fragment;
+    protected final ViewState state;
 
-    protected DependencyScope mScope;
+    protected DependencyScope scope;
 
     protected ViewFragmentDelegate(final T_Fragment fragment) {
-        mFragment = fragment;
-        mBinder = new ViewBinder(this);
-        mState = new ViewState(this);
+        this.fragment = fragment;
+        binder = new ViewBinder(this);
+        state = new ViewState(this);
     }
 
     protected Activity getActivity() {
-        return mFragment.getActivity();
+        return fragment.getActivity();
     }
 
     /**
@@ -71,7 +70,7 @@ public abstract class ViewFragmentDelegate<T_Presenter extends Presenter, T_Frag
      * @return A {@link Fragment}.
      */
     public T_Fragment getFragment() {
-        return mFragment;
+        return fragment;
     }
 
     /**
@@ -84,7 +83,7 @@ public abstract class ViewFragmentDelegate<T_Presenter extends Presenter, T_Frag
 
     @Override
     public String getViewTag() {
-        return mFragment.getClass().getName();
+        return fragment.getClass().getName();
     }
 
     /**
@@ -106,7 +105,7 @@ public abstract class ViewFragmentDelegate<T_Presenter extends Presenter, T_Frag
 
     public void onViewCreated(final android.view.View view, final Bundle inState) {
         Log.d(TAG, "onViewCreated(...)");
-        mState.onCreate();
+        state.onCreate();
 
         final T_Presenter presenter = resolvePresenter();
         if (presenter != null) {
@@ -118,7 +117,7 @@ public abstract class ViewFragmentDelegate<T_Presenter extends Presenter, T_Frag
 
     public void onActivityCreated(final Bundle inState) {
 
-        mBinder.setActivity(getActivity());
+        binder.setActivity(getActivity());
         onCreateBindings();
 
         if (inState != null) {
@@ -132,7 +131,7 @@ public abstract class ViewFragmentDelegate<T_Presenter extends Presenter, T_Frag
                 final DependencyScope scope = dependencies.getDependency(KEY_DEPENDENCY_SCOPE);
 
                 if (scope != null) {
-                    mScope = scope;
+                    this.scope = scope;
                 }
                 onRestoreDependencies(dependencies);
             }
@@ -141,7 +140,7 @@ public abstract class ViewFragmentDelegate<T_Presenter extends Presenter, T_Frag
 
     public void onStart() {
         Log.d(TAG, "onStart()");
-        mState.onStart();
+        state.onStart();
 
         // If this ViewFragmentDelegate is a FeatureContainerProvider, it needs to be registered to
         // FeatureManager
@@ -154,7 +153,7 @@ public abstract class ViewFragmentDelegate<T_Presenter extends Presenter, T_Frag
         final T_Presenter presenter = resolvePresenter();
         if (presenter != null) {
             presenter.onViewStart(this);
-            mBinder.initialise();
+            binder.initialise();
         }
     }
 
@@ -168,7 +167,7 @@ public abstract class ViewFragmentDelegate<T_Presenter extends Presenter, T_Frag
 
     public void onResume() {
         Log.d(TAG, "onResume()");
-        mState.onResume();
+        state.onResume();
 
         final T_Presenter presenter = resolvePresenter();
         if (presenter != null) {
@@ -181,7 +180,7 @@ public abstract class ViewFragmentDelegate<T_Presenter extends Presenter, T_Frag
 
     public void onStop() {
         Log.d(TAG, "onStop()");
-        mState.onStop();
+        state.onStop();
 
         final T_Presenter presenter = resolvePresenter();
         if (presenter != null) {
@@ -191,7 +190,7 @@ public abstract class ViewFragmentDelegate<T_Presenter extends Presenter, T_Frag
 
     public void onPause() {
         Log.d(TAG, "onPause()");
-        mState.onPause();
+        state.onPause();
 
         final T_Presenter presenter = resolvePresenter();
         if (presenter != null) {
@@ -201,9 +200,9 @@ public abstract class ViewFragmentDelegate<T_Presenter extends Presenter, T_Frag
 
     public void onDestroy() {
         Log.d(TAG, "onDestroy()");
-        mState.onDestroy();
+        state.onDestroy();
 
-        mBinder.dispose();
+        binder.dispose();
 
         if (this instanceof DependencyScopeOwner) {
 
@@ -233,7 +232,7 @@ public abstract class ViewFragmentDelegate<T_Presenter extends Presenter, T_Frag
         // Save a reference to the Presenter
 
         final DependencyMap dependencies = cache.getDependencies(this, true);
-        dependencies.addDependency(KEY_DEPENDENCY_SCOPE, mScope);
+        dependencies.addDependency(KEY_DEPENDENCY_SCOPE, scope);
 
         onSaveDependencies(dependencies);
 
@@ -288,7 +287,7 @@ public abstract class ViewFragmentDelegate<T_Presenter extends Presenter, T_Frag
     @NonNull
     @Override
     public ViewState getState() {
-        return mState;
+        return state;
     }
 
     /**
@@ -311,7 +310,7 @@ public abstract class ViewFragmentDelegate<T_Presenter extends Presenter, T_Frag
      */
     @SuppressWarnings("unchecked")
     public <T extends ViewBinding<?>> T bind(@IdRes final int viewId) {
-        return mBinder.bind(viewId);
+        return binder.bind(viewId);
     }
 
     /**
@@ -323,7 +322,7 @@ public abstract class ViewFragmentDelegate<T_Presenter extends Presenter, T_Frag
      */
     @SuppressWarnings("unchecked")
     public <T extends android.view.View> T bind(@IdRes final int viewId, final ViewBinding<T> binding) {
-        return mBinder.bind(viewId, binding);
+        return binder.bind(viewId, binding);
     }
 
     /**
@@ -336,16 +335,16 @@ public abstract class ViewFragmentDelegate<T_Presenter extends Presenter, T_Frag
      */
     @SuppressWarnings("unchecked")
     public AdapterView bind(@IdRes final int viewId, final AdapterViewBinding<?> binding, final AdapterViewBinding.Adapter<?> adapter) {
-        return mBinder.bind(viewId, binding, adapter);
+        return binder.bind(viewId, binding, adapter);
     }
 
     @Override
     public DependencyScope getScope() {
-        return mScope;
+        return scope;
     }
 
     @Override
     public void setScope(final DependencyScope scope) {
-        mScope = scope;
+        this.scope = scope;
     }
 }

@@ -17,23 +17,23 @@ package com.robopupu.api.dependency;
 
 public class ZooScope extends DependencyScope {
 
-    private boolean mWasDisposed;
+    private boolean wasDisposed;
 
     protected ZooScope() {
     }
 
     public final boolean wasDisposed() {
-        return mWasDisposed;
+        return wasDisposed;
     }
 
     public void setWasDisposed(final boolean disposed) {
-        mWasDisposed = disposed;
+        wasDisposed = disposed;
     }
 
     @Override
     protected void dispose() {
         super.dispose();
-        mWasDisposed = true;
+        wasDisposed = true;
     }
 
     @Override

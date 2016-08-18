@@ -31,9 +31,9 @@ import com.robopupu.api.plugin.PluginBus;
 public class ThxPresenterImpl extends AbstractFeaturePresenter<ThxView>
         implements ThxPresenter {
 
-    @Plug MainFeature mMainFeature;
-    @Plug TimerManager mTimerManager;
-    @Plug ThxView mView;
+    @Plug MainFeature mainFeature;
+    @Plug TimerManager timerManager;
+    @Plug ThxView view;
 
     @Provides(ThxPresenter.class)
     public ThxPresenterImpl() {
@@ -41,7 +41,7 @@ public class ThxPresenterImpl extends AbstractFeaturePresenter<ThxView>
 
     @Override
     public ThxView getViewPlug() {
-        return mView;
+        return view;
     }
 
     @Override
@@ -54,10 +54,10 @@ public class ThxPresenterImpl extends AbstractFeaturePresenter<ThxView>
     public void onViewStart(final View view) {
         super.onViewStart(view);
 
-        mTimerManager.createTimer(new TimerManager.Callback() {
+        timerManager.createTimer(new TimerManager.Callback() {
             @Override
             public void timeout(TimerHandle handle) {
-                mMainFeature.openNavigationDrawer();
+                mainFeature.openNavigationDrawer();
             }
         }, 3000L);
     }

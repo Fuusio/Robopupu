@@ -40,14 +40,22 @@ public abstract class AbstractPresenter<T_View extends View> extends AbstractPlu
 
     private static final String TAG = Utils.tag(AbstractPresenter.class);
 
-    protected final List<PresenterListener> mListeners;
+    protected final List<PresenterListener> listeners;
 
-    protected Params mParams;
-
-    private DependencyScope mScope;
+    private Params params;
+    private DependencyScope scope;
 
     protected AbstractPresenter() {
-        mListeners = new ArrayList<>();
+        listeners = new ArrayList<>();
+    }
+
+    public Params getParams() {
+        return params;
+    }
+
+    @Override
+    public void setParams(final Params params) {
+        this.params = params;
     }
 
     /**
@@ -73,7 +81,7 @@ public abstract class AbstractPresenter<T_View extends View> extends AbstractPlu
      */
     protected List<PresenterListener> getListeners() {
         final ArrayList<PresenterListener> listeners = new ArrayList<>();
-        listeners.addAll(mListeners);
+        listeners.addAll(this.listeners);
         return listeners;
     }
 
@@ -118,21 +126,6 @@ public abstract class AbstractPresenter<T_View extends View> extends AbstractPlu
          }
         return false;
     }
-
-    /**
-     * Gets the {@link Params}.
-     * @return A {@link Params}. May return {@code null}.
-     */
-    protected Params getParams() {
-        return mParams;
-    }
-
-    @Override
-    public void setParams(final Params params) {
-        mParams = params;
-    }
-
-
 
     @Override
     public void finish() {
@@ -189,7 +182,7 @@ public abstract class AbstractPresenter<T_View extends View> extends AbstractPlu
     //@CallSuper
     public void onUnplugged(final PluginBus bus) {
         Log.d(TAG, "onUnplugged(...)");
-        mListeners.clear();
+        listeners.clear();
     }
 
     @Override
@@ -202,8 +195,8 @@ public abstract class AbstractPresenter<T_View extends View> extends AbstractPlu
 
     protected void updateListeners(final PluginBus bus) {
         final List<PresenterListener> plugins = PluginBus.getPlugs(PresenterListener.class, true);
-        mListeners.clear();
-        mListeners.addAll(plugins);
+        listeners.clear();
+        listeners.addAll(plugins);
     }
 
     @SuppressWarnings("unchecked")
@@ -236,7 +229,6 @@ public abstract class AbstractPresenter<T_View extends View> extends AbstractPlu
         Log.d(TAG, "onViewPause(View)");
     }
 
-
     @Override
     @CallSuper
     public void onViewStop(final View view) {
@@ -251,12 +243,12 @@ public abstract class AbstractPresenter<T_View extends View> extends AbstractPlu
 
     @Override
     public DependencyScope getScope() {
-        return mScope;
+        return scope;
     }
 
     @Override
     public void setScope(final DependencyScope scope) {
-        mScope = scope;
+        this.scope = scope;
     }
 
     /**

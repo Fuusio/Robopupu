@@ -10,21 +10,21 @@ import com.robopupu.api.graph.functions.BooleanFunction;
  */
 public class ConditionNode<IN> extends Node<IN, Boolean> {
 
-    private BooleanFunction<IN> mCondition;
+    private BooleanFunction<IN> condition;
 
     public ConditionNode(final BooleanFunction<IN> condition) {
         setCondition(condition);
     }
 
     public void setCondition(final BooleanFunction condition) {
-        mCondition = condition;
+        this.condition = condition;
     }
 
     @Override
     protected Boolean processInput(final OutputNode<IN> source, final IN input) {
         if (input != null) {
-            if (mCondition != null) {
-                return mCondition.eval(input);
+            if (condition != null) {
+                return condition.eval(input);
             }
         }
         return null;

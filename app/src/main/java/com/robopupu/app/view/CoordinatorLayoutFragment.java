@@ -44,41 +44,41 @@ import com.robopupu.api.feature.FeaturePresenter;
 public abstract class CoordinatorLayoutFragment<T_Presenter extends FeaturePresenter>
         extends FeatureCompatFragment<T_Presenter> {
 
-    protected final @StringRes int mTitleResId;
+    protected final @StringRes int titleResId;
 
-    protected ActionBar mActionBar;
-    protected AppBarLayout mAppBarLayout;
-    protected CoordinatorLayout mCoordinatorLayout;
-    protected FloatingActionButton mFab;
-    protected Toolbar mToolbar;
+    protected ActionBar actionBar;
+    protected AppBarLayout appBarLayout;
+    protected CoordinatorLayout coordinatorLayout;
+    protected FloatingActionButton fab;
+    protected Toolbar toolbar;
 
     protected CoordinatorLayoutFragment(@StringRes final int titleResId) {
-        mTitleResId = titleResId;
+        this.titleResId = titleResId;
     }
 
     @Override
     protected void onCreateBindings() {
         super.onCreateBindings();
 
-        mCoordinatorLayout = getView(R.id.coordinator_layout);
+        coordinatorLayout = getView(R.id.coordinator_layout);
 
         final AppCompatActivity activity = (AppCompatActivity) getActivity();
-        mAppBarLayout = getView(R.id.app_bar_layout);
-        mToolbar = getView(R.id.toolbar);
+        appBarLayout = getView(R.id.app_bar_layout);
+        toolbar = getView(R.id.toolbar);
 
-        activity.setSupportActionBar(mToolbar);
+        activity.setSupportActionBar(toolbar);
 
-        mActionBar = activity.getSupportActionBar();
+        actionBar = activity.getSupportActionBar();
 
-        assert(mActionBar != null);
+        assert(actionBar != null);
 
-        mActionBar.setTitle(mTitleResId);
-        mActionBar.setDisplayShowHomeEnabled(true);
+        actionBar.setTitle(titleResId);
+        actionBar.setDisplayShowHomeEnabled(true);
 
-        mFab = getView(R.id.fab);
+        fab = getView(R.id.fab);
 
-        if (mFab != null) {
-            setupFabAction(mFab);
+        if (fab != null) {
+            setupFabAction(fab);
         }
 
         //final ImageView imageView = getView(R.id.image_view_backdrop);
@@ -97,7 +97,7 @@ public abstract class CoordinatorLayoutFragment<T_Presenter extends FeaturePrese
 
         final AppManager appManager = D.get(AppManager.class);
 
-        final Snackbar snackbar = Snackbar.make(mCoordinatorLayout, message, Snackbar.LENGTH_LONG);
+        final Snackbar snackbar = Snackbar.make(coordinatorLayout, message, Snackbar.LENGTH_LONG);
         final View snackbarView = snackbar.getView();
         snackbarView.setBackgroundColor(appManager.getColor(R.color.primary));
         final TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
@@ -113,7 +113,7 @@ public abstract class CoordinatorLayoutFragment<T_Presenter extends FeaturePrese
 
         if (activity instanceof DrawerLayoutContainer) {
             final DrawerLayoutContainer container = (DrawerLayoutContainer)activity;
-            container.updateForToolbar(mToolbar);
+            container.updateForToolbar(toolbar);
         }
     }
 

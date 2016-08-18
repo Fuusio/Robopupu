@@ -9,13 +9,13 @@ import com.robopupu.api.graph.OutputNode;
  */
 public class LongNode<IN> extends Node<IN, Long> {
 
-    private long mValue;
+    private long value;
 
     @Override
     protected Long processInput(final OutputNode<IN> source, final IN input) {
         if (input instanceof Number) {
-            mValue = ((Number)input).longValue();
-            return mValue;
+            value = ((Number)input).longValue();
+            return value;
         } else {
             dispatchError(this, new ClassCastException(createErrorMessage("Received an object that cannot be converted to Long")));
             return null;
@@ -23,6 +23,6 @@ public class LongNode<IN> extends Node<IN, Long> {
     }
 
     public long getValue() {
-        return mValue;
+        return value;
     }
 }

@@ -21,9 +21,9 @@ package com.robopupu.api.plugin;
  */
 public abstract class HandlerInvoker<T> {
 
-    protected T mPlugin;
+    protected T plugin;
 
     public void setPlugin(final T plugin) {
-        mPlugin = plugin;
+        this.plugin = plugin;
     }
 }

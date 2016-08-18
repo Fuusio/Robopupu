@@ -12,15 +12,15 @@ import com.robopupu.api.network.RequestError;
  */
 public class RequestNode<IN, OUT> extends Node<IN, OUT> implements RequestCallback<OUT> {
 
-    private final RequestDelegate<OUT> mRequestDelegate;
+    private final RequestDelegate<OUT> requestDelegate;
 
     public RequestNode(final RequestDelegate<OUT> requestDelegate) {
-        mRequestDelegate = requestDelegate;
+        this.requestDelegate = requestDelegate;
     }
 
     @Override
     public void emitOutput() {
-        mRequestDelegate.executeRequest(this);
+        requestDelegate.executeRequest(this);
     }
 
     @Override

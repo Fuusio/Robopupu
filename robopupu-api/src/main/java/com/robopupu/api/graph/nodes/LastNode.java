@@ -13,47 +13,47 @@ import java.util.ArrayList;
  */
 public class LastNode<IN> extends Node<IN, IN> {
 
-    private ArrayList<IN> mBuffer;
-    private BooleanFunction<IN> mCondition;
+    private ArrayList<IN> buffer;
+    private BooleanFunction<IN> condition;
 
     public LastNode() {
         this(null);
     }
 
     public LastNode(final BooleanFunction<IN> condition) {
-        mBuffer = new ArrayList<>();
+        buffer = new ArrayList<>();
         setCondition(condition);
     }
 
     public void setCondition(final BooleanFunction condition) {
-        mCondition = condition;
+        this.condition = condition;
     }
 
     @SuppressWarnings("unchecked")
     @Override
     protected IN processInput(final OutputNode<IN> source, final IN input) {
         if (input != null) {
-            mBuffer.add(input);
+            buffer.add(input);
         }
         return null;
     }
 
     @Override
     public void onCompleted(final OutputNode<?> source) {
-        final int size = mBuffer.size();
+        final int size = buffer.size();
 
         if (size > 0) {
-            if (mCondition != null) {
+            if (condition != null) {
                 for (int i = size - 1; i >= 0; i--) {
-                    final IN value = mBuffer.get(i);
+                    final IN value = buffer.get(i);
 
-                    if (mCondition.eval(value)) {
+                    if (condition.eval(value)) {
                         emitOutput(value);
                         break;
                     }
                 }
             } else {
-                emitOutput(mBuffer.get(size - 1 ));
+                emitOutput(buffer.get(size - 1 ));
             }
         }
         completed(this);

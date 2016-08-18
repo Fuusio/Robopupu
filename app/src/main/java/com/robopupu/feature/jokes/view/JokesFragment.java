@@ -18,10 +18,10 @@ import com.robopupu.feature.jokes.presenter.JokesPresenter;
 public class JokesFragment extends CoordinatorLayoutFragment<JokesPresenter>
         implements JokesView {
 
-    private TextView mJokesTextView;
-    private NestedScrollView mScrollView;
+    private TextView jokesTextView;
+    private NestedScrollView scrollView;
 
-    @Plug JokesPresenter mPresenter;
+    @Plug JokesPresenter presenter;
 
     @Provides(JokesView.class)
     public JokesFragment() {
@@ -30,7 +30,7 @@ public class JokesFragment extends CoordinatorLayoutFragment<JokesPresenter>
 
     @Override
     public JokesPresenter getPresenter() {
-        return mPresenter;
+        return presenter;
     }
 
     @Override
@@ -41,15 +41,15 @@ public class JokesFragment extends CoordinatorLayoutFragment<JokesPresenter>
     @Override
     protected void onCreateBindings() {
         super.onCreateBindings();
-        mJokesTextView = getView(R.id.text_view_jokes);
-        mScrollView = getView(R.id.nested_scroll_view_jokes);
+        jokesTextView = getView(R.id.text_view_jokes);
+        scrollView = getView(R.id.nested_scroll_view_jokes);
     }
 
     @Override
     public void displayJoke(final String formattedJoke) {
-        mJokesTextView.append(formattedJoke);
-        mJokesTextView.append("\n\n\n");
-        mScrollView.fullScroll(View.FOCUS_DOWN);
+        jokesTextView.append(formattedJoke);
+        jokesTextView.append("\n\n\n");
+        scrollView.fullScroll(View.FOCUS_DOWN);
     }
 
 }

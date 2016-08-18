@@ -12,49 +12,49 @@ import java.util.HashMap;
  */
 public class DependenciesCache {
 
-    private final HashMap<String, DependencyMap> mDependencyMaps;
-    private final HashMap<String, DependencyScope> mSavedScopes;
+    private final HashMap<String, DependencyMap> dependencyMaps;
+    private final HashMap<String, DependencyScope> savedScopes;
 
     public DependenciesCache() {
-        mDependencyMaps = new HashMap<>();
-        mSavedScopes = new HashMap<>();
+        dependencyMaps = new HashMap<>();
+        savedScopes = new HashMap<>();
     }
 
     public void addDependencies(final String key, final DependencyMap dependences) {
-        mDependencyMaps.put(key, dependences);
+        dependencyMaps.put(key, dependences);
     }
 
     public DependencyMap addDependencies(final String key) {
-        if (mDependencyMaps.containsKey(key)) {
-            return mDependencyMaps.get(key);
+        if (dependencyMaps.containsKey(key)) {
+            return dependencyMaps.get(key);
         } else {
             final DependencyMap dependencies = new DependencyMap();
-            mDependencyMaps.put(key, dependencies);
+            dependencyMaps.put(key, dependencies);
             return dependencies;
         }
     }
 
     public DependencyMap removeDependencies(final String key) {
-        return mDependencyMaps.remove(key);
+        return dependencyMaps.remove(key);
     }
 
     public DependencyMap getDependencies(final String key) {
-        return mDependencyMaps.get(key);
+        return dependencyMaps.get(key);
     }
 
     public boolean hasDependencies(final View view) {
-        return mDependencyMaps.containsKey(view.getViewTag());
+        return dependencyMaps.containsKey(view.getViewTag());
     }
 
     public DependencyMap getDependencies(final View view) {
-        return mDependencyMaps.get(view.getViewTag());
+        return dependencyMaps.get(view.getViewTag());
     }
 
     public DependencyMap getDependencies(final View view, final boolean createDependencyMap) {
         final String key = view.getViewTag();
 
-        if (mDependencyMaps.containsKey(key)) {
-            return mDependencyMaps.get(key);
+        if (dependencyMaps.containsKey(key)) {
+            return dependencyMaps.get(key);
         } else if (createDependencyMap) {
             return addDependencies(key);
         }
@@ -62,23 +62,23 @@ public class DependenciesCache {
     }
 
     public DependencyMap removeDependencies(final View view) {
-        return mDependencyMaps.remove(view.getViewTag());
+        return dependencyMaps.remove(view.getViewTag());
     }
 
     public void saveDependencyScope(final DependencyScopeOwner owner, final DependencyScope scope) {
-        mSavedScopes.put(owner.getScopeClass().getName(), scope);
+        savedScopes.put(owner.getScopeClass().getName(), scope);
     }
 
     public DependencyScope getDependencyScope(final DependencyScopeOwner owner) {
-        return mSavedScopes.get(owner.getScopeClass().getName());
+        return savedScopes.get(owner.getScopeClass().getName());
     }
 
     public DependencyScope removeDependencyScope(final DependencyScopeOwner owner) {
-        return mSavedScopes.remove(owner.getScopeClass().getName());
+        return savedScopes.remove(owner.getScopeClass().getName());
     }
 
     public boolean containsDependencyScope(final DependencyScopeOwner owner) {
-        return mSavedScopes.containsKey(owner.getScopeClass().getName());
+        return savedScopes.containsKey(owner.getScopeClass().getName());
     }
 
     public void onDependencyScopeOwnerDestroyed(final DependencyScopeOwner owner) {

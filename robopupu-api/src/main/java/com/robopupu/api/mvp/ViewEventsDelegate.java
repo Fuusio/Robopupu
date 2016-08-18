@@ -13,25 +13,25 @@ import android.widget.CompoundButton;
 public class ViewEventsDelegate
         implements View.OnClickListener, CompoundButton.OnCheckedChangeListener, TextWatcher {
 
-    private PresenterDelegate mDelegate;
-    private View mView;
+    private PresenterDelegate delegate;
+    private View view;
 
     public ViewEventsDelegate(final View view, final PresenterDelegate delegate) {
-        mView = view;
-        mDelegate = delegate;
+        this.view = view;
+        this.delegate = delegate;
 
         final String tag = ((String)view.getTag()).toLowerCase();
-        mView.setTag(tag);
+        this.view.setTag(tag);
     }
 
     @Override
     public void onCheckedChanged(final CompoundButton button, final boolean checked) {
-        mDelegate.onChecked((String) button.getTag(), checked);
+        delegate.onChecked((String) button.getTag(), checked);
     }
 
     @Override
     public void onClick(final View view) {
-        mDelegate.onClick((String) view.getTag());
+        delegate.onClick((String) view.getTag());
     }
 
     @Override
@@ -46,6 +46,6 @@ public class ViewEventsDelegate
 
     @Override
     public void afterTextChanged(final Editable editable) {
-        mDelegate.onTextChanged((String) mView.getTag(), editable.toString());
+        delegate.onTextChanged((String) view.getTag(), editable.toString());
     }
 }

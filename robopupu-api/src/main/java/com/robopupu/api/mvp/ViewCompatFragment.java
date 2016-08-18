@@ -49,14 +49,14 @@ public abstract class ViewCompatFragment<T_Presenter extends Presenter> extends 
 
     private static String TAG = Utils.tag(ViewCompatFragment.class);
 
-    private final ViewBinder mBinder;
-    private final ViewState mState;
+    private final ViewBinder binder;
+    private final ViewState state;
 
-    private DependencyScope mScope;
+    private DependencyScope scope;
 
     protected ViewCompatFragment() {
-        mBinder = new ViewBinder(this);
-        mState = new ViewState(this);
+        binder = new ViewBinder(this);
+        state = new ViewState(this);
     }
 
     /**
@@ -93,7 +93,7 @@ public abstract class ViewCompatFragment<T_Presenter extends Presenter> extends 
     public void onViewCreated(final android.view.View view, final Bundle inState) {
         Log.d(TAG, "onViewCreated(...)");
         super.onViewCreated(view, inState);
-        mState.onCreate();
+        state.onCreate();
 
         final T_Presenter presenter = resolvePresenter();
         if (presenter != null) {
@@ -107,7 +107,7 @@ public abstract class ViewCompatFragment<T_Presenter extends Presenter> extends 
     public void onActivityCreated(final Bundle inState) {
         super.onActivityCreated(inState);
 
-        mBinder.setActivity(getActivity());
+        binder.setActivity(getActivity());
         onCreateBindings();
 
         if (inState != null) {
@@ -121,7 +121,7 @@ public abstract class ViewCompatFragment<T_Presenter extends Presenter> extends 
                 final DependencyScope scope = dependencies.getDependency(KEY_DEPENDENCY_SCOPE);
 
                 if (scope != null) {
-                    mScope = scope;
+                    this.scope = scope;
                 }
                 onRestoreDependencies(dependencies);
             }
@@ -132,7 +132,7 @@ public abstract class ViewCompatFragment<T_Presenter extends Presenter> extends 
     public void onStart() {
         Log.d(TAG, "onStart()");
         super.onStart();
-        mState.onStart();
+        state.onStart();
 
         // If this ViewCompatFragment is a FeatureContainerProvider, it needs to be registered to
         // FeatureManager
@@ -145,7 +145,7 @@ public abstract class ViewCompatFragment<T_Presenter extends Presenter> extends 
         final T_Presenter presenter = resolvePresenter();
         if (presenter != null) {
             presenter.onViewStart(this);
-            mBinder.initialise();
+            binder.initialise();
         }
     }
 
@@ -162,7 +162,7 @@ public abstract class ViewCompatFragment<T_Presenter extends Presenter> extends 
     public void onResume() {
         Log.d(TAG, "onResume()");
         super.onResume();
-        mState.onResume();
+        state.onResume();
 
         final T_Presenter presenter = resolvePresenter();
         if (presenter != null) {
@@ -177,7 +177,7 @@ public abstract class ViewCompatFragment<T_Presenter extends Presenter> extends 
     public void onStop() {
         Log.d(TAG, "onStop()");
         super.onStop();
-        mState.onStop();
+        state.onStop();
 
         final T_Presenter presenter = resolvePresenter();
         if (presenter != null) {
@@ -189,7 +189,7 @@ public abstract class ViewCompatFragment<T_Presenter extends Presenter> extends 
     public void onPause() {
         Log.d(TAG, "onPause()");
         super.onPause();
-        mState.onPause();
+        state.onPause();
 
         final T_Presenter presenter = resolvePresenter();
         if (presenter != null) {
@@ -201,9 +201,9 @@ public abstract class ViewCompatFragment<T_Presenter extends Presenter> extends 
     public void onDestroy() {
         Log.d(TAG, "onDestroy()");
         super.onDestroy();
-        mState.onDestroy();
+        state.onDestroy();
 
-        mBinder.dispose();
+        binder.dispose();
 
         if (this instanceof DependencyScopeOwner) {
 
@@ -235,7 +235,7 @@ public abstract class ViewCompatFragment<T_Presenter extends Presenter> extends 
         // Save a reference to the Presenter
 
         final DependencyMap dependencies = cache.getDependencies(this, true);
-        dependencies.addDependency(KEY_DEPENDENCY_SCOPE, mScope);
+        dependencies.addDependency(KEY_DEPENDENCY_SCOPE, scope);
 
         onSaveDependencies(dependencies);
 
@@ -290,7 +290,7 @@ public abstract class ViewCompatFragment<T_Presenter extends Presenter> extends 
     @NonNull
     @Override
     public ViewState getState() {
-        return mState;
+        return state;
     }
 
     /**
@@ -313,7 +313,7 @@ public abstract class ViewCompatFragment<T_Presenter extends Presenter> extends 
      */
     @SuppressWarnings("unchecked")
     public <T extends ViewBinding<?>> T bind(@IdRes final int viewId) {
-        return mBinder.bind(viewId);
+        return binder.bind(viewId);
     }
 
     /**
@@ -325,7 +325,7 @@ public abstract class ViewCompatFragment<T_Presenter extends Presenter> extends 
      */
     @SuppressWarnings("unchecked")
     public <T extends android.view.View> T bind(@IdRes final int viewId, final ViewBinding<T> binding) {
-        return mBinder.bind(viewId, binding);
+        return binder.bind(viewId, binding);
     }
 
     /**
@@ -338,16 +338,16 @@ public abstract class ViewCompatFragment<T_Presenter extends Presenter> extends 
      */
     @SuppressWarnings("unchecked")
     public AdapterView bind(@IdRes final int viewId, final AdapterViewBinding<?> binding, final AdapterViewBinding.Adapter<?> adapter) {
-        return mBinder.bind(viewId, binding, adapter);
+        return binder.bind(viewId, binding, adapter);
     }
 
     @Override
     public DependencyScope getScope() {
-        return mScope;
+        return scope;
     }
 
     @Override
     public void setScope(final DependencyScope scope) {
-        mScope = scope;
+        this.scope = scope;
     }
 }

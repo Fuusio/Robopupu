@@ -11,31 +11,31 @@ import com.robopupu.api.graph.OutputNode;
  */
 public class ObserverNode<IN> extends Node<IN, IN> {
 
-    private NodeObserver<IN> mObserver;
+    private NodeObserver<IN> observer;
 
     public ObserverNode(final NodeObserver<IN> observer) {
-        mObserver = observer;
+        this.observer = observer;
     }
 
     @SuppressWarnings("unchecked")
     @Override
     protected IN processInput(final OutputNode<IN> source, final IN input) {
-        mObserver.onInput(this, input);
+        observer.onInput(this, input);
         return input;
     }
 
     @Override
     public void onCompleted(final OutputNode<?> source) {
-        mObserver.onCompleted(this);
+        observer.onCompleted(this);
     }
 
     @Override
     protected void doOnError(final OutputNode<?> source, final Throwable throwable) {
-        mObserver.onError(this, throwable);
+        observer.onError(this, throwable);
     }
 
     @Override
     protected void doOnReset() {
-        mObserver.onReset(this);
+        observer.onReset(this);
     }
 }

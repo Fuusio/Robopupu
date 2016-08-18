@@ -38,15 +38,15 @@ import static org.junit.Assert.assertTrue;
 @SmallTest
 public class NodeTest {
 
-    private EndNode<Integer> mEndNode = new EndNode<>();
-    private List<Integer> mIntList;
+    private EndNode<Integer> endNode = new EndNode<>();
+    private List<Integer> intList;
 
     @Before
     public void beforeTests() {
-        mIntList = new ArrayList<>();
+        intList = new ArrayList<>();
 
         for (int i = 0; i < 10; i++) {
-            mIntList.add(i);
+            intList.add(i);
         }
     }
 
@@ -61,27 +61,27 @@ public class NodeTest {
         final Node<Integer, Integer> node1 = new SimpleNode<>();
         final Node<Integer, Integer> node2 = new SimpleNode<>();
 
-        mEndNode.onReset();
+        endNode.onReset();
 
-        graph.to(beginNode).to(node1).to(node2).end(mEndNode);
+        graph.to(beginNode).to(node1).to(node2).end(endNode);
 
         for (int i = 1; i < 4; i++) {
             beginNode.onInput(null, i);
         }
 
-        assertTrue(mEndNode.received(1, 2, 3));
+        assertTrue(endNode.received(1, 2, 3));
 
         graph = new Graph<>();
         graph.map(input -> Integer.toString(input)).
                 map(Integer::parseInt).
                 map(input -> input > 10).
                 map(input -> input ? 1000 : 0).
-                end(mEndNode);
+                end(endNode);
 
-        mEndNode.onReset();
+        endNode.onReset();
         final Node<Integer, Integer> functionNode = graph.getBeginNode();
         functionNode.onInput(null, 20);
-        assertTrue(mEndNode.received(1000));
+        assertTrue(endNode.received(1000));
     }
 
     @SuppressWarnings("unchecked")
@@ -93,16 +93,16 @@ public class NodeTest {
         final ListNode<Integer> listNode4 = new ListNode<>(createList(10, 11, 12));
 
         final ConcatNode<Integer> concatNode = new ConcatNode<>(listNode1, listNode2, listNode3, listNode4);
-        concatNode.attach(mEndNode);
+        concatNode.attach(endNode);
 
-        mEndNode.onReset();
+        endNode.onReset();
 
         listNode4.emitOutput();
         listNode2.emitOutput();
         listNode1.emitOutput();
         listNode3.emitOutput();
 
-        assertTrue(mEndNode.received(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12));
+        assertTrue(endNode.received(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12));
     }
 
     @SuppressWarnings("unchecked")
@@ -114,16 +114,16 @@ public class NodeTest {
         final ListNode<Integer> listNode4 = new ListNode<>(createList(10, 11, 12));
 
         final MergeNode<Integer> mergeNode = new MergeNode<>(listNode1, listNode2, listNode3, listNode4);
-        mergeNode.attach(mEndNode);
+        mergeNode.attach(endNode);
 
-        mEndNode.onReset();
+        endNode.onReset();
 
         listNode4.emitOutput();
         listNode2.emitOutput();
         listNode1.emitOutput();
         listNode3.emitOutput();
 
-        assertTrue(mEndNode.received(10, 11, 12, 4, 5, 6, 1, 2, 3, 7, 8, 9));
+        assertTrue(endNode.received(10, 11, 12, 4, 5, 6, 1, 2, 3, 7, 8, 9));
     }
 
     @Test
@@ -134,15 +134,15 @@ public class NodeTest {
         final Node<Integer, Integer> node1 = new SimpleNode<>();
         final Node<Integer, Integer> node2 = new SimpleNode<>();
 
-        final Graph<Integer> graph = Graph.begin(beginNode).to(node0).to(node1).to(node2).end(mEndNode);
+        final Graph<Integer> graph = Graph.begin(beginNode).to(node0).to(node1).to(node2).end(endNode);
 
-        mEndNode.onReset();
+        endNode.onReset();
 
         for (int i = 1; i < 7; i++) {
             beginNode.onInput(null, i);
         }
 
-        assertTrue(mEndNode.received(1, 2, 3, 4, 5, 6));
+        assertTrue(endNode.received(1, 2, 3, 4, 5, 6));
 
         graph.reset();
 
@@ -152,7 +152,7 @@ public class NodeTest {
             beginNode.onInput(null, i);
         }
 
-        assertTrue(mEndNode.received());
+        assertTrue(endNode.received());
 
         graph.reset();
 
@@ -160,7 +160,7 @@ public class NodeTest {
             beginNode.onInput(null, i);
         }
 
-        assertTrue(mEndNode.received(1, 2, 3, 4, 5, 6));
+        assertTrue(endNode.received(1, 2, 3, 4, 5, 6));
     }
 
     @Test
@@ -171,9 +171,9 @@ public class NodeTest {
         final Node<Integer, Integer> node1 = new SimpleNode<>();
         final Node<Integer, Integer> node2 = new SimpleNode<>();
 
-        mEndNode.onReset();
+        endNode.onReset();
 
-        graph.skip(3).to(node0).to(node1).to(node2).end(mEndNode);
+        graph.skip(3).to(node0).to(node1).to(node2).end(endNode);
 
         final Node<Integer, Integer> beginNode = graph.getBeginNode();
 
@@ -181,40 +181,40 @@ public class NodeTest {
             beginNode.onInput(null, i);
         }
 
-        assertTrue(mEndNode.received(4, 5, 6));
+        assertTrue(endNode.received(4, 5, 6));
     }
 
     @Test
     public void test_repeat() {
 
         Graph<Integer> graph = new Graph<>();
-        graph.repeat(0).to(mEndNode);
-        mEndNode.onReset();
+        graph.repeat(0).to(endNode);
+        endNode.onReset();
         Node<Integer, Integer> beginNode = graph.getBeginNode();
         beginNode.onInput(null, 1);
-        assertTrue(mEndNode.received());
+        assertTrue(endNode.received());
 
         graph = new Graph<>();
-        graph.repeat(1).end(mEndNode);
-        mEndNode.onReset();
+        graph.repeat(1).end(endNode);
+        endNode.onReset();
         beginNode = graph.getBeginNode();
         beginNode.onInput(null, 1);
-        assertTrue(mEndNode.received(1));
+        assertTrue(endNode.received(1));
 
         graph = new Graph<>();
-        graph.repeat(5).end(mEndNode);
-        mEndNode.onReset();
+        graph.repeat(5).end(endNode);
+        endNode.onReset();
         beginNode = graph.getBeginNode();
         beginNode.onInput(null, 1);
-        assertTrue(mEndNode.received(1, 1, 1, 1, 1));
+        assertTrue(endNode.received(1, 1, 1, 1, 1));
     }
 
     @Test
     public void test_skipWhile() {
 
         final Graph<Integer> graph = new Graph<>();
-        graph.skipWhile(input -> input > 3).end(mEndNode);
-        mEndNode.onReset();
+        graph.skipWhile(input -> input > 3).end(endNode);
+        endNode.onReset();
         Node<Integer, Integer> beginNode = graph.getBeginNode();
         beginNode.onInput(null, 5);
         beginNode.onInput(null, 6);
@@ -224,7 +224,7 @@ public class NodeTest {
         beginNode.onInput(null, 9);
         beginNode.onInput(null, 2);
         beginNode.onInput(null, 3);
-        assertTrue(mEndNode.received(1, 8, 9, 2, 3));
+        assertTrue(endNode.received(1, 8, 9, 2, 3));
     }
 
     @Test
@@ -234,9 +234,9 @@ public class NodeTest {
         final Node<Integer, Integer> node0 = new SimpleNode<>();
         final Node<Integer, Integer> node1 = new SimpleNode<>();
 
-        mEndNode.onReset();
+        endNode.onReset();
 
-        graph.take(3).to(node0).to(node1).end(mEndNode);
+        graph.take(3).to(node0).to(node1).end(endNode);
 
         final Node<Integer, Integer> beginNode = graph.getBeginNode();
 
@@ -244,16 +244,16 @@ public class NodeTest {
             beginNode.onInput(null, i);
         }
 
-        assertTrue(mEndNode.received(1, 2, 3));
+        assertTrue(endNode.received(1, 2, 3));
     }
 
     @Test
     public void test_filter() {
         final Graph<Integer> graph = new Graph<>();
 
-        mEndNode.onReset();
+        endNode.onReset();
 
-        graph.filter(value -> value > 3).end(mEndNode);
+        graph.filter(value -> value > 3).end(endNode);
 
         final Node<Integer, Integer> beginNode = graph.getBeginNode();
 
@@ -261,19 +261,19 @@ public class NodeTest {
             beginNode.onInput(null, i);
         }
 
-        assertTrue(mEndNode.received(4, 5, 6));
+        assertTrue(endNode.received(4, 5, 6));
     }
 
     @Test
     public void test_list() {
 
-        mEndNode.onReset();
-        Graph.begin(mIntList).take(3).end(mEndNode).start();
-        assertTrue(mEndNode.received(0, 1, 2));
+        endNode.onReset();
+        Graph.begin(intList).take(3).end(endNode).start();
+        assertTrue(endNode.received(0, 1, 2));
 
-        mEndNode.onReset();
-        Graph.begin(mIntList).skip(7).end(mEndNode).start();
-        assertTrue(mEndNode.received(7, 8, 9));
+        endNode.onReset();
+        Graph.begin(intList).skip(7).end(endNode).start();
+        assertTrue(endNode.received(7, 8, 9));
     }
 
     @Test

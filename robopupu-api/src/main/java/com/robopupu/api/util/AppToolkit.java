@@ -13,9 +13,9 @@ import java.io.File;
  * {@link AppToolkit} provides a set of {@link android.app.Application} related utility methods.
  */
 public final class AppToolkit {
+
     private final static String TAG = Utils.tag(AppToolkit.class);
-
-
+    
     @SuppressWarnings("unchecked")
     public static <T extends Application> T getApplication(final Context context) {
         return (T) context.getApplicationContext();

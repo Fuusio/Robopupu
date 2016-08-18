@@ -18,13 +18,13 @@ public class MultipleViewsActivity extends PluginCompatActivity<MultipleViewsPre
     implements MultipleViewsView {
 
     @Plug
-    MultipleViewsFeature mFeature;
+    MultipleViewsFeature feature;
     @Plug(MultipleViewsFeatureScope.class)
-    MultipleViewsPresenter mPresenter;
+    MultipleViewsPresenter presenter;
 
     @Override
     public MultipleViewsPresenter getPresenter() {
-        return mPresenter;
+        return presenter;
     }
 
     @Override

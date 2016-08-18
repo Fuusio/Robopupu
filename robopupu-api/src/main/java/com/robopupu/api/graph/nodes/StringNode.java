@@ -9,13 +9,13 @@ import com.robopupu.api.graph.OutputNode;
  */
 public class StringNode<IN> extends Node<IN, String> {
 
-    private String mValue;
+    private String value;
 
     @Override
     protected String processInput(final OutputNode<IN> outputNode, final IN input) {
         if (input != null) {
-            mValue = input.toString();
-            return mValue;
+            value = input.toString();
+            return value;
         } else {
             dispatchError(this, new NullPointerException(createErrorMessage("Received a null object")));
             return null;
@@ -23,6 +23,6 @@ public class StringNode<IN> extends Node<IN, String> {
     }
 
     public String getValue() {
-        return mValue;
+        return value;
     }
 }

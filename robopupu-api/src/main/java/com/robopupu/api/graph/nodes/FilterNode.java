@@ -10,7 +10,7 @@ import com.robopupu.api.graph.functions.BooleanFunction;
  */
 public class FilterNode<IN> extends Node<IN, IN> {
 
-    private BooleanFunction<IN> mCondition;
+    private BooleanFunction<IN> condition;
 
     public FilterNode() {
     }
@@ -20,15 +20,15 @@ public class FilterNode<IN> extends Node<IN, IN> {
     }
 
     public void setCondition(final BooleanFunction condition) {
-        mCondition = condition;
+        this.condition = condition;
     }
 
     @SuppressWarnings("unchecked")
     @Override
     protected IN processInput(final OutputNode<IN> source, final IN input) {
         if (input != null) {
-            if (mCondition != null) {
-                if (mCondition.eval(input)) {
+            if (condition != null) {
+                if (condition.eval(input)) {
                     return input;
                 }
             } else if (accepts(input)) {

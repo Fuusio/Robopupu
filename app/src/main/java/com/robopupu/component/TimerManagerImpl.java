@@ -32,24 +32,24 @@ public class TimerManagerImpl extends AbstractManager
 
     private static final String TAG = Utils.tag(TimerManagerImpl.class);
 
-    private final HashMap<Long, TimerHandle> mTimerHandles;
+    private final HashMap<Long, TimerHandle> timerHandles;
 
     @Scope(RobopupuAppScope.class)
     @Provides(TimerManager.class)
     public TimerManagerImpl() {
-        mTimerHandles = new HashMap<>();
+        timerHandles = new HashMap<>();
     }
 
     @Override
     public TimerHandle createTimer(final Callback callback, final long delay) {
         final TimerHandle handle = new TimerHandle(this, callback, delay);
-        mTimerHandles.put(handle.getId(), handle);
+        timerHandles.put(handle.getId(), handle);
         handle.start();
         return handle;
     }
 
     protected void removeHandle(final TimerHandle handle) {
-        mTimerHandles.remove(handle.getId());
+        timerHandles.remove(handle.getId());
     }
 
     @Override
@@ -64,9 +64,9 @@ public class TimerManagerImpl extends AbstractManager
     }
 
     private void cancelTimers() {
-        for (final TimerHandle handle : mTimerHandles.values()) {
+        for (final TimerHandle handle : timerHandles.values()) {
             handle.cancel();
         }
-        mTimerHandles.clear();
+        timerHandles.clear();
     }
 }

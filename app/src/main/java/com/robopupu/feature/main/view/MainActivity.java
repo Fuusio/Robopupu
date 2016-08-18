@@ -44,11 +44,11 @@ public class MainActivity extends PluginCompatActivity<MainPresenter>
         implements MainView, NavigationView.OnNavigationItemSelectedListener,
         DrawerLayoutContainer {
 
-    private DrawerLayout mDrawerLayout;
+    private DrawerLayout drawerLayout;
 
-    @Plug(RobopupuAppScope.class) MainFeature mFeature;
-    @Plug(MainFeatureScope.class) MainPresenter mPresenter;
-    @Plug PluginFeatureManager mFeatureManager;
+    @Plug(RobopupuAppScope.class) MainFeature feature;
+    @Plug(MainFeatureScope.class) MainPresenter presenter;
+    @Plug PluginFeatureManager featureManager;
 
     @Override
     public @IdRes int getContainerViewId() {
@@ -57,7 +57,7 @@ public class MainActivity extends PluginCompatActivity<MainPresenter>
 
     @Override
     public MainPresenter getPresenter() {
-        return mPresenter;
+        return presenter;
     }
 
     @Override
@@ -70,7 +70,7 @@ public class MainActivity extends PluginCompatActivity<MainPresenter>
         super.onCreate(inState);
 
         setContentView(R.layout.activity_main);
-        mDrawerLayout = getView(R.id.drawer_layout_navigation);
+        drawerLayout = getView(R.id.drawer_layout_navigation);
         final NavigationView navigationView = getView(R.id.navigation_view);
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -86,8 +86,8 @@ public class MainActivity extends PluginCompatActivity<MainPresenter>
     protected void onStart() {
         super.onStart();
 
-        if (!mFeature.isStarted()) {
-            mFeatureManager.startFeature(this, mFeature);
+        if (!feature.isStarted()) {
+            featureManager.startFeature(this, feature);
         }
     }
 
@@ -99,10 +99,10 @@ public class MainActivity extends PluginCompatActivity<MainPresenter>
             if (drawer.isDrawerOpen(GravityCompat.START)) {
                 drawer.closeDrawer(GravityCompat.START);
             } else {
-                mPresenter.onBackPressed();
+                presenter.onBackPressed();
             }
         } else {
-            mPresenter.onBackPressed();
+            presenter.onBackPressed();
         }
     }
 
@@ -116,7 +116,7 @@ public class MainActivity extends PluginCompatActivity<MainPresenter>
     @Override
     public boolean onNavigationItemSelected(final MenuItem item) {
         final int id = item.getItemId();
-        final boolean wasHandled = mPresenter.onNavigationItemSelected(id);
+        final boolean wasHandled = presenter.onNavigationItemSelected(id);
         final DrawerLayout drawer = getView(R.id.drawer_layout_navigation);
         drawer.closeDrawer(GravityCompat.START);
         return wasHandled;
@@ -125,15 +125,15 @@ public class MainActivity extends PluginCompatActivity<MainPresenter>
     @Override
     public void updateForToolbar(final Toolbar toolbar) {
         final ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, mDrawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        mDrawerLayout.addDrawerListener(toggle);
+                this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
     }
 
     @Override
     public void openNavigationDrawer() {
-        if (!mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
-            mDrawerLayout.openDrawer(GravityCompat.START);
+        if (!drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.openDrawer(GravityCompat.START);
         }
     }
 }

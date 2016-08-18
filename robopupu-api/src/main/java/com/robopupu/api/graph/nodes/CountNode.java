@@ -10,24 +10,24 @@ import com.robopupu.api.graph.OutputNode;
  */
 public class CountNode<IN> extends Node<IN, Integer> {
 
-    private int nCount;
+    private int count;
 
     @SuppressWarnings("unchecked")
     @Override
     protected Integer processInput(final OutputNode<IN> source, final IN input) {
         if (input != null) {
-            nCount++;
+            count++;
         }
         return null;
     }
 
     @Override
     public void onCompleted(final OutputNode<?> outputNode) {
-        emitOutput(nCount);
+        emitOutput(count);
     }
 
     @Override
     public void doOnReset() {
-        nCount = 0;
+        count = 0;
     }
 }

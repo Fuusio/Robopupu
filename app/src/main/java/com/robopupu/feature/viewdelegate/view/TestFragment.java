@@ -12,21 +12,20 @@ import android.widget.TextView;
 import com.robopupu.R;
 import com.robopupu.api.binding.ViewBinder;
 import com.robopupu.api.dependency.D;
-import com.robopupu.feature.viewdelegate.ViewDelegateFeatureScope;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class TestFragment extends Fragment {
 
-    private TextView mHelloTextView;
-    private TestViewDelegate mViewDelegate;
+    private TextView helloTextView;
+    private TestViewDelegate viewDelegate;
 
     public TestFragment() {
     }
 
     protected void setSayHelloText(final String text) {
-        mHelloTextView.setText(text);
+        helloTextView.setText(text);
     }
 
     @Override
@@ -38,47 +37,47 @@ public class TestFragment extends Fragment {
     @Override
     public void onViewCreated(final View view, final @Nullable Bundle savedInstanceState) {
         final TestView testView = D.get(TestView.class);
-        mViewDelegate = (TestViewDelegate) testView;
+        viewDelegate = (TestViewDelegate) testView;
         super.onViewCreated(view, savedInstanceState);
     }
 
     protected void onCreateBindings(final ViewBinder binder) {
-        mHelloTextView = binder.getView(R.id.text_view_hello);
+        helloTextView = binder.getView(R.id.text_view_hello);
     }
 
     @Override
     public void onActivityCreated(final @Nullable Bundle inState) {
         super.onActivityCreated(inState);
-        mViewDelegate.onActivityCreated(inState);
+        viewDelegate.onActivityCreated(inState);
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        mViewDelegate.onStart();
+        viewDelegate.onStart();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        mViewDelegate.onResume();
+        viewDelegate.onResume();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        mViewDelegate.onPause();
+        viewDelegate.onPause();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        mViewDelegate.onStop();
+        viewDelegate.onStop();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mViewDelegate.onDestroy();
+        viewDelegate.onDestroy();
     }
 }

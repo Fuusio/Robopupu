@@ -31,9 +31,9 @@ import com.robopupu.api.plugin.PluginBus;
 public class SplashPresenterImpl extends AbstractFeaturePresenter<SplashView>
         implements SplashPresenter {
 
-    @Plug MainFeature mMainFeature;
-    @Plug TimerManager mTimerManager;
-    @Plug SplashView mView;
+    @Plug MainFeature mainFeature;
+    @Plug TimerManager timerManager;
+    @Plug SplashView view;
 
     @Provides(SplashPresenter.class)
     public SplashPresenterImpl() {
@@ -41,7 +41,7 @@ public class SplashPresenterImpl extends AbstractFeaturePresenter<SplashView>
 
     @Override
     public SplashView getViewPlug() {
-        return mView;
+        return view;
     }
 
     @Override
@@ -54,11 +54,11 @@ public class SplashPresenterImpl extends AbstractFeaturePresenter<SplashView>
     public void onViewStart(final View view) {
         super.onViewStart(view);
 
-        mTimerManager.createTimer(new TimerManager.Callback() {
+        timerManager.createTimer(new TimerManager.Callback() {
             @Override
             public void timeout(TimerHandle handle) {
-                mMainFeature.onHideSplashView();
-                mMainFeature.openNavigationDrawer();
+                mainFeature.onHideSplashView();
+                mainFeature.openNavigationDrawer();
             }
         }, 3000L);
     }

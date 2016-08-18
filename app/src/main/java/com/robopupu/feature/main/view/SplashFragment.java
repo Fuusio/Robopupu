@@ -35,7 +35,7 @@ import com.robopupu.api.plugin.Plugin;
 @Plugin
 public class SplashFragment extends FeatureCompatFragment<SplashPresenter> implements SplashView {
 
-    @Plug SplashPresenter mPresenter;
+    @Plug SplashPresenter presenter;
 
     @Provides(SplashView.class)
     public SplashFragment() {
@@ -43,7 +43,7 @@ public class SplashFragment extends FeatureCompatFragment<SplashPresenter> imple
 
     @Override
     public SplashPresenter getPresenter() {
-        return mPresenter;
+        return presenter;
     }
 
     @Override

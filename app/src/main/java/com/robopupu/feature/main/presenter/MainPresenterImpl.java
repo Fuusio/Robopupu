@@ -38,27 +38,27 @@ import com.robopupu.feature.viewdelegate.ViewDelegateFeature;
 public class MainPresenterImpl extends AbstractPresenter<MainView>
         implements MainPresenter {
 
-    private boolean mWasPaused;
+    private boolean wasPaused;
 
-    @Plug AppManager mAppManager;
-    @Plug PluginFeatureManager mFeatureManager;
-    @Plug MainFeature mMainFeature;
-    @Plug MainView mView;
+    @Plug AppManager appManager;
+    @Plug PluginFeatureManager featureManager;
+    @Plug MainFeature mainFeature;
+    @Plug MainView view;
 
     @Provides(MainPresenter.class)
     public MainPresenterImpl() {
-        mWasPaused = false;
+        wasPaused = false;
     }
 
     @Override
     public MainView getViewPlug() {
-        return mView;
+        return view;
     }
 
     @Override
     public void onBackPressed() {
-        if (!mFeatureManager.onBackPressed()) {
-            mAppManager.exitApplication();
+        if (!featureManager.onBackPressed()) {
+            appManager.exitApplication();
         }
     }
 
@@ -66,24 +66,24 @@ public class MainPresenterImpl extends AbstractPresenter<MainView>
     public boolean onNavigationItemSelected(final int itemId) {
         boolean selectionHandled = true;
 
-        final FeatureContainer container = mView.getMainFeatureContainer();
+        final FeatureContainer container = view.getMainFeatureContainer();
 
         if (itemId == R.id.navigation_about) {
-            mFeatureManager.startFeature(container, AboutFeature.class);
+            featureManager.startFeature(container, AboutFeature.class);
         } else if (itemId == R.id.navigation_feedback) {
-            mFeatureManager.startFeature(container, FeedbackFeature.class);
+            featureManager.startFeature(container, FeedbackFeature.class);
         } else if (itemId == R.id.navigation_fsm_demo) {
-            mFeatureManager.startFeature(container, FsmDemoFeature.class);
+            featureManager.startFeature(container, FsmDemoFeature.class);
         } else if (itemId == R.id.navigation_jokes) {
-            mFeatureManager.startFeature(container, JokesFeature.class);
+            featureManager.startFeature(container, JokesFeature.class);
         } else if (itemId == R.id.navigation_settings) {
-            //mFeatureManager.startFeature(container, SettingsFeature.class);
+            //featureManager.startFeature(container, SettingsFeature.class);
         } else if (itemId == R.id.navigation_multiple_views) {
-            mFeatureManager.startFeature(container, MultipleViewsFeature.class);
+            featureManager.startFeature(container, MultipleViewsFeature.class);
         } else if (itemId == R.id.navigation_view_delegate) {
-            mFeatureManager.startFeature(container, ViewDelegateFeature.class);
+            featureManager.startFeature(container, ViewDelegateFeature.class);
         } else if (itemId == R.id.navigation_exit) {
-            mAppManager.exitApplication();
+            appManager.exitApplication();
         }else {
             selectionHandled = false;
         }
@@ -94,22 +94,22 @@ public class MainPresenterImpl extends AbstractPresenter<MainView>
     @Override
     public void onViewStart(final View view) {
         super.onViewStart(view);
-        mMainFeature.onMainPresenterStarted();
+        mainFeature.onMainPresenterStarted();
     }
 
     @Override
     public void onViewResume(final View view) {
         super.onViewResume(view);
 
-        if (mWasPaused) {
-            mWasPaused = false;
-            mView.openNavigationDrawer();
+        if (wasPaused) {
+            wasPaused = false;
+            this.view.openNavigationDrawer();
         }
     }
 
     @Override
     public void onViewPause(final View view) {
         super.onViewPause(view);
-        mWasPaused = true;
+        wasPaused = true;
     }
 }

@@ -24,7 +24,7 @@ public abstract class BaseApplication extends Application {
 
     private static final String TAG = Utils.tag(BaseApplication.class);
 
-    private static BaseApplication sInstance = null;
+    private static BaseApplication instance = null;
 
     protected BaseApplication() {
         setInstance(this);
@@ -44,11 +44,11 @@ public abstract class BaseApplication extends Application {
 
     @SuppressWarnings("unchecked")
     public static <T extends BaseApplication> T getInstance() {
-        return (T) sInstance;
+        return (T) instance;
     }
 
     private static void setInstance(final BaseApplication instance) {
-        sInstance = instance;
+        BaseApplication.instance = instance;
     }
 
     /**
@@ -66,6 +66,6 @@ public abstract class BaseApplication extends Application {
      * @return A {@link Resources}.
      */
     public static Resources getApplicationResources() {
-        return sInstance.getResources();
+        return instance.getResources();
     }
 }

@@ -47,57 +47,57 @@ public class ViewBinder {
 
     private final static String SUFFIX_EVENTS_DELEGATE = "_EventsDelegate";
 
-    private final HashMap<Integer, ViewBinding<?>> mBindingsCache;
-    private final PresentedView mView;
+    private final HashMap<Integer, ViewBinding<?>> bindingsCache;
+    private final PresentedView view;
 
-    private Activity mActivity;
-    private ViewGroup mContentView;
-    private boolean mInitialised;
-    private PresenterDelegate mPresenterDelegate;
+    private Activity activity;
+    private ViewGroup contentView;
+    private boolean initialised;
+    private PresenterDelegate presenterDelegate;
 
     public ViewBinder(final PresentedView view) {
-        mView = view;
-        mBindingsCache = new HashMap<>();
-        mInitialised = false;
+        this.view = view;
+        bindingsCache = new HashMap<>();
+        initialised = false;
     }
 
     protected PresentedView getPresentedView() {
-        return mView;
+        return view;
     }
 
     public void setActivity(@NonNull Activity activity) {
-        mActivity = activity;
+        this.activity = activity;
 
-        final ViewGroup content = (ViewGroup) mActivity.findViewById(android.R.id.content);
+        final ViewGroup content = (ViewGroup) this.activity.findViewById(android.R.id.content);
 
         if (content != null) {
             final ViewGroup contentView = (ViewGroup) (content).getChildAt(0);
 
             if (contentView != null) {
-                mContentView = contentView;
+                this.contentView = contentView;
             } else {
-                mContentView = content;
+                this.contentView = content;
             }
         }
     }
 
     public void setContentView(@NonNull ViewGroup contentView) {
-        mContentView = contentView;
+        this.contentView = contentView;
     }
 
     public void initialise() {
-        if (!mInitialised) {
-            mInitialised = true;
-            bindEventListenersForViews(mContentView);
+        if (!initialised) {
+            initialised = true;
+            bindEventListenersForViews(contentView);
         }
     }
 
     private void bindEventListenersForViews(final ViewGroup viewGroup) {
-        if (mPresenterDelegate == null) {
-            mPresenterDelegate = getEventsDelegate();
+        if (presenterDelegate == null) {
+            presenterDelegate = getEventsDelegate();
         }
 
-        if (mPresenterDelegate != null) {
+        if (presenterDelegate != null) {
             final ArrayList<View> taggedViews = new ArrayList<>();
             UIToolkit.collectTaggedViewsOfType(View.class, viewGroup, taggedViews);
 
@@ -105,7 +105,7 @@ public class ViewBinder {
                 final Object tag = view.getTag();
 
                 if (tag instanceof String && ((String) tag).length() > 0) {
-                    final ViewEventsDelegate delegate = new ViewEventsDelegate(view, mPresenterDelegate);
+                    final ViewEventsDelegate delegate = new ViewEventsDelegate(view, presenterDelegate);
                     view.setOnClickListener(delegate);
 
                     if (view instanceof CompoundButton) {
@@ -126,7 +126,7 @@ public class ViewBinder {
      */
     @SuppressWarnings("unchecked")
     private PresenterDelegate getEventsDelegate() {
-        final Presenter presenter = mView.getPresenter();
+        final Presenter presenter = view.getPresenter();
         final Class<? extends Presenter> presenterInterfaceClass = AbstractPresenter.getInterfaceClass(presenter);
 
         assert(presenterInterfaceClass != null);
@@ -156,10 +156,10 @@ public class ViewBinder {
      */
     @SuppressWarnings("unchecked")
     public <T extends View> T getView(@IdRes final int viewId) {
-        if (mActivity != null) {
-            return (T) mActivity.findViewById(viewId);
+        if (activity != null) {
+            return (T) activity.findViewById(viewId);
         } else {
-            return (T) mContentView.findViewById(viewId);
+            return (T) contentView.findViewById(viewId);
         }
     }
 
@@ -171,7 +171,7 @@ public class ViewBinder {
      */
     @SuppressWarnings("unchecked")
     public <T extends ViewBinding> T getBinding(@IdRes final int viewId) {
-        T binding = (T) mBindingsCache.get(viewId);
+        T binding = (T) bindingsCache.get(viewId);
 
         if (binding == null) {
             final View view = getView(viewId);
@@ -181,7 +181,7 @@ public class ViewBinder {
             } else {
                 throw new IllegalStateException("View of type: " + view.getClass().getName() + " is not supported.");
             }
-            mBindingsCache.put(viewId, binding);
+            bindingsCache.put(viewId, binding);
         }
         return binding;
     }
@@ -190,7 +190,7 @@ public class ViewBinder {
      * Disposes this {@link ViewBinder} by clearing the Binding Cache.
      */
     public void dispose() {
-        mBindingsCache.clear();
+        bindingsCache.clear();
     }
 
     /**
@@ -211,7 +211,7 @@ public class ViewBinder {
             binding = new Binding((TextView) view);
         }
 
-        mBindingsCache.put(viewId, binding);
+        bindingsCache.put(viewId, binding);
         return (T) binding;
     }
 
@@ -228,7 +228,7 @@ public class ViewBinder {
 
         if (binding.canBind(view)) {
             binding.setView(view);
-            mBindingsCache.put(viewId, binding);
+            bindingsCache.put(viewId, binding);
         } else {
             throw new IllegalStateException("No View with id: " + Integer.toString(viewId) + " compatible with the given ViewBinding was found");
         }
@@ -250,7 +250,7 @@ public class ViewBinder {
         if (binding.canBind(view)) {
             binding.setAdapter(adapter);
             binding.setView(view);
-            mBindingsCache.put(viewId, binding);
+            bindingsCache.put(viewId, binding);
         } else {
             throw new IllegalStateException("No View with id: " + Integer.toString(viewId) + " compatible with the given ViewBinding was found");
         }

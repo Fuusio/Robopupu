@@ -9,10 +9,10 @@ import com.robopupu.api.fsm.StateMachine;
  */
 public class SimpleStateMachine extends StateMachine {
 
-    private final Controller mController;
+    private final Controller controller;
 
     public SimpleStateMachine(final Controller controller) {
-        mController = controller;
+        this.controller = controller;
     }
 
     @Override
@@ -22,6 +22,6 @@ public class SimpleStateMachine extends StateMachine {
 
     @Override
     protected void onStateEngineCreated(final StateEngine stateEngine) {
-        ((State)stateEngine).setController(mController);
+        ((State)stateEngine).setController(controller);
     }
 }

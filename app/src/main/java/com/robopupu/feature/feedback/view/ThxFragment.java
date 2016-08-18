@@ -31,11 +31,11 @@ import com.robopupu.feature.feedback.presenter.ThxPresenter;
 @Provides(ThxView.class)
 public class ThxFragment extends FeatureCompatFragment<ThxPresenter> implements ThxView {
 
-    @Plug ThxPresenter mPresenter;
+    @Plug ThxPresenter presenter;
 
     @Override
     public ThxPresenter getPresenter() {
-        return mPresenter;
+        return presenter;
     }
 
     @Override

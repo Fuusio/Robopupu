@@ -11,16 +11,16 @@ import java.util.HashMap;
  */
 public class FeatureContainerAdapter implements FeatureContainer {
 
-    private final int mContainerViewId;
-    private final FeatureContainerProvider mProvider;
+    private final int containerViewId;
+    private final FeatureContainerProvider provider;
 
     public FeatureContainerAdapter(final FeatureContainerProvider provider) {
         this(provider, -1);
     }
 
     public FeatureContainerAdapter(final FeatureContainerProvider provider, final int containerViewId) {
-        mProvider = provider;
-        mContainerViewId = containerViewId;
+        this.provider = provider;
+        this.containerViewId = containerViewId;
     }
 
     public static FeatureContainerAdapter create(final FeatureContainerProvider provider, final int containerViewId) {
@@ -29,51 +29,51 @@ public class FeatureContainerAdapter implements FeatureContainer {
 
     @Override
     public Context getContext() {
-        return mProvider.getContext();
+        return provider.getContext();
     }
 
     @Override
     public int getContainerViewId() {
-        return mContainerViewId;
+        return containerViewId;
     }
 
     @Override
     public Resources getResources() {
-        return mProvider.getResources();
+        return provider.getResources();
     }
 
     @Override
     public boolean canCommitFragment() {
-        return mProvider.canCommitFragment();
+        return provider.canCommitFragment();
     }
 
     @Override
     public void clearBackStack(final HashMap<String, FeatureView> backStackViews) {
-        mProvider.clearBackStack(backStackViews);
+        provider.clearBackStack(backStackViews);
     }
 
     @Override
     public boolean canGoBack() {
-        return mProvider.canGoBack();
+        return provider.canGoBack();
     }
 
     @Override
     public String goBack() {
-        return mProvider.goBack();
+        return provider.goBack();
     }
 
     @Override
     public boolean canShowView(final FeatureView view) {
-        return mProvider.canShowView(view);
+        return provider.canShowView(view);
     }
 
     @Override
     public void showView(final FeatureView featureView, final boolean addToBackStack, final String fragmentTag) {
-        mProvider.showView(featureView, getContainerViewId(), addToBackStack, fragmentTag);
+        provider.showView(featureView, getContainerViewId(), addToBackStack, fragmentTag);
     }
 
     @Override
     public void removeView(final FeatureView featureView, final boolean addedToBackstack, final String fragmentTag) {
-        mProvider.removeView(featureView, addedToBackstack, fragmentTag);
+        provider.removeView(featureView, addedToBackstack, fragmentTag);
     }
 }

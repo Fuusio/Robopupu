@@ -51,16 +51,16 @@ public abstract class ViewDialogFragment<T_Presenter extends Presenter> extends 
 
     private static String TAG = Utils.tag(ViewDialogFragment.class);
 
-    private final ViewBinder mBinder;
-    private final ViewState mState;
+    private final ViewBinder binder;
+    private final ViewState state;
 
-    protected ViewGroup mDialogView;
+    protected ViewGroup dialogView;
 
-    private DependencyScope mScope;
+    private DependencyScope scope;
 
     protected ViewDialogFragment() {
-        mBinder = new ViewBinder(this);
-        mState = new ViewState(this);
+        binder = new ViewBinder(this);
+        state = new ViewState(this);
     }
 
     @NonNull
@@ -110,8 +110,8 @@ public abstract class ViewDialogFragment<T_Presenter extends Presenter> extends 
     @Override
     public void onViewCreated(final android.view.View view, final Bundle inState) {
         super.onViewCreated(view, inState);
-        mState.onCreate();
-        mDialogView = (ViewGroup) view;
+        state.onCreate();
+        dialogView = (ViewGroup) view;
 
         final T_Presenter presenter = resolvePresenter();
         if (presenter != null) {
@@ -125,7 +125,7 @@ public abstract class ViewDialogFragment<T_Presenter extends Presenter> extends 
     public void onActivityCreated(final Bundle inState) {
         super.onActivityCreated(inState);
 
-        mBinder.setContentView(mDialogView);
+        binder.setContentView(dialogView);
         onCreateBindings();
 
         if (inState != null) {
@@ -139,7 +139,7 @@ public abstract class ViewDialogFragment<T_Presenter extends Presenter> extends 
                 final DependencyScope scope = dependencies.getDependency(KEY_DEPENDENCY_SCOPE);
 
                 if (scope != null) {
-                    mScope = scope;
+                    this.scope = scope;
                 }
                 onRestoreDependencies(dependencies);
             }
@@ -149,7 +149,7 @@ public abstract class ViewDialogFragment<T_Presenter extends Presenter> extends 
     @Override
     public void onStart() {
         super.onStart();
-        mState.onStart();
+        state.onStart();
 
         final Dialog dialog = getDialog();
 
@@ -162,7 +162,7 @@ public abstract class ViewDialogFragment<T_Presenter extends Presenter> extends 
         final T_Presenter presenter = resolvePresenter();
         if (presenter != null) {
             presenter.onViewStart(this);
-            mBinder.initialise();
+            binder.initialise();
         }
     }
 
@@ -186,7 +186,7 @@ public abstract class ViewDialogFragment<T_Presenter extends Presenter> extends 
     @Override
     public void onResume() {
         super.onResume();
-        mState.onResume();
+        state.onResume();
 
         final T_Presenter presenter = resolvePresenter();
         if (presenter != null) {
@@ -201,7 +201,7 @@ public abstract class ViewDialogFragment<T_Presenter extends Presenter> extends 
     @Override
     public void onStop() {
         super.onStop();
-        mState.onStop();
+        state.onStop();
 
         final T_Presenter presenter = resolvePresenter();
 
@@ -213,7 +213,7 @@ public abstract class ViewDialogFragment<T_Presenter extends Presenter> extends 
     @Override
     public void onPause() {
         super.onPause();
-        mState.onPause();
+        state.onPause();
 
         final T_Presenter presenter = resolvePresenter();
 
@@ -225,9 +225,9 @@ public abstract class ViewDialogFragment<T_Presenter extends Presenter> extends 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mState.onDestroy();
+        state.onDestroy();
 
-        mBinder.dispose();
+        binder.dispose();
 
         if (this instanceof DependencyScopeOwner) {
 
@@ -260,7 +260,7 @@ public abstract class ViewDialogFragment<T_Presenter extends Presenter> extends 
         // Save a reference to the Presenter
 
         final DependencyMap dependencies = cache.getDependencies(this, true);
-        dependencies.addDependency(KEY_DEPENDENCY_SCOPE, mScope);
+        dependencies.addDependency(KEY_DEPENDENCY_SCOPE, scope);
 
         onSaveDependencies(dependencies);
 
@@ -315,7 +315,7 @@ public abstract class ViewDialogFragment<T_Presenter extends Presenter> extends 
     @NonNull
     @Override
     public ViewState getState() {
-        return mState;
+        return state;
     }
 
     /**
@@ -326,7 +326,7 @@ public abstract class ViewDialogFragment<T_Presenter extends Presenter> extends 
      */
     @SuppressWarnings("unchecked")
     public <T extends android.view.View> T getView(@IdRes final int viewId) {
-        return (T) mDialogView.findViewById(viewId);
+        return (T) dialogView.findViewById(viewId);
     }
 
     /**
@@ -338,7 +338,7 @@ public abstract class ViewDialogFragment<T_Presenter extends Presenter> extends 
      */
     @SuppressWarnings("unchecked")
     public <T extends ViewBinding<?>> T bind(@IdRes final int viewId) {
-        return mBinder.bind(viewId);
+        return binder.bind(viewId);
     }
 
     /**
@@ -350,7 +350,7 @@ public abstract class ViewDialogFragment<T_Presenter extends Presenter> extends 
      */
     @SuppressWarnings("unchecked")
     public <T extends android.view.View> T bind(@IdRes final int viewId, final ViewBinding<T> binding) {
-        return mBinder.bind(viewId, binding);
+        return binder.bind(viewId, binding);
     }
 
     /**
@@ -363,16 +363,16 @@ public abstract class ViewDialogFragment<T_Presenter extends Presenter> extends 
      */
     @SuppressWarnings("unchecked")
     public AdapterView bind(@IdRes final int viewId, final AdapterViewBinding<?> binding, final AdapterViewBinding.Adapter<?> adapter) {
-        return mBinder.bind(viewId, binding, adapter);
+        return binder.bind(viewId, binding, adapter);
     }
 
     @Override
     public DependencyScope getScope() {
-        return mScope;
+        return scope;
     }
 
     @Override
     public void setScope(final DependencyScope scope) {
-        mScope = scope;
+        this.scope = scope;
     }
 }

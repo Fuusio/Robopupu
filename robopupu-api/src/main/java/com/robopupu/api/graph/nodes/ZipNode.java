@@ -13,28 +13,28 @@ import java.util.ArrayList;
  */
 public abstract class ZipNode<OUT> extends Node<Void, OUT> {
 
-    protected final ArrayList[] mBuffers;
-    protected final int mInputCount;
-    protected final ZipInputNode[] mInputs;
+    protected final ArrayList[] buffers;
+    protected final int inputCount;
+    protected final ZipInputNode[] inputs;
 
     protected ZipNode(final int inputCount) {
-        mInputCount = inputCount;
-        mInputs = new ZipInputNode[inputCount];
+        this.inputCount = inputCount;
+        inputs = new ZipInputNode[inputCount];
 
-        mBuffers = new ArrayList[inputCount];
+        buffers = new ArrayList[inputCount];
 
         for (int i = 0; i < inputCount; i++) {
-            mBuffers[i] = new ArrayList<>();
+            buffers[i] = new ArrayList<>();
         }
     }
 
     protected void addZipInputNode(final ZipInputNode<?, OUT> inputNode, final int index) {
-        mInputs[index] = inputNode;
+        inputs[index] = inputNode;
     }
 
     @SuppressWarnings("unchecked")
     protected <IN> void onInput(final ZipInputNode<IN, OUT> inputNode, final IN input) {
-        final ArrayList<IN> buffer = (ArrayList<IN>)mBuffers[inputNode.getIndex()];
+        final ArrayList<IN> buffer = (ArrayList<IN>) buffers[inputNode.getIndex()];
         buffer.add(input);
 
         if (isReadyToZip()) {
@@ -53,8 +53,8 @@ public abstract class ZipNode<OUT> extends Node<Void, OUT> {
      * @return A {@code boolean} value.
      */
     protected boolean isReadyToZip() {
-        for (int i = 0; i < mInputCount; i++) {
-            if (mBuffers[i].size() == 0) {
+        for (int i = 0; i < inputCount; i++) {
+            if (buffers[i].size() == 0) {
                 return false;
             }
         }

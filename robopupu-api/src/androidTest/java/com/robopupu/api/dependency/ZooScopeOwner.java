@@ -2,22 +2,22 @@ package com.robopupu.api.dependency;
 
 public class ZooScopeOwner implements DependencyScopeOwner {
 
-    private DependencyScope mScope;
+    private DependencyScope scope;
 
     public ZooScopeOwner() {
     }
 
     @Override
     public DependencyScope getOwnedScope() {
-        return mScope;
+        return scope;
     }
 
     public void setOwnedScope(ZooScope scope) {
-        mScope = scope;
+        this.scope = scope;
     }
 
     public void setOwnedScope(DependencyScope scope) {
-        mScope = scope;
+        this.scope = scope;
     }
 
     @Override

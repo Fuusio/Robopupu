@@ -32,7 +32,7 @@ public class RequestError extends Exception {
     public RequestError() {
         /*
         mCause = error.getCause();
-        mMessage = error.getMessage();
+        message = error.getMessage();
         mNetworkTime = error.getNetworkTimeMs();
         mStatusCode = error.networkResponse.statusCode;*/
 

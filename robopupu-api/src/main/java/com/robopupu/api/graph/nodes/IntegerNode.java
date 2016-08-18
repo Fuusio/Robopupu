@@ -9,13 +9,13 @@ import com.robopupu.api.graph.OutputNode;
  */
 public class IntegerNode<IN> extends Node<IN, Integer> {
 
-    private int mValue;
+    private int value;
 
     @Override
     protected Integer processInput(final OutputNode<IN> source, final IN input) {
         if (input instanceof Number) {
-            mValue = ((Number)input).intValue();
-            return mValue;
+            value = ((Number)input).intValue();
+            return value;
         } else {
             dispatchError(this, new ClassCastException(createErrorMessage("Received an object that cannot be converted to int")));
             return null;
@@ -23,6 +23,6 @@ public class IntegerNode<IN> extends Node<IN, Integer> {
     }
 
     public int getValue() {
-        return mValue;
+        return value;
     }
 }

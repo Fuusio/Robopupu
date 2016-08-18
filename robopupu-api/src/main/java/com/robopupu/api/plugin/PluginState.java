@@ -22,12 +22,12 @@ import com.robopupu.api.util.LifecycleState;
  */
 public class PluginState {
 
-    private LifecycleState mLifecycleState;
-    private boolean mRestarted;
+    private LifecycleState lifecycleState;
+    private boolean restarted;
 
     public PluginState() {
-        mLifecycleState = LifecycleState.DORMANT;
-        mRestarted = false;
+        lifecycleState = LifecycleState.DORMANT;
+        restarted = false;
     }
 
     /**
@@ -35,7 +35,7 @@ public class PluginState {
      * @return A
      */
     public LifecycleState getLifecycleState() {
-        return mLifecycleState;
+        return lifecycleState;
     }
 
     /**
@@ -44,7 +44,7 @@ public class PluginState {
      * @return A {@code boolean} value.
      */
     public boolean isDormant() {
-        return mLifecycleState.isDormant();
+        return lifecycleState.isDormant();
     }
 
     /**
@@ -53,7 +53,7 @@ public class PluginState {
      * @return A {@code boolean} value.
      */
     public boolean isCreated() {
-        return mLifecycleState.isCreated();
+        return lifecycleState.isCreated();
     }
 
     /**
@@ -64,7 +64,7 @@ public class PluginState {
      * @return A {@code boolean} value.
      */
     public boolean isStarted() {
-        return mLifecycleState.isStarted() || mLifecycleState.isResumed();
+        return lifecycleState.isStarted() || lifecycleState.isResumed();
     }
 
     /**
@@ -74,7 +74,7 @@ public class PluginState {
      * @return A {@code boolean} value.
      */
     public boolean isResumed() {
-        return mLifecycleState.isResumed();
+        return lifecycleState.isResumed();
     }
 
     /**
@@ -83,7 +83,7 @@ public class PluginState {
      * @return A {@code boolean} value.
      */
     public boolean isPaused() {
-        return mLifecycleState.isPaused();
+        return lifecycleState.isPaused();
     }
 
     /**
@@ -93,7 +93,7 @@ public class PluginState {
      * @return A {@code boolean} value.
      */
     public boolean isRestarted() {
-        return isStarted() && mRestarted;
+        return isStarted() && restarted;
     }
 
     /**
@@ -103,7 +103,7 @@ public class PluginState {
      * @return A {@code boolean} value.
      */
     public boolean isStopped() {
-        return mLifecycleState.isStopped() || mLifecycleState.isDestroyed();
+        return lifecycleState.isStopped() || lifecycleState.isDestroyed();
     }
 
     /**
@@ -112,55 +112,55 @@ public class PluginState {
      * @return A {@code boolean} value.
      */
     public boolean isDestroyed() {
-        return mLifecycleState.isDestroyed();
+        return lifecycleState.isDestroyed();
     }
 
     /**
      * Invoked the {@link PluginComponent} is created.
      */
     public void onCreate() {
-        mLifecycleState = LifecycleState.CREATED;
+        lifecycleState = LifecycleState.CREATED;
     }
 
     /**
      * Invoked the {@link PluginComponent} is started.
      */
     public void onStart() {
-        mLifecycleState = LifecycleState.STARTED;
+        lifecycleState = LifecycleState.STARTED;
     }
 
     /**
      * Invoked the {@link PluginComponent} is restarted.
      */
     public void onRestart() {
-        mRestarted = true;
+        restarted = true;
     }
 
     /**
      * Invoked the {@link PluginComponent} is paused.
      */
     public void onPause() {
-        mLifecycleState = LifecycleState.PAUSED;
+        lifecycleState = LifecycleState.PAUSED;
     }
 
     /**
      * Invoked the {@link PluginComponent} is resumed.
      */
     public void onResume() {
-        mLifecycleState = LifecycleState.RESUMED;
+        lifecycleState = LifecycleState.RESUMED;
     }
 
     /**
      * Invoked the {@link PluginComponent} is stopped.
      */
     public void onStop() {
-        mLifecycleState = LifecycleState.STOPPED;
+        lifecycleState = LifecycleState.STOPPED;
     }
 
     /**
      * Invoked the {@link PluginComponent} is destroyed.
      */
     public void onDestroy() {
-        mLifecycleState = LifecycleState.DESTROYED;
+        lifecycleState = LifecycleState.DESTROYED;
     }
 }

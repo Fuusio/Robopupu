@@ -32,20 +32,20 @@ public enum HttpMethod {
     TRACE("TRACE", 6),
     PATCH("PATCH", 7);
 
-    private final int mId;
-    private final String mName;
+    private final int id;
+    private final String name;
 
     HttpMethod(final String name, final int id) {
-        mName = name;
-        mId = id;
+        this.name = name;
+        this.id = id;
     }
 
     public int getId() {
-        return mId;
+        return id;
     }
 
     public final String getName() {
-        return mName;
+        return name;
     }
 
     public boolean isDelete() {
@@ -65,6 +65,6 @@ public enum HttpMethod {
     }
 
     public final String toString() {
-        return mName;
+        return name;
     }
 }

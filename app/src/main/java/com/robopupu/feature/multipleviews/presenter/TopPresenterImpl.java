@@ -27,11 +27,11 @@ import com.robopupu.feature.multipleviews.view.TopView;
 public class TopPresenterImpl extends AbstractFeaturePresenter<TopView>
         implements TopPresenter {
 
-    @Plug TopView mView;
+    @Plug TopView view;
 
     @Override
     public TopView getViewPlug() {
-        return mView;
+        return view;
     }
 
     @Override

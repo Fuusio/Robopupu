@@ -27,14 +27,14 @@ import android.support.v4.content.ContextCompat;
  */
 public class PermissionRequest {
 
-    private static int sRequestId = 0;
+    private static int requestIdCounter = 0;
 
-    private final Activity mActivity;
-    private final Callback mCallback;
-    private final String mPermission;
-    private final int mRequestId;
+    private final Activity activity;
+    private final Callback callback;
+    private final String permission;
+    private final int requestId;
 
-    private boolean mCommitted;
+    private boolean committed;
 
     /**
      * Constructs a new instance {@link PermissionRequest} for requesting the specified user
@@ -50,12 +50,12 @@ public class PermissionRequest {
         ExceptionToolkit.assertArgumentNotNull(permission, "permission");
         ExceptionToolkit.assertArgumentNotNull(callback, "callback");
 
-        mActivity = activity;
-        mPermission = permission;
-        mCallback = callback;
+        this.activity = activity;
+        this.permission = permission;
+        this.callback = callback;
 
-        mRequestId = sRequestId++;
-        mCommitted = false;
+        requestId = requestIdCounter++;
+        committed = false;
     }
 
     /**
@@ -63,7 +63,7 @@ public class PermissionRequest {
      * @return A {@link String} specifying the permission.
      */
     public String getPermission() {
-        return mPermission;
+        return permission;
     }
 
     /**
@@ -71,7 +71,7 @@ public class PermissionRequest {
      * @return The request ID as an int value.
      */
     public int getRequestId() {
-        return mRequestId;
+        return requestId;
     }
 
     /**
@@ -81,17 +81,17 @@ public class PermissionRequest {
      * the permission is actually requested by invoking {@link ActivityCompat#requestPermissions(Activity, String[], int)}.
      */
     public void commit() {
-        if (!mCommitted) {
-            if (isPermissionGranted(mActivity, mPermission)) {
-                mCallback.onPermissionExists(this);
+        if (!committed) {
+            if (isPermissionGranted(activity, permission)) {
+                callback.onPermissionExists(this);
             } else {
-                if (ActivityCompat.shouldShowRequestPermissionRationale(mActivity, mPermission)) {
-                    mCallback.onShowPermissionRationale(this);
+                if (ActivityCompat.shouldShowRequestPermissionRationale(activity, permission)) {
+                    callback.onShowPermissionRationale(this);
                 } else {
-                    ActivityCompat.requestPermissions(mActivity, new String[]{mPermission}, mRequestId);
+                    ActivityCompat.requestPermissions(activity, new String[]{permission}, requestId);
                 }
             }
-            mCommitted = true;
+            committed = true;
         } else {
             throw new IllegalStateException("PermissionRequest is already committed. User method recommit() after presenting the rationale to the user.");
         }
@@ -102,8 +102,8 @@ public class PermissionRequest {
      * the permission.
      */
     public void recommit() {
-        if (mCommitted) {
-            ActivityCompat.requestPermissions(mActivity, new String[]{mPermission}, mRequestId);
+        if (committed) {
+            ActivityCompat.requestPermissions(activity, new String[]{permission}, requestId);
         } else {
             throw new IllegalStateException("PermissionRequest needs to be first committed by invoking commit().");
         }
@@ -115,9 +115,9 @@ public class PermissionRequest {
      */
     protected void onRequestPermissionsResult(final boolean granted) {
         if (granted) {
-            mCallback.onPermissionGranted(this);
+            callback.onPermissionGranted(this);
         } else {
-            mCallback.onPermissionDenied(this);
+            callback.onPermissionDenied(this);
         }
     }
 

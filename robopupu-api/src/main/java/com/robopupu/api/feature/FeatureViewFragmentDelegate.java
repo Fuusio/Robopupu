@@ -17,7 +17,6 @@ package com.robopupu.api.feature;
 
 import android.app.Fragment;
 
-import com.robopupu.api.dependency.DependencyScope;
 import com.robopupu.api.mvp.Presenter;
 import com.robopupu.api.mvp.ViewFragmentDelegate;
 
@@ -25,8 +24,7 @@ public abstract class FeatureViewFragmentDelegate<T_Presenter extends Presenter,
         extends ViewFragmentDelegate<T_Presenter, T_Fragment>
     implements FeatureView {
 
-    private Feature mFeature;
-    private DependencyScope mScope;
+    private Feature feature;
 
     protected FeatureViewFragmentDelegate(final T_Fragment fragment) {
         super(fragment);
@@ -34,17 +32,7 @@ public abstract class FeatureViewFragmentDelegate<T_Presenter extends Presenter,
 
     @Override
     public void setFeature(final Feature feature) {
-        mFeature = feature;
-    }
-    
-    @Override
-    public DependencyScope getScope() {
-        return mScope;
-    }
-
-    @Override
-    public void setScope(final DependencyScope scope) {
-        mScope = scope;
+        this.feature = feature;
     }
 
     @Override
@@ -56,8 +44,8 @@ public abstract class FeatureViewFragmentDelegate<T_Presenter extends Presenter,
     public void onResume() {
         super.onResume();
 
-        if (mFeature != null) {
-            mFeature.addActiveView(this);
+        if (feature != null) {
+            feature.addActiveView(this);
         }
     }
 
@@ -65,8 +53,8 @@ public abstract class FeatureViewFragmentDelegate<T_Presenter extends Presenter,
     public void onPause() {
         super.onPause();
 
-        if (mFeature != null) {
-            mFeature.removeActiveView(this);
+        if (feature != null) {
+            feature.removeActiveView(this);
         }
     }
 }

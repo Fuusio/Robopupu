@@ -23,38 +23,38 @@ import android.os.Looper;
  */
 public class TimerHandle {
 
-    private final TimerManager.Callback mCallback;
-    private final long mDelay;
-    private final Handler mHandler;
-    private final long mId;
-    private final Runnable mRunnable;
-    private final TimerManagerImpl mTimerManager;
+    private final TimerManager.Callback callback;
+    private final long delay;
+    private final Handler handler;
+    private final long id;
+    private final Runnable runnable;
+    private final TimerManagerImpl timerManager;
 
     protected TimerHandle(final TimerManagerImpl timerManager, final TimerManager.Callback callback, final long delay) {
-        mTimerManager = timerManager;
-        mCallback = callback;
-        mDelay = delay;
-        mHandler = new Handler(Looper.getMainLooper());
-        mId = System.currentTimeMillis();
-        mRunnable = new Runnable() {
+        this.timerManager = timerManager;
+        this.callback = callback;
+        this.delay = delay;
+        handler = new Handler(Looper.getMainLooper());
+        id = System.currentTimeMillis();
+        runnable = new Runnable() {
             @Override
             public void run() {
-                mCallback.timeout(TimerHandle.this);
-                mTimerManager.removeHandle(TimerHandle.this);
+                TimerHandle.this.callback.timeout(TimerHandle.this);
+                TimerHandle.this.timerManager.removeHandle(TimerHandle.this);
             }
         };
     }
 
     protected void start() {
-        mHandler.postDelayed(mRunnable, mDelay);
+        handler.postDelayed(runnable, delay);
     }
 
     public long getId() {
-        return mId;
+        return id;
     }
 
     public void cancel() {
-        mHandler.removeCallbacks(mRunnable);
-        mTimerManager.removeHandle(this);
+        handler.removeCallbacks(runnable);
+        timerManager.removeHandle(this);
     }
 }

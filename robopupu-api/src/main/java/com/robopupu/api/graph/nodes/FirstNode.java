@@ -11,9 +11,9 @@ import com.robopupu.api.graph.functions.BooleanFunction;
  */
 public class FirstNode<IN> extends Node<IN, IN> {
 
-    private BooleanFunction<IN> mCondition;
-    private int mCounter;
-    private boolean mValueEmitted;
+    private BooleanFunction<IN> condition;
+    private int counter;
+    private boolean valueEmitted;
 
     public FirstNode() {
         this(null);
@@ -21,34 +21,34 @@ public class FirstNode<IN> extends Node<IN, IN> {
 
     public FirstNode(final BooleanFunction<IN> condition) {
         setCondition(condition);
-        mCounter = 0;
-        mValueEmitted = false;
+        counter = 0;
+        valueEmitted = false;
     }
 
     public void setCondition(final BooleanFunction condition) {
-        mCondition = condition;
+        this.condition = condition;
     }
 
     @SuppressWarnings("unchecked")
     @Override
     protected IN processInput(final OutputNode<IN> source, final IN input) {
-        if (input != null && !mValueEmitted) {
-            if (mCondition != null) {
-                if (mCondition.eval(input)) {
-                    mValueEmitted = true;
+        if (input != null && !valueEmitted) {
+            if (condition != null) {
+                if (condition.eval(input)) {
+                    valueEmitted = true;
                     return input;
                 }
-            } else if (mCounter == 0) {
-                mValueEmitted = true;
+            } else if (counter == 0) {
+                valueEmitted = true;
                 return input;
             }
         }
-        mCounter++;
+        counter++;
         return null;
     }
 
     @Override
     protected void doOnReset() {
-        mValueEmitted = false;
+        valueEmitted = false;
     }
 }

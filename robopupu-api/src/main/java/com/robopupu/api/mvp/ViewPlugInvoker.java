@@ -9,12 +9,12 @@ import com.robopupu.api.plugin.PlugInvoker;
 public abstract class ViewPlugInvoker<T extends View>
         extends PlugInvoker<T>  implements View {
 
-    private String mViewTag;
+    private String viewTag;
 
     @Override
     public ViewState getState() {
-        if (mPlugins.size() > 0) {
-            final View view = (View) mPlugins.get(0);
+        if (plugins.size() > 0) {
+            final View view = (View) plugins.get(0);
             return view.getState();
         }
         return new ViewState(null);
@@ -22,11 +22,11 @@ public abstract class ViewPlugInvoker<T extends View>
 
     @Override
     public String getViewTag() {
-        if (mPlugins.size() > 0) {
-            final View view = (View) mPlugins.get(0);
-            mViewTag = view.getViewTag();
+        if (plugins.size() > 0) {
+            final View view = (View) plugins.get(0);
+            viewTag = view.getViewTag();
         }
-        return mViewTag;
+        return viewTag;
     }
 
 }

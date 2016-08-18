@@ -32,10 +32,10 @@ import java.util.HashMap;
 public class PermissionRequestManager extends AbstractManager
         implements ActivityCompat.OnRequestPermissionsResultCallback {
 
-    private final HashMap<Integer, PermissionRequest> mPendingRequests;
+    private final HashMap<Integer, PermissionRequest> pendingRequests;
 
     public PermissionRequestManager() {
-        mPendingRequests = new HashMap<>();
+        pendingRequests = new HashMap<>();
     }
 
     /**
@@ -48,7 +48,7 @@ public class PermissionRequestManager extends AbstractManager
      */
     public PermissionRequest createRequest(final Activity activity, final String permission, final PermissionRequest.Callback callback) {
         final PermissionRequest request = new PermissionRequest(activity, permission, callback);
-        mPendingRequests.put(request.getRequestId(), request);
+        pendingRequests.put(request.getRequestId(), request);
         return request;
     }
 
@@ -79,10 +79,10 @@ public class PermissionRequestManager extends AbstractManager
 
     @Override
     public void onRequestPermissionsResult(final int requestCode,final String[] permissions, final int[] grantResults) {
-        if (mPendingRequests.containsKey(requestCode)) {
-            final PermissionRequest request = mPendingRequests.get(requestCode);
+        if (pendingRequests.containsKey(requestCode)) {
+            final PermissionRequest request = pendingRequests.get(requestCode);
             request.onRequestPermissionsResult(grantResults[0] == PackageManager.PERMISSION_GRANTED);
-            mPendingRequests.remove(requestCode);
+            pendingRequests.remove(requestCode);
         }
     }
 
@@ -91,7 +91,7 @@ public class PermissionRequestManager extends AbstractManager
      * @return A {@code boolean} value.
      */
     public boolean hasPendingRequests() {
-        return !mPendingRequests.isEmpty();
+        return !pendingRequests.isEmpty();
     }
 
     /**
@@ -100,7 +100,7 @@ public class PermissionRequestManager extends AbstractManager
      */
     public boolean clearPendingRequests() {
         final boolean hadPendingRequests = hasPendingRequests();
-        mPendingRequests.clear();
+        pendingRequests.clear();
         return hadPendingRequests;
     }
 }

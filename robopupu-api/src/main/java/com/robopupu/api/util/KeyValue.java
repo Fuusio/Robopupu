@@ -17,32 +17,32 @@ package com.robopupu.api.util;
 
 public class KeyValue<T_Key, T_Value> {
 
-    private T_Key mKey;
-    private T_Value mValue;
+    public T_Key key;
+    public T_Value value;
 
     public KeyValue(final T_Key key, final T_Value value) {
-        mKey = key;
-        mValue = value;
+        this.key = key;
+        this.value = value;
     }
 
     public KeyValue(final KeyValue<T_Key, T_Value> source) {
-        mKey = source.mKey;
-        mValue = source.mValue;
+        key = source.key;
+        value = source.value;
     }
 
     public final T_Key getKey() {
-        return mKey;
+        return key;
     }
 
     public void setKey(final T_Key key) {
-        mKey = key;
+        this.key = key;
     }
 
     public final T_Value getValue() {
-        return mValue;
+        return value;
     }
 
     public void setValue(final T_Value value) {
-        mValue = value;
+        this.value = value;
     }
 }

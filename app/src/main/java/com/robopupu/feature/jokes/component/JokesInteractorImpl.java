@@ -18,20 +18,20 @@ import com.robopupu.volley.RequestSpec;
 @Plugin
 public class JokesInteractorImpl extends GraphInteractor implements JokesInteractor {
 
-    private RequestSpec<JokeResponse> mGetJoke;
+    private RequestSpec<JokeResponse> getJoke;
 
-    @Plug AppManager mAppManager;
+    @Plug AppManager appManager;
 
     @Override
     public void onPlugged(final PluginBus bus) {
         super.onPlugged(bus);
-        final Context context = mAppManager.getAppContext();
-        mGetJoke = new RequestSpec<JokeResponse>(context, "http://api.icndb.com/jokes/random").
+        final Context context = appManager.getAppContext();
+        getJoke = new RequestSpec<JokeResponse>(context, "http://api.icndb.com/jokes/random").
                 request(new GsonRequest<>(JokeResponse.class));
     }
 
     @Override
     public void requestJoke(final NodeObserver<JokeResponse> callback) {
-        Graph.begin(mGetJoke).observer(callback).start();
+        Graph.begin(getJoke).observer(callback).start();
     }
 }

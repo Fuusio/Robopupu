@@ -28,63 +28,63 @@ import com.robopupu.api.mvp.ViewCompatFragment;
  */
 public class ClickBinding implements View.OnClickListener {
 
-    private View[] mViews;
+    private View[] views;
 
-    private ViewBinding.ClickListener mClickListener;
+    private ViewBinding.ClickListener clickListener;
 
     private ClickBinding() {
     }
 
     public ClickBinding(final ViewCompatFragment fragment, final View... views) {
         final int count = views.length;
-        mViews = new View[count];
+        this.views = new View[count];
 
         for (int i = 0; i < count; i++) {
-            mViews[i] = views[i];
-            attachListeners(mViews[i]);
+            this.views[i] = views[i];
+            attachListeners(this.views[i]);
         }
     }
 
     public ClickBinding(final ViewCompatDialogFragment dialogFragment, final View... views) {
         final int count = views.length;
-        mViews = new View[count];
+        this.views = new View[count];
 
         for (int i = 0; i < count; i++) {
-            mViews[i] = views[i];
-            attachListeners(mViews[i]);
+            this.views[i] = views[i];
+            attachListeners(this.views[i]);
         }
     }
 
     public ClickBinding(final ViewCompatFragment fragment, @IdRes final int... viewIds) {
         final int count = viewIds.length;
-        mViews = new  View[count];
+        views = new  View[count];
 
         for (int i = 0; i < count; i++) {
-            mViews[i] = fragment.getView(viewIds[i]);
-            attachListeners(mViews[i]);
+            views[i] = fragment.getView(viewIds[i]);
+            attachListeners(views[i]);
         }
     }
 
     public ClickBinding(final ViewCompatDialogFragment dialogFragment, @IdRes final int... viewIds) {
         final int count = viewIds.length;
-        mViews = new  View[count];
+        views = new  View[count];
 
         for (int i = 0; i < count; i++) {
-            mViews[i] = dialogFragment.getView(viewIds[i]);
-            attachListeners(mViews[i]);
+            views[i] = dialogFragment.getView(viewIds[i]);
+            attachListeners(views[i]);
         }
     }
 
     public ViewBinding.ClickListener getClickListener() {
-        return mClickListener;
+        return clickListener;
     }
 
     public void setClickListener(final ViewBinding.ClickListener listener) {
-        mClickListener = listener;
+        clickListener = listener;
     }
 
     public final void setViewsEnabled(final boolean enabled) {
-        for (final View view : mViews) {
+        for (final View view : views) {
             view.setEnabled(enabled);
         }
     }
@@ -95,7 +95,7 @@ public class ClickBinding implements View.OnClickListener {
      * @return A {@link View}.
      */
     public final View[] getViews() {
-        return mViews;
+        return views;
     }
 
     /**
@@ -120,8 +120,8 @@ public class ClickBinding implements View.OnClickListener {
 
     @Override
     public final void onClick(final View view) {
-        if (mClickListener != null) {
-            mClickListener.onClicked(view);
+        if (clickListener != null) {
+            clickListener.onClicked(view);
         }
         clicked();
     }

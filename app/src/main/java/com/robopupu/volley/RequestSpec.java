@@ -26,41 +26,41 @@ public class RequestSpec<T_Response> implements RequestDelegate<T_Response> {
 
     protected static final String PATH_SEPARATOR = "/";
 
-    private final HttpHeaders mHeaders;
-    private final HttpParams mPathParams;
-    private final HttpParams mParams;
+    private final HttpHeaders headers;
+    private final HttpParams pathParams;
+    private final HttpParams params;
 
-    private String mBaseUrl;
-    private boolean mBuild;
-    private String mBuildUrl;
-    private Context mContext;
-    private Charset mEncoding;
-    private String mRelativeUrl;
-    private BaseRequest<T_Response> mRequest;
-    private RetryPolicy mRetryPolicy;
-    private RequestQueue mRequestQueue;
-    private String mTag;
-    private int mTimeout; // In milliseconds
-    private String mUrl;
+    private String baseUrl;
+    private boolean build;
+    private String buildUrl;
+    private Context context;
+    private Charset encoding;
+    private String relativeUrl;
+    private BaseRequest<T_Response> request;
+    private RetryPolicy retryPolicy;
+    private RequestQueue requestQueue;
+    private String tag;
+    private int timeout; // In milliseconds
+    private String url;
     
     public RequestSpec(final Context context) {
         this(context, null);
     }
 
     public RequestSpec(final Context context, final String url) {
-        mContext = context;
-        mUrl = url;
-        mBuild = false;
-        mHeaders = new HttpHeaders();
-        mEncoding = HttpParams.DEFAULT_ENCODING;
-        mPathParams = new HttpParams();
-        mParams = new HttpParams();
+        this.context = context;
+        this.url = url;
+        build = false;
+        headers = new HttpHeaders();
+        encoding = HttpParams.DEFAULT_ENCODING;
+        pathParams = new HttpParams();
+        params = new HttpParams();
     }
 
     public RequestSpec(final Context context, final String baseUrl, final String relativeUrl) {
         this(context, null);
-        mBaseUrl = baseUrl;
-        mRelativeUrl = relativeUrl;
+        this.baseUrl = baseUrl;
+        this.relativeUrl = relativeUrl;
     }
 
     /**
@@ -68,57 +68,57 @@ public class RequestSpec<T_Response> implements RequestDelegate<T_Response> {
      * @return A {@link Context}.
      */
     public Context getContext() {
-        return mContext;
+        return context;
     }
 
     private RequestSpec<T_Response> reset() {
-        mBuild = false;
-        mBuildUrl = null;
+        build = false;
+        buildUrl = null;
         return this;
     }
 
     protected RequestSpec<T_Response> encoding(final Charset encoding) {
-        mEncoding = encoding;
+        this.encoding = encoding;
         return reset();
     }
 
     public RequestSpec<T_Response> baseUrl(final String url) {
-        mBaseUrl = url;
+        baseUrl = url;
         return reset();
     }
 
     public RequestSpec<T_Response> header(final HeaderRequestField field, final String value) {
-        mHeaders.add(field, value);
+        headers.add(field, value);
         return this;
     }
 
     public RequestSpec<T_Response> header(final String field, final String value) {
-        mHeaders.add(field, value);
+        headers.add(field, value);
         return this;
     }
 
     public RequestSpec<T_Response> headers(final HttpHeaders headers) {
-        mHeaders.addAll(headers);
+        this.headers.addAll(headers);
         return this;
     }
 
     public RequestSpec<T_Response> pathParams(final HttpParams params) {
-        mPathParams.addAll(params);
+        pathParams.addAll(params);
         return this;
     }
 
     public RequestSpec<T_Response> params(final HttpParams params) {
-        mParams.addAll(params);
+        this.params.addAll(params);
         return reset();
     }
 
     public RequestSpec<T_Response> relativeUrl(final String url) {
-        mRelativeUrl = url;
+        relativeUrl = url;
         return reset();
     }
 
     public RequestSpec<T_Response> retryPolicy(final RetryPolicy retryPolicy) {
-        mRetryPolicy = retryPolicy;
+        this.retryPolicy = retryPolicy;
         return this;
     }
 
@@ -129,7 +129,7 @@ public class RequestSpec<T_Response> implements RequestDelegate<T_Response> {
      * @return A {@link BaseRequest},
      */
     public BaseRequest<T_Response> getRequest() {
-        return mRequest;
+        return request;
     }
 
     /**
@@ -139,7 +139,7 @@ public class RequestSpec<T_Response> implements RequestDelegate<T_Response> {
      * @return This {@link RequestSpec}.
      */
     public RequestSpec<T_Response> request(final BaseRequest<T_Response> request) {
-        mRequest = request;
+        this.request = request;
         return this;
     }
 
@@ -148,7 +148,7 @@ public class RequestSpec<T_Response> implements RequestDelegate<T_Response> {
      * @return An {@link int} value as seconds.
      */
     public int getTimeout() {
-        return mTimeout;
+        return timeout;
     }
 
     /**
@@ -157,12 +157,12 @@ public class RequestSpec<T_Response> implements RequestDelegate<T_Response> {
      * @return This {@link RequestSpec}.
      */
     public RequestSpec<T_Response> timeout(final int timeout) {
-        mTimeout = timeout;
+        this.timeout = timeout;
         return this;
     }
 
     public RequestSpec<T_Response> url(final String url) {
-        mUrl = url;
+        this.url = url;
         return this;
     }
 
@@ -174,27 +174,27 @@ public class RequestSpec<T_Response> implements RequestDelegate<T_Response> {
      * @return This {@link RequestSpec}.
      */
     public RequestSpec<T_Response> param(final String key, final String value) {
-        mParams.add(key, value);
+        params.add(key, value);
         return reset();
     }
 
     public RequestSpec<T_Response> param(final String key, final boolean value) {
-        mParams.add(key, Boolean.toString(value));
+        params.add(key, Boolean.toString(value));
         return reset();
     }
 
     public RequestSpec<T_Response> param(final String key, final float value) {
-        mParams.add(key, Float.toString(value));
+        params.add(key, Float.toString(value));
         return reset();
     }
 
     public RequestSpec<T_Response> param(final String key, final int value) {
-        mParams.add(key, Integer.toString(value));
+        params.add(key, Integer.toString(value));
         return reset();
     }
 
     public RequestSpec<T_Response> param(final String key, final long value) {
-        mParams.add(key, Long.toString(value));
+        params.add(key, Long.toString(value));
         return reset();
     }
 
@@ -206,27 +206,27 @@ public class RequestSpec<T_Response> implements RequestDelegate<T_Response> {
      * @return This {@link RequestSpec}.
      */
     public RequestSpec<T_Response> pathParam(final String key, final String value) {
-        mPathParams.add(key, value);
+        pathParams.add(key, value);
         return reset();
     }
 
     public RequestSpec<T_Response> pathParam(final String key, final boolean value) {
-        mPathParams.add(key, Boolean.toString(value));
+        pathParams.add(key, Boolean.toString(value));
         return reset();
     }
 
     public RequestSpec<T_Response> pathParam(final String key, final float value) {
-        mPathParams.add(key, Float.toString(value));
+        pathParams.add(key, Float.toString(value));
         return reset();
     }
 
     public RequestSpec<T_Response> pathParam(final String key, final int value) {
-        mPathParams.add(key, Integer.toString(value));
+        pathParams.add(key, Integer.toString(value));
         return reset();
     }
 
     public RequestSpec<T_Response> pathParam(final String key, final long value) {
-        mPathParams.add(key, Long.toString(value));
+        pathParams.add(key, Long.toString(value));
         return reset();
     }
 
@@ -235,21 +235,21 @@ public class RequestSpec<T_Response> implements RequestDelegate<T_Response> {
      * @param request A {@link BaseRequest}.
      */
     protected BaseRequest<T_Response> initialise(final BaseRequest<T_Response> request) {
-        if (mTag != null) {
-            mTag = Long.toString(System.currentTimeMillis());
+        if (tag != null) {
+            tag = Long.toString(System.currentTimeMillis());
         }
-        request.setTag(mTag);
+        request.setTag(tag);
 
-        if (!mHeaders.isEmpty()) {
-            request.setHeaders(mHeaders);
+        if (!headers.isEmpty()) {
+            request.setHeaders(headers);
         }
         request.setUrl(getUrl());
 
-        if (mRetryPolicy == null) {
-            mRetryPolicy = new DefaultRetryPolicy();
+        if (retryPolicy == null) {
+            retryPolicy = new DefaultRetryPolicy();
         }
-        mRequest.setRetryPolicy(mRetryPolicy);
-        return mRequest;
+        this.request.setRetryPolicy(retryPolicy);
+        return this.request;
     }
 
     /**
@@ -257,50 +257,50 @@ public class RequestSpec<T_Response> implements RequestDelegate<T_Response> {
      * @return A URL as a {@link String}
      */
     public String getUrl() {
-        if (mBuildUrl == null) {
+        if (buildUrl == null) {
             final StringBuilder urlBuilder = new StringBuilder();
 
-            if (mUrl != null) {
-                urlBuilder.append(mUrl);
+            if (url != null) {
+                urlBuilder.append(url);
             } else {
-                urlBuilder.append(mBaseUrl);
+                urlBuilder.append(baseUrl);
 
-                if (!mBaseUrl.endsWith(PATH_SEPARATOR)) {
-                    if (!mRelativeUrl.startsWith(PATH_SEPARATOR)) {
+                if (!baseUrl.endsWith(PATH_SEPARATOR)) {
+                    if (!relativeUrl.startsWith(PATH_SEPARATOR)) {
                         urlBuilder.append(PATH_SEPARATOR);
                     }
-                    urlBuilder.append(mRelativeUrl);
+                    urlBuilder.append(relativeUrl);
                 } else {
-                    if (mRelativeUrl.startsWith(PATH_SEPARATOR)) {
-                        urlBuilder.append(mRelativeUrl.substring(1));
+                    if (relativeUrl.startsWith(PATH_SEPARATOR)) {
+                        urlBuilder.append(relativeUrl.substring(1));
                     } else {
-                        urlBuilder.append(mRelativeUrl);
+                        urlBuilder.append(relativeUrl);
                     }
                 }
             }
 
-            if (mParams.hasValues()) {
+            if (params.hasValues()) {
                 urlBuilder.append('?');
-                mParams.encodeParameters(urlBuilder);
+                params.encodeParameters(urlBuilder);
             }
 
-            mBuildUrl = urlBuilder.toString();
+            buildUrl = urlBuilder.toString();
 
-            if (mPathParams.hasValues()) {
+            if (pathParams.hasValues()) {
                 try {
-                    final List<KeyValue<String, String>> keyValues = mPathParams.getKeyValues();
+                    final List<KeyValue<String, String>> keyValues = pathParams.getKeyValues();
 
                     for (final KeyValue<String, String> keyValue : keyValues) {
                         final String key = "{" + keyValue.getKey() + "}";
-                        final String value = URLEncoder.encode(keyValue.getValue(), mEncoding.name());
-                        mBuildUrl = mBuildUrl.replace(key, value);
+                        final String value = URLEncoder.encode(keyValue.getValue(), encoding.name());
+                        buildUrl = buildUrl.replace(key, value);
                     }
                 } catch (UnsupportedEncodingException e) {
                     throw new RuntimeException("Failed to encode path parameter.", e);
                 }
             }
         }
-        return mBuildUrl;
+        return buildUrl;
     }
 
     /**
@@ -310,19 +310,19 @@ public class RequestSpec<T_Response> implements RequestDelegate<T_Response> {
      * @return A {@link BaseRequest} which is ready to be added into {@link RequestQueue}.
      */
     public BaseRequest<T_Response> build() {
-        mRequest.setBuild(true);
-        return initialise(mRequest);
+        request.setBuild(true);
+        return initialise(request);
     }
 
     @Override
     public void executeRequest(final RequestCallback<T_Response> callback) {
-        if (mRequestQueue == null) {
-            mRequestQueue = Volley.newRequestQueue(getContext());
+        if (requestQueue == null) {
+            requestQueue = Volley.newRequestQueue(getContext());
         }
-        if (!mRequest.isBuild()) {
+        if (!request.isBuild()) {
             build();
         }
-        mRequest.setCallback(callback);
-        mRequestQueue.add(mRequest);
+        request.setCallback(callback);
+        requestQueue.add(request);
     }
 }

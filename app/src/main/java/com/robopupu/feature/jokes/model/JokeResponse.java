@@ -1,31 +1,27 @@
 package com.robopupu.feature.jokes.model;
 
-import com.google.gson.annotations.SerializedName;
-
 public class JokeResponse {
 
-    @SerializedName("type")
-    private String mType;
+    private String type;
 
-    @SerializedName("value")
-    private JokeValue mValue;
+    private JokeValue value;
 
     public JokeResponse() {
     }
 
     public String getType() {
-        return mType;
+        return type;
     }
 
     public JokeValue getValue() {
-        return mValue;
+        return value;
     }
 
     public void setType(final String type) {
-        mType = type;
+        this.type = type;
     }
 
     public void setValue(final JokeValue value) {
-        mValue = value;
+        this.value = value;
     }
 }

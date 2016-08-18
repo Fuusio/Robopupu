@@ -5,8 +5,8 @@ package com.robopupu.api.mvp;
  */
 public abstract class ListItem<T> {
 
-    protected T mModelObject;
-    protected int mPosition;
+    protected T modelObject;
+    protected int position;
 
     protected ListItem() {
     }
@@ -16,18 +16,18 @@ public abstract class ListItem<T> {
     }
 
     public T getModelObject() {
-        return mModelObject;
+        return modelObject;
     }
 
     public void setModelObject(final T object) {
-        mModelObject = object;
+        modelObject = object;
     }
 
     public int getPosition() {
-        return mPosition;
+        return position;
     }
 
     public void setPosition(final int position) {
-        mPosition = position;
+        this.position = position;
     }
 }

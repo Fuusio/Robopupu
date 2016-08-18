@@ -37,17 +37,17 @@ public class Dependency {
     /**
      * A {@link DependencyScope} that has the same lifecycle as the application.
      */
-    private static DependencyScope sAppScope;
+    private static DependencyScope appScope;
 
     /**
      * A {@link HashMap} containing the instantiated {@link DependencyScope}s.
      */
-    private final static HashMap<String, DependencyScope> sDependencyScopes = new HashMap<>();
+    private final static HashMap<String, DependencyScope> dependencyScopes = new HashMap<>();
 
     /**
      * The currently active {@link DependencyScope}.
      */
-    private static DependencyScope sActiveScope = null;
+    private static DependencyScope activeScope = null;
 
     /**
      * Adds the {@link DependencyScope} owner by the given {@link DependencyScopeOwner} to
@@ -58,7 +58,7 @@ public class Dependency {
      */
     public static DependencyScope addScope(final DependencyScopeOwner owner) {
         final DependencyScope scope = owner.getOwnedScope();
-        sDependencyScopes.put(scope.getId(), scope);
+        dependencyScopes.put(scope.getId(), scope);
         scope.addDependant(owner);
         return scope;
     }
@@ -95,7 +95,7 @@ public class Dependency {
      */
     @SuppressWarnings("unchecked")
     public static <T extends DependencyScope> T getScope(final String scopeClassName, final boolean createInstance) {
-        T scope = (T)sDependencyScopes.get(scopeClassName);
+        T scope = (T) dependencyScopes.get(scopeClassName);
 
         if (scope == null) {
             Class<? extends DependencyScope> scopeClass = null;
@@ -135,17 +135,17 @@ public class Dependency {
     @SuppressWarnings("unchecked")
     public static <T extends DependencyScope> T getScope(final Class<? extends DependencyScope> scopeClass, final boolean createInstance) {
 
-        if (sAppScope.getClass().isAssignableFrom(scopeClass)) {
-            return (T) sAppScope;
+        if (appScope.getClass().isAssignableFrom(scopeClass)) {
+            return (T) appScope;
         }
 
         final String id = scopeClass.getCanonicalName();
-        DependencyScope scope  = sDependencyScopes.get(id);
+        DependencyScope scope  = dependencyScopes.get(id);
 
         if (scope == null && createInstance) {
             try {
                 scope = scopeClass.newInstance();
-                sDependencyScopes.put(id, scope);
+                dependencyScopes.put(id, scope);
             } catch (Exception e) {
                 throw new IllegalStateException("Failed to instantiate scope: " + id);
             }
@@ -158,7 +158,7 @@ public class Dependency {
      * @return A {@link DependencyScope}.
      */
     public static DependencyScope getAppScope() {
-        return sAppScope;
+        return appScope;
     }
 
     /**
@@ -170,10 +170,10 @@ public class Dependency {
      */
     @NonNull
     public static DependencyScope getActiveScope() {
-        if (sActiveScope != null) {
-            return sActiveScope;
+        if (activeScope != null) {
+            return activeScope;
         }
-        return sAppScope;
+        return appScope;
     }
 
     /**
@@ -184,7 +184,7 @@ public class Dependency {
         if (appScope ==null) {
             throw new IllegalArgumentException("Parameter scope may not be null");
         }
-        sAppScope = appScope;
+        Dependency.appScope = appScope;
     }
 
     /**
@@ -197,7 +197,7 @@ public class Dependency {
      */
     public static void activateScope(final DependencyScopeOwner owner) {
         final String id = owner.getScopeClass().getCanonicalName();
-        DependencyScope scope = sDependencyScopes.get(id);
+        DependencyScope scope = dependencyScopes.get(id);
 
         if (scope == null) {
             scope = addScope(owner);
@@ -205,10 +205,10 @@ public class Dependency {
 
         scope.setOwner(owner);
 
-        if (sActiveScope != scope && !scope.isAppScope()) {
-            sActiveScope = scope;
-            sActiveScope.initialize();
-            sActiveScope.onActivated(owner);
+        if (activeScope != scope && !scope.isAppScope()) {
+            activeScope = scope;
+            activeScope.initialize();
+            activeScope.onActivated(owner);
         }
     }
 
@@ -238,7 +238,7 @@ public class Dependency {
         }
 
         final String id = scopeClass.getCanonicalName();
-        sDependencyScopes.put(id, scope);
+        dependencyScopes.put(id, scope);
         scope.addDependant(owner);
         activateScope(owner);
     }
@@ -262,16 +262,16 @@ public class Dependency {
     public static void disposeScope(final DependencyScopeOwner owner) {
         final DependencyScope scope = owner.getOwnedScope();
 
-        if (scope != null && sDependencyScopes.containsKey(scope.getId())) {
+        if (scope != null && dependencyScopes.containsKey(scope.getId())) {
             if (scope.isDisposable()) {
-                sDependencyScopes.remove(scope.getId());
+                dependencyScopes.remove(scope.getId());
                 scope.dispose();
             }
 
             scope.onDeactivated(owner);
 
-            if (scope == sActiveScope) {
-                sActiveScope = null;
+            if (scope == activeScope) {
+                activeScope = null;
             }
         }
     }
@@ -281,12 +281,12 @@ public class Dependency {
      */
     public static void disposeScopes() {
         final List<DependencyScope> scopes = new ArrayList<>();
-        scopes.addAll(sDependencyScopes.values());
+        scopes.addAll(dependencyScopes.values());
 
         for (final DependencyScope scope : scopes) {
             scope.dispose();
         }
-        sDependencyScopes.clear();
+        dependencyScopes.clear();
         resetActiveScope();
     }
 
@@ -498,7 +498,7 @@ public class Dependency {
      * This method is added only for testing purposes.
      */
     protected static void resetAppScope() {
-        sAppScope = null;
+        appScope = null;
     }
 
     /**
@@ -506,6 +506,6 @@ public class Dependency {
      * This method is added only for testing purposes.
      */
     public static void resetActiveScope() {
-        sActiveScope = null;
+        activeScope = null;
     }
 }

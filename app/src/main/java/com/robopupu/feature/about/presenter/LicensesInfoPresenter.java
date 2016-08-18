@@ -15,6 +15,7 @@
  */
 package com.robopupu.feature.about.presenter;
 
+import com.robopupu.api.mvp.OnClick;
 import com.robopupu.app.view.DelegatedWebViewClient;
 
 import com.robopupu.api.feature.FeaturePresenter;
@@ -25,5 +26,6 @@ public interface LicensesInfoPresenter extends FeaturePresenter, DelegatedWebVie
 
     String KEY_PARAM_LICENSE_URL = "Key.Param.License.URL";
 
-    void onOkButtonClicked();
+    @OnClick
+    void onOkButtonClick();
 }

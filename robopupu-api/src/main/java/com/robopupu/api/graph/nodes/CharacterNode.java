@@ -9,13 +9,13 @@ import com.robopupu.api.graph.OutputNode;
  */
 public class CharacterNode<IN> extends Node<IN, Character> {
 
-    private char mValue;
+    private char value;
 
     @Override
     protected Character processInput(final OutputNode<IN> source, final IN input) {
         if (input instanceof Character) {
-            mValue = (Character)input;
-            return mValue;
+            value = (Character)input;
+            return value;
         } else {
             dispatchError(this, new ClassCastException(createErrorMessage("Received an object that cannot be converted to Character")));
             return null;
@@ -23,6 +23,6 @@ public class CharacterNode<IN> extends Node<IN, Character> {
     }
 
     public char getValue() {
-        return mValue;
+        return value;
     }
 }

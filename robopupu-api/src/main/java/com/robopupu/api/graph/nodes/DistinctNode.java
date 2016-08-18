@@ -12,21 +12,21 @@ import java.util.HashMap;
  */
 public class DistinctNode<IN> extends Node<IN, IN> {
 
-    private ArrayList<IN> mBuffer;
-    private HashMap<IN, IN> mMapped;
+    private ArrayList<IN> buffer;
+    private HashMap<IN, IN> mapped;
 
     public DistinctNode() {
-        mBuffer = new ArrayList<>();
-        mMapped = new HashMap<>();
+        buffer = new ArrayList<>();
+        mapped = new HashMap<>();
     }
 
     @SuppressWarnings("unchecked")
     @Override
     protected IN processInput(final OutputNode<IN> source, final IN input) {
         if (input != null) {
-            if (!mMapped.containsKey(input)) {
-                mMapped.put(input, input);
-                mBuffer.add(input);
+            if (!mapped.containsKey(input)) {
+                mapped.put(input, input);
+                buffer.add(input);
             }
         }
         return null;
@@ -34,7 +34,7 @@ public class DistinctNode<IN> extends Node<IN, IN> {
 
     @Override
     public void onCompleted(final OutputNode<?> outputNode) {
-        for (final IN output : mBuffer) {
+        for (final IN output : buffer) {
             emitOutput(output);
         }
         completed(this);

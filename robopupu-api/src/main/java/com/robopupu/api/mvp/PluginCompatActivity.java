@@ -1,7 +1,6 @@
 package com.robopupu.api.mvp;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -31,10 +30,10 @@ public abstract class PluginCompatActivity<T_Presenter extends Presenter>
 
     private final static String TAG = Utils.tag(PluginCompatActivity.class);
 
-    private final List<FeatureContainer> mFeatureContainers;
+    private final List<FeatureContainer> featureContainers;
 
     protected PluginCompatActivity() {
-        mFeatureContainers = new ArrayList<>();
+        featureContainers = new ArrayList<>();
     }
 
     protected void createFeatureContainers(final List<FeatureContainer> featureContainers) {
@@ -48,7 +47,7 @@ public abstract class PluginCompatActivity<T_Presenter extends Presenter>
 
     @Override
     public List<FeatureContainer> getFeatureContainers() {
-        return mFeatureContainers;
+        return featureContainers;
     }
 
     protected FeatureContainer createFeatureContainer(final @IdRes int containerViewId) {
@@ -74,7 +73,7 @@ public abstract class PluginCompatActivity<T_Presenter extends Presenter>
 
     @Override
     public boolean canShowView(final FeatureView view) {
-        return (view != null && !mState.isMovedToBackground());
+        return (view != null && !state.isMovedToBackground());
     }
 
     @Override
@@ -178,7 +177,7 @@ public abstract class PluginCompatActivity<T_Presenter extends Presenter>
 
     @Override
     protected void onStart() {
-        createFeatureContainers(mFeatureContainers);
+        createFeatureContainers(featureContainers);
         PluginBus.plug(this);
         super.onStart();
     }

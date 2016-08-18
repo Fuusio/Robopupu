@@ -52,14 +52,14 @@ public abstract class ViewCompatActivity<T_Presenter extends Presenter> extends 
 
     private static String TAG = Utils.tag(ViewCompatDialogFragment.class);
 
-    protected final ViewBinder mBinder;
-    protected final ViewState mState;
+    protected final ViewBinder binder;
+    protected final ViewState state;
 
-    protected DependencyScope mScope;
+    protected DependencyScope scope;
 
     protected ViewCompatActivity() {
-        mBinder = new ViewBinder(this);
-        mState = new ViewState(this);
+        binder = new ViewBinder(this);
+        state = new ViewState(this);
     }
 
     /**
@@ -104,7 +104,7 @@ public abstract class ViewCompatActivity<T_Presenter extends Presenter> extends 
             Log.d(TAG, "onViewCreated(...) : Presenter == null");
         }
 
-        mBinder.setActivity(this);
+        binder.setActivity(this);
     }
 
     @Override
@@ -117,9 +117,9 @@ public abstract class ViewCompatActivity<T_Presenter extends Presenter> extends 
     @Override
     protected void onStart() {
         super.onStart();
-        mState.onStart();
+        state.onStart();
 
-        if (!mState.isRestarted()) {
+        if (!state.isRestarted()) {
             onCreateBindings();
         }
 
@@ -144,7 +144,7 @@ public abstract class ViewCompatActivity<T_Presenter extends Presenter> extends 
         final T_Presenter presenter = resolvePresenter();
         if (presenter != null) {
             presenter.onViewStart(this);
-            mBinder.initialise();
+            binder.initialise();
         }
     }
 
@@ -152,7 +152,7 @@ public abstract class ViewCompatActivity<T_Presenter extends Presenter> extends 
     @Override
     protected void onResume() {
         super.onResume();
-        mState.onResume();
+        state.onResume();
 
         final DependenciesCache cache = D.get(DependenciesCache.class);
         cache.removeDependencies(this);
@@ -166,7 +166,7 @@ public abstract class ViewCompatActivity<T_Presenter extends Presenter> extends 
     @Override
     protected void onStop() {
         super.onStop();
-        mState.onStop();
+        state.onStop();
 
         final T_Presenter presenter = resolvePresenter();
         if (presenter != null) {
@@ -177,7 +177,7 @@ public abstract class ViewCompatActivity<T_Presenter extends Presenter> extends 
     @Override
     protected void onPause() {
         super.onPause();
-        mState.onPause();
+        state.onPause();
 
         final T_Presenter presenter = resolvePresenter();
         if (presenter != null) {
@@ -188,8 +188,8 @@ public abstract class ViewCompatActivity<T_Presenter extends Presenter> extends 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mState.onDestroy();
-        mBinder.dispose();
+        state.onDestroy();
+        binder.dispose();
 
         if (this instanceof DependencyScopeOwner) {
 
@@ -214,19 +214,19 @@ public abstract class ViewCompatActivity<T_Presenter extends Presenter> extends 
     @Override
     protected void onRestart() {
         super.onRestart();
-        mState.onRestart();
+        state.onRestart();
     }
 
     @Override
     public void onSaveInstanceState(final Bundle outState) {
         super.onSaveInstanceState(outState);
-        mState.setInstanceStateSaved(true);
+        state.setInstanceStateSaved(true);
 
         onSaveState(outState);
 
         final DependenciesCache cache = D.get(DependenciesCache.class);
         final DependencyMap dependencies = cache.getDependencies(this, true);
-        dependencies.addDependency(KEY_DEPENDENCY_SCOPE, mScope);
+        dependencies.addDependency(KEY_DEPENDENCY_SCOPE, scope);
 
         onSaveDependencies(dependencies);
 
@@ -252,7 +252,7 @@ public abstract class ViewCompatActivity<T_Presenter extends Presenter> extends 
     @Override
     public void onRestoreInstanceState(final Bundle inState) {
         super.onRestoreInstanceState(inState);
-        mState.setInstanceStateSaved(false);
+        state.setInstanceStateSaved(false);
 
         onRestoreState(inState);
 
@@ -264,7 +264,7 @@ public abstract class ViewCompatActivity<T_Presenter extends Presenter> extends 
             final DependencyScope scope = dependencies.getDependency(KEY_DEPENDENCY_SCOPE);
 
             if (scope != null) {
-                mScope = scope;
+                this.scope = scope;
             }
 
             onRestoreDependencies(dependencies);
@@ -308,11 +308,11 @@ public abstract class ViewCompatActivity<T_Presenter extends Presenter> extends 
 
     @Override
     public ViewState getState() {
-        return mState;
+        return state;
     }
 
     public boolean canCommitFragment() {
-        return mState.canCommitFragment();
+        return state.canCommitFragment();
     }
 
     /**
@@ -344,7 +344,7 @@ public abstract class ViewCompatActivity<T_Presenter extends Presenter> extends 
      */
     @SuppressWarnings("unchecked")
     public <T extends ViewBinding<?>> T bind(@IdRes final int viewId) {
-        return mBinder.bind(viewId);
+        return binder.bind(viewId);
     }
 
     /**
@@ -356,7 +356,7 @@ public abstract class ViewCompatActivity<T_Presenter extends Presenter> extends 
      */
     @SuppressWarnings("unchecked")
     public <T extends android.view.View> T bind(@IdRes final int viewId, final ViewBinding<T> binding) {
-        return mBinder.bind(viewId, binding);
+        return binder.bind(viewId, binding);
     }
 
     /**
@@ -369,16 +369,16 @@ public abstract class ViewCompatActivity<T_Presenter extends Presenter> extends 
      */
     @SuppressWarnings("unchecked")
     public AdapterView bind(@IdRes final int viewId, final AdapterViewBinding<?> binding, final AdapterViewBinding.Adapter<?> adapter) {
-        return mBinder.bind(viewId, binding, adapter);
+        return binder.bind(viewId, binding, adapter);
     }
 
     @Override
     public DependencyScope getScope() {
-        return mScope;
+        return scope;
     }
 
     @Override
     public void setScope(final DependencyScope scope) {
-        mScope = scope;
+        this.scope = scope;
     }
 }

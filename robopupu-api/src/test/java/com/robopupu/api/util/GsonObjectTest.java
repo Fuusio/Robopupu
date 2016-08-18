@@ -28,11 +28,11 @@ import static org.junit.Assert.assertTrue;
 @SmallTest
 public class GsonObjectTest {
 
-    private Foo mFoo;
+    private Foo foo;
 
     @Before
     public void beforeTests() {
-        mFoo = new Foo();
+        foo = new Foo();
     }
 
     @After
@@ -41,13 +41,13 @@ public class GsonObjectTest {
     @Test
     public void test() {
 
-        final JsonObject jsonObject = mFoo.toJsonObject();
+        final JsonObject jsonObject = foo.toJsonObject();
         final Foo foo2 = Foo.fromJson(jsonObject, Foo.class);
 
-        assertTrue(foo2.booleanValue && foo2.booleanValue == mFoo.booleanValue);
-        assertTrue(foo2.floatValue == mFoo.floatValue);
-        assertTrue(foo2.intValue == mFoo.intValue);
-        assertTrue(foo2.stringValue.contentEquals(mFoo.stringValue));
+        assertTrue(foo2.booleanValue && foo2.booleanValue == foo.booleanValue);
+        assertTrue(foo2.floatValue == foo.floatValue);
+        assertTrue(foo2.intValue == foo.intValue);
+        assertTrue(foo2.stringValue.contentEquals(foo.stringValue));
     }
 
     public class Foo extends GsonObject {

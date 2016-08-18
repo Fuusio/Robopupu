@@ -27,17 +27,17 @@ import com.robopupu.api.util.Params;
 public class AbstractPluginStateComponent extends AbstractPluginComponent
         implements PluginStateComponent {
 
-    private final PluginState mState;
+    private final PluginState state;
 
-    protected Params mParams;
+    protected Params params;
 
     protected AbstractPluginStateComponent() {
-        mState = new PluginState();
+        state = new PluginState();
     }
 
     @Override
     public LifecycleState getLifecycleState() {
-        return mState.getLifecycleState();
+        return state.getLifecycleState();
     }
 
     /**
@@ -45,26 +45,26 @@ public class AbstractPluginStateComponent extends AbstractPluginComponent
      * @param params A {@link Params} containing the parameters.
      */
     private void init(final Params params) {
-        mState.onCreate();
+        state.onCreate();
         onCreate(params);
-        mParams = params;
+        this.params = params;
     }
 
     @Override
     public void pause() {
-        mState.onPause();
+        state.onPause();
         onPause();
     }
 
     @Override
     public void resume() {
-        mState.onResume();
+        state.onResume();
         onResume();
     }
 
     @Override
     public void restart() {
-        mState.onRestart();
+        state.onRestart();
         onRestart();
     }
 
@@ -79,17 +79,17 @@ public class AbstractPluginStateComponent extends AbstractPluginComponent
             throw new IllegalStateException("A stopped or destroyed feature cannot be resumed");
         }
 
-        if (mState.isDormant()) {
+        if (state.isDormant()) {
             init(params);
         }
-        mState.onStart();
+        state.onStart();
         onStart();
     }
 
     @Override
     public void stop() {
         if (!isStopped() && !isDestroyed()) {
-            mState.onStop();
+            state.onStop();
             PluginBus.unplug(this);
             onStop();
             destroy();
@@ -99,14 +99,14 @@ public class AbstractPluginStateComponent extends AbstractPluginComponent
     @Override
     public void destroy() {
         if (!isDestroyed()) {
-            mState.onDestroy();
+            state.onDestroy();
             onDestroy();
         }
     }
 
     @Override
     public PluginState getState() {
-        return mState;
+        return state;
     }
 
     @CallSuper
@@ -147,32 +147,32 @@ public class AbstractPluginStateComponent extends AbstractPluginComponent
 
     @Override
     public boolean isPaused() {
-        return mState.isPaused();
+        return state.isPaused();
     }
 
     @Override
     public boolean isRestarted() {
-        return mState.isRestarted();
+        return state.isRestarted();
     }
 
     @Override
     public boolean isResumed() {
-        return mState.isResumed();
+        return state.isResumed();
     }
 
     @Override
     public boolean isStarted() {
-        return mState.isStarted();
+        return state.isStarted();
     }
 
     @Override
     public boolean isStopped() {
-        return mState.isStopped();
+        return state.isStopped();
     }
 
     @Override
     public boolean isDestroyed() {
-        return mState.isDestroyed();
+        return state.isDestroyed();
     }
 
 }

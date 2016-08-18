@@ -20,14 +20,14 @@ import java.util.Map;
 
 public class HttpHeaders {
 
-    private final Map<String, String> mHeaders;
+    private final Map<String, String> headers;
 
     public HttpHeaders() {
-        mHeaders = new HashMap<>();
+        headers = new HashMap<>();
     }
 
     public HttpHeaders(final Map<String, String> headers) {
-        mHeaders = new HashMap<>(headers);
+        this.headers = new HashMap<>(headers);
     }
 
     public final HttpHeaders add(final HeaderRequestField field, final String value) {
@@ -35,7 +35,7 @@ public class HttpHeaders {
     }
 
     public final HttpHeaders add(final String field, final String value) {
-        mHeaders.put(field, value);
+        headers.put(field, value);
         return this;
     }
 
@@ -44,20 +44,20 @@ public class HttpHeaders {
             final Map<String, String> map = headers.getMap();
 
             for (final String key : map.keySet()) {
-                mHeaders.put(key, map.get(key));
+                this.headers.put(key, map.get(key));
             }
         }
     }
 
     public final Map<String, String> getMap() {
-        return mHeaders;
+        return headers;
     }
 
     public void clear() {
-        mHeaders.clear();
+        headers.clear();
     }
 
     public boolean isEmpty() {
-        return mHeaders.isEmpty();
+        return headers.isEmpty();
     }
 }

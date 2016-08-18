@@ -9,11 +9,11 @@ public abstract class DependencyProvider {
 
     public static final String SUFFIX = "_DependencyProvider";
 
-    protected DependencyScope mScope;
+    protected DependencyScope scope;
 
     protected abstract <T> void getDependencies(DependencyQuery<T> query);
 
     public void setScope(final DependencyScope scope) {
-        mScope = scope;
+        this.scope = scope;
     }
 }

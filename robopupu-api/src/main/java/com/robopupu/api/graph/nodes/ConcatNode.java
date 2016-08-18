@@ -13,69 +13,69 @@ import java.util.List;
  */
 public class ConcatNode<IN> extends Node<IN, IN> {
 
-    protected final ArrayList[] mBuffers;
-    protected final boolean[] mCompleted;
-    protected final int mSourcesCount;
-    protected final HashMap<OutputNode, Integer> mSourceIndeces;
-    protected final OutputNode<IN>[] mSources;
+    protected final ArrayList[] buffers;
+    protected final boolean[] completed;
+    protected final int sourcesCount;
+    protected final HashMap<OutputNode, Integer> sourceIndeces;
+    protected final OutputNode<IN>[] sources;
 
     protected int mCompletedIndex;
 
     @SafeVarargs
     public ConcatNode(final OutputNode<IN>... sources) {
-        mSources = sources;
-        mSourcesCount = sources.length;
-        mSourceIndeces = new HashMap<>();
+        this.sources = sources;
+        sourcesCount = sources.length;
+        sourceIndeces = new HashMap<>();
         mCompletedIndex = 0;
 
-        mBuffers = new ArrayList[mSourcesCount];
-        mCompleted = new boolean[mSourcesCount];
+        buffers = new ArrayList[sourcesCount];
+        completed = new boolean[sourcesCount];
 
-        for (int i = 0; i < mSourcesCount; i++) {
-            mBuffers[i] = new ArrayList<>();
-            mSources[i].attach(this);
-            mSourceIndeces.put(mSources[i], i);
-            mCompleted[i] = false;
+        for (int i = 0; i < sourcesCount; i++) {
+            buffers[i] = new ArrayList<>();
+            this.sources[i].attach(this);
+            sourceIndeces.put(this.sources[i], i);
+            completed[i] = false;
         }
     }
 
     @SuppressWarnings("unchecked")
     @Override
     protected IN processInput(final OutputNode<IN> source, final IN input) {
-        if (input != null && mSourceIndeces.containsKey(source)) {
-            final int index = mSourceIndeces.get(source);
-            ((List<IN>)mBuffers[index]).add(input);
+        if (input != null && sourceIndeces.containsKey(source)) {
+            final int index = sourceIndeces.get(source);
+            ((List<IN>) buffers[index]).add(input);
         }
         return null;
     }
 
     @Override
     public void onCompleted(final OutputNode<?> source) {
-        if (mSourceIndeces.containsKey(source)) {
-            final int index = mSourceIndeces.get(source);
+        if (sourceIndeces.containsKey(source)) {
+            final int index = sourceIndeces.get(source);
 
             if (mCompletedIndex == index) {
                 emitBufferedValuesFor(index);
             } else {
-                mCompleted[index] = true;
+                completed[index] = true;
             }
         }
     }
 
     @SuppressWarnings("unchecked")
     public void emitBufferedValuesFor(final int index) {
-        for (final IN value : (List<IN>)mBuffers[index]) {
+        for (final IN value : (List<IN>) buffers[index]) {
             emitOutput(value);
         }
-        mBuffers[index].clear();
-        mCompleted[index] = false;
+        buffers[index].clear();
+        completed[index] = false;
         mCompletedIndex++;
 
-        if (mCompletedIndex >= mSourcesCount) {
+        if (mCompletedIndex >= sourcesCount) {
             mCompletedIndex = 0;
         }
 
-        if (mCompleted[mCompletedIndex]) {
+        if (completed[mCompletedIndex]) {
             emitBufferedValuesFor(mCompletedIndex);
         }
     }

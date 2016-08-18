@@ -28,7 +28,7 @@ import com.robopupu.feature.multipleviews.view.MultipleViewsActivity;
 @Plugin
 public class MultipleViewsFeatureImpl extends AbstractFeature implements MultipleViewsFeature {
 
-    @Plug PlatformManager mPlatformManager;
+    @Plug PlatformManager platformManager;
 
     @Scope(RobopupuAppScope.class)
     @Provides(MultipleViewsFeature.class)
@@ -40,6 +40,6 @@ public class MultipleViewsFeatureImpl extends AbstractFeature implements Multipl
     protected void onStart() {
         super.onStart();
 
-        mPlatformManager.startActivity(MultipleViewsActivity.class);
+        platformManager.startActivity(MultipleViewsActivity.class);
     }
 }

@@ -32,10 +32,10 @@ public class GsonRequest<T> extends BaseRequest<T> {
 
     private final static String TAG = Utils.tag(GsonRequest.class);
 
-    private final Gson mGson;
-    private final Class<T> mResponseClass;
+    private final Gson gson;
+    private final Class<T> responseClass;
 
-    private String mRequestBody;
+    private String requestBody;
 
     public GsonRequest(final Class<T> responseClass) {
         this(Method.GET, null, responseClass, null);
@@ -56,13 +56,13 @@ public class GsonRequest<T> extends BaseRequest<T> {
     public GsonRequest(final int method, final Object body, final Class<T> responseClass, final RequestCallback<T> requestCallback) {
         super(method, requestCallback);
 
-        mGson = createGson();
-        mResponseClass = responseClass;
+        gson = createGson();
+        this.responseClass = responseClass;
 
         if (body != null) {
-            mRequestBody = mGson.toJson(body);
+            requestBody = gson.toJson(body);
         } else {
-            mRequestBody = null;
+            requestBody = null;
         }
     }
 
@@ -73,24 +73,24 @@ public class GsonRequest<T> extends BaseRequest<T> {
     @Override
     public byte[] getBody() {
         try {
-            return mRequestBody == null ? null : mRequestBody.getBytes(PROTOCOL_CHARSET);
+            return requestBody == null ? null : requestBody.getBytes(PROTOCOL_CHARSET);
         } catch (UnsupportedEncodingException e) {
             Log.e(TAG, "getBody() : " + e.getMessage());
-            VolleyLog.wtf("Unsupported encoding while trying to get the bytes of %s using %s", mRequestBody, PROTOCOL_CHARSET);
+            VolleyLog.wtf("Unsupported encoding while trying to get the bytes of %s using %s", requestBody, PROTOCOL_CHARSET);
             throw new IllegalStateException(e);
         }
     }
 
     @Override
     public void setBody(final Object body) {
-        mRequestBody = (body != null) ? mGson.toJson(body) : null;
+        requestBody = (body != null) ? gson.toJson(body) : null;
     }
 
     @Override
     protected Response<T> parseNetworkResponse(final NetworkResponse response) {
         try {
             final String jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
-            return Response.success(mGson.fromJson(jsonString, mResponseClass), HttpHeaderParser.parseCacheHeaders(response));
+            return Response.success(gson.fromJson(jsonString, responseClass), HttpHeaderParser.parseCacheHeaders(response));
         } catch (final UnsupportedEncodingException e) {
             return Response.error(new ParseError(e));
         }

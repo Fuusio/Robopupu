@@ -20,15 +20,15 @@ package com.robopupu.api.dependency;
  */
 public abstract class ScopedObject implements Scopeable {
 
-    private DependencyScope mScope;
+    private DependencyScope scope;
 
     @Override
     public DependencyScope getScope() {
-        return mScope;
+        return scope;
     }
 
     @Override
     public void setScope(final DependencyScope scope) {
-        mScope = scope;
+        this.scope = scope;
     }
 }

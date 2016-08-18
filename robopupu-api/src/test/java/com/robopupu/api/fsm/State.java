@@ -18,12 +18,12 @@ package com.robopupu.api.fsm;
 public class State extends StateEngine<State>
         implements BrewCoffeeButtonEvents, PowerSwitchEvents, WaterTankSensorEvents {
 
-    private CoffeeMaker mCoffeeMaker;
-    private boolean mDisposed; // For testing
+    private CoffeeMaker coffeeMaker;
+    private boolean disposed; // For testing
 
     private State(final Class<? extends State> initialStateClass) {
         super(initialStateClass);
-        mDisposed = false;
+        disposed = false;
     }
 
     protected State(final Class<? extends State> superStateClass, final Class<? extends State> initialStateClass) {
@@ -36,14 +36,14 @@ public class State extends StateEngine<State>
 
     public final CoffeeMaker getCoffeeMaker() {
         if (isStateEngine()) {
-            return mCoffeeMaker;
+            return coffeeMaker;
         } else {
             return getStateEngine().getCoffeeMaker();
         }
     }
 
     public final void setCoffeeMaker(CoffeeMaker coffeeMaker) {
-        mCoffeeMaker = coffeeMaker;
+        this.coffeeMaker = coffeeMaker;
     }
 
     @Override
@@ -74,7 +74,7 @@ public class State extends StateEngine<State>
     // The following methods are test utilities
 
     public boolean hasSubstates() {
-        return !mSubStates.isEmpty();
+        return !subStates.isEmpty();
     }
 
     @SuppressWarnings("unchecked")
@@ -83,17 +83,17 @@ public class State extends StateEngine<State>
     }
 
     public boolean isDisposed() {
-        return mDisposed;
+        return disposed;
     }
 
     @Override
     protected void onDisposeStateEngine() {
-        mDisposed = true;
+        disposed = true;
     }
 
     @Override
     protected void onDisposeState() {
-        mDisposed = true;
+        disposed = true;
     }
 
     public boolean notStateMachine() {

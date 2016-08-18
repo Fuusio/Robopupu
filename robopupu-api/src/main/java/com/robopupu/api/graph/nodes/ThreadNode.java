@@ -15,11 +15,11 @@ import com.robopupu.api.graph.OutputNode;
  */
 public class ThreadNode<IN, OUT> extends Node<IN, OUT> {
 
-    private final Handler mHandler;
-    private final boolean mExecuteInMainThread;
+    private final Handler handler;
+    private final boolean executeInMainThread;
 
-    private boolean mCancelled;
-    private Runnable mRunnable;
+    private boolean cancelled;
+    private Runnable runnable;
 
     /**
      * Constructs a new instance of {@link ThreadNode}.
@@ -35,15 +35,15 @@ public class ThreadNode<IN, OUT> extends Node<IN, OUT> {
      * @param executeInMainThread A {@code boolean} flag.
      */
     public ThreadNode(final boolean executeInMainThread) {
-        mExecuteInMainThread = executeInMainThread;
-        mHandler = new Handler(Looper.getMainLooper());
+        this.executeInMainThread = executeInMainThread;
+        handler = new Handler(Looper.getMainLooper());
     }
 
     /**
      * Cancels the worker {@link Thread}.
      */
     public void cancel() {
-        mCancelled = true;
+        cancelled = true;
     }
 
     @Override
@@ -66,25 +66,25 @@ public class ThreadNode<IN, OUT> extends Node<IN, OUT> {
 
     @Override
     protected void emitOutput(final OUT output) {
-        if (mExecuteInMainThread) {
+        if (executeInMainThread) {
             // Note : This could be replaced with a lambda expression
-            mRunnable = new Runnable() {
+            runnable = new Runnable() {
                 @Override
                 public void run() {
-                    for (final InputNode<OUT> inputNode : mInputNodes) {
+                    for (final InputNode<OUT> inputNode : inputNodes) {
                         inputNode.onInput(ThreadNode.this, output);
                     }
                 }
             };
-            mHandler.post(mRunnable);
+            handler.post(runnable);
         } else {
-            mCancelled = false;
+            cancelled = false;
 
             // Note : This could be replaced with a lambda expression
-            mRunnable = new Runnable() {
+            runnable = new Runnable() {
                 public void run() {
-                    for (final InputNode<OUT> inputNode : mInputNodes) {
-                        if (!mCancelled) {
+                    for (final InputNode<OUT> inputNode : inputNodes) {
+                        if (!cancelled) {
                             inputNode.onInput(ThreadNode.this, output);
                         } else {
                             break;
@@ -92,12 +92,12 @@ public class ThreadNode<IN, OUT> extends Node<IN, OUT> {
                     }
                 }
             };
-            new Thread(mRunnable).start();
+            new Thread(runnable).start();
         }
     }
 
     @Override
     public void doOnReset() {
-        mCancelled = false;
+        cancelled = false;
     }
 }

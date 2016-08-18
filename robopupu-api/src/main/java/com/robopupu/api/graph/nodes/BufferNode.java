@@ -10,25 +10,25 @@ import java.util.ArrayList;
  */
 public class BufferNode<IN> extends Node<IN, IN> {
 
-    private ArrayList<IN> mBuffer;
-    private int mCapacity;
+    private ArrayList<IN> buffer;
+    private int capacity;
 
     public BufferNode(final int capacity) {
-        mBuffer = new ArrayList<>();
-        mCapacity = capacity;
+        buffer = new ArrayList<>();
+        this.capacity = capacity;
     }
 
     @SuppressWarnings("unchecked")
     @Override
     protected IN processInput(final OutputNode<IN> source, final IN input) {
         if (input != null) {
-            if (mBuffer.size() < mCapacity) {
-                mBuffer.add(input);
+            if (buffer.size() < capacity) {
+                buffer.add(input);
             } else {
-                for (final IN output : mBuffer) {
+                for (final IN output : buffer) {
                     emitOutput(output);
                 }
-                mBuffer.clear();
+                buffer.clear();
             }
         }
         return null;
@@ -36,6 +36,6 @@ public class BufferNode<IN> extends Node<IN, IN> {
 
     @Override
     public void doOnReset() {
-        mBuffer.clear();
+        buffer.clear();
     }
 }

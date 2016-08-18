@@ -24,6 +24,7 @@
         android:layout_height="wrap_content"
         android:text="@string/action_ok"
         android:id="@+id/button_ok"
+        android:tag="OkButton"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"

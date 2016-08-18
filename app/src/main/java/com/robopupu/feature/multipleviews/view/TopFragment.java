@@ -17,11 +17,11 @@ import com.robopupu.feature.multipleviews.presenter.TopPresenter;
 public class TopFragment extends FeatureCompatFragment<TopPresenter> implements TopView {
 
     @Plug
-    TopPresenter mPresenter;
+    TopPresenter presenter;
 
     @Override
     public TopPresenter getPresenter() {
-        return mPresenter;
+        return presenter;
     }
 
     @Override

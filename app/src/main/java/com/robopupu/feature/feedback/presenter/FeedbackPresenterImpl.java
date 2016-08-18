@@ -32,21 +32,21 @@ import com.robopupu.api.plugin.PluginBus;
 public class FeedbackPresenterImpl extends AbstractFeaturePresenter<FeedbackView>
         implements FeedbackPresenter {
 
-    private boolean mFeedbackSend;
+    private boolean isFeedbackSend;
 
-    @Plug AppManager mAppManager;
-    @Plug FeedbackFeature mFeature;
-    @Plug PlatformManager mPlatformManager;
-    @Plug FeedbackView mView;
+    @Plug AppManager appManager;
+    @Plug FeedbackFeature feature;
+    @Plug PlatformManager platformManager;
+    @Plug FeedbackView view;
 
     @Provides(FeedbackPresenter.class)
     public FeedbackPresenterImpl() {
-        mFeedbackSend = false;
+        isFeedbackSend = false;
     }
 
     @Override
     public FeedbackView getViewPlug() {
-        return mView;
+        return view;
     }
 
     @Override
@@ -59,21 +59,21 @@ public class FeedbackPresenterImpl extends AbstractFeaturePresenter<FeedbackView
     public void onViewResume(final View view) {
         super.onViewResume(view);
 
-        if (mFeedbackSend) {
-            mFeature.showThxView();
-            mFeedbackSend = false;
+        if (isFeedbackSend) {
+            feature.showThxView();
+            isFeedbackSend = false;
         }
     }
 
     @Override
     public void onSendClicked(final String feedback) {
-        final String address = mAppManager.getString(R.string.robopupu_email_address);
-        final String subject = mAppManager.getString(R.string.ft_feedback_text_subject);
-        final String chooserTitle = mAppManager.getString(R.string.ft_feedback_prompt_send_email_using);
+        final String address = appManager.getString(R.string.robopupu_email_address);
+        final String subject = appManager.getString(R.string.ft_feedback_text_subject);
+        final String chooserTitle = appManager.getString(R.string.ft_feedback_prompt_send_email_using);
 
-        if (!mPlatformManager.sendEmail(address, subject, feedback, chooserTitle)) {
-            mView.showMessage(mAppManager.getString(R.string.ft_feedback_error_no_email_client));
+        if (!platformManager.sendEmail(address, subject, feedback, chooserTitle)) {
+            view.showMessage(appManager.getString(R.string.ft_feedback_error_no_email_client));
         }
-        mFeedbackSend = true;
+        isFeedbackSend = true;
     }
 }

@@ -17,36 +17,34 @@ package com.robopupu.feature.main;
 
 import com.robopupu.api.feature.FeatureContainer;
 import com.robopupu.app.RobopupuAppScope;
-import com.robopupu.feature.main.presenter.MainPresenter;
 import com.robopupu.feature.main.presenter.SplashPresenter;
 import com.robopupu.feature.main.view.MainView;
 
 import com.robopupu.api.dependency.Provides;
 import com.robopupu.api.dependency.Scope;
 import com.robopupu.api.feature.AbstractFeature;
-import com.robopupu.api.mvp.Presenter;
 import com.robopupu.api.plugin.Plug;
 import com.robopupu.api.plugin.Plugin;
 
 @Plugin
 public class MainFeatureImpl extends AbstractFeature implements MainFeature {
 
-    private boolean mSplashShown;
+    private boolean splashShown;
 
-    @Plug MainView mMainView;
+    @Plug MainView mainView;
 
     @Scope(RobopupuAppScope.class)
     @Provides(MainFeature.class)
     public MainFeatureImpl() {
         super(MainFeatureScope.class, true);
-        mSplashShown = false;
+        splashShown = false;
     }
 
     @Override
     public void onFeatureContainerStarted(final FeatureContainer container) {
         super.onFeatureContainerStarted(container);
 
-        if (mSplashShown) {
+        if (splashShown) {
             openNavigationDrawer();
         }
 
@@ -55,9 +53,9 @@ public class MainFeatureImpl extends AbstractFeature implements MainFeature {
     @Override
     public void onMainPresenterStarted() {
 
-        if (!mSplashShown) {
-            mSplashShown = true;
-            showView(mMainView.getMainFeatureContainer(), SplashPresenter.class, false, null);
+        if (!splashShown) {
+            splashShown = true;
+            showView(mainView.getMainFeatureContainer(), SplashPresenter.class, false, null);
         }
     }
 
@@ -68,6 +66,6 @@ public class MainFeatureImpl extends AbstractFeature implements MainFeature {
 
     @Override
     public void openNavigationDrawer() {
-        mMainView.openNavigationDrawer();
+        mainView.openNavigationDrawer();
     }
 }

@@ -52,23 +52,14 @@ import java.util.List;
 
 public class UIToolkit {
 
-    public static final int COLOR_BLACK = 0xff000000;
-    public static final int COLOR_BLUE = 0xff0000ff;
-    public static final int COLOR_GREEN = 0xff00ff00;
-    public static final int COLOR_RED = 0xffff0000;
-    public static final int COLOR_YELLOW = 0xff00ffff;
-    public static final int COLOR_WHITE = 0xffffffff;
-
-    private static int sConfirmDialogIconRes = 0;
-
-    private static Application sApplication = null;
-    private static DisplayMetrics sDisplayMetrics = null;
-    private static Class<? extends Activity> sSettingsActivityClass = null;
+    private static Application application = null;
+    private static DisplayMetrics displayMetrics = null;
+    private static Class<? extends Activity> settingsActivityClass = null;
 
     private static final String PREFIX_EDIT = "edit_";
     private static final int PROPERTY_NAME_BEGIN_INDEX = PREFIX_EDIT.length();
 
-    private static int sDensity = 0;
+    private static int density = 0;
 
     // px = dp * (dpi / 160) 480 x 800 pixels and 218 dpi => 1.3625
 
@@ -79,15 +70,15 @@ public class UIToolkit {
     }
 
     public static DisplayMetrics getDisplayMetrics() {
-        if (sDisplayMetrics == null) {
-            final Resources resources = sApplication.getResources();
-            sDisplayMetrics = resources.getDisplayMetrics();
+        if (displayMetrics == null) {
+            final Resources resources = application.getResources();
+            displayMetrics = resources.getDisplayMetrics();
         }
-        return sDisplayMetrics;
+        return displayMetrics;
     }
 
     public static void setApplication(final Application application) {
-        sApplication = application;
+        UIToolkit.application = application;
     }
 
     private static View setContentView(final Activity activity, final int layoutResId) {
@@ -96,7 +87,7 @@ public class UIToolkit {
     }
 
     public static Point getDisplaySize() {
-        final WindowManager manager = (WindowManager) sApplication
+        final WindowManager manager = (WindowManager) application
                 .getSystemService(Context.WINDOW_SERVICE);
         final Display display = manager.getDefaultDisplay();
         final Point size = new Point();
@@ -105,18 +96,18 @@ public class UIToolkit {
     }
 
     public static int getDensity() {
-        if (sDensity == 0) {
-            return sDisplayMetrics.densityDpi;
+        if (density == 0) {
+            return displayMetrics.densityDpi;
         }
-        return sDensity;
+        return density;
     }
 
     public static float dp2px(final int dp) {
-        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, sDisplayMetrics);
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, displayMetrics);
     }
 
     public static float sp2px(final int sp) {
-        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, sp, sDisplayMetrics);
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, sp, displayMetrics);
     }
 
     public static int getNumberOfBottomActions() {
@@ -232,7 +223,7 @@ public class UIToolkit {
     }
 
     public static String getStringResource(final int resId) {
-        return sApplication.getString(resId);
+        return application.getString(resId);
     }
 
     public static String getPropertyName(final View view) {
@@ -246,25 +237,25 @@ public class UIToolkit {
     }
 
     public static void doGoSettings(final Context context) {
-        final Intent intent = new Intent(context, sSettingsActivityClass);
+        final Intent intent = new Intent(context, settingsActivityClass);
         context.startActivity(intent);
     }
 
     public static void startActivity(final Class<? extends Activity> activityClass) {
-        final Intent intent = new Intent(sApplication, activityClass);
-        sApplication.startActivity(intent);
+        final Intent intent = new Intent(application, activityClass);
+        application.startActivity(intent);
     }
 
     public final boolean getBoolean(final int resId) {
-        return sApplication.getResources().getBoolean(resId);
+        return application.getResources().getBoolean(resId);
     }
 
     public final int getColor(final int resId) {
-        return sApplication.getResources().getColor(resId);
+        return application.getResources().getColor(resId);
     }
 
     public final int getInteger(final int resId) {
-        return sApplication.getResources().getInteger(resId);
+        return application.getResources().getInteger(resId);
     }
 
 
@@ -272,7 +263,7 @@ public class UIToolkit {
         XmlResourceParser pParser = null;
 
         try {
-            pParser = sApplication.getResources().getAnimation(resId);
+            pParser = application.getResources().getAnimation(resId);
             return createAnimationFromXml(pParser);
         } catch (final XmlPullParserException e) {
             final NotFoundException rnf = new NotFoundException(
@@ -314,7 +305,7 @@ public class UIToolkit {
             }
 
             final String name = parser.getName();
-            final Context context = sApplication.getApplicationContext();
+            final Context context = application.getApplicationContext();
 
             if (name.equals("set")) {
                 anim = new AnimationSet(context, attrs);
@@ -341,19 +332,19 @@ public class UIToolkit {
     }
 
     public final Drawable getDrawable(final int resId) {
-        return sApplication.getResources().getDrawable(resId);
+        return application.getResources().getDrawable(resId);
     }
 
     public final String getString(final int resId) {
-        return sApplication.getString(resId);
+        return application.getString(resId);
     }
 
     public String getString(final int resId, final Object... formatArgs) {
-        return sApplication.getString(resId, formatArgs);
+        return application.getString(resId, formatArgs);
     }
 
     public String[] getStringArray(final int resId) {
-        return sApplication.getResources().getStringArray(resId);
+        return application.getResources().getStringArray(resId);
     }
 
     public static int getResourceId(final String variableName, final String resourceName, final String packageName) {
@@ -366,7 +357,7 @@ public class UIToolkit {
     }
 
     public static Resources getResources() {
-        return sApplication.getResources();
+        return application.getResources();
     }
 
     public static boolean isPortrait() {

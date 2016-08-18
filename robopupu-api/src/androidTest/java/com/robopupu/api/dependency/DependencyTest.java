@@ -33,17 +33,17 @@ import static org.junit.Assert.assertTrue;
 @SmallTest
 public class DependencyTest {
 
-    private ZooApp mApp;
-    private ZooAppScope mAppScope;
-    private CityScope mParentScope;
-    private ZooScopeOwner mScopeOwner;
+    private ZooApp app;
+    private ZooAppScope appScope;
+    private CityScope parentScope;
+    private ZooScopeOwner scopeOwner;
 
     @Before
     public void beforeTests() {
-        mApp = new ZooApp();
-        mAppScope = new ZooAppScope(mApp);
-        mParentScope = new CityScope();
-        mScopeOwner = new ZooScopeOwner();
+        app = new ZooApp();
+        appScope = new ZooAppScope(app);
+        parentScope = new CityScope();
+        scopeOwner = new ZooScopeOwner();
     }
 
     @After
@@ -58,27 +58,27 @@ public class DependencyTest {
 
         Dependency.resetAppScope();
         assertNull(Dependency.getAppScope());
-        Dependency.setAppScope(mAppScope);
+        Dependency.setAppScope(appScope);
         assertNotNull(Dependency.getAppScope());
 
         // Test addScope(...) and getScope(...) methods
 
         assertNull(Dependency.getScope(ZooScope.class, false));
         assertNull(Dependency.getScope(ZooScope.class.getName(), false));
-        assertNull(Dependency.getScope(mScopeOwner, false));
+        assertNull(Dependency.getScope(scopeOwner, false));
 
         assertNotNull(Dependency.getScope(PubScope.class, true));
         assertNotNull(Dependency.getScope(PubScope.class, false));
 
-        ZooScope scope = Dependency.getScope(mScopeOwner, true);
+        ZooScope scope = Dependency.getScope(scopeOwner, true);
         assertNotNull(scope);
         assertNotNull(Dependency.getScope(ZooScope.class, false));
-        mScopeOwner.setOwnedScope(scope);
+        scopeOwner.setOwnedScope(scope);
 
         // Test disposeScope(...) method
 
         assertFalse(scope.wasDisposed());
-        Dependency.disposeScope(mScopeOwner);
+        Dependency.disposeScope(scopeOwner);
         assertNull(Dependency.getScope(ZooScope.class, false));
         assertTrue(scope.wasDisposed());
         assertTrue(scope.isCleared());
@@ -87,10 +87,10 @@ public class DependencyTest {
 
         Dependency.resetActiveScope();
         assertNotNull(Dependency.getActiveScope());
-        assertTrue(Dependency.getActiveScope() == mAppScope);
-        Dependency.activateScope(mScopeOwner);
+        assertTrue(Dependency.getActiveScope() == appScope);
+        Dependency.activateScope(scopeOwner);
         assertNotNull(Dependency.getActiveScope());
-        assertTrue(Dependency.getActiveScope() != mAppScope);
+        assertTrue(Dependency.getActiveScope() != appScope);
 
         assertNotNull(D.get(ZooApp.class));
         assertNotNull(D.get(Lion.class));
@@ -104,8 +104,8 @@ public class DependencyTest {
         assertNotNull(D.get(Zoo.class));
         assertNull(D.get(Funding.class));
 
-        scope = D.getScope(mScopeOwner, false);
-        scope.setParentScope(mParentScope);
+        scope = D.getScope(scopeOwner, false);
+        scope.setParentScope(parentScope);
 
         assertNotNull(D.get(Funding.class));
 
@@ -113,7 +113,7 @@ public class DependencyTest {
 
         final PubScope fooScope = new PubScope();
         try {
-            D.activateScope(mScopeOwner, fooScope);
+            D.activateScope(scopeOwner, fooScope);
         } catch (IllegalArgumentException e) {
             wasExceptionCaught = true;
         }

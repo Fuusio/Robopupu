@@ -6,20 +6,20 @@ package com.robopupu.api.feature;
  */
 public abstract class FeatureTransitionManagerAdapter implements FeatureTransitionManager {
 
-    protected final int mEnterAnim;
-    protected final int mExitAnim;
-    protected final int mPopEnterAnim;
-    protected final int mPopExitAnim;
+    protected final int enterAnim;
+    protected final int exitAnim;
+    protected final int popEnterAnim;
+    protected final int popExitAnim;
 
     public FeatureTransitionManagerAdapter(final int enterAnim, final int exitAnim) {
         this(enterAnim, exitAnim, enterAnim, exitAnim);
     }
 
     public FeatureTransitionManagerAdapter(final int enterAnim, final int exitAnim, final int popEnterAnim, final int popExitAnim) {
-        mEnterAnim = enterAnim;
-        mExitAnim = exitAnim;
-        mPopEnterAnim = popEnterAnim;
-        mPopExitAnim = popExitAnim;
+        this.enterAnim = enterAnim;
+        this.exitAnim = exitAnim;
+        this.popEnterAnim = popEnterAnim;
+        this.popExitAnim = popExitAnim;
     }
 
     @Override

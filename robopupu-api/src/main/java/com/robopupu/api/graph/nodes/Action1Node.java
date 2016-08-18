@@ -10,17 +10,17 @@ import com.robopupu.api.graph.OutputNode;
  */
 public class Action1Node<IN, OUT> extends Node<IN, OUT> {
 
-    private final Action1<IN> mAction;
+    private final Action1<IN> action;
 
     public Action1Node(final Action1<IN> action) {
-        mAction = action;
+        this.action = action;
     }
 
     @SuppressWarnings("unchecked")
     @Override
     protected OUT processInput(final OutputNode<IN> source, final IN input) {
-        if (mAction != null) {
-            mAction.execute(input);
+        if (action != null) {
+            action.execute(input);
         } else {
             execute(input);
         }

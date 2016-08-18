@@ -12,26 +12,26 @@ import com.robopupu.api.graph.Node;
  */
 public class TextViewNode extends Node<TextView, String> implements TextWatcher {
 
-    protected boolean mEnabled;
-    private TextView mTextView;
+    protected boolean enabled;
+    private TextView textView;
 
     public TextViewNode(final TextView textView) {
-        mTextView = textView;
-        mTextView.addTextChangedListener(this);
-        mEnabled = true;
+        this.textView = textView;
+        this.textView.addTextChangedListener(this);
+        enabled = true;
     }
 
     @SuppressWarnings("unchecked")
     public <T extends TextView>  T getView() {
-        return (T)mTextView;
+        return (T) textView;
     }
 
     public boolean isEnabled() {
-        return mEnabled;
+        return enabled;
     }
 
     public void setEnabled(final boolean enabled) {
-        mEnabled = enabled;
+        this.enabled = enabled;
     }
 
     @Override
@@ -46,7 +46,7 @@ public class TextViewNode extends Node<TextView, String> implements TextWatcher 
 
     @Override
     public void afterTextChanged(final Editable editable) {
-        if (mEnabled) {
+        if (enabled) {
             emitOutput(editable.toString());
         }
     }

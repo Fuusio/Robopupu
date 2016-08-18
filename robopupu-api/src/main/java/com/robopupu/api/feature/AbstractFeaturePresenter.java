@@ -26,27 +26,27 @@ import com.robopupu.api.mvp.View;
 public abstract class AbstractFeaturePresenter<T_View extends View> extends AbstractPresenter<T_View>
         implements FeaturePresenter {
 
-    private Feature mFeature;
-    private DependencyScope mScope;
+    private Feature feature;
+    private DependencyScope scope;
 
     @SuppressWarnings("unchecked")
     @Override
     public Feature getFeature() {
-        return mFeature;
+        return feature;
     }
 
     @Override
     public void setFeature(final Feature feature) {
-        mFeature = feature;
+        this.feature = feature;
     }
 
     @Override
     public DependencyScope getScope() {
-        return mScope;
+        return scope;
     }
 
     @Override
     public void setScope(final DependencyScope scope) {
-        mScope = scope;
+        this.scope = scope;
     }
 }
