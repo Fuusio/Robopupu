@@ -30,9 +30,9 @@ Use the following dependencies into your application module's ```build.gradle```
 
 ```groovy
 dependencies {
-	compile 'com.robopupu:robopupu:0.5.0'
-	apt 'com.robopupu:robopupu-compiler:0.5.0'	
-	apt 'com.squareup:javapoet:1.6.1' 
+	compile 'com.robopupu:robopupu:0.5.1'
+	apt 'com.robopupu:robopupu-compiler:0.5.1'	
+	apt 'com.squareup:javapoet:1.7.0' 
 }
 ```
 In addition, since the Robopupu Compiler utilises annotation processing we need to use [android-apt plugin](https://bitbucket.org/hvisser/android-apt). For this reason, you need to declare the plugin in your into your application module's ```build.gradle```file:
@@ -57,6 +57,10 @@ buildscript {
 
 ## Changelog
 
+### 0.5.1
+* Modifications on MVP Model classes.
+* Renamed fields by removing Hungarian notation.
+ 
 ### 0.5.0
 * Implemented the first version of the support to use Fragment classes (e.g. MapFragment) as Views using delegate classes ViewFragmentDelegate, ViewCompatFragmentDelegate, FeatureViewFragmentDelagate, and FeatureViewCompatFragmentDelagate.
  
