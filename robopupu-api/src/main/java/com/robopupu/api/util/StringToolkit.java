@@ -18,6 +18,8 @@ package com.robopupu.api.util;
 import android.content.res.Resources;
 import android.support.annotation.StringRes;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.text.Normalizer;
 import java.text.Normalizer.Form;
@@ -31,9 +33,8 @@ import java.util.StringTokenizer;
  */
 public class StringToolkit {
 
-    public static final Charset CHARSET_UTF8 = Charset.forName("UTF8");
-
-    public static final String INVALID_FILENAME_CHARS = "|\\?*<\":>+[]/'";
+    private static final Charset CHARSET_UTF8 = Charset.forName("UTF8");
+    private static final String INVALID_FILENAME_CHARS = "|\\?*<\":>+[]/'";
 
     /**
      * Creates a valid identifier string from the given {@link String}.
@@ -192,7 +193,33 @@ public class StringToolkit {
                 return false;
             }
         }
+        return true;
+    }
 
+    /**
+     * Tests whether the given {@link String} represents a valid file name.
+     *
+     * @param fileName The given {@link String} to be tested.
+     * @return A {@code boolean}.
+     */
+    public static boolean isValidFileName(final String fileName) {
+        if (fileName == null) {
+            return false;
+        }
+
+        final int length = fileName.length();
+
+        if (length == 0) {
+            return false;
+        }
+
+        for (int i = 0; i < length; i++) {
+            final char character = fileName.charAt(i);
+
+            if (INVALID_FILENAME_CHARS.indexOf(character) >= 0) {
+                return false;
+            }
+        }
         return true;
     }
 
@@ -436,6 +463,29 @@ public class StringToolkit {
      */
     public static String reverse(final String string) {
         return new StringBuilder(string).reverse().toString();
+    }
+
+    /**
+     * Encodes the given {@link String} using the default encoding.
+     * @param string A {@link String} to be encoded.
+     * @return The encoded {@link String}.
+     */
+    public static String encode(final String string) {
+        return encode(string, Charset.defaultCharset());
+    }
+
+    /**
+     * Encodes the given {@link String} using the specified encoding.
+     * @param string A {@link String} to be encoded.
+     * @param encoding A {@link Charset} specifying the encoding.
+     * @return The encoded {@link String}.
+     */
+    public static String encode(final String string, final Charset encoding) {
+        try {
+            return URLEncoder.encode(string, encoding.name());
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException("Encoding not supported: " + encoding.name(), e);
+        }
     }
 
     /**

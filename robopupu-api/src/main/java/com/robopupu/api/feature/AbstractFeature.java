@@ -208,7 +208,7 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
         final FeatureContainer featureContainer = mFeatureManager.getFeatureContainer(featureContainerId);
         final Presenter presenter = plug(presenterClass);
 
-        if (Params.containsValues(params)) {
+        if (Params.containsAnyValues(params)) {
             final Params presenterParams = Params.merge(params);
             presenter.setParams(presenterParams);
         }
@@ -245,7 +245,7 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
                                    final Params... params) {
         final Presenter presenter = plug(presenterClass);
 
-        if (Params.containsValues(params)) {
+        if (Params.containsAnyValues(params)) {
             final Params presenterParams = Params.merge(params);
             presenter.setParams(presenterParams);
         }
