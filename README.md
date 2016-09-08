@@ -30,8 +30,8 @@ Use the following dependencies into your application module's ```build.gradle```
 
 ```groovy
 dependencies {
-	compile 'com.robopupu:robopupu:0.5.1'
-	apt 'com.robopupu:robopupu-compiler:0.5.1'	
+	compile 'com.robopupu:robopupu:0.5.2'
+	apt 'com.robopupu:robopupu-compiler:0.5.2'	
 	apt 'com.squareup:javapoet:1.7.0' 
 }
 ```
@@ -56,6 +56,10 @@ buildscript {
 ```
 
 ## Changelog
+
+### 0.5.2
+* Support for using generic methods with type parameters in interface annotated with @PluginInterface.
+* Minor fixes and extensions.
 
 ### 0.5.1
 * Modifications on MVP Model classes.
