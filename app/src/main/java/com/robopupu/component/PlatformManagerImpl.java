@@ -17,6 +17,7 @@ package com.robopupu.component;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.StringRes;
@@ -45,6 +46,15 @@ public class PlatformManagerImpl extends AbstractManager implements PlatformMana
     @Scope(RobopupuAppScope.class)
     @Provides(PlatformManager.class)
     public PlatformManagerImpl() {
+    }
+
+    /**
+     * Gets the application {@link Context}.
+     *
+     * @return A @link Context}.
+     */
+    public Context getAppContext() {
+        return appManager.getAppContext();
     }
 
     @Override

@@ -20,6 +20,7 @@ import android.app.Application;
 import com.robopupu.api.dependency.AppDependencyScope;
 import com.robopupu.api.dependency.DependenciesCache;
 import com.robopupu.api.dependency.Dependency;
+import com.robopupu.api.plugin.PluginBus;
 import com.robopupu.api.util.UIToolkit;
 import com.robopupu.api.util.Utils;
 
@@ -43,6 +44,17 @@ public class Robopupu {
 
         UIToolkit.setApplication(application);
         Dependency.setAppScope(this.appScope);
+    }
+
+    /**
+     * Plugs an instance of given {@link Class}es to the {@link PluginBus}.
+     * @param pluginClasses A variable length list of {@link Class}es.
+     */
+    @SuppressWarnings("unchecked")
+    public static void plug(final Class<?>... pluginClasses) {
+        for (final Class<?> pluginClass : pluginClasses) {
+            PluginBus.plug(pluginClass);
+        }
     }
 
     public DependenciesCache getDependenciesCache() {

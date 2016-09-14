@@ -16,6 +16,7 @@
 package com.robopupu.component;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 
 import com.robopupu.api.component.Manager;
@@ -23,6 +24,13 @@ import com.robopupu.api.plugin.PlugInterface;
 
 @PlugInterface
 public interface PlatformManager extends Manager {
+
+    /**
+     * Gets the application {@link Context}.
+     *
+     * @return A @link Context}.
+     */
+    Context getAppContext();
 
     /**
      * Gets the specified string resource formatted with the given optional arguments.
