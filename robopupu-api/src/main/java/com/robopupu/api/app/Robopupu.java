@@ -47,7 +47,7 @@ public class Robopupu {
     }
 
     /**
-     * Plugs an instance of given {@link Class}es to the {@link PluginBus}.
+     * Plugs an instances of given {@link Class}es to the {@link PluginBus}.
      * @param pluginClasses A variable length list of {@link Class}es.
      */
     @SuppressWarnings("unchecked")

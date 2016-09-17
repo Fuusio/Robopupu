@@ -353,7 +353,7 @@ public class StringToolkit {
      */
     public static String[] parseKeyTokens(final String propertyKey) {
         final StringTokenizer tokenizer = new StringTokenizer(propertyKey, ".");
-        final ArrayList<String> tokens = new ArrayList<String>();
+        final ArrayList<String> tokens = new ArrayList<>();
 
         while (tokenizer.hasMoreElements()) {
             tokens.add(tokenizer.nextToken());

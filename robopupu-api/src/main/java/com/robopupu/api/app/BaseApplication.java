@@ -18,6 +18,7 @@ package com.robopupu.api.app;
 import android.app.Application;
 import android.content.res.Resources;
 
+import com.robopupu.api.plugin.PluginBus;
 import com.robopupu.api.util.Utils;
 
 public abstract class BaseApplication extends Application {
@@ -67,5 +68,14 @@ public abstract class BaseApplication extends Application {
      */
     public static Resources getApplicationResources() {
         return instance.getResources();
+    }
+
+    /**
+     * Plugs an instance of given {@link Class} to the {@link PluginBus}.
+     * @param pluginClass A {@link Class}.
+     */
+    @SuppressWarnings("unchecked")
+    public void plug(final Class<?> pluginClass) {
+        PluginBus.plug(pluginClass);
     }
 }
