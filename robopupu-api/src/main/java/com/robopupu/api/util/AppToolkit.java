@@ -4,6 +4,9 @@ import android.app.Application;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.nfc.NfcAdapter;
+import android.nfc.NfcManager;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -65,5 +68,18 @@ public final class AppToolkit {
             Log.d(TAG, "getApplicationDirectoryPath : Error Package name not found.");
         }
         return "";
+    }
+
+    /**
+     * Tests if the device has NFC capability.
+     * @return A {@code boolean}.
+     */
+    public static boolean hasNfc(final Context context) {
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1) {
+            final NfcManager manager = (NfcManager) context.getSystemService(Context.NFC_SERVICE);
+            final NfcAdapter adapter = manager.getDefaultAdapter();
+            return (adapter != null && adapter.isEnabled());
+        }
+        return false;
     }
 }

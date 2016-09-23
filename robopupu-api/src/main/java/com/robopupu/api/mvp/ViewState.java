@@ -15,9 +15,6 @@
  */
 package com.robopupu.api.mvp;
 
-import android.app.Activity;
-import android.os.Bundle;
-
 import com.robopupu.api.util.LifecycleState;
 
 /**
@@ -61,7 +58,7 @@ public class ViewState {
     /**
      * Tests if the {@link LifecycleState} is dormant. In dormant state the {@link View}
      * is either not instantiated or is instantiated but isnot created i.e. method
-     * {@code Fragment#onCreate(Bundle)}/{@link Activity#onCreate(Bundle)} has not
+     * {@code Fragment#onCreate(Bundle)}/{@code Activity#onCreate(Bundle)} has not
      * been invoked yet.
      * @return A {@code boolean} value.
      */
@@ -71,7 +68,7 @@ public class ViewState {
 
     /**
      * Tests if the {@link LifecycleState} is created. In created state the {@link View}
-     * method {@code Fragment#onCreate(Bundle)}/{@link Activity#onCreate(Bundle)} has been invoked.
+     * method {@code Fragment#onCreate(Bundle)}/{@code Activity#onCreate(Bundle)} has been invoked.
      * @return A {@code boolean} value.
      */
     public boolean isCreated() {
@@ -80,7 +77,7 @@ public class ViewState {
 
     /**
      * Tests if the {@link LifecycleState} is started or resumed. In started state the method
-     * {@code Fragment#onStart()}/{@link Activity#onStart()} and possibly {@code Fragment#onResume()}/{@link Activity#onResume()}
+     * {@code Fragment#onStart()}/{@code Activity#onStart()} and possibly {@code Fragment#onResume()}/{@code Activity#onResume()}
      * have been invoked. Method {@link ViewState#getLifecycleState()} can be used to determinate
      * the exact lifecycle state.
      * @return A {@code boolean} value.
@@ -91,7 +88,7 @@ public class ViewState {
 
     /**
      * Tests if the {@link LifecycleState} is resumed. In resumed state both the methods
-     * {@code Fragment#onStart()}/{@link Activity#onStart()} and {@code Fragment#onResume()}/{@link Activity#onResume()}
+     * {@code Fragment#onStart()}/{@code Activity#onStart()} and {@code Fragment#onResume()}/{@code Activity#onResume()}
      * have been invoked.
      * @return A {@code boolean} value.
      */
@@ -101,7 +98,7 @@ public class ViewState {
 
     /**
      * Tests if the {@link LifecycleState} is paused. In paused state the method
-     * {@code Fragment#onPause()}/{@link Activity#onPause()} has been invoked.
+     * {@code Fragment#onPause()}/{@code Activity#onPause()} has been invoked.
      * @return A {@code boolean} value.
      */
     public boolean isPaused() {
@@ -110,7 +107,7 @@ public class ViewState {
 
     /**
      * Tests if the {@link LifecycleState} is isRestarted. In isRestarted state the method
-     * {@link Activity#onRestart()} has been invoked.
+     * {@code Activity#onRestart()} has been invoked.
      * @return A {@code boolean} value.
      */
     public boolean isRestarted() {
@@ -119,7 +116,7 @@ public class ViewState {
 
     /**
      * Tests if the {@link LifecycleState} is stopped. In stopped state the method
-     * {@code Fragment#onStop()}/{@link Activity#onStop()} has been invoked.
+     * {@code Fragment#onStop()}/{@code Activity#onStop()} has been invoked.
      * @return A {@code boolean} value.
      */
     public boolean isStopped() {
@@ -128,7 +125,7 @@ public class ViewState {
 
     /**
      * Tests if the {@link LifecycleState} is destroyed. In destroyed state the method
-     * {@code Fragment#onDestroy()}/{@link Activity#onDestroy()} has been invoked.
+     * {@code Fragment#onDestroy()}/{@code Activity#onDestroy()} has been invoked.
      * @return A {@code boolean} value.
      */
     public boolean isDestroyed() {

@@ -4,11 +4,13 @@ import com.robopupu.api.util.Params;
 
 /**
  * {@link ViewObserver} a listener interface for receiving lifecycle events
- * from a {@link View}. This interface is mainly intended to be used by an attached {@link Presenter}.
+ * from a {@link View}. The interface is mainly intended to be used by an attached {@link Presenter}.
+ * Typically {@link Presenter} implementation should not care about {@link View}s's lifecycle events,
+ * but in some cases it is necessary.
  */
 public interface ViewObserver {
     /**
-     * Invoked by a {@link View} implementation when it is created-
+     * Invoked by a {@link View} implementation when it is created.
      *
      * @param view    A {@link View}
      * @param params {@link Params} containing the initial state.
@@ -17,7 +19,7 @@ public interface ViewObserver {
 
     /**
      * Invoked by a {@link View} implementation when it is resumed,
-     * e.g. on {@link ViewCompatFragment#onResume()}.
+     * e.g. on {@code ViewCompatFragment#onResume()}.
      *
      * @param view A {@link View}
      */
@@ -25,7 +27,7 @@ public interface ViewObserver {
 
     /**
      * Invoked by a {@link View} implementation when it is paused,
-     * e.g. on {@link ViewCompatFragment#onPause()}.
+     * e.g. on {@code ViewCompatFragment#onPause()}.
      *
      * @param view A {@link View}
      */
@@ -33,7 +35,7 @@ public interface ViewObserver {
 
     /**
      * Invoked by a {@link View} implementation when it is started,
-     * e.g. on {@link ViewCompatFragment#onStart()}.
+     * e.g. on {@code ViewCompatFragment#onStart()}.
      *
      * @param view A {@link View}
      */
@@ -41,7 +43,7 @@ public interface ViewObserver {
 
     /**
      * Invoked by a {@link View} implementation when it is stopped,
-     * e.g. on {@link ViewCompatFragment#onStop()}.
+     * e.g. on {@code ViewCompatFragment#onStop()}.
      *
      * @param view A {@link View}
      */
@@ -49,7 +51,7 @@ public interface ViewObserver {
 
     /**
      * Invoked by a {@link View} implementation when it is destroyed,
-     * e.g. on {@link ViewCompatFragment#onDestroy()}.
+     * e.g. on {@code ViewCompatFragment#onDestroy()}.
      *
      * @param view A {@link View}
      */

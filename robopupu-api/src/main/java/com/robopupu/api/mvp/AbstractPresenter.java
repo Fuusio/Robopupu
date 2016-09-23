@@ -16,7 +16,6 @@
 package com.robopupu.api.mvp;
 
 import android.support.annotation.CallSuper;
-import android.util.Log;
 
 import com.robopupu.api.dependency.D;
 import com.robopupu.api.dependency.DependencyScope;
@@ -25,6 +24,7 @@ import com.robopupu.api.plugin.AbstractPluginStateComponent;
 import com.robopupu.api.plugin.PlugInvoker;
 import com.robopupu.api.plugin.PluginBus;
 import com.robopupu.api.util.AbstractListenable;
+import com.robopupu.api.util.Log;
 import com.robopupu.api.util.Params;
 import com.robopupu.api.util.Utils;
 

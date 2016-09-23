@@ -39,14 +39,14 @@ import java.util.List;
 public abstract class AbstractFeature extends AbstractPluginStateComponent
         implements Feature, DependencyScopeOwner {
 
-    protected final ArrayList<FeatureView> mActiveViews;
-    protected final HashMap<String, FeatureView> mBackStackViews;
+    protected final ArrayList<FeatureView> activeViews;
+    protected final HashMap<String, FeatureView> backStackViews;
 
-    protected int mFeatureContainerId;
-    protected FeatureManager mFeatureManager;
-    protected DependencyScope mFeatureScope;
-    protected boolean mIsActivityFeature;
-    protected Class<? extends DependencyScope> mScopeClass;
+    protected int featureContainerId;
+    protected FeatureManager featureManager;
+    protected DependencyScope featureScope;
+    protected boolean isActivityFeature;
+    protected Class<? extends DependencyScope> scopeClass;
 
     /**
      * Construct a new instance of {@link AbstractFeature}.
@@ -65,15 +65,15 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
      *                          is an Activity Feature.
      */
     protected AbstractFeature(final Class<? extends DependencyScope> scopeClass, final boolean isActivityFeature) {
-        mScopeClass = scopeClass;
-        mIsActivityFeature = isActivityFeature;
-        mActiveViews = new ArrayList<>();
-        mBackStackViews = new HashMap<>();
+        this.scopeClass = scopeClass;
+        this.isActivityFeature = isActivityFeature;
+        activeViews = new ArrayList<>();
+        backStackViews = new HashMap<>();
     }
 
     @Override
     public Class<? extends DependencyScope> getScopeClass() {
-        return mScopeClass;
+        return scopeClass;
     }
 
     @Override
@@ -82,21 +82,21 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
     }
 
     protected DependencyScope getFeatureScope() {
-        if (mFeatureScope == null) {
-            mFeatureScope = D.getScope(mScopeClass, true);
+        if (featureScope == null) {
+            featureScope = D.getScope(scopeClass, true);
         }
-        return mFeatureScope;
+        return featureScope;
     }
 
     @Override
     public final List<FeatureView> getActiveViews() {
-        return mActiveViews;
+        return activeViews;
     }
 
     @Override
     public final FeatureView addActiveView(final FeatureView view) {
-        if (!mActiveViews.contains(view)) {
-            mActiveViews.add(view);
+        if (!activeViews.contains(view)) {
+            activeViews.add(view);
             return view;
         }
         // Adding an active View implies that this Feature has resumed.
@@ -106,8 +106,8 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
 
     @Override
     public final FeatureView removeActiveView(final FeatureView view) {
-        if (mActiveViews.contains(view)) {
-            mActiveViews.remove(view);
+        if (activeViews.contains(view)) {
+            activeViews.remove(view);
             return view;
         }
         return null;
@@ -120,8 +120,8 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
      * @param view The {@link FeatureView} that has been added.
      */
     protected final void addBackStackView(final String tag, final FeatureView view) {
-        if (!mBackStackViews.containsKey(tag)) {
-            mBackStackViews.put(tag, view);
+        if (!backStackViews.containsKey(tag)) {
+            backStackViews.put(tag, view);
         }
     }
 
@@ -131,42 +131,42 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
      * @param tag The tag specifying the {@link FeatureView} to be removed.
      */
     protected final void removeBackStackView(final String tag) {
-        mBackStackViews.remove(tag);
+        backStackViews.remove(tag);
     }
 
     @Override
     public boolean hasForegroundView() {
-        return !mActiveViews.isEmpty();
+        return !activeViews.isEmpty();
     }
 
     @Override
     public void setActivityFeature(boolean isActivityFeature) {
-        mIsActivityFeature = isActivityFeature;
+        this.isActivityFeature = isActivityFeature;
     }
 
     @Override
     public boolean isActivityFeature() {
-        return mIsActivityFeature;
+        return isActivityFeature;
     }
 
     @Override
     public boolean isActiveView(final FeatureView view) {
-        return mActiveViews.contains(view);
+        return activeViews.contains(view);
     }
 
     @Override
     public void setFeatureManager(final FeatureManager manager) {
-        mFeatureManager = manager;
+        featureManager = manager;
     }
 
     @Override
     public FeatureContainer getFeatureContainer() {
-        return mFeatureManager.getFeatureContainer(mFeatureContainerId);
+        return featureManager.getFeatureContainer(featureContainerId);
     }
 
     @Override
     public void setFeatureContainer(final FeatureContainer container) {
-        mFeatureContainerId = container.getContainerViewId();
+        featureContainerId = container.getContainerViewId();
     }
 
     /**
@@ -205,7 +205,7 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
                             final boolean addToBackStack,
                             final String tag,
                             final Params... params) {
-        final FeatureContainer featureContainer = mFeatureManager.getFeatureContainer(featureContainerId);
+        final FeatureContainer featureContainer = featureManager.getFeatureContainer(featureContainerId);
         final Presenter presenter = plug(presenterClass);
 
         if (Params.containsAnyValues(params)) {
@@ -300,8 +300,8 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
         final FeatureContainer container = getFeatureContainer();
         if (container != null) {
 
-            if (!mBackStackViews.isEmpty()) {
-                container.clearBackStack(mBackStackViews);
+            if (!backStackViews.isEmpty()) {
+                container.clearBackStack(backStackViews);
             }
         }
     }
@@ -312,7 +312,7 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
         final String tag = getFeatureContainer().goBack();
 
         if (StringToolkit.isNotEmpty(tag)) {
-            mBackStackViews.remove(tag);
+            backStackViews.remove(tag);
         }
     }
 
@@ -342,7 +342,7 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
 
     @Override
     public boolean hasBackStackViews() {
-        return !mBackStackViews.isEmpty();
+        return !backStackViews.isEmpty();
     }
 
     @Override
@@ -395,7 +395,7 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
         }
         super.pause();
         onPause(finishing);
-        mFeatureManager.onFeaturePaused(this, finishing);
+        featureManager.onFeaturePaused(this, finishing);
     }
 
     @Override
@@ -406,14 +406,14 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
         }
         super.resume();
         Dependency.activateScope(this);
-        mFeatureManager.onFeatureResumed(this);
+        featureManager.onFeatureResumed(this);
     }
 
     @Override
     @CallSuper
     public final void stop() {
         if (!isStopped()) {
-            mFeatureManager.onFeatureStopped(this);
+            featureManager.onFeatureStopped(this);
             super.stop();
         }
     }
@@ -441,12 +441,12 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
 
             if (hasBackStackViews()) {
                 clearBackStack();
-                mBackStackViews.clear();
+                backStackViews.clear();
             }
 
-            mFeatureManager.onFeatureDestroyed(this);
-            mFeatureManager = null;
-            mActiveViews.clear();
+            featureManager.onFeatureDestroyed(this);
+            featureManager = null;
+            activeViews.clear();
         }
     }
 

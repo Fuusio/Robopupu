@@ -21,6 +21,9 @@ import com.robopupu.api.dependency.AppDependencyScope;
 import com.robopupu.api.dependency.DependenciesCache;
 import com.robopupu.api.dependency.Dependency;
 import com.robopupu.api.plugin.PluginBus;
+import com.robopupu.api.util.DefaultLogDelagate;
+import com.robopupu.api.util.Log;
+import com.robopupu.api.util.LogDelegate;
 import com.robopupu.api.util.UIToolkit;
 import com.robopupu.api.util.Utils;
 
@@ -33,10 +36,13 @@ public class Robopupu {
     protected final Application application;
     protected final AppDependencyScope appScope;
     protected final DependenciesCache dependenciesCache;
+    protected final LogDelegate logDelegate;
 
     public Robopupu(final AppDependencyScope appScope) {
         application = appScope.getApplication();
         dependenciesCache = createDependencyScopeCache();
+        logDelegate = new DefaultLogDelagate();
+
         this.appScope = appScope;
         this.appScope.initialize();
 
@@ -44,6 +50,8 @@ public class Robopupu {
 
         UIToolkit.setApplication(application);
         Dependency.setAppScope(this.appScope);
+
+        Log.setDelegate(logDelegate);
     }
 
     /**

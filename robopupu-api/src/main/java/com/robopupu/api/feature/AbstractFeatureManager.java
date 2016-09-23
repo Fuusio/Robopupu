@@ -22,6 +22,7 @@ import android.support.annotation.CallSuper;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.util.SparseArray;
 
 import com.robopupu.api.component.AbstractManager;
 import com.robopupu.api.dependency.D;
@@ -34,7 +35,6 @@ import com.robopupu.api.util.Params;
 import com.robopupu.api.util.Utils;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
@@ -49,9 +49,9 @@ public abstract class AbstractFeatureManager extends AbstractManager
 
     private static DependencyScopeOwner mockScopeOwner = null;
 
-    private final HashMap<Integer, Feature> currentFeatures;
+    private final SparseArray<Feature> currentFeatures;
     private final DependenciesCache dependenciesCache;
-    private final HashMap<Integer, FeatureContainer> featureContainers;
+    private final SparseArray<FeatureContainer> featureContainers;
     private final HashSet<Feature> pausedFeatures;
     private final HashSet<Feature> resumedFeatures;
 
@@ -63,8 +63,8 @@ public abstract class AbstractFeatureManager extends AbstractManager
         pausedFeatures = new HashSet<>();
         resumedFeatures = new HashSet<>();
         dependenciesCache = D.get(DependenciesCache.class);
-        currentFeatures = new HashMap<>();
-        featureContainers = new HashMap<>();
+        currentFeatures = new SparseArray<>();
+        featureContainers = new SparseArray<>();
     }
 
     @Override
