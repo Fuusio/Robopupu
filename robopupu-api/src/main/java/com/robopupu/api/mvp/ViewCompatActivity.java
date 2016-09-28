@@ -317,7 +317,7 @@ public abstract class ViewCompatActivity<T_Presenter extends Presenter> extends 
 
     /**
      * Invoked to bind {@link ViewBinding}s to {@link View}s. This method has to be overridden in
-     * classes extended from {@link ViewCompatFragment}.
+     * classes extended from {@link ViewCompatActivity}.
      */
     @CallSuper
     protected void onCreateBindings() {

@@ -1,16 +1,30 @@
+/*
+ * Copyright (C) 2016 Marko Salmela, http://robopupu.com
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.robopupu.api.app;
 
 import android.content.Context;
 import android.content.res.Resources;
 import android.support.annotation.IntegerRes;
+import android.support.v4.util.SparseArrayCompat;
 
 import com.robopupu.api.dependency.D;
 
-import java.util.HashMap;
-
 /**
- * {@link AppConfig} can be used to check is some feature is flagged to be part of
- * an application or not.
+ * {@link AppConfig} can be used to implement feature toggling i.e. can be used to check is some
+ * feature is flagged to be part of an application or application variant.
  */
 public class AppConfig {
 
@@ -33,7 +47,7 @@ public class AppConfig {
         }
     }
 
-    private static final HashMap<Integer, Flag> flags = new HashMap<>();
+    private static final SparseArrayCompat<Flag> flags = new SparseArrayCompat<>();
 
     private static Context appContext = null;
 
