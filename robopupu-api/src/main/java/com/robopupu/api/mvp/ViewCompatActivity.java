@@ -108,13 +108,6 @@ public abstract class ViewCompatActivity<T_Presenter extends Presenter> extends 
     }
 
     @Override
-    protected void onPostCreate(final Bundle inState) {
-        super.onPostCreate(inState);
-        onCreateBindings();
-    }
-
-
-    @Override
     protected void onStart() {
         super.onStart();
         state.onStart();

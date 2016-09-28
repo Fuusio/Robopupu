@@ -107,13 +107,6 @@ public abstract class ViewActivity<T_Presenter extends Presenter> extends Activi
     }
 
     @Override
-    protected void onPostCreate(final Bundle inState) {
-        super.onPostCreate(inState);
-        onCreateBindings();
-    }
-
-
-    @Override
     protected void onStart() {
         super.onStart();
         mState.onStart();
