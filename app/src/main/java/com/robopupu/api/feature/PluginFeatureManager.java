@@ -15,7 +15,6 @@
  */
 package com.robopupu.api.feature;
 
-import com.robopupu.api.feature.FeatureManager;
 import com.robopupu.api.plugin.PlugInterface;
 
 /**

@@ -4,6 +4,12 @@ import android.os.Handler;
 import android.os.Looper;
 
 import com.robopupu.R;
+import com.robopupu.api.dependency.Provides;
+import com.robopupu.api.feature.AbstractFeaturePresenter;
+import com.robopupu.api.mvp.View;
+import com.robopupu.api.plugin.Plug;
+import com.robopupu.api.plugin.Plugin;
+import com.robopupu.api.plugin.PluginBus;
 import com.robopupu.feature.fsm.statemachine.Controller;
 import com.robopupu.feature.fsm.statemachine.SimpleStateMachine;
 import com.robopupu.feature.fsm.statemachine.State;
@@ -15,13 +21,6 @@ import com.robopupu.feature.fsm.statemachine.State_C;
 import com.robopupu.feature.fsm.statemachine.State_D;
 import com.robopupu.feature.fsm.statemachine.TriggerEvents;
 import com.robopupu.feature.fsm.view.FsmDemoView;
-
-import com.robopupu.api.dependency.Provides;
-import com.robopupu.api.feature.AbstractFeaturePresenter;
-import com.robopupu.api.mvp.View;
-import com.robopupu.api.plugin.Plug;
-import com.robopupu.api.plugin.Plugin;
-import com.robopupu.api.plugin.PluginBus;
 
 @Plugin
 @Provides(FsmDemoPresenter.class)

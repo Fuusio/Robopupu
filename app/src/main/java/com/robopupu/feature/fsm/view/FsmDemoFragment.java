@@ -28,14 +28,13 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 
 import com.robopupu.R;
+import com.robopupu.api.dependency.Provides;
+import com.robopupu.api.plugin.Plug;
+import com.robopupu.api.plugin.Plugin;
 import com.robopupu.app.view.CoordinatorLayoutFragment;
 import com.robopupu.component.AppManager;
 import com.robopupu.feature.fsm.presenter.FsmDemoPresenter;
 import com.robopupu.feature.fsm.presenter.FsmDemoPresenter.TransitionId;
-
-import com.robopupu.api.dependency.Provides;
-import com.robopupu.api.plugin.Plug;
-import com.robopupu.api.plugin.Plugin;
 
 @Plugin
 public class FsmDemoFragment extends CoordinatorLayoutFragment<FsmDemoPresenter> implements FsmDemoView {

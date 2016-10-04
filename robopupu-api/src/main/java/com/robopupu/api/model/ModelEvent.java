@@ -1,4 +1,4 @@
-package com.robopupu.api.mvp;
+package com.robopupu.api.model;
 
 import java.util.EventObject;
 

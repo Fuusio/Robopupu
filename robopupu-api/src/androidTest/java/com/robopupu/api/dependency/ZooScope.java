@@ -42,6 +42,6 @@ public class ZooScope extends DependencyScope {
     }
 
     public boolean isCleared() {
-        return mDependants.isEmpty() && mDependencies.isEmpty();
+        return dependants.isEmpty() && dependencies.isEmpty();
     }
 }

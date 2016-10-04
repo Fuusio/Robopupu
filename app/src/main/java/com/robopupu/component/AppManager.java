@@ -15,9 +15,7 @@
  */
 package com.robopupu.component;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.net.Network;
 import android.support.annotation.ColorInt;
@@ -25,10 +23,9 @@ import android.support.annotation.ColorRes;
 import android.support.annotation.IntegerRes;
 import android.support.annotation.StringRes;
 
-import com.robopupu.app.RobopupuApplication;
-
 import com.robopupu.api.component.Manager;
 import com.robopupu.api.plugin.PlugInterface;
+import com.robopupu.app.RobopupuApplication;
 
 import java.io.File;
 import java.util.List;

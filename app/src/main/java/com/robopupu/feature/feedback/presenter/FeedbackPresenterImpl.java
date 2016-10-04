@@ -16,17 +16,16 @@
 package com.robopupu.feature.feedback.presenter;
 
 import com.robopupu.R;
-import com.robopupu.component.AppManager;
-import com.robopupu.component.PlatformManager;
-import com.robopupu.feature.feedback.FeedbackFeature;
-import com.robopupu.feature.feedback.view.FeedbackView;
-
 import com.robopupu.api.dependency.Provides;
 import com.robopupu.api.feature.AbstractFeaturePresenter;
 import com.robopupu.api.mvp.View;
 import com.robopupu.api.plugin.Plug;
 import com.robopupu.api.plugin.Plugin;
 import com.robopupu.api.plugin.PluginBus;
+import com.robopupu.component.AppManager;
+import com.robopupu.component.PlatformManager;
+import com.robopupu.feature.feedback.FeedbackFeature;
+import com.robopupu.feature.feedback.view.FeedbackView;
 
 @Plugin
 public class FeedbackPresenterImpl extends AbstractFeaturePresenter<FeedbackView>

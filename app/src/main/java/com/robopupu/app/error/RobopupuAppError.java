@@ -18,7 +18,6 @@ package com.robopupu.app.error;
 import android.content.Context;
 
 import com.robopupu.R;
-
 import com.robopupu.api.app.AppError;
 
 public enum RobopupuAppError implements AppError {

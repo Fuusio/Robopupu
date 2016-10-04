@@ -15,16 +15,15 @@
  */
 package com.robopupu.feature.main;
 
-import com.robopupu.api.feature.FeatureContainer;
-import com.robopupu.app.RobopupuAppScope;
-import com.robopupu.feature.main.presenter.SplashPresenter;
-import com.robopupu.feature.main.view.MainView;
-
 import com.robopupu.api.dependency.Provides;
 import com.robopupu.api.dependency.Scope;
 import com.robopupu.api.feature.AbstractFeature;
+import com.robopupu.api.feature.FeatureContainer;
 import com.robopupu.api.plugin.Plug;
 import com.robopupu.api.plugin.Plugin;
+import com.robopupu.app.RobopupuAppScope;
+import com.robopupu.feature.main.presenter.SplashPresenter;
+import com.robopupu.feature.main.view.MainView;
 
 @Plugin
 public class MainFeatureImpl extends AbstractFeature implements MainFeature {

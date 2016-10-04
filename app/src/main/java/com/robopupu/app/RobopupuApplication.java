@@ -15,16 +15,15 @@
  */
 package com.robopupu.app;
 
+import com.robopupu.api.app.BaseApplication;
 import com.robopupu.api.app.Robopupu;
+import com.robopupu.api.dependency.AppDependencyScope;
 import com.robopupu.api.feature.PluginFeatureManager;
+import com.robopupu.api.plugin.PluginBus;
 import com.robopupu.app.error.RobopupuAppError;
 import com.robopupu.component.AppManager;
 import com.robopupu.component.PlatformManager;
 import com.robopupu.component.TimerManager;
-
-import com.robopupu.api.app.BaseApplication;
-import com.robopupu.api.dependency.AppDependencyScope;
-import com.robopupu.api.plugin.PluginBus;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 

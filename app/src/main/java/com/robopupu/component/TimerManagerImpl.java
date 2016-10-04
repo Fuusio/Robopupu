@@ -15,14 +15,13 @@
  */
 package com.robopupu.component;
 
-import com.robopupu.api.util.Utils;
-import com.robopupu.app.RobopupuAppScope;
-
 import com.robopupu.api.component.AbstractManager;
 import com.robopupu.api.dependency.Provides;
 import com.robopupu.api.dependency.Scope;
 import com.robopupu.api.plugin.Plugin;
 import com.robopupu.api.plugin.PluginBus;
+import com.robopupu.api.util.Utils;
+import com.robopupu.app.RobopupuAppScope;
 
 import java.util.HashMap;
 

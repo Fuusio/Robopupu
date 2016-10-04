@@ -15,45 +15,24 @@
  */
 package com.robopupu.api.mvp;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.robopupu.api.model.ModelEvent;
+import com.robopupu.api.model.ModelObserver;
+import com.robopupu.api.plugin.AbstractPluginStateComponent;
 
-import com.robopupu.api.util.AbstractListenable;
+public abstract class AbstractModel<T_Event extends ModelEvent, T_Observer extends ModelObserver<T_Event>>
+        extends AbstractPluginStateComponent {
 
-public class AbstractModel<T_ModelEvent extends ModelEvent, T_ModelListener extends ModelListener<T_ModelEvent>>
-        extends AbstractListenable<T_ModelListener> implements Model<T_ModelEvent, T_ModelListener> {
+    protected AbstractModel() {
+    }
 
-    protected void notifyModelChanged(final T_ModelEvent event) {
+    protected void notifyModelChanged(final T_Event event) {
         if (event != null) {
-            for (final T_ModelListener listener : getListeners()) {
-                listener.onModelChanged(event);
+            final T_Observer observer = getObserver();
+            if (observer != null) {
+                observer.onModelChanged(event);
             }
         }
     }
 
-    protected JsonParser getJsonParser() {
-        return createJsonParser();
-    }
-
-    protected JsonParser createJsonParser() {
-        return new JsonParser();
-    }
-
-    protected Gson getGson() {
-        return createGson();
-    }
-
-    protected Gson createGson() {
-        return new Gson();
-    }
-
-    @SuppressWarnings("unchecked")
-    public JsonObject toJsonObject() {
-        return (JsonObject) getJsonParser().parse(toJsonString());
-    }
-
-    public String toJsonString() {
-        return getGson().toJson(this);
-    }
+    protected abstract T_Observer getObserver();
 }

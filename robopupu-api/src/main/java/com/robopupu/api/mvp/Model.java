@@ -20,10 +20,6 @@ import com.robopupu.api.util.Listenable;
 /**
  * {@link Model} is interface for Model components in the Robopupu's MVP architectural pattern
  * implementation.
- *
- * @param <T_ModelEvent> The parametrised {@link ModelEvent} type.
- * @param <T_ModelListener> The parametrised {@link ModelListener} type.
  */
-public interface Model<T_ModelEvent extends ModelEvent, T_ModelListener extends ModelListener<T_ModelEvent>>
-        extends Listenable<T_ModelListener> {
+public interface Model extends com.robopupu.api.model.Model {
 }

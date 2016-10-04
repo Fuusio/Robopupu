@@ -15,16 +15,15 @@
  */
 package com.robopupu.feature.about.presenter;
 
-import com.robopupu.component.AppManager;
-import com.robopupu.feature.about.AboutFeature;
-import com.robopupu.feature.about.view.AboutView;
-
 import com.robopupu.api.dependency.Provides;
 import com.robopupu.api.feature.AbstractFeaturePresenter;
 import com.robopupu.api.mvp.View;
 import com.robopupu.api.plugin.Plug;
 import com.robopupu.api.plugin.Plugin;
 import com.robopupu.api.plugin.PluginBus;
+import com.robopupu.component.AppManager;
+import com.robopupu.feature.about.AboutFeature;
+import com.robopupu.feature.about.view.AboutView;
 
 @Plugin
 @Provides(AboutPresenter.class)

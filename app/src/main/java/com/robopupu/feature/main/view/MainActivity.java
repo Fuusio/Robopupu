@@ -27,17 +27,16 @@ import android.view.MenuItem;
 
 import com.robopupu.R;
 import com.robopupu.api.app.AppConfig;
+import com.robopupu.api.feature.FeatureContainer;
 import com.robopupu.api.feature.PluginFeatureManager;
+import com.robopupu.api.mvp.PluginCompatActivity;
+import com.robopupu.api.plugin.Plug;
+import com.robopupu.api.plugin.Plugin;
 import com.robopupu.app.RobopupuAppScope;
 import com.robopupu.app.view.DrawerLayoutContainer;
 import com.robopupu.feature.main.MainFeature;
 import com.robopupu.feature.main.MainFeatureScope;
 import com.robopupu.feature.main.presenter.MainPresenter;
-
-import com.robopupu.api.feature.FeatureContainer;
-import com.robopupu.api.mvp.PluginCompatActivity;
-import com.robopupu.api.plugin.Plug;
-import com.robopupu.api.plugin.Plugin;
 
 @Plugin
 public class MainActivity extends PluginCompatActivity<MainPresenter>

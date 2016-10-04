@@ -15,11 +15,10 @@
  */
 package com.robopupu.feature.about.presenter;
 
-import com.robopupu.api.mvp.OnClick;
-import com.robopupu.app.view.DelegatedWebViewClient;
-
 import com.robopupu.api.feature.FeaturePresenter;
+import com.robopupu.api.mvp.OnClick;
 import com.robopupu.api.plugin.PlugInterface;
+import com.robopupu.app.view.DelegatedWebViewClient;
 
 @PlugInterface
 public interface LicensesInfoPresenter extends FeaturePresenter, DelegatedWebViewClient.Delegate {

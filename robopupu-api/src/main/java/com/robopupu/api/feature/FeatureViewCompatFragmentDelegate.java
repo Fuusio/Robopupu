@@ -17,7 +17,6 @@ package com.robopupu.api.feature;
 
 import android.support.v4.app.Fragment;
 
-import com.robopupu.api.dependency.DependencyScope;
 import com.robopupu.api.mvp.Presenter;
 import com.robopupu.api.mvp.ViewCompatFragmentDelegate;
 

@@ -47,11 +47,10 @@ public class TestFeatureScope extends DependencyScope {
         } else if (type(TestPresenter.class)) {
             return dependency(Mockito.mock(TestPresenter.class));
         }
-
         return null;
     }
 
     public boolean isCleared() {
-        return mDependants.isEmpty() && mDependencies.isEmpty();
+        return dependants.isEmpty() && dependencies.isEmpty();
     }
 }

@@ -17,14 +17,13 @@ package com.robopupu.feature.about.presenter;
 
 import android.webkit.WebView;
 
-import com.robopupu.feature.about.view.LicensesInfoView;
-
 import com.robopupu.api.dependency.Provides;
 import com.robopupu.api.feature.AbstractFeaturePresenter;
 import com.robopupu.api.mvp.View;
 import com.robopupu.api.plugin.Plug;
 import com.robopupu.api.plugin.Plugin;
 import com.robopupu.api.plugin.PluginBus;
+import com.robopupu.feature.about.view.LicensesInfoView;
 
 @Plugin
 public class LicensesInfoPresenterImpl extends AbstractFeaturePresenter<LicensesInfoView>

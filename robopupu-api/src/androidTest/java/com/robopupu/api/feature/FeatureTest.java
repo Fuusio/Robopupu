@@ -24,16 +24,16 @@ import android.test.suitebuilder.annotation.SmallTest;
 import com.robopupu.api.dependency.D;
 import com.robopupu.api.dependency.DependencyScope;
 import com.robopupu.api.util.Params;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.Mockito.when;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(AndroidJUnit4.class)
 @SmallTest

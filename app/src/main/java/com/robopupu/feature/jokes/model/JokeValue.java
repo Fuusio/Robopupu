@@ -1,7 +1,5 @@
 package com.robopupu.feature.jokes.model;
 
-import com.google.gson.annotations.SerializedName;
-
 public class JokeValue {
 
     private int id;
