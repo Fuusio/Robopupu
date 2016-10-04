@@ -20,7 +20,6 @@ import android.os.Build;
 import android.os.Environment;
 import android.util.Log;
 
-import com.robopupu.app.RobopupuAppScope;
 import com.google.gson.Gson;
 import com.robopupu.api.component.AbstractManager;
 import com.robopupu.api.dependency.Provides;
@@ -29,6 +28,7 @@ import com.robopupu.api.plugin.Plug;
 import com.robopupu.api.plugin.Plugin;
 import com.robopupu.api.util.AppToolkit;
 import com.robopupu.api.util.StringToolkit;
+import com.robopupu.app.RobopupuAppScope;
 
 import java.io.File;
 import java.io.IOException;

@@ -15,11 +15,11 @@
  */
 package com.robopupu.api.mvp;
 
+import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
-import android.app.Fragment;
 import android.util.Log;
 import android.widget.AdapterView;
 

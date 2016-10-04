@@ -1,8 +1,8 @@
 package com.robopupu.api.graph.nodes;
 
-import com.robopupu.api.graph.actions.Action1;
 import com.robopupu.api.graph.Node;
 import com.robopupu.api.graph.OutputNode;
+import com.robopupu.api.graph.actions.Action1;
 
 /**
  * {@link Action1Node} is a {@link Node} that can be used to execute a given {@link Action1}

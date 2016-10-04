@@ -24,6 +24,7 @@ import com.robopupu.api.fsm.state.IdleState;
 import com.robopupu.api.fsm.state.MakingCoffeeState;
 import com.robopupu.api.fsm.state.PowerOffState;
 import com.robopupu.api.fsm.state.PowerOnState;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

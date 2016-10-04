@@ -15,8 +15,6 @@
  */
 package com.robopupu.api.mvp;
 
-import com.robopupu.api.util.Listenable;
-
 /**
  * {@link Model} is interface for Model components in the Robopupu's MVP architectural pattern
  * implementation.

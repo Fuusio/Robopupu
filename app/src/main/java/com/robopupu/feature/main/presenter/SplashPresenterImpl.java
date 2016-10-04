@@ -15,17 +15,16 @@
  */
 package com.robopupu.feature.main.presenter;
 
-import com.robopupu.component.TimerHandle;
-import com.robopupu.component.TimerManager;
-import com.robopupu.feature.main.MainFeature;
-import com.robopupu.feature.main.view.SplashView;
-
 import com.robopupu.api.dependency.Provides;
 import com.robopupu.api.feature.AbstractFeaturePresenter;
 import com.robopupu.api.mvp.View;
 import com.robopupu.api.plugin.Plug;
 import com.robopupu.api.plugin.Plugin;
 import com.robopupu.api.plugin.PluginBus;
+import com.robopupu.component.TimerHandle;
+import com.robopupu.component.TimerManager;
+import com.robopupu.feature.main.MainFeature;
+import com.robopupu.feature.main.view.SplashView;
 
 @Plugin
 public class SplashPresenterImpl extends AbstractFeaturePresenter<SplashView>

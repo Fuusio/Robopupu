@@ -22,12 +22,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.robopupu.R;
-import com.robopupu.feature.main.presenter.SplashPresenter;
-
 import com.robopupu.api.dependency.Provides;
 import com.robopupu.api.feature.FeatureCompatFragment;
 import com.robopupu.api.plugin.Plug;
 import com.robopupu.api.plugin.Plugin;
+import com.robopupu.feature.main.presenter.SplashPresenter;
 
 /**
  * A simple {@link Fragment} subclass.

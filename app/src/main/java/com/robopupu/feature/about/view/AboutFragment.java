@@ -21,13 +21,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.robopupu.R;
-import com.robopupu.app.view.CoordinatorLayoutFragment;
-import com.robopupu.feature.about.presenter.AboutPresenter;
-
 import com.robopupu.api.binding.Binding;
 import com.robopupu.api.dependency.Provides;
 import com.robopupu.api.plugin.Plug;
 import com.robopupu.api.plugin.Plugin;
+import com.robopupu.app.view.CoordinatorLayoutFragment;
+import com.robopupu.feature.about.presenter.AboutPresenter;
 
 @Plugin
 public class AboutFragment extends CoordinatorLayoutFragment<AboutPresenter> implements AboutView {

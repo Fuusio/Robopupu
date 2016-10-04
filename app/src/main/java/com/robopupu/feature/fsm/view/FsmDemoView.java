@@ -18,10 +18,9 @@ package com.robopupu.feature.fsm.view;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.StringRes;
 
-import com.robopupu.feature.fsm.presenter.FsmDemoPresenter;
-
 import com.robopupu.api.mvp.View;
 import com.robopupu.api.plugin.PlugInterface;
+import com.robopupu.feature.fsm.presenter.FsmDemoPresenter;
 
 @PlugInterface
 public interface FsmDemoView extends View {

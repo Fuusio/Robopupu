@@ -15,13 +15,12 @@
  */
 package com.robopupu.feature.fsm;
 
-import com.robopupu.app.RobopupuAppScope;
-import com.robopupu.feature.fsm.presenter.FsmDemoPresenter;
-
 import com.robopupu.api.dependency.Provides;
 import com.robopupu.api.dependency.Scope;
 import com.robopupu.api.feature.AbstractFeature;
 import com.robopupu.api.plugin.Plugin;
+import com.robopupu.app.RobopupuAppScope;
+import com.robopupu.feature.fsm.presenter.FsmDemoPresenter;
 
 @Plugin
 public class FsmDemoFeatureImpl extends AbstractFeature implements FsmDemoFeature {

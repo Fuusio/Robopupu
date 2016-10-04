@@ -16,6 +16,7 @@
 package com.robopupu.api.feature;
 
 import com.robopupu.api.dependency.DependencyScope;
+
 import org.mockito.Mockito;
 
 public class TestFeatureScope extends DependencyScope {

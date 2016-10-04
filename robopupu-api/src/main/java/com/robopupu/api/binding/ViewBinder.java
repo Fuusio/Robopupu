@@ -27,10 +27,10 @@ import android.widget.TextView;
 import com.robopupu.api.mvp.AbstractPresenter;
 import com.robopupu.api.mvp.OnClick;
 import com.robopupu.api.mvp.OnTextChanged;
-import com.robopupu.api.mvp.ViewEventsDelegate;
-import com.robopupu.api.mvp.PresenterDelegate;
-import com.robopupu.api.mvp.Presenter;
 import com.robopupu.api.mvp.PresentedView;
+import com.robopupu.api.mvp.Presenter;
+import com.robopupu.api.mvp.PresenterDelegate;
+import com.robopupu.api.mvp.ViewEventsDelegate;
 import com.robopupu.api.util.UIToolkit;
 
 import java.lang.reflect.Constructor;

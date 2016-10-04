@@ -1,7 +1,7 @@
 package com.robopupu.api.graph.nodes;
 
-import com.robopupu.api.graph.Node;
 import com.robopupu.api.graph.Function;
+import com.robopupu.api.graph.Node;
 
 import java.util.ArrayList;
 

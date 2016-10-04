@@ -3,8 +3,8 @@ package com.robopupu.api.graph.nodes;
 import android.os.Handler;
 import android.os.Looper;
 
-import com.robopupu.api.graph.Node;
 import com.robopupu.api.graph.InputNode;
+import com.robopupu.api.graph.Node;
 import com.robopupu.api.graph.OutputNode;
 
 /**

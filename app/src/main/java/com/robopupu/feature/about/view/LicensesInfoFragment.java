@@ -24,14 +24,13 @@ import android.webkit.WebView;
 import android.widget.RelativeLayout;
 
 import com.robopupu.R;
-import com.robopupu.app.view.DelegatedWebViewClient;
-import com.robopupu.feature.about.presenter.LicensesInfoPresenter;
-
 import com.robopupu.api.binding.ClickBinding;
 import com.robopupu.api.dependency.Provides;
 import com.robopupu.api.feature.FeatureCompatDialogFragment;
 import com.robopupu.api.plugin.Plug;
 import com.robopupu.api.plugin.Plugin;
+import com.robopupu.app.view.DelegatedWebViewClient;
+import com.robopupu.feature.about.presenter.LicensesInfoPresenter;
 
 @Plugin
 public class LicensesInfoFragment extends FeatureCompatDialogFragment<LicensesInfoPresenter>

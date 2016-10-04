@@ -30,12 +30,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.robopupu.R;
-import com.robopupu.component.AppManager;
-import com.squareup.picasso.Picasso;
-
 import com.robopupu.api.dependency.D;
 import com.robopupu.api.feature.FeatureCompatFragment;
 import com.robopupu.api.feature.FeaturePresenter;
+import com.robopupu.component.AppManager;
+import com.squareup.picasso.Picasso;
 
 /**
  * {@link CoordinatorLayoutFragment} provides an abstract base class for implementing

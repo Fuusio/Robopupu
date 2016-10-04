@@ -15,17 +15,13 @@
  */
 package com.robopupu.api.feature;
 
-import com.robopupu.app.RobopupuAppScope;
-
 import com.robopupu.api.dependency.Provides;
 import com.robopupu.api.dependency.Scope;
-import com.robopupu.api.feature.AbstractFeatureManager;
-import com.robopupu.api.feature.Feature;
-import com.robopupu.api.feature.FeatureContainer;
 import com.robopupu.api.plugin.Plugin;
 import com.robopupu.api.plugin.PluginBus;
 import com.robopupu.api.plugin.PluginComponent;
 import com.robopupu.api.util.Params;
+import com.robopupu.app.RobopupuAppScope;
 
 /**
  * {@link PluginFeatureManagerImpl} implements {@link PluginFeatureManager} as a plugin component

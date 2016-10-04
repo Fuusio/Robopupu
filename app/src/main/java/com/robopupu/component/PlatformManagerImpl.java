@@ -22,15 +22,14 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.StringRes;
 
-import com.robopupu.api.feature.PluginFeatureManager;
-import com.robopupu.api.util.Utils;
-import com.robopupu.app.RobopupuAppScope;
-
 import com.robopupu.api.component.AbstractManager;
 import com.robopupu.api.dependency.Provides;
 import com.robopupu.api.dependency.Scope;
+import com.robopupu.api.feature.PluginFeatureManager;
 import com.robopupu.api.plugin.Plug;
 import com.robopupu.api.plugin.Plugin;
+import com.robopupu.api.util.Utils;
+import com.robopupu.app.RobopupuAppScope;
 
 @Plugin
 public class PlatformManagerImpl extends AbstractManager implements PlatformManager {
