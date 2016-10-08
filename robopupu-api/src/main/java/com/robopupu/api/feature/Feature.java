@@ -92,6 +92,18 @@ public interface Feature extends PresenterListener, PluginStateComponent {
     void setFeatureContainer(FeatureContainer container);
 
     /**
+     * Gets the parent {@link Feature} of this {@link Feature}.
+     * @return A {@link Feature}.
+     */
+    Feature getParentFeature();
+
+    /**
+     * Sets the parent {@link Feature} of this {@link Feature}.
+     * @param parentFeature A {@link Feature}.
+     */
+    void setParentFeature(Feature parentFeature);
+
+    /**
      * Sets this {@link Feature} to be an Activity Feature that is owned and controlled by
      * an {@code Activity}.
      * @param isActivityFeature A {@code boolean} value.

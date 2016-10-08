@@ -22,8 +22,8 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * {@link PluginCompatActivity} extends {@link ViewCompatActivity} to provide an abstract base class for
- * implementing {@code Activities} that utilise Robopupu.Plugin library.
+ * {@link PluginCompatActivity} extends {@link ViewCompatActivity} to provide an abstract base class
+ * for implementing {@code Activity} classes that utilise Robopupu.Plugin library.
  */
 public abstract class PluginCompatActivity<T_Presenter extends Presenter>
         extends ViewCompatActivity<T_Presenter> implements FeatureContainer, FeatureContainerProvider, PluginComponent {

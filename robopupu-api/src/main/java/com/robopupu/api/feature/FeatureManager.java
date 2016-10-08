@@ -42,6 +42,20 @@ public interface FeatureManager extends Manager  {
     Application.ActivityLifecycleCallbacks getActivityLifecycleCallback();
 
     /**
+     * Gets the child {@link Feature}s of the given parent {@link Feature} - if any.
+     * @param parentFeature A parent {@link Feature}.
+     * @return A {@link List} of child features. May not be {@code null}.
+     */
+    List<Feature> getActiveChildFeatures(Feature parentFeature);
+
+    /**
+     * Tests the given parent {@link Feature} has any child {@link Feature}s.
+     * @param parentFeature A parent {@link Feature}.
+     * @return A {@code boolean}
+     */
+    boolean hasActiveChildFeatures(Feature parentFeature);
+
+    /**
      * Gets the {@link Activity} that is currently in foreground.
      * @return An {@link Activity}. May return {@code null}.
      */
@@ -143,7 +157,7 @@ public interface FeatureManager extends Manager  {
      * the given {@link FeatureContainer}.
      *
      * @param featureContainer A {@link FeatureContainer}.
-     * @param feature   {The {@link Feature} to be started.
+     * @param feature  {The {@link Feature} to be started.
      * @return A {@link Feature}.
      */
     Feature startFeature(FeatureContainer featureContainer, Feature feature);

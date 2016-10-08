@@ -68,6 +68,29 @@ public abstract class AbstractFeatureManager extends AbstractManager
     }
 
     @Override
+    public List<Feature> getActiveChildFeatures(final Feature parentFeature) {
+        final List<Feature> childFeatures = new ArrayList<>();
+
+        for (final Feature feature : resumedFeatures) {
+            if (feature.getParentFeature() == parentFeature) {
+                childFeatures.add(feature);
+            }
+        }
+
+        for (final Feature feature : pausedFeatures) {
+            if (feature.getParentFeature() == parentFeature) {
+                childFeatures.add(feature);
+            }
+        }
+        return childFeatures;
+    }
+
+    @Override
+    public boolean hasActiveChildFeatures(final Feature parentFeature) {
+        return !getActiveChildFeatures(parentFeature).isEmpty();
+    }
+
+    @Override
     public Application.ActivityLifecycleCallbacks getActivityLifecycleCallback() {
         return this;
     }
@@ -318,6 +341,11 @@ public abstract class AbstractFeatureManager extends AbstractManager
     public void onFeatureStopped(final Feature feature) {
         pausedFeatures.remove(feature);
         resumedFeatures.remove(feature);
+
+        final int index = currentFeatures.indexOfValue(feature);
+        currentFeatures.remove(index);
+
+        feature.setParentFeature(null);
     }
 
     @CallSuper

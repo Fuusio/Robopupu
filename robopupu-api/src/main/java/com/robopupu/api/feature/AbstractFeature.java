@@ -46,6 +46,7 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
     protected FeatureManager featureManager;
     protected DependencyScope featureScope;
     protected boolean isActivityFeature;
+    protected Feature parentFeature;
     protected Class<? extends DependencyScope> scopeClass;
 
     /**
@@ -86,6 +87,21 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
             featureScope = D.getScope(scopeClass, true);
         }
         return featureScope;
+    }
+
+    @Override
+    public Feature getParentFeature() {
+        return parentFeature;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public void setParentFeature(final Feature parentFeature) {
+        if (parentFeature instanceof PlugInvoker) {
+            this.parentFeature = ((PlugInvoker<Feature>)parentFeature).object();
+        } else {
+            this.parentFeature = parentFeature;
+        }
     }
 
     @Override
