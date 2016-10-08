@@ -377,4 +377,18 @@ public class PluginBus {
     public static boolean isPlugin(final Class<?> pluginClass) {
         return (getInstance().getPlugger(pluginClass) != null);
     }
+
+    /**
+     * Gets the {@link Object} that is attached to given plug.
+     * @param plug A plug as an {@link Object}
+     * @return An {@link Object}.
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> T getPluggedObject(final Object plug) {
+        if (plug instanceof PlugInvoker) {
+            return ((PlugInvoker<T>)plug).get(0);
+        } else {
+            return (T)plug;
+        }
+    }
 }

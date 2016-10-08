@@ -65,13 +65,7 @@ public abstract class AbstractPresenter<T_View extends View> extends AbstractPlu
      */
     @SuppressWarnings("unchecked")
     protected T_View getAttachedView() {
-        final T_View viewPlug = getViewPlug();
-
-        if (viewPlug instanceof PlugInvoker) {
-            return ((PlugInvoker<T_View>)viewPlug).get(0);
-        } else {
-            return viewPlug;
-        }
+        return PluginBus.getPluggedObject(getViewPlug());
     }
 
     /**
