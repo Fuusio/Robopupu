@@ -97,11 +97,7 @@ public abstract class AbstractFeature extends AbstractPluginStateComponent
     @Override
     @SuppressWarnings("unchecked")
     public void setParentFeature(final Feature parentFeature) {
-        if (parentFeature instanceof PlugInvoker) {
-            this.parentFeature = ((PlugInvoker<Feature>)parentFeature).object();
-        } else {
-            this.parentFeature = parentFeature;
-        }
+        this.parentFeature = PluginBus.getPluggedObject(parentFeature);
     }
 
     @Override
