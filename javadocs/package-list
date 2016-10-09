@@ -8,6 +8,7 @@ com.robopupu.api.graph
 com.robopupu.api.graph.actions
 com.robopupu.api.graph.functions
 com.robopupu.api.graph.nodes
+com.robopupu.api.model
 com.robopupu.api.mvp
 com.robopupu.api.network
 com.robopupu.api.plugin
