@@ -30,8 +30,8 @@ Use the following dependencies into your application module's ```build.gradle```
 
 ```groovy
 dependencies {
-	compile 'com.robopupu:robopupu:0.5.2'
-	apt 'com.robopupu:robopupu-compiler:0.5.2'	
+	compile 'com.robopupu:robopupu:0.5.3'
+	apt 'com.robopupu:robopupu-compiler:0.5.3'	
 	apt 'com.squareup:javapoet:1.7.0' 
 }
 ```
@@ -49,7 +49,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.1.3'
+        classpath 'com.android.tools.build:gradle:2.2.0'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
     }
 }
@@ -57,8 +57,14 @@ buildscript {
 
 ## Changelog
 
+### 0.5.3
+* Added support for using type parameters in interfaces annotated with @PluginInterface.
+* Extensions to Feature API. A Feature may have a parent Feature and child Features to facilitate e.g. implementation of navigation.
+* New utility classes, e.g. com.robopupu.api.util.Id
+* Minor fixes and extensions.
+
 ### 0.5.2
-* Support for using generic methods with type parameters in interface annotated with @PluginInterface.
+* Support for using generic methods with type parameters in interfaces annotated with @PluginInterface.
 * Minor fixes and extensions.
 
 ### 0.5.1
