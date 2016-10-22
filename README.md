@@ -30,8 +30,8 @@ Use the following dependencies into your application module's ```build.gradle```
 
 ```groovy
 dependencies {
-	compile 'com.robopupu:robopupu:0.5.3'
-	apt 'com.robopupu:robopupu-compiler:0.5.3'	
+	compile 'com.robopupu:robopupu:0.5.4'
+	apt 'com.robopupu:robopupu-compiler:0.5.4'	
 	apt 'com.squareup:javapoet:1.7.0' 
 }
 ```
@@ -56,6 +56,10 @@ buildscript {
 ```
 
 ## Changelog
+
+### 0.5.4
+* Added FeatureFragment#onRestartFeature() and FeatureCompatFragment#onRestartFeature which can be used to restart a Feature if necessary when a Fragment is restarted from back stack.
+* Minor fixes and extensions.
 
 ### 0.5.3
 * Added support for using type parameters in interfaces annotated with @PluginInterface.
