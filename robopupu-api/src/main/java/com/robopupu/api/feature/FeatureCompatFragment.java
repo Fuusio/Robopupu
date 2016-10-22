@@ -74,8 +74,10 @@ public abstract class FeatureCompatFragment<T_Presenter extends Presenter> exten
         }
     }
 
+
     /**
-     * Invoked to restart the {@link Feature} if necessary.
+     * Invoked for restarting the {@link Feature} that owns this {@link FeatureManager} if
+     * necessary.
      */
     protected void onRestartFeature() {
         // By default do nothing

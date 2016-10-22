@@ -76,7 +76,8 @@ public abstract class FeatureFragment<T_Presenter extends Presenter> extends Vie
     }
 
     /**
-     * Invoked to restart the {@link Feature} if necessary.
+     * Invoked for restarting the {@link Feature} that owns this {@link FeatureManager} if
+     * necessary.
      */
     protected void onRestartFeature() {
         // By default do nothing
