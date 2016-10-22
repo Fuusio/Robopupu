@@ -15,6 +15,8 @@
  */
 package com.robopupu.api.feature;
 
+import android.os.Bundle;
+
 import com.robopupu.api.dependency.DependencyScope;
 import com.robopupu.api.mvp.Presenter;
 import com.robopupu.api.mvp.ViewCompatFragment;
@@ -49,6 +51,12 @@ public abstract class FeatureCompatFragment<T_Presenter extends Presenter> exten
     }
 
     @Override
+    public void onViewCreated(final android.view.View view, final Bundle inState) {
+        onRestartFeature();
+        super.onViewCreated(view, inState);
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
 
@@ -64,5 +72,12 @@ public abstract class FeatureCompatFragment<T_Presenter extends Presenter> exten
         if (feature != null) {
             feature.removeActiveView(this);
         }
+    }
+
+    /**
+     * Invoked to restart the {@link Feature} if necessary.
+     */
+    protected void onRestartFeature() {
+        // By default do nothing
     }
 }

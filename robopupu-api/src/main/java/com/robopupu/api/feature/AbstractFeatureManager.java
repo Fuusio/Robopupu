@@ -48,6 +48,7 @@ public abstract class AbstractFeatureManager extends AbstractManager
     private static final String SUFFIX_IMPL = "Impl";
 
     private static DependencyScopeOwner mockScopeOwner = null;
+    private static FeatureManager instance = null;
 
     private final SparseArray<Feature> currentFeatures;
     private final DependenciesCache dependenciesCache;
@@ -60,11 +61,20 @@ public abstract class AbstractFeatureManager extends AbstractManager
     private Activity lastStoppedActivity;
 
     public AbstractFeatureManager() {
+        instance = this;
         pausedFeatures = new HashSet<>();
         resumedFeatures = new HashSet<>();
         dependenciesCache = D.get(DependenciesCache.class);
         currentFeatures = new SparseArray<>();
         featureContainers = new SparseArray<>();
+    }
+
+    public static FeatureManager getInstance() {
+        return instance;
+    }
+
+    public static void setInstance(final FeatureManager instance) {
+        AbstractFeatureManager.instance = instance;
     }
 
     @Override

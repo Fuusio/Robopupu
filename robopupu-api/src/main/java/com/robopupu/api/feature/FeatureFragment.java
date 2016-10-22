@@ -15,6 +15,9 @@
  */
 package com.robopupu.api.feature;
 
+import android.os.Bundle;
+import android.view.View;
+
 import com.robopupu.api.dependency.DependencyScope;
 import com.robopupu.api.mvp.Presenter;
 import com.robopupu.api.mvp.ViewFragment;
@@ -49,6 +52,12 @@ public abstract class FeatureFragment<T_Presenter extends Presenter> extends Vie
     }
 
     @Override
+    public void onViewCreated(final android.view.View view, final Bundle inState) {
+        onRestartFeature();
+        super.onViewCreated(view, inState);
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
 
@@ -64,5 +73,12 @@ public abstract class FeatureFragment<T_Presenter extends Presenter> extends Vie
         if (feature != null) {
             feature.removeActiveView(this);
         }
+    }
+
+    /**
+     * Invoked to restart the {@link Feature} if necessary.
+     */
+    protected void onRestartFeature() {
+        // By default do nothing
     }
 }
