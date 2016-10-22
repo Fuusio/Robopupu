@@ -15,8 +15,6 @@
  */
 package com.robopupu.api.fsm;
 
-import android.test.suitebuilder.annotation.SmallTest;
-
 import com.robopupu.api.fsm.state.CoffeeReadyState;
 import com.robopupu.api.fsm.state.FillingWaterTankState;
 import com.robopupu.api.fsm.state.FilteringCoffeeState;
@@ -36,7 +34,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-@SmallTest
 public class StateMachineTest {
 
     private static final String[] EXPECTED_TRACE = {

@@ -26,8 +26,8 @@ import com.robopupu.api.component.AbstractManager;
 import java.util.HashMap;
 
 /**
- * {@link PermissionRequestManager} provides an abstract base class for implementing  a manager for
- * requesting permissions using {@link PermissionRequest}s.
+ * {@link PermissionRequestManager} implements  a manager for requesting permissions using
+ * {@link PermissionRequest}s.
  */
 public class PermissionRequestManager extends AbstractManager
         implements ActivityCompat.OnRequestPermissionsResultCallback {

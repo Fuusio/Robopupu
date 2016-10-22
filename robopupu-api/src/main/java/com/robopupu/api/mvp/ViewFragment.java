@@ -179,7 +179,7 @@ public abstract class ViewFragment<T_Presenter extends Presenter> extends Fragme
         super.onStop();
         state.onStop();
 
-        final T_Presenter presenter = resolvePresenter();
+        final T_Presenter presenter = getPresenter();
         if (presenter != null) {
             presenter.onViewStop(this);
         }
@@ -191,7 +191,7 @@ public abstract class ViewFragment<T_Presenter extends Presenter> extends Fragme
         super.onPause();
         state.onPause();
 
-        final T_Presenter presenter = resolvePresenter();
+        final T_Presenter presenter = getPresenter();
         if (presenter != null) {
             presenter.onViewPause(this);
         }
@@ -214,7 +214,7 @@ public abstract class ViewFragment<T_Presenter extends Presenter> extends Fragme
             cache.removeDependencyScope(owner);
         }
 
-        final T_Presenter presenter = resolvePresenter();
+        final T_Presenter presenter = getPresenter();
         if (presenter != null) {
             presenter.onViewDestroy(this);
         }

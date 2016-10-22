@@ -9,6 +9,12 @@ import android.nfc.NfcManager;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+
+import com.robopupu.api.dependency.D;
 
 import java.io.File;
 
@@ -81,5 +87,29 @@ public final class AppToolkit {
             return (adapter != null && adapter.isEnabled());
         }
         return false;
+    }
+
+    public static void showKeyboard(final Window window, final View editText) {
+        final View focusedView = window.getCurrentFocus();
+        final InputMethodManager manager = D.get(InputMethodManager.class);
+
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        editText.requestFocus();
+        manager.showSoftInput(focusedView != null ? focusedView : editText, InputMethodManager.SHOW_IMPLICIT);
+    }
+
+    public static void hideKeyboard(final Window window, final View editText) {
+        final View focusedView = window.getCurrentFocus();
+        final InputMethodManager manager = D.get(InputMethodManager.class);
+
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
+        if (focusedView != null) {
+            manager.hideSoftInputFromWindow(focusedView.getWindowToken(), 0);
+            focusedView.clearFocus();
+        } else {
+            manager.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+            editText.clearFocus();
+        }
     }
 }
