@@ -39,14 +39,12 @@ public abstract class GsonObject<T> implements Gsonable {
     @SuppressWarnings("unchecked")
     @Override
     public JsonObject toJsonObject() {
-        final JsonParser parser = createJsonParser();
-        return (JsonObject) parser.parse(toJsonString());
+        return (JsonObject) createJsonParser().parse(toJsonString());
     }
 
     @Override
     public String toJsonString() {
-        final Gson gson = getGson();
-        return gson.toJson(this);
+        return getGson().toJson(this);
     }
 
     public static <T extends GsonObject> T fromJson(final String jsonString, final Class<T> objectClass) {

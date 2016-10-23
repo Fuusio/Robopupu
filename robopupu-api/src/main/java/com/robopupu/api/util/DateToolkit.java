@@ -51,6 +51,10 @@ public class DateToolkit {
         return format(RFC822, date);
     }
 
+    public static String formatSimple(final Date date) {
+        return format(SIMPLE, date);
+    }
+
     public static Date parse(final String date) throws ParseException {
         return parse(DEFAULT, date);
     }
@@ -71,5 +75,9 @@ public class DateToolkit {
 
     public static Date parseRFC822(final String date) throws ParseException {
         return parse(RFC822, date);
+    }
+
+    public static Date parseSimple(final String date) throws ParseException {
+        return parse(SIMPLE, date);
     }
 }
