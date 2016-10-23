@@ -29,6 +29,8 @@ public abstract class ScopedObject implements Scopeable {
 
     @Override
     public void setScope(final DependencyScope scope) {
-        this.scope = scope;
+        if (this.scope == null || scope == null) {
+            this.scope = scope;
+        }
     }
 }

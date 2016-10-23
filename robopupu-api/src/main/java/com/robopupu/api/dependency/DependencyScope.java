@@ -210,7 +210,11 @@ public abstract class DependencyScope {
         if (dependency != null) {
 
             if (dependency instanceof Scopeable) {
-                ((Scopeable) dependency).setScope(this);
+                final Scopeable scopeable = (Scopeable) dependency;
+
+                if (scopeable.getScope() == null) {
+                    scopeable.setScope(this);
+                }
             }
 
             if (dependencyType != null) {
@@ -249,7 +253,11 @@ public abstract class DependencyScope {
             }
 
             if (dependency instanceof Scopeable) {
-                ((Scopeable) dependency).setScope(this);
+                final Scopeable scopeable = (Scopeable) dependency;
+
+                if (scopeable.getScope() == null) {
+                    scopeable.setScope(this);
+                }
             }
 
             if (dependency instanceof DependencyScopeOwner && owner == null) {
@@ -596,6 +604,11 @@ public abstract class DependencyScope {
             dependencies.remove(dependency);
         }
         dependants.remove(dependency);
+
+        if (dependency instanceof Scopeable) {
+            ((Scopeable) dependency).setScope(null);
+        }
+
         return removedDependencyTypes;
     }
 
