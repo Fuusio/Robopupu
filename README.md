@@ -30,8 +30,8 @@ Use the following dependencies into your application module's ```build.gradle```
 
 ```groovy
 dependencies {
-	compile 'com.robopupu:robopupu:0.5.5'
-	apt 'com.robopupu:robopupu-compiler:0.5.5'	
+	compile 'com.robopupu:robopupu:0.5.6'
+	apt 'com.robopupu:robopupu-compiler:0.5.6'	
 	apt 'com.squareup:javapoet:1.7.0' 
 }
 ```
@@ -56,6 +56,9 @@ buildscript {
 ```
 
 ## Changelog
+
+### 0.5.6
+* Bug fixes and improvements for both the Feature API and Dependency API. A Feature was not re-started correctly in some cases when a FeatureFragment was popped from a backstack. An another problem in those cases was caused by a bug in Dependency API which caused extra instance of the popped FeatureFragment to be created.
 
 ### 0.5.5
 * Fixed a bug that prevented removing a dependency from its container DependencyScope in certain situations.
