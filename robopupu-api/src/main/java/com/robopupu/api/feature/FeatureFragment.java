@@ -18,6 +18,7 @@ package com.robopupu.api.feature;
 import android.os.Bundle;
 import android.view.View;
 
+import com.robopupu.api.dependency.D;
 import com.robopupu.api.dependency.DependencyScope;
 import com.robopupu.api.mvp.Presenter;
 import com.robopupu.api.mvp.ViewFragment;
@@ -26,9 +27,15 @@ public abstract class FeatureFragment<T_Presenter extends Presenter> extends Vie
     implements FeatureView {
 
     private Feature feature;
+    private boolean newInstanceFlag;
     private DependencyScope scope;
 
     protected FeatureFragment() {
+        newInstanceFlag = true;
+    }
+
+    protected Feature getFeature() {
+        return feature;
     }
 
     @Override
@@ -53,7 +60,12 @@ public abstract class FeatureFragment<T_Presenter extends Presenter> extends Vie
 
     @Override
     public void onViewCreated(final android.view.View view, final Bundle inState) {
-        onRestartFeature();
+        if (!newInstanceFlag) {
+            final FeatureManager featureManager = D.get(FeatureManager.class);
+            featureManager.conditionallyRestartFeature(getFeature(), this);
+        } else {
+            newInstanceFlag = false;
+        }
         super.onViewCreated(view, inState);
     }
 
@@ -73,13 +85,5 @@ public abstract class FeatureFragment<T_Presenter extends Presenter> extends Vie
         if (feature != null) {
             feature.removeActiveView(this);
         }
-    }
-
-    /**
-     * Invoked for restarting the {@link Feature} that owns this {@link FeatureManager} if
-     * necessary.
-     */
-    protected void onRestartFeature() {
-        // By default do nothing
     }
 }

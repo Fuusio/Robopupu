@@ -116,49 +116,50 @@ public class PluginState {
     }
 
     /**
-     * Invoked the {@link PluginComponent} is created.
+     * Invoked when the {@link PluginComponent} is created.
      */
     public void onCreate() {
         lifecycleState = LifecycleState.CREATED;
     }
 
     /**
-     * Invoked the {@link PluginComponent} is started.
+     * Invoked when the {@link PluginComponent} is started.
      */
     public void onStart() {
         lifecycleState = LifecycleState.STARTED;
     }
 
     /**
-     * Invoked the {@link PluginComponent} is isRestarted.
+     * Invoked when the {@link PluginComponent} is restarted.
      */
     public void onRestart() {
+        lifecycleState = LifecycleState.PAUSED;
         isRestarted = true;
     }
 
     /**
-     * Invoked the {@link PluginComponent} is paused.
+     * Invoked when the {@link PluginComponent} is paused.
      */
     public void onPause() {
         lifecycleState = LifecycleState.PAUSED;
     }
 
     /**
-     * Invoked the {@link PluginComponent} is resumed.
+     * Invoked when the {@link PluginComponent} is resumed.
      */
     public void onResume() {
         lifecycleState = LifecycleState.RESUMED;
     }
 
     /**
-     * Invoked the {@link PluginComponent} is stopped.
+     * Invoked when the {@link PluginComponent} is stopped.
      */
     public void onStop() {
         lifecycleState = LifecycleState.STOPPED;
     }
 
     /**
-     * Invoked the {@link PluginComponent} is destroyed.
+     * Invoked when the {@link PluginComponent} is destroyed.
      */
     public void onDestroy() {
         lifecycleState = LifecycleState.DESTROYED;

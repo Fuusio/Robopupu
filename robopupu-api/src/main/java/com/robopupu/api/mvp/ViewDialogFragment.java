@@ -95,8 +95,10 @@ public abstract class ViewDialogFragment<T_Presenter extends Presenter> extends 
 
         if (presenter == null) {
             if (PluginBus.isPlugin(getClass())) {
+                D.addDependant(this);
                 PluginBus.plug(this);
                 presenter = getPresenter();
+                D.removeDependant(this);
             }
         }
         return presenter;

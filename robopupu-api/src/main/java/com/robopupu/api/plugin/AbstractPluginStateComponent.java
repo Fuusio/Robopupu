@@ -50,6 +50,10 @@ public class AbstractPluginStateComponent extends AbstractPluginComponent
         this.params = params;
     }
 
+    public Params getParams() {
+        return params;
+    }
+
     @Override
     public void pause() {
         state.onPause();

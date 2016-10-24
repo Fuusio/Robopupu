@@ -15,6 +15,9 @@
  */
 package com.robopupu.api.feature;
 
+import android.os.Bundle;
+
+import com.robopupu.api.dependency.D;
 import com.robopupu.api.dependency.DependencyScope;
 import com.robopupu.api.mvp.Presenter;
 import com.robopupu.api.mvp.ViewDialogFragment;
@@ -23,9 +26,15 @@ public abstract class FeatureDialogFragment<T_Presenter extends Presenter> exten
     implements FeatureView {
 
     private Feature feature;
+    private boolean newInstanceFlag;
     private DependencyScope scope;
 
     protected FeatureDialogFragment() {
+        newInstanceFlag = true;
+    }
+
+    protected Feature getFeature() {
+        return feature;
     }
 
     @Override
@@ -46,6 +55,17 @@ public abstract class FeatureDialogFragment<T_Presenter extends Presenter> exten
     @Override
     public boolean isDialog() {
         return true;
+    }
+
+    @Override
+    public void onViewCreated(final android.view.View view, final Bundle inState) {
+        if (!newInstanceFlag) {
+            final FeatureManager featureManager = D.get(FeatureManager.class);
+            featureManager.conditionallyRestartFeature(getFeature(), this);
+        } else {
+            newInstanceFlag = false;
+        }
+        super.onViewCreated(view, inState);
     }
 
     @Override

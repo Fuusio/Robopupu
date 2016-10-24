@@ -18,6 +18,8 @@ package com.robopupu.api.dependency;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.robopupu.api.mvp.Presenter;
+import com.robopupu.api.mvp.ViewFragmentDelegate;
 import com.robopupu.api.util.Utils;
 
 import java.util.ArrayList;
@@ -507,5 +509,25 @@ public class Dependency {
      */
     public static void resetActiveScope() {
         activeScope = null;
+    }
+
+    /**
+     * Adds the given {@link Object} as an dependant to currently active scope - if one exists.
+     * @param dependant An {@link Object}  to be added as dependant.
+     */
+    public static void addDependant(final Object dependant) {
+        if (activeScope != null) {
+            activeScope.addDependant(dependant);
+        }
+    }
+
+    /**
+     * Removes the given {@link Object} as an dependant from currently active scope - if one exists.
+     * @param dependant An {@link Object}  to be removed as dependant.
+     */
+    public static void removeDependant(final Object dependant) {
+        if (activeScope != null) {
+            activeScope.removeDependant(dependant);
+        }
     }
 }

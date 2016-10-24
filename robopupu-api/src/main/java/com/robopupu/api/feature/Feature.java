@@ -53,6 +53,12 @@ public interface Feature extends PresenterListener, PluginStateComponent {
     boolean isActiveView(FeatureView view);
 
     /**
+     * Gets the {@link Params} provided for the {@link Feature} when started.
+     * @return A {@link Params}. May return {@code null}.
+     */
+    Params getParams();
+
+    /**
      * Adds the given {@link FeatureView} to the set of currently active {@link FeatureView}s of
      * this {@link Feature}.
      * @param view A {@link FeatureView} to be added.

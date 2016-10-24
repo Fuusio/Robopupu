@@ -23,6 +23,7 @@ import android.view.ViewGroup;
 import com.robopupu.api.component.Manager;
 import com.robopupu.api.dependency.DependencyScope;
 import com.robopupu.api.dependency.DependencyScopeOwner;
+import com.robopupu.api.mvp.Presenter;
 import com.robopupu.api.mvp.View;
 import com.robopupu.api.plugin.PluginStateComponent;
 import com.robopupu.api.util.Params;
@@ -234,4 +235,13 @@ public interface FeatureManager extends Manager  {
      * @param provider A {@link FeatureContainerProvider}.
      */
     void unregisterFeatureContainerProvider(FeatureContainerProvider provider);
+
+    /**
+     * Check the execution state of the given {@link Feature} and if not started then start
+     * the {@link Feature} for the given {@link FeatureView}.
+     * @param feature A {@link Feature}.
+     * @param featureView A {@link FeatureView}.
+     * @return A {@code boolean} value if the {@link Feature} was restarted.
+     */
+    boolean conditionallyRestartFeature(Feature feature, FeatureView featureView);
 }

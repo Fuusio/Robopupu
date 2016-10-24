@@ -17,6 +17,7 @@ package com.robopupu.api.feature;
 
 import android.os.Bundle;
 
+import com.robopupu.api.dependency.D;
 import com.robopupu.api.dependency.DependencyScope;
 import com.robopupu.api.mvp.Presenter;
 import com.robopupu.api.mvp.ViewCompatFragment;
@@ -25,9 +26,15 @@ public abstract class FeatureCompatFragment<T_Presenter extends Presenter> exten
     implements FeatureView {
 
     private Feature feature;
+    private boolean newInstanceFlag;
     private DependencyScope scope;
 
     protected FeatureCompatFragment() {
+        newInstanceFlag = true;
+    }
+
+    protected Feature getFeature() {
+        return feature;
     }
 
     @Override
@@ -52,7 +59,12 @@ public abstract class FeatureCompatFragment<T_Presenter extends Presenter> exten
 
     @Override
     public void onViewCreated(final android.view.View view, final Bundle inState) {
-        onRestartFeature();
+        if (!newInstanceFlag) {
+            final FeatureManager featureManager = D.get(FeatureManager.class);
+            featureManager.conditionallyRestartFeature(getFeature(), this);
+        } else {
+            newInstanceFlag = false;
+        }
         super.onViewCreated(view, inState);
     }
 
@@ -72,14 +84,5 @@ public abstract class FeatureCompatFragment<T_Presenter extends Presenter> exten
         if (feature != null) {
             feature.removeActiveView(this);
         }
-    }
-
-
-    /**
-     * Invoked for restarting the {@link Feature} that owns this {@link FeatureManager} if
-     * necessary.
-     */
-    protected void onRestartFeature() {
-        // By default do nothing
     }
 }

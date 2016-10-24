@@ -15,8 +15,10 @@
  */
 package com.robopupu.api.feature;
 
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
+import com.robopupu.api.dependency.D;
 import com.robopupu.api.mvp.Presenter;
 import com.robopupu.api.mvp.ViewCompatFragmentDelegate;
 
@@ -25,9 +27,22 @@ public abstract class FeatureViewCompatFragmentDelegate<T_Presenter extends Pres
     implements FeatureView {
 
     private Feature feature;
+    private boolean newInstanceFlag;
 
     protected FeatureViewCompatFragmentDelegate(final T_Fragment fragment) {
         super(fragment);
+        newInstanceFlag = true;
+    }
+
+    @Override
+    public void onViewCreated(final android.view.View view, final Bundle inState) {
+        if (!newInstanceFlag) {
+            final FeatureManager featureManager = D.get(FeatureManager.class);
+            featureManager.conditionallyRestartFeature(feature, this);
+        } else {
+            newInstanceFlag = false;
+        }
+        super.onViewCreated(view, inState);
     }
 
     @Override

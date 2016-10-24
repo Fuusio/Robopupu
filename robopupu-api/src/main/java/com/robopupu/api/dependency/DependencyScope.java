@@ -183,8 +183,17 @@ public abstract class DependencyScope {
      *
      * @param dependant An {@link Object}.
      */
-    protected void addDependant(final Object dependant) {
+    public void addDependant(final Object dependant) {
         dependants.add(dependant);
+    }
+
+    /**
+     * Removes the given {@link Object} as a dependant from this {@link DependencyScope}.
+     *
+     * @param dependant An {@link Object}.
+     */
+    protected void removeDependant(final Object dependant) {
+        dependants.remove(dependant);
     }
 
     /**

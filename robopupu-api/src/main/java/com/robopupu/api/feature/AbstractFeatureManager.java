@@ -296,6 +296,35 @@ public abstract class AbstractFeatureManager extends AbstractManager
     }
 
     @Override
+    public boolean conditionallyRestartFeature(final Feature feature, final FeatureView featureView) {
+        if (feature == null) {
+            return false;
+        }
+
+        feature.setFeatureManager(this);
+
+        if (!feature.isStarted()) {
+            final FeatureContainer featureContainer = feature.getFeatureContainer();
+            DependencyScope scope = null;
+
+            if (feature instanceof DependencyScopeOwner) {
+                scope = ((DependencyScopeOwner) feature).getOwnedScope();
+            }
+
+            // The FeatureView is provided as an dependant because FeatureView typically has
+            // dependencies and it itself a depandency within a Feature. Providing the  FeatureView
+            // (e.g. a Fragment) as an dependant prevents it to be re-created.
+            if (scope != null) {
+                scope.addDependant(featureView);
+            }
+            feature.restart();
+            startFeature(featureContainer, feature, feature.getParams());
+            return true;
+        }
+        return false;
+    }
+
+    @Override
     public void registerFeatureContainerProvider(final FeatureContainerProvider provider) {
         for (final FeatureContainer container : provider.getFeatureContainers()) {
             featureContainers.put(container.getContainerViewId(), container);
