@@ -4,7 +4,7 @@ apply plugin: 'me.tatarka.retrolambda'
 ext {
     PUBLISH_GROUP_ID = 'com.robopupu'
     PUBLISH_ARTIFACT_ID = 'robopupu'
-    PUBLISH_VERSION = '0.5.6'
+    PUBLISH_VERSION = '0.5.7'
 }
 
 android {
@@ -14,7 +14,7 @@ android {
         minSdkVersion 16
         targetSdkVersion 25
         versionCode 2
-        versionName '0.5.6'
+        versionName '0.5.7'
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -71,11 +71,11 @@ retrolambda {
 }
 
 String getJavaVersion(Integer version) {
-    def sout = new StringBuffer()
-    def exec = "/usr/libexec/java_home -v 1.$version".execute()
-    exec.consumeProcessOutput(sout, new StringBuffer())
-    exec.waitForOrKill(1000)
-    return sout.toString().replace("\n", "").replace("\r", "")
+    def buffer = new StringBuffer()
+    def process = "/usr/libexec/java_home -v 1.$version".execute()
+    process.consumeProcessOutput(buffer, new StringBuffer())
+    process.waitForOrKill(1000)
+    return buffer.toString().replace("\n", "").replace("\r", "")
 }
 
 apply from: 'https://raw.githubusercontent.com/blundell/release-android-library/master/android-release-aar.gradle'

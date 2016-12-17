@@ -307,6 +307,13 @@ public class PluginBus {
             return;
         }
 
+        PluginComponent component = null;
+
+        if (plugin instanceof PluginComponent) {
+            component = (PluginComponent) plugin;
+            component.onUnplugged(this);
+        }
+
         final String pluggerClassName = plugin.getClass().getName() + SUFFIX_PLUGGER;
         final Plugger plugger = pluggers.get(pluggerClassName);
 
@@ -314,11 +321,8 @@ public class PluginBus {
 
         plugins.remove(plugin);
 
-        if (plugin instanceof PluginComponent) {
-            final PluginComponent component = (PluginComponent) plugin;
-            pluginComponents.remove(component);
-            component.onUnplugged(this);
-
+        if (component != null) {
+            
             for (final PluginComponent pluggedComponent : pluginComponents) {
                 pluggedComponent.onPluginUnplugged(plugin);
             }

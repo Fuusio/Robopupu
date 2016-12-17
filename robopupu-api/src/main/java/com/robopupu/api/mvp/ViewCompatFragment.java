@@ -143,6 +143,7 @@ public abstract class ViewCompatFragment<T_Presenter extends Presenter> extends 
         }
 
         final T_Presenter presenter = resolvePresenter();
+
         if (presenter != null) {
             presenter.onViewStart(this);
             binder.initialise();

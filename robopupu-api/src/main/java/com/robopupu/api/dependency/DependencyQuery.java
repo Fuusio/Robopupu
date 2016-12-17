@@ -47,29 +47,6 @@ public class DependencyQuery<T> {
         return foundDependencies.values();
     }
 
-    /**
-     * Adds the found dependencies to the given {@link HashSet}.
-     * param cache A {@link HashSet} for adding the found dependencies.
-     * REMOVE
-    public void getFoundDependencies(final HashSet<T> cache) {
-        for (final T foundDependency : foundDependencies) {
-            if (!containsInstanceOf(cache, foundDependency)) {
-                cache.add(foundDependency);
-            }
-        }
-    }
-
-    private boolean containsInstanceOf(final HashSet<T> objects, final T object) {
-        final Class<?> objectClass = object.getClass();
-
-        for (final T existingObject : objects) {
-            if (objectClass.equals(existingObject.getClass())) {
-                return true;
-            }
-        }
-        return false;
-    }*/
-
     public T getFoundDependency() {
         final Collection<T> dependencies = foundDependencies.values();
         return dependencies.iterator().next();

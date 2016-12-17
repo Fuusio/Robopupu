@@ -18,8 +18,8 @@ package com.robopupu.api.plugin;
 import com.robopupu.api.dependency.Scopeable;
 
 /**
- * {@link PluginComponent} extends {@link Scopeable} to define an interface for plugin components
- * that can be plugged into {@link PluginBus}.
+ * {@link PluginComponent} defines an interface for plugin components that can be plugged to and
+ * unplugged from a {@link PluginBus}.
  */
 public interface PluginComponent {
 

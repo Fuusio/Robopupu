@@ -252,7 +252,7 @@ public class StringToolkit {
 
             final String identifier = string.substring(beginIndex, endIndex);
 
-            if (identifier == null || !isValidIdentifier(identifier)) {
+            if (!isValidIdentifier(identifier)) {
                 return false;
             }
 

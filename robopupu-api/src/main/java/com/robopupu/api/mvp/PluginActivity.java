@@ -74,7 +74,7 @@ public abstract class PluginActivity<T_Presenter extends Presenter>
 
     @Override
     public boolean canShowView(final FeatureView view) {
-        return (view != null && !mState.isMovedToBackground());
+        return (view != null && !state.isMovedToBackground());
     }
 
     @Override
