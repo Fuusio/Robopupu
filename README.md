@@ -30,9 +30,9 @@ Use the following dependencies into your application module's ```build.gradle```
 
 ```groovy
 dependencies {
-	compile 'com.robopupu:robopupu:0.5.6'
-	apt 'com.robopupu:robopupu-compiler:0.5.6'	
-	apt 'com.squareup:javapoet:1.7.0' 
+	compile 'com.robopupu:robopupu:0.5.7'
+	apt 'com.robopupu:robopupu-compiler:0.5.7'	
+	apt 'com.squareup:javapoet:1.9.0' 
 }
 ```
 In addition, since the Robopupu Compiler utilises annotation processing we need to use [android-apt plugin](https://bitbucket.org/hvisser/android-apt). For this reason, you need to declare the plugin in your into your application module's ```build.gradle```file:
@@ -56,6 +56,9 @@ buildscript {
 ```
 
 ## Changelog
+
+### 0.5.7
+* Minor bug fixes. Upgraded Android Support library versions. Prepapring for support of RxJava 2 based MVP.
 
 ### 0.5.6
 * Bug fixes and improvements for both the Feature API and Dependency API. A Feature was not re-started correctly in some cases when a FeatureFragment was popped from a backstack. An another problem in those cases was caused by a bug in Dependency API which caused extra instance of the popped FeatureFragment to be created.
