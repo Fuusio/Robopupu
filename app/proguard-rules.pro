@@ -132,12 +132,12 @@
 # Google Volley
 -dontwarn com.android.volley.**
 
-# OkHttp
+# OkHttp 3
 -dontwarn okio.**
 -dontwarn com.squareup.**
--dontwarn okhttp3.internal.**
+-dontwarn okhttp3.**
 
-# Retrofit, Retrofit 2 and RxJava
+# Retrofit 2 and RxJava 2
 
 # Platform calls Class.forName on types which do not exist on Android to determine platform.
 -dontnote retrofit2.Platform
@@ -150,8 +150,8 @@
 # Retain declared checked exceptions for use by a Proxy instance.
 -keepattributes Exceptions
 
--dontwarn retrofit.**
--keep class retrofit.** { *; }
+-dontwarn retrofit2.**
+-keep class retrofit2.** { *; }
 -dontwarn sun.misc.Unsafe
 -dontwarn com.octo.android.robospice.retrofit.RetrofitJackson**
 -dontwarn retrofit.appengine.UrlFetchClient
@@ -160,15 +160,15 @@
 -keepclasseswithmembers class * {
     @retrofit.http.* <methods>;
 }
+-dontwarn io.reactivex.**
+
 -keep class com.google.gson.** { *; }
 -keep class com.google.inject.** { *; }
 -keep class org.apache.http.** { *; }
 -keep class org.apache.james.mime4j.** { *; }
 -keep class javax.inject.** { *; }
--keep class retrofit.** { *; }
 -dontwarn org.apache.http.**
 -dontwarn android.net.http.AndroidHttpClient
--dontwarn retrofit.**
 
 -dontwarn sun.misc.**
 
