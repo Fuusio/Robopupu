@@ -4,7 +4,7 @@ apply plugin: 'me.tatarka.retrolambda'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion '25.0.0'
+    buildToolsVersion '25.0.2'
     defaultConfig {
         applicationId 'com.robopupu'
         minSdkVersion 16
@@ -67,30 +67,37 @@ dependencies {
     }
 
     // Leak Canary
-    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.4-beta2'
-    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
-    testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
-
-    // Google Volley
-    compile 'com.android.volley:volley:1.0.0'
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.1'
+    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
+    testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
 
     // Support Libraries
-    compile 'com.android.support:appcompat-v7:25.2.0'
-    compile 'com.android.support:support-v4:25.2.0'
-    compile 'com.android.support:design:25.2.0'
-    compile 'com.android.support:cardview-v7:25.2.0'
+    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support:support-v4:25.3.1'
+    compile 'com.android.support:design:25.3.1'
+    compile 'com.android.support:cardview-v7:25.3.1'
     compile 'com.squareup.picasso:picasso:2.5.2'
 
-    // RxJava
-    // compile 'io.reactivex:rxandroid:1.1.0'
-    // compile 'io.reactivex:rxjava:1.1.3'
+    // RxJava 2
+
+    compile "io.reactivex.rxjava2:rxjava:2.0.8"
+    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
+
+    // RxBindings 2
+
+    compile 'com.jakewharton.rxbinding2:rxbinding:2.0.0'
+    compile 'com.jakewharton.rxbinding2:rxbinding-support-v4:2.0.0'
+    compile 'com.jakewharton.rxbinding2:rxbinding-appcompat-v7:2.0.0'
+    compile 'com.jakewharton.rxbinding2:rxbinding-design:2.0.0'
+    compile 'com.jakewharton.rxbinding2:rxbinding-recyclerview-v7:2.0.0'
 
     // Retrofit 2
-    //compile 'com.squareup.retrofit2:retrofit:2.1.0'
-    //compile 'com.squareup.retrofit2:converter-gson:2.1.0'
-    //compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
-    // compile 'com.squareup.okhttp3:logging-interceptor:3.2.0'
-    compile 'com.google.code.gson:gson:2.7'
+    compile 'com.squareup.retrofit2:retrofit:2.3.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.3.0'
+    compile 'com.squareup.retrofit2:adapter-rxjava:2.3.0'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.8.0'
+
+    compile 'com.google.code.gson:gson:2.8.0'
 }
 
 String java8 = getJavaVersion(8)

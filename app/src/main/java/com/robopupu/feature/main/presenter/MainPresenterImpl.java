@@ -73,9 +73,9 @@ public class MainPresenterImpl extends AbstractPresenter<MainView>
             featureManager.startFeature(container, FeedbackFeature.class);
         } else if (itemId == R.id.navigation_fsm_demo) {
             featureManager.startFeature(container, FsmDemoFeature.class);
-        } else if (itemId == R.id.navigation_jokes) {
+        } /*else if (itemId == R.id.navigation_jokes) {
             featureManager.startFeature(container, JokesFeature.class);
-        } else if (itemId == R.id.navigation_settings) {
+        } */ else if (itemId == R.id.navigation_settings) {
             //featureManager.startFeature(container, SettingsFeature.class);
         } else if (itemId == R.id.navigation_multiple_views) {
             featureManager.startFeature(container, MultipleViewsFeature.class);

@@ -6,10 +6,10 @@
             android:id="@+id/navigation_fsm_demo"
             android:icon="@drawable/ic_slideshow_black_36dp"
             android:title="@string/ft_main_navigation_item_fsm_demo" />
-        <item
+        <!-- item
             android:id="@+id/navigation_jokes"
             android:icon="@drawable/ic_chuck_norris_black_36dp"
-            android:title="@string/ft_main_navigation_item_jokes" />
+            android:title="@string/ft_main_navigation_item_jokes" / -->
 
         <item
             android:id="@+id/navigation_multiple_views"

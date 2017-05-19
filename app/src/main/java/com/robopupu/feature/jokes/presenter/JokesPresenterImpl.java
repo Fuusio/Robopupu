@@ -17,8 +17,6 @@ package com.robopupu.feature.jokes.presenter;
 
 import com.robopupu.api.dependency.Provides;
 import com.robopupu.api.feature.AbstractFeaturePresenter;
-import com.robopupu.api.graph.NodeObserverAdapter;
-import com.robopupu.api.graph.OutputNode;
 import com.robopupu.api.plugin.Plug;
 import com.robopupu.api.plugin.Plugin;
 import com.robopupu.api.plugin.PluginBus;
@@ -58,16 +56,6 @@ public class JokesPresenterImpl extends AbstractFeaturePresenter<JokesView>
 
     @Override
     public void onRequestJokeClick() {
-        interactor.requestJoke(new NodeObserverAdapter<JokeResponse>() {
-            @Override
-            public void onInput(OutputNode<JokeResponse> node, JokeResponse response) {
-                displayJoke(response);
-            }
-
-            @Override
-            public void onError(OutputNode<JokeResponse> node, Throwable throwable) {
-                super.onError(node, throwable);
-            }
-        });
+        // TODO RxJava 2 & Retrofit 2
     }
 }
