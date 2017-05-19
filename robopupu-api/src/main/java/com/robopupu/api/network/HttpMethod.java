@@ -30,7 +30,8 @@ public enum HttpMethod {
     HEAD("HEAD", 4),
     OPTIONS("OPTIONS", 5),
     TRACE("TRACE", 6),
-    PATCH("PATCH", 7);
+    PATCH("PATCH", 7),
+    ANY("ANY", 8),;
 
     private final int id;
     private final String name;
@@ -62,6 +63,21 @@ public enum HttpMethod {
 
     public boolean isPut() {
         return (this == HttpMethod.PUT);
+    }
+
+    public static HttpMethod getValue(final String methodName) {
+
+        if (methodName != null) {
+
+            final String name = methodName.toUpperCase();
+
+            for (final HttpMethod value : values()) {
+                if (value.name.equals(name)) {
+                    return value;
+                }
+            }
+        }
+        return null;
     }
 
     public final String toString() {

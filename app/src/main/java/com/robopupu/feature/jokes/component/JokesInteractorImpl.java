@@ -31,7 +31,7 @@ public class JokesInteractorImpl extends GraphInteractor implements JokesInterac
     }
 
     @Override
-    public void requestJoke(final NodeObserver<JokeResponse> callback) {
-        Graph.begin(getJoke).observer(callback).start();
+    public void requestJoke(final NodeObserver<JokeResponse> observer) {
+        Graph.begin(getJoke).observer(observer).start();
     }
 }

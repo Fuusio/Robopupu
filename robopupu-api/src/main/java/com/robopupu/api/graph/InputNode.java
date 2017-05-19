@@ -3,6 +3,12 @@ package com.robopupu.api.graph;
 public interface InputNode<IN> {
 
     /**
+     * Gets the {@link Graph} that contains this {@link InputNode}.
+     * @return A {@link Graph}.
+     */
+    Graph<?> getGraph();
+
+    /**
      * Sets the {@link Graph} that contains this {@link InputNode}.
      * @param graph A {@link Graph}.
      */

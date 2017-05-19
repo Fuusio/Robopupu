@@ -52,12 +52,14 @@ import java.util.ArrayList;
  * @param <IN> The input type.
  * @param <OUT> The output type.
  */
+@SuppressWarnings("WeakerAccess")
 public class Node<IN, OUT> implements InputNode<IN>, OutputNode<OUT> {
 
     protected final ArrayList<InputNode<OUT>> inputNodes;
 
-    protected boolean errorReceived;
     protected Graph<?> graph;
+
+    private boolean errorReceived;
 
     /**
      * Constructs a new instance of {@link Node}.
@@ -134,11 +136,24 @@ public class Node<IN, OUT> implements InputNode<IN>, OutputNode<OUT> {
     }
 
     /**
-     * Sets an error to be received.
-     * @return A {@code boolean}.
+     * Sets the flag that indicates if an error is received.
+     * @param errorReceived A {@code boolean}.
      */
-    protected void setErrorReceived(boolean mErrorReceived) {
-        this.errorReceived = mErrorReceived;
+    protected void setErrorReceived(final boolean errorReceived) {
+        this.errorReceived = errorReceived;
+    }
+
+    public Graph<?> getGraph() {
+        if (graph == null) {
+            for (final InputNode<OUT> inputNode : inputNodes) {
+                graph = inputNode.getGraph();
+
+                if (graph != null) {
+                    break;
+                }
+            }
+        }
+        return graph;
     }
 
     @Override
@@ -182,19 +197,21 @@ public class Node<IN, OUT> implements InputNode<IN>, OutputNode<OUT> {
     }
 
     @Override
-    public void attach(final InputNode<OUT> inputNode) {
-        addInputNode(inputNode);
+    public InputNode<OUT> attach(final InputNode<OUT> inputNode) {
+        return addInputNode(inputNode);
     }
 
     /**
      * Adds the given {@link InputNode} to the set of attached {@link InputNode}s.
      * @param inputNode A {@link InputNode}.
+     * @return The added {@link InputNode}.
      */
-    protected void addInputNode(final InputNode<OUT> inputNode) {
+    protected InputNode<OUT> addInputNode(final InputNode<OUT> inputNode) {
         if (!inputNodes.contains(inputNode)) {
             inputNodes.add(inputNode);
             onAttached(inputNode);
         }
+        return inputNode;
     }
 
     /**
@@ -344,6 +361,13 @@ public class Node<IN, OUT> implements InputNode<IN>, OutputNode<OUT> {
      */
     protected void doOnError(final OutputNode<?> source, final Throwable throwable) {
         // By default do nothing
+    }
+
+    /**
+     * Invokes the begin node of the {@link Graph} to emit its value(s).
+     */
+    public void start() {
+        getGraph().start();
     }
 
     /**

@@ -322,7 +322,7 @@ public class PluginBus {
         plugins.remove(plugin);
 
         if (component != null) {
-            
+
             for (final PluginComponent pluggedComponent : pluginComponents) {
                 pluggedComponent.onPluginUnplugged(plugin);
             }

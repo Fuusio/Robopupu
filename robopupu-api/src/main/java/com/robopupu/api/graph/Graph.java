@@ -54,16 +54,17 @@ import java.util.List;
  *
  * @param <T> The parametrized output type of the {@link Graph}.
  */
+@SuppressWarnings("WeakerAccess")
 public class Graph<T> {
 
-    protected final HashMap<Tag, OutputNode<?>> taggedNodes;
-    protected final Tag<T> beginTag;
+    private final HashMap<Tag, OutputNode<?>> taggedNodes;
+    private final Tag<T> beginTag;
 
-    protected OutputNode<T> beginNode;
-    protected OutputNode<?> currentNode;
-    protected Tag pendingAttachTag;
+    private OutputNode<T> beginNode;
+    private OutputNode<?> currentNode;
+    private Tag pendingAttachTag;
 
-    protected Graph() {
+    Graph() {
         beginTag = new Tag<>();
         taggedNodes = new HashMap<>();
     }
@@ -98,6 +99,10 @@ public class Graph<T> {
         }
         beginNode = outputNode;
         currentNode = outputNode;
+
+        if (outputNode != null) {
+            outputNode.setGraph(this);
+        }
     }
 
     /**
@@ -109,6 +114,10 @@ public class Graph<T> {
         taggedNodes.put(tag, outputNode);
         beginNode = outputNode;
         currentNode = outputNode;
+
+        if (outputNode != null) {
+            outputNode.setGraph(this);
+        }
     }
 
     /**
@@ -119,7 +128,6 @@ public class Graph<T> {
     public <T_Node> T_Node getCurrentNode() {
         return (T_Node) currentNode;
     }
-
 
     /**
      * Begins this {@link Graph} with an {@link OutputActionNode} as a begin node. The given
@@ -339,7 +347,11 @@ public class Graph<T> {
         currentNode = nextNode;
 
         if (beginNode == null) {
-            beginNode = (OutputNode<T>)node;
+            beginNode = (OutputNode<T>)nextNode;
+        }
+
+        if (nextNode != null) {
+            nextNode.setGraph(this);
         }
         return (Graph<OUT>)this;
     }
@@ -435,11 +447,11 @@ public class Graph<T> {
 
     /**
      * Attaches a {@link ObserverNode} for the given {@link NodeObserver} to the current {@link OutputNode}.
-     * @param callback A {@link NodeObserver}.
+     * @param observer A {@link NodeObserver}.
      * @return This {@link Graph}.
      */
-    public Graph<T> observer(final NodeObserver<T> callback) {
-        return to(new ObserverNode<>(callback));
+    public Graph<T> observer(final NodeObserver<T> observer) {
+        return to(new ObserverNode<>(observer));
     }
 
     /**
@@ -572,7 +584,7 @@ public class Graph<T> {
     /**
      * Attaches a {@link TimerNode} with the given delay to current {@link OutputNode}.
      * @param delay The delay in milliseconds.
-     * @return The attached {@link Node}.
+     * @return This {@link Graph}.
      */
     public Graph<T> timer(final long delay) {
         return to(new TimerNode<>(delay));
